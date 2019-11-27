@@ -1,0 +1,31 @@
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+  <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="collapseExample"
+    (click)="isCollapsed = !isCollapsed">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" routerLink="/home">
+    <i class="fas fa-basketball-ball"></i>
+  </a>
+
+  <div class="collapse navbar-collapse" [collapse]="isCollapsed">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/players" (click)="isCollapsed = true;">Giocatori</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" *ngFor="let b of breadcrumbs; let i = index">
+      <span *ngIf="i != breadcrumbs.length - 1; else elseLink">
+        <a [routerLink]="[b.url, b.params]" routerLinkActive="selezionato"
+          [routerLinkActiveOptions]="{ exact: true }">{{b.label}}</a>
+      </span>
+      <ng-template #elseLink>
+        <span>{{b.label}}</span>
+      </ng-template>
+    </li>
+  </ol>
+</nav>

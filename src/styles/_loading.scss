@@ -1,0 +1,19 @@
+/* Absolute Center Spinner */
+.loading-div {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  // z-index impostato a 1081 perché 1050 è il valore di z-index delle modali e 1080 quello dei datepicker
+  z-index: 1081;
+  background-color: rgba(0,0,0,0.5);
+
+  .loading-icon {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: $menu-color;
+  }
+}

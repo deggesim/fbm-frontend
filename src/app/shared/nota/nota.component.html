@@ -1,0 +1,10 @@
+<div class="nota" [ngClass]="classNota">
+  <div fxLayout="row" fxLayoutAlign="space-around center">
+    <div fxFlex="50px" fxLayoutAlign="center" class="icona">
+      <i class="fa fa-2x" [ngClass]="classIcona" aria-hidden="true"></i>
+    </div>
+    <div fxFlex class="nota-testo">
+      <p *ngFor="let m of messages" [innerHTML]="m"></p>
+    </div>
+  </div>
+</div>

@@ -1,18 +1,81 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { DeviceDetectorModule } from 'ngx-device-detector';
+import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
+import { HeaderComponent } from './layout/header/header.component';
+import { ErrorPageComponent } from './shared/error-page.component';
+import { NotaComponent } from './shared/nota/nota.component';
+import { PopupConfermaComponent } from './shared/popup-conferma/popup-conferma.component';
+import { GlobalInterceptor } from './http-interceptors/global-interceptor.service';
+import { SpinnerService } from './shared/spinner.service';
+import { SharedService } from './shared/shared.service';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    PopupConfermaComponent,
+    NotaComponent,
+    ErrorPageComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    FlexLayoutModule,
+    NgSelectModule,
+    CollapseModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    PaginationModule.forRoot(),
+    TooltipModule.forRoot(),
+    ModalModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    ButtonsModule.forRoot(),
+    AccordionModule.forRoot(),
+    PopoverModule.forRoot(),
+    AlertModule.forRoot(),
+    DeviceDetectorModule.forRoot(),
+    NgxChartsModule,
+    ToastrModule.forRoot(), // ToastrModule added
+    ToastContainerModule,
+    FontAwesomeModule,
+    AppRoutingModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: GlobalInterceptor,
+      multi: true,
+    },
+    // resolver
+    // altri servizi
+    SpinnerService,
+    SharedService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,1 +1,59 @@
 /* You can add global styles to this file, and also import other style files */
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+@import 'styles/project-colors';
+
+// padding per la navbar bootstrap fixed top
+body {
+  padding-top: 70px;
+}
+
+//customizzazione modal
+.modal-header {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  background-color: $color_blu_10;
+}
+
+.modal-content {
+  border-radius: 0.5rem;
+}
+
+.dropdown-item {
+  &.active, &:active {
+    color: #FFFFFF;
+    text-decoration: none;
+    background-color: #6C757D;
+  }
+  &:hover, &:focus {
+    color: #16181B;
+    text-decoration: none;
+    background-color: #F8F9FA;
+  }
+  &.active, &:active {
+    color: #FFFFFF;
+    text-decoration: none;
+    background-color: #6C757D;
+  }
+}
+
+a {
+  color: #212529;
+}
+
+// customizzazione bootstrap
+.page-link {
+  color: #212529;
+  &:hover {
+    color: #212529;
+  }
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(145, 145, 145, 0.25);
+  }
+}
+
+.page-item.active .page-link {
+  color: #FFFFFF;
+  background-color: #212529;
+  border-color: #212529;
+}
