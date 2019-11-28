@@ -1,13 +1,19 @@
 {
   "name": "fbm-frontend",
   "version": "3.0.0",
+  "author": "Simone De Gennaro",
+  "engines": {
+    "node": "10.16.1",
+    "npm": "6.9.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
     "build": "ng build --prod --sourceMap=false",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "npm run build"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +32,10 @@
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@ng-select/ng-select": "^3.6.2",
     "@swimlane/ngx-charts": "^12.1.0",
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "koa": "^2.11.0",
+    "koa-static": "^5.0.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "ngx-bootstrap": "^5.2.0",

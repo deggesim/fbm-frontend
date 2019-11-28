@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { faBasketballBall } from '@fortawesome/free-solid-svg-icons';
 
 interface IBreadcrumb {
   label: string;
@@ -15,9 +14,6 @@ interface IBreadcrumb {
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
-  // Font Awesome
-  faBasketballBall = faBasketballBall;
 
   isCollapsed = true;
 
