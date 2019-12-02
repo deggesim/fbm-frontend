@@ -56,7 +56,7 @@ export class SharedService {
         if (messaggio500 === undefined) {
           descrizione = 'Si è verificato un errore imprevisto';
         } else {
-          _.forEach(messaggio500, function (e) {
+          _.forEach(messaggio500, (e) => {
             descrizione += e + '. ';
           });
         }

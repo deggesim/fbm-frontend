@@ -25,11 +25,14 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { GlobalInterceptor } from './http-interceptors/global-interceptor.service';
 import { HeaderComponent } from './layout/header/header.component';
+import { LoginComponent } from './login/login.component';
+import { AuthService } from './services/auth.service';
 import { ErrorPageComponent } from './shared/error-page.component';
 import { NotaComponent } from './shared/nota/nota.component';
 import { PopupConfermaComponent } from './shared/popup-conferma/popup-conferma.component';
 import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,8 @@ import { SpinnerService } from './shared/spinner.service';
     NotaComponent,
     ErrorPageComponent,
     HomeComponent,
+    LoginComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +79,8 @@ import { SpinnerService } from './shared/spinner.service';
     // resolver
     // altri servizi
     SpinnerService,
-    SharedService
+    SharedService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

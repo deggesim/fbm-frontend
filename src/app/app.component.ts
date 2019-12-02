@@ -1,6 +1,9 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { User } from './models/user';
+import { AuthService } from './services/auth.service';
+import * as globals from './shared/globals';
+import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -9,14 +12,17 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 })
 export class AppComponent implements OnInit, AfterViewChecked {
 
-  faSpinner = faSpinner
-
   // Sets initial value to true to show loading spinner on first load
   loading = true;
+
+  mostraPopupLogin: boolean;
+  mostraPopupUserProfile: boolean;
 
   constructor(
     private cdRef: ChangeDetectorRef,
     public spinnerService: SpinnerService,
+    private sharedService: SharedService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -26,6 +32,54 @@ export class AppComponent implements OnInit, AfterViewChecked {
   ngAfterViewChecked(): void {
     this.loading = this.spinnerService.isLoading();
     this.cdRef.detectChanges();
+  }
+
+  public openLogin() {
+    this.mostraPopupLogin = true;
+  }
+
+  public profile() {
+    this.mostraPopupUserProfile = true;
+  }
+
+  public async login(user: User) {
+    try {
+      this.mostraPopupLogin = false;
+      await this.authService.login(user).toPromise();
+      const title = 'Login';
+      const message = 'Login effettuato correttamente';
+      this.sharedService.notifica(globals.toastType.success, title, message);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  public async logout() {
+    try {
+      await this.authService.logout();
+      const title = 'Logout';
+      const message = 'Logout effettuato correttamente';
+      this.sharedService.notifica(globals.toastType.warning, title, message);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  public annulla() {
+    this.mostraPopupLogin = false;
+    this.mostraPopupUserProfile = false;
+  }
+
+  public async salva(user: User) {
+    try {
+      this.mostraPopupUserProfile = false;
+      await this.authService.salva(user).toPromise();
+      const title = 'Modifica user';
+      const message = 'User modificato correttamente';
+      this.sharedService.notifica(globals.toastType.success, title, message);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 }

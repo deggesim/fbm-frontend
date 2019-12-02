@@ -20,22 +20,22 @@ export class NotaComponent implements OnInit {
     this.classNota = 'nota-' + (!_.isNil(this.type) ? this.type : 'info');
     switch (this.type) {
       case 'info':
-        this.classIcona = 'fa-info-circle';
+        this.classIcona = 'info-circle';
         break;
       case 'success':
-        this.classIcona = 'fa-check-circle ';
+        this.classIcona = 'check-circle ';
         break;
       case 'wait':
-        this.classIcona = 'fa-clock-o ';
+        this.classIcona = 'clock-o ';
         break;
       case 'error':
-        this.classIcona = 'fa-exclamation-triangle ';
+        this.classIcona = 'exclamation-triangle ';
         break;
       case 'warning':
-        this.classIcona = 'fa-exclamation-circle';
+        this.classIcona = 'exclamation-circle';
         break;
       default:
-        this.classIcona = 'fa-info-circle';
+        this.classIcona = 'info-circle';
         break;
     }
   }

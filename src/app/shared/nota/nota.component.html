@@ -1,7 +1,7 @@
 <div class="nota" [ngClass]="classNota">
   <div fxLayout="row" fxLayoutAlign="space-around center">
     <div fxFlex="50px" fxLayoutAlign="center" class="icona">
-      <i class="fa fa-2x" [ngClass]="classIcona" aria-hidden="true"></i>
+        <fa-icon [icon]="classIcona" size="2x"></fa-icon>
     </div>
     <div fxFlex class="nota-testo">
       <p *ngFor="let m of messages" [innerHTML]="m"></p>

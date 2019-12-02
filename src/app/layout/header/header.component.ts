@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface IBreadcrumb {
   label: string;
@@ -15,13 +16,17 @@ interface IBreadcrumb {
 })
 export class HeaderComponent implements OnInit {
 
-  isCollapsed = true;
+  @Output() openLogin: EventEmitter<any> = new EventEmitter(true);
+  @Output() logout: EventEmitter<any> = new EventEmitter(true);
+  @Output() profile: EventEmitter<any> = new EventEmitter(true);
 
+  isCollapsed = true;
   breadcrumbs: IBreadcrumb[] = [];
 
   constructor(
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -37,6 +42,14 @@ export class HeaderComponent implements OnInit {
         this.breadcrumbs = this.getBreadcrumbs(root);
       }
       );
+  }
+
+  public isLoggedIn() {
+    return this.authService.isLoggedIn();
+  }
+
+  public profilePage() {
+    console.log('profile page');
   }
 
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
