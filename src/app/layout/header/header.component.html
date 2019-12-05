@@ -22,27 +22,18 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav" *ngIf="!isLoggedIn(); else userPage">
+    <ul class="navbar-nav" *ngIf="isLoggedIn()">
       <li class="nav-item">
-        <a class="nav-link manina" (click)="openLogin.emit()">
-            <fa-icon icon="sign-in-alt" class="menu-padding"></fa-icon>Login
+        <a class="nav-link manina" (click)="logout.emit()">
+          <fa-icon icon="sign-out-alt" class="menu-padding"></fa-icon>Logout
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link manina" (click)="profile.emit()">
+          <fa-icon icon="user-circle" class="menu-padding"></fa-icon>Profilo Utente
         </a>
       </li>
     </ul>
-    <ng-template #userPage>
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link manina" (click)="logout.emit()">
-              <fa-icon icon="sign-out-alt" class="menu-padding"></fa-icon>Logout
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link manina" (click)="profile.emit()">
-              <fa-icon icon="user-circle" class="menu-padding"></fa-icon>Profilo Utente
-          </a>
-        </li>
-      </ul>
-    </ng-template>
   </div>
 </nav>
 

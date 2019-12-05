@@ -4,6 +4,7 @@ import { AuthService } from './services/auth.service';
 import * as globals from './shared/globals';
 import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +16,10 @@ export class AppComponent implements OnInit, AfterViewChecked {
   // Sets initial value to true to show loading spinner on first load
   loading = true;
 
-  mostraPopupLogin: boolean;
   mostraPopupUserProfile: boolean;
 
   constructor(
+    private router: Router,
     private cdRef: ChangeDetectorRef,
     public spinnerService: SpinnerService,
     private sharedService: SharedService,
@@ -34,24 +35,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.cdRef.detectChanges();
   }
 
-  public openLogin() {
-    this.mostraPopupLogin = true;
-  }
-
   public profile() {
     this.mostraPopupUserProfile = true;
-  }
-
-  public async login(user: User) {
-    try {
-      this.mostraPopupLogin = false;
-      await this.authService.login(user).toPromise();
-      const title = 'Login';
-      const message = 'Login effettuato correttamente';
-      this.sharedService.notifica(globals.toastType.success, title, message);
-    } catch (error) {
-      console.error(error);
-    }
   }
 
   public async logout() {
@@ -60,13 +45,13 @@ export class AppComponent implements OnInit, AfterViewChecked {
       const title = 'Logout';
       const message = 'Logout effettuato correttamente';
       this.sharedService.notifica(globals.toastType.warning, title, message);
+      this.router.navigate(['/home']);
     } catch (error) {
       console.error(error);
     }
   }
 
   public annulla() {
-    this.mostraPopupLogin = false;
     this.mostraPopupUserProfile = false;
   }
 

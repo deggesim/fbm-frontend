@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from '../guards/auth.guard';
 import { TradeComponent } from './trade/trade.component';
 import { TransactionComponent } from './transaction/transaction.component';
 
@@ -9,14 +10,16 @@ const routes: Routes = [
     component: TransactionComponent,
     data: {
       breadcrumb: 'Mercato libero'
-    }
+    },
+    canActivate: [AuthGuard],
   },
   {
     path: 'trades',
     component: TradeComponent,
     data: {
       breadcrumb: 'Scambi'
-    }
+    },
+    canActivate: [AuthGuard],
   }
 ];
 

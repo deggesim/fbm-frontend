@@ -48,10 +48,6 @@ export class HeaderComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
-  public profilePage() {
-    console.log('profile page');
-  }
-
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
     const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
 

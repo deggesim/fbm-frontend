@@ -1,0 +1,7 @@
+<app-login (login)="login($event)" (annulla)="annulla()" *ngIf="!isLoggedIn(); else loggedIn"></app-login>
+
+<ng-template #loggedIn>
+    <div>
+        Loggato!
+    </div>
+</ng-template>

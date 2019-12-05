@@ -23,6 +23,7 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
+import { AuthInterceptor } from './http-interceptors/auth-interceptor.service';
 import { GlobalInterceptor } from './http-interceptors/global-interceptor.service';
 import { HeaderComponent } from './layout/header/header.component';
 import { LoginComponent } from './login/login.component';
@@ -71,11 +72,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     AppRoutingModule,
   ],
   providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: GlobalInterceptor,
-      multi: true,
-    },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: GlobalInterceptor, multi: true },
     // resolver
     // altri servizi
     SpinnerService,
