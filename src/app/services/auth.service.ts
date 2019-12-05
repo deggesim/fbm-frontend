@@ -41,6 +41,11 @@ export class AuthService {
     return !this.isLoggedIn();
   }
 
+  public isAdmin() {
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    return this.isLoggedIn() && user.admin;
+  }
+
   private getExpiration() {
     const expiration = localStorage.getItem('expires_at');
     const expiresAt = JSON.parse(expiration);

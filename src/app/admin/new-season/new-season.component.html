@@ -1,0 +1,55 @@
+<!-- <form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
+
+
+  <div fxLayout="row wrap" fxLayoutAlign="space-between">
+    <fieldset>
+      <legend>
+        <fa-icon icon="sign-in-alt" class="menu-padding"></fa-icon>Dati lega
+      </legend>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="nome" class="control-label">Nome *</label>
+          <input type="text" class="form-control" id="nome" name="nome" formControlName="nome"
+            [ngClass]="{'is-invalid': form.controls.nome.invalid && form.controls.nome.dirty}">
+          <div *ngIf="form.get('nome').hasError('required') && form.get('nome').dirty" class="invalid-feedback">
+            Il campo nome è obbligatorio</div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="realGames" class="control-label">Partite reali *</label>
+          <input type="number" min="0" , max="34" class="form-control" id="realGames" name="realGames"
+            formControlName="realGames"
+            [ngClass]="{'is-invalid': form.controls.realGames.invalid && form.controls.realGames.dirty}">
+          <div *ngIf="form.get('realGames').hasError('required') && form.get('realGames').dirty"
+            class="invalid-feedback">
+            Il campo Partite reali è obbligatorio</div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group"
+          [ngClass]="{'is-invalid': form.controls.regularSeasonFormat.invalid && form.controls.regularSeasonFormat.dirty}">
+          <label for="regularSeasonFormat" class="control-label">Stagione regolare *</label>
+          <ng-select id="regularSeasonFormat" name="regularSeasonFormat" [items]="regularSeasonFormatList"
+            bindLabel="descrizione" formControlName="regularSeasonFormat" clearAllText="Elimina"
+            [ngClass]="{'ng-select-error': form.controls.regularSeasonFormat.invalid && form.controls.regularSeasonFormat.dirty}">
+          </ng-select>
+          <div *ngIf="form.get('regularSeasonFormat').hasError('required') && form.get('regularSeasonFormat').dirty"
+            class="invalid-feedback">
+            Il campo Stagione regolare è obbligatorio
+          </div>
+        </div>
+      </div>
+
+    </fieldset>
+  </div>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Login</button>&nbsp;
+  </div>
+
+
+</form> -->

@@ -20,6 +20,23 @@
             (click)="isCollapsed = true;">Scambi</a>
         </ul>
       </li>
+      <li class="nav-item dropdown" dropdown>
+        <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
+          <fa-icon icon="user-cog" class="menu-padding"></fa-icon>Admin
+        </a>
+        <ul *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item" routerLink="/admin/new-season" routerLinkActive="active"
+            (click)="isCollapsed = true;">Nuova Stagione</a>
+          <!-- <a class="dropdown-item" routerLink="/admin/players" routerLinkActive="active"
+            (click)="isCollapsed = true;">Giocatori</a>
+          <a class="dropdown-item" routerLink="/admin/teams" routerLinkActive="active"
+            (click)="isCollapsed = true;">Squadre</a>
+          <a class="dropdown-item" routerLink="/admin/fantasy-teams" routerLinkActive="active"
+            (click)="isCollapsed = true;">Fantasquadre</a>
+          <a class="dropdown-item" routerLink="/admin/rounds" routerLinkActive="active"
+            (click)="isCollapsed = true;">Gestione turni</a> -->
+        </ul>
+      </li>
     </ul>
 
     <ul class="navbar-nav" *ngIf="isLoggedIn()">

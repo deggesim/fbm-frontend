@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { ErrorPageComponent } from './shared/error-page.component';
-import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -16,6 +16,11 @@ const routes: Routes = [
     path: 'teams',
     canActivate: [AuthGuard],
     loadChildren: () => import('./teams/teams.module').then(mod => mod.TeamsModule),
+  },
+  {
+    path: 'admin',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule),
   },
   { path: 'error', component: ErrorPageComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
