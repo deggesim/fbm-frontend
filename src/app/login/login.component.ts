@@ -10,7 +10,6 @@ import { User } from '../models/user';
 export class LoginComponent implements OnInit {
 
   @Output() login: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 

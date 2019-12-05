@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { User } from '../models/user';
+import { AuthService } from '../services/auth.service';
 import * as globals from '../shared/globals';
 import { SharedService } from '../shared/shared.service';
-import { AuthService } from '../services/auth.service';
-import { User } from '../models/user';
-
 
 @Component({
   selector: 'app-home',
@@ -12,10 +10,6 @@ import { User } from '../models/user';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-
-  mostraPopup: boolean;
-  titoloModale: string;
-  mostraPopupLogin: boolean;
 
   constructor(
     private sharedService: SharedService,
@@ -32,7 +26,6 @@ export class HomeComponent implements OnInit {
 
   public async login(user: User) {
     try {
-      this.mostraPopupLogin = false;
       await this.authService.login(user).toPromise();
       const title = 'Login';
       const message = 'Login effettuato correttamente';
