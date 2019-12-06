@@ -84,7 +84,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 })
 
 export class AppModule {
-  constructor(library: FaIconLibrary) {
+  constructor(
+    library: FaIconLibrary
+  ) {
     library.addIconPacks(fas);
   }
 }

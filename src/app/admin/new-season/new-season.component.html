@@ -1,40 +1,41 @@
-<!-- <form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
 
-
-  <div fxLayout="row wrap" fxLayoutAlign="space-between">
-    <fieldset>
-      <legend>
-        <fa-icon icon="sign-in-alt" class="menu-padding"></fa-icon>Dati lega
-      </legend>
+  <fieldset>
+    <legend>
+      <fa-icon icon="info-circle" class="menu-padding"></fa-icon>Dati lega
+    </legend>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
 
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">
-          <label for="nome" class="control-label">Nome *</label>
-          <input type="text" class="form-control" id="nome" name="nome" formControlName="nome"
-            [ngClass]="{'is-invalid': form.controls.nome.invalid && form.controls.nome.dirty}">
-          <div *ngIf="form.get('nome').hasError('required') && form.get('nome').dirty" class="invalid-feedback">
-            Il campo nome è obbligatorio</div>
+          <label for="name" class="control-label">Nome *</label>
+          <input type="text" class="form-control" id="name" name="name" formControlName="name"
+            [ngClass]="{'is-invalid': form.controls.name.invalid && form.controls.name.dirty}">
+          <div *ngIf="form.get('name').hasError('required') && form.get('name').dirty" class="invalid-feedback">
+            Il campo nome è obbligatorio
+          </div>
         </div>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">
           <label for="realGames" class="control-label">Partite reali *</label>
-          <input type="number" min="0" , max="34" class="form-control" id="realGames" name="realGames"
+          <input type="number" min="0" max="34" class="form-control" id="realGames" name="realGames"
             formControlName="realGames"
             [ngClass]="{'is-invalid': form.controls.realGames.invalid && form.controls.realGames.dirty}">
           <div *ngIf="form.get('realGames').hasError('required') && form.get('realGames').dirty"
             class="invalid-feedback">
-            Il campo Partite reali è obbligatorio</div>
+            Il campo Partite reali è obbligatorio
+          </div>
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div fxFlex="69" fxFlex.xs="49">
         <div class="form-group"
           [ngClass]="{'is-invalid': form.controls.regularSeasonFormat.invalid && form.controls.regularSeasonFormat.dirty}">
           <label for="regularSeasonFormat" class="control-label">Stagione regolare *</label>
           <ng-select id="regularSeasonFormat" name="regularSeasonFormat" [items]="regularSeasonFormatList"
-            bindLabel="descrizione" formControlName="regularSeasonFormat" clearAllText="Elimina"
+            bindLabel="value.label" formControlName="regularSeasonFormat" clearAllText="Elimina"
             [ngClass]="{'ng-select-error': form.controls.regularSeasonFormat.invalid && form.controls.regularSeasonFormat.dirty}">
           </ng-select>
           <div *ngIf="form.get('regularSeasonFormat').hasError('required') && form.get('regularSeasonFormat').dirty"
@@ -44,12 +45,113 @@
         </div>
       </div>
 
-    </fieldset>
-  </div>
+      <div fxFlex="29" fxFlex.xs="49">
+        <div class="form-group">
+          <label for="roundRobinFirstRealFixture" class="control-label">Prima giornata reale *</label>
+          <input type="number" min="1" max="34" class="form-control" id="roundRobinFirstRealFixture"
+            name="roundRobinFirstRealFixture" formControlName="roundRobinFirstRealFixture"
+            [ngClass]="{'is-invalid': form.controls.roundRobinFirstRealFixture.invalid && form.controls.roundRobinFirstRealFixture.dirty}">
+          <div
+            *ngIf="form.get('roundRobinFirstRealFixture').hasError('required') && form.get('roundRobinFirstRealFixture').dirty"
+            class="invalid-feedback">
+            Il campo Prima giornata reale è obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="69" fxFlex.xs="49">
+        <div class="form-group"
+          [ngClass]="{'is-invalid': form.controls.playoffFormat.invalid && form.controls.playoffFormat.dirty}">
+          <label for="playoffFormat" class="control-label">Playoff *</label>
+          <ng-select id="playoffFormat" name="playoffFormat" [items]="playoffFormatList" bindLabel="value.label"
+            formControlName="playoffFormat" clearAllText="Elimina"
+            [ngClass]="{'ng-select-error': form.controls.playoffFormat.invalid && form.controls.playoffFormat.dirty}">
+          </ng-select>
+          <div *ngIf="form.get('playoffFormat').hasError('required') && form.get('playoffFormat').dirty"
+            class="invalid-feedback">
+            Il campo Playoff è obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="29" fxFlex.xs="49">
+        <div class="form-group">
+          <label for="playoffFirstRealFixture" class="control-label">Prima giornata reale *</label>
+          <input type="number" min="1" max="34" class="form-control" id="playoffFirstRealFixture"
+            name="playoffFirstRealFixture" formControlName="playoffFirstRealFixture"
+            [ngClass]="{'is-invalid': form.controls.playoffFirstRealFixture.invalid && form.controls.playoffFirstRealFixture.dirty}">
+          <div
+            *ngIf="form.get('playoffFirstRealFixture').hasError('required') && form.get('playoffFirstRealFixture').dirty"
+            class="invalid-feedback">
+            Il campo Prima giornata reale è obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="69" fxFlex.xs="49">
+        <div class="form-group"
+          [ngClass]="{'is-invalid': form.controls.playoutFormat.invalid && form.controls.playoutFormat.dirty}">
+          <label for="playoutFormat" class="control-label">Playout *</label>
+          <ng-select id="playoutFormat" name="playoutFormat" [items]="playoutFormatList" bindLabel="value.label"
+            formControlName="playoutFormat" clearAllText="Elimina"
+            [ngClass]="{'ng-select-error': form.controls.playoutFormat.invalid && form.controls.playoutFormat.dirty}">
+          </ng-select>
+          <div *ngIf="form.get('playoutFormat').hasError('required') && form.get('playoutFormat').dirty"
+            class="invalid-feedback">
+            Il campo Playout è obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="29" fxFlex.xs="49">
+        <div class="form-group">
+          <label for="playoutFirstRealFixture" class="control-label">Prima giornata reale *</label>
+          <input type="number" min="1" max="34" class="form-control" id="playoutFirstRealFixture"
+            name="playoutFirstRealFixture" formControlName="playoutFirstRealFixture"
+            [ngClass]="{'is-invalid': form.controls.playoutFirstRealFixture.invalid && form.controls.playoutFirstRealFixture.dirty}">
+          <div
+            *ngIf="form.get('playoutFirstRealFixture').hasError('required') && form.get('playoutFirstRealFixture').dirty"
+            class="invalid-feedback">
+            Il campo Prima giornata reale è obbligatorio
+          </div>
+        </div>
+      </div>
+
+
+      <div fxFlex="69" fxFlex.xs="49">
+        <div class="form-group"
+          [ngClass]="{'is-invalid': form.controls.cupFormat.invalid && form.controls.cupFormat.dirty}">
+          <label for="cupFormat" class="control-label">Coppa di lega *</label>
+          <ng-select id="cupFormat" name="cupFormat" [items]="cupFormatList" bindLabel="value.label"
+            formControlName="cupFormat" clearAllText="Elimina"
+            [ngClass]="{'ng-select-error': form.controls.cupFormat.invalid && form.controls.cupFormat.dirty}">
+          </ng-select>
+          <div *ngIf="form.get('cupFormat').hasError('required') && form.get('cupFormat').dirty"
+            class="invalid-feedback">
+            Il campo Coppa di lega è obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="29" fxFlex.xs="49">
+        <div class="form-group">
+          <label for="cupFirstRealFixture" class="control-label">Prima giornata reale *</label>
+          <input type="number" min="1" max="34" class="form-control" id="cupFirstRealFixture" name="cupFirstRealFixture"
+            formControlName="cupFirstRealFixture"
+            [ngClass]="{'is-invalid': form.controls.cupFirstRealFixture.invalid && form.controls.cupFirstRealFixture.dirty}">
+          <div *ngIf="form.get('cupFirstRealFixture').hasError('required') && form.get('cupFirstRealFixture').dirty"
+            class="invalid-feedback">
+            Il campo Prima giornata reale è obbligatorio
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </fieldset>
 
   <div class="text-center">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Login</button>&nbsp;
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Conferma</button>&nbsp;
   </div>
 
 
-</form> -->
+</form>

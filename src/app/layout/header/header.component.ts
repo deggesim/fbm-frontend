@@ -30,9 +30,6 @@ export class HeaderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('HeaderComponent');
-    const ROUTE_DATA_BREADCRUMB = 'breadcrumb';
-
     // subscribe to the NavigationEnd event
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
