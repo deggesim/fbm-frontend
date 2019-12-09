@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../models/user';
+import { Login } from '../models/login';
 import { AuthService } from '../services/auth.service';
 import * as globals from '../shared/globals';
 import { SharedService } from '../shared/shared.service';
@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
-  public async login(user: User) {
+  public async login(user: Login) {
     try {
       await this.authService.login(user).toPromise();
       const title = 'Login';

@@ -4,11 +4,31 @@
 
     <div fxFlex="100">
       <div class="form-group">
+        <label for="name" class="control-label">Nome</label>
+        <input type="text" class="form-control" id="name" name="name" formControlName="name"
+          [ngClass]="{'is-invalid': form.controls.name.invalid && form.controls.name.dirty}">
+        <div *ngIf="form.get('name').hasError('required') && form.get('name').dirty" class="invalid-feedback">
+          Il campo Nome è obbligatorio</div>
+      </div>
+    </div>
+
+    <div fxFlex="90">
+      <div class="form-group">
         <label for="email" class="control-label">Email</label>
         <input type="text" class="form-control" id="email" name="email" formControlName="email"
           [ngClass]="{'is-invalid': form.controls.email.invalid && form.controls.email.dirty}">
         <div *ngIf="form.get('email').hasError('required') && form.get('email').dirty" class="invalid-feedback">
-          Il campo email è obbligatorio</div>
+          Il campo Email è obbligatorio</div>
+      </div>
+    </div>
+
+    <div fxFlex="10">
+      <div class="form-group">
+        <label for="admin" class="control-label">Amministratore</label>
+        <input type="checkbox" class="form-control" id="admin" name="admin" formControlName="admin"
+          [ngClass]="{'is-invalid': form.controls.admin.invalid && form.controls.admin.dirty}">
+        <div *ngIf="form.get('admin').hasError('required') && form.get('admin').dirty" class="invalid-feedback">
+          Il campo Amministratore è obbligatorio</div>
       </div>
     </div>
 

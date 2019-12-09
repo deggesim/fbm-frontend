@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { RegularSeasonFormat } from 'src/app/models/formats/regular-season-format';
-import { League } from 'src/app/models/league';
-import { NewSeasonService } from 'src/app/services/new-season.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CupFormat } from 'src/app/models/formats/cup-format';
 import { PlayoffFormat } from 'src/app/models/formats/playoff-format';
 import { PlayoutFormat } from 'src/app/models/formats/playout-format';
-import { CupFormat } from 'src/app/models/formats/cup-format';
+import { RegularSeasonFormat } from 'src/app/models/formats/regular-season-format';
+import { League } from 'src/app/models/league';
 
 @Component({
   selector: 'app-new-season',
@@ -57,8 +56,8 @@ export class NewSeasonComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private newSeasonService: NewSeasonService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.createForm();
   }
@@ -81,7 +80,7 @@ export class NewSeasonComponent implements OnInit {
     });
   }
 
-  confirm(): void {
+  step2(): void {
     console.log('confirm');
 
     const league: League = {
@@ -96,8 +95,12 @@ export class NewSeasonComponent implements OnInit {
       playoutFirstRealFixture: this.form.value.playoutFirstRealFixture,
       cupFirstRealFixture: this.form.value.cupFirstRealFixture,
     };
-    this.newSeasonService.newSeason(league);
-    // this.router.navigate(['home']);
+    this.router.navigate(['../step-two'], {
+      relativeTo: this.route,
+      state: {
+        data: league
+      }
+    });
   }
 
 }

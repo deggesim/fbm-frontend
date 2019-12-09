@@ -33,6 +33,7 @@ export class UserProfileComponent implements OnInit {
       email: [user.email, Validators.required],
       newPassword: [undefined, Validators.required],
       confirmPassword: [undefined, Validators.required],
+      admin: [undefined, Validators.required],
     });
   }
 
@@ -40,8 +41,10 @@ export class UserProfileComponent implements OnInit {
     if (this.form.value.newPassword === this.form.value.confirmPassword) {
       const user: User = {
         id: this.form.value.id,
+        name: this.form.value.name,
         email: this.form.value.email,
         password: this.form.value.newPassword,
+        admin: this.form.value.admin,
       };
       this.salva.emit(user);
     } else {

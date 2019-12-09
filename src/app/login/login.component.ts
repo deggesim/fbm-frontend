@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '../models/user';
+import { Login } from '../models/login';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   confirm(): void {
-    const user: User = {
+    const user: Login = {
       email: this.form.value.email,
       password: this.form.value.password,
     };

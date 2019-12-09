@@ -5,12 +5,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { UsersResolverService } from '../services/resolvers/users-resolver.service';
 import { AdminRoutingModule } from './admin-routing.module';
+import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
 
 @NgModule({
   declarations: [
-    NewSeasonComponent
+    NewSeasonComponent,
+    NewSeasonStepTwoComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -19,6 +22,9 @@ import { NewSeasonComponent } from './new-season/new-season.component';
     NgSelectModule,
     FontAwesomeModule,
     AdminRoutingModule
+  ],
+  providers: [
+    UsersResolverService
   ]
 })
 export class AdminModule {

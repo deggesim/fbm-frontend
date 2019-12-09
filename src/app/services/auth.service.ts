@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as jwt_decode from 'jwt-decode';
 import * as moment from 'moment';
 import { shareReplay, tap } from 'rxjs/operators';
+import { Login } from '../models/login';
 import { User } from '../models/user';
 import { environment } from './../../environments/environment';
 
@@ -15,8 +16,8 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  public login(user: User) {
-    return this.http.post<{ user: User, token: string }>(`${this.endpoint}/users/login`, user)
+  public login(user: Login) {
+    return this.http.post<{ user: Login, token: string }>(`${this.endpoint}/users/login`, user)
       .pipe(
         tap((res: { user: User, token: string }) => this.setSession(res)), shareReplay());
   }

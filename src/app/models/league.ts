@@ -1,7 +1,9 @@
-import { RegularSeasonFormat } from './formats/regular-season-format';
+import { CupFormat } from './formats/cup-format';
 import { PlayoffFormat } from './formats/playoff-format';
 import { PlayoutFormat } from './formats/playout-format';
-import { CupFormat } from './formats/cup-format';
+import { RegularSeasonFormat } from './formats/regular-season-format';
+import { Parameter } from './parameter';
+import { FantasyTeam } from './fantasy-team';
 
 export interface League {
     name: string;
@@ -14,4 +16,6 @@ export interface League {
     playoffFirstRealFixture: number;
     playoutFirstRealFixture: number;
     cupFirstRealFixture: number;
+    parameters?: Parameter[];
+    fantasyTeams?: FantasyTeam[];
 }
