@@ -17,4 +17,8 @@ export class UserService {
   public getUsers() {
     return this.http.get<User[]>(`${this.endpoint}/users`);
   }
+
+  public updateUser(user: User) {
+    return this.http.put<User>(`${this.endpoint}/users`, user);
+  }
 }

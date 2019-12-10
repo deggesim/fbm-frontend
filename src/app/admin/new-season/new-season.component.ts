@@ -81,8 +81,6 @@ export class NewSeasonComponent implements OnInit {
   }
 
   step2(): void {
-    console.log('confirm');
-
     const league: League = {
       name: this.form.value.name,
       realGames: this.form.value.realGames,

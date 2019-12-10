@@ -29,7 +29,7 @@ export class UserProfileComponent implements OnInit {
   createForm() {
     const user: User = JSON.parse(localStorage.getItem('user'));
     this.form = this.fb.group({
-      id: user.id,
+      _id: user._id,
       email: [user.email, Validators.required],
       newPassword: [undefined, Validators.required],
       confirmPassword: [undefined, Validators.required],
@@ -40,7 +40,7 @@ export class UserProfileComponent implements OnInit {
   confirm(): void {
     if (this.form.value.newPassword === this.form.value.confirmPassword) {
       const user: User = {
-        id: this.form.value.id,
+        _id: this.form.value._id,
         name: this.form.value.name,
         email: this.form.value.email,
         password: this.form.value.newPassword,

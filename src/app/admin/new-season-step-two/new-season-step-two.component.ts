@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { League } from 'src/app/models/league';
 import { User } from 'src/app/models/user';
 import { NewSeasonService } from 'src/app/services/new-season.service';
-import { Observable, Subject, concat, of } from 'rxjs';
-import { distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators';
+import { SharedService } from 'src/app/shared/shared.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-new-season-step-two',
@@ -14,40 +15,33 @@ import { distinctUntilChanged, tap, switchMap, catchError } from 'rxjs/operators
 })
 export class NewSeasonStepTwoComponent implements OnInit {
 
-  step1: League;
+  league: League;
 
   form: FormGroup;
   teams = 0;
-
   users: User[];
-
-  users$: Observable<User[]>;
   usersLoading = false;
-  usersInput$ = new Subject<string>();
-  selectedUsers: User[];
-
-  arrayItems: {
-    id: number;
-    title: string;
-    owner?: User[];
-  }[];
+  arrayItems = [];
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
+    private sharedService: SharedService,
     private newSeasonService: NewSeasonService,
   ) {
-    // this.step1 = this.router.getCurrentNavigation().extras.state.data;
+    this.league = this.router.getCurrentNavigation().extras.state.data;
     this.createForm();
   }
 
   ngOnInit() {
-    this.arrayItems = [];
     this.addItem();
 
+    this.usersLoading = true;
     this.route.data.subscribe(
       (data) => {
         this.users = data.users;
+        this.usersLoading = false;
       }
     );
   }
@@ -59,7 +53,9 @@ export class NewSeasonStepTwoComponent implements OnInit {
   }
 
   confirm() {
-    this.newSeasonService.createLeague(this.step1);
+    const teams = this.form.get('teamsArray').value as FantasyTeam[];
+    this.league.fantasyTeams = teams;
+    this.newSeasonService.createLeague(this.league).subscribe();
   }
 
   get teamsArray() {
@@ -67,10 +63,11 @@ export class NewSeasonStepTwoComponent implements OnInit {
   }
 
   addItem() {
-    const item = { id: ++this.teams, title: `Squadra ${this.teams}`, };
+    const item = { _id: ++this.teams, title: `Squadra ${this.teams}`, };
     this.arrayItems.push(item);
     this.teamsArray.push(this.fb.group({
-      teamName: [undefined, Validators.required],
+      name: [undefined, Validators.required],
+      owners: [undefined, Validators.required]
     }));
   }
 
@@ -81,7 +78,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
   }
 
   trackUserByFn(user: User) {
-    return user.id;
+    return user._id;
   }
 
 }

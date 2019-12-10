@@ -6,6 +6,7 @@ import { Parameter } from './parameter';
 import { FantasyTeam } from './fantasy-team';
 
 export interface League {
+    _id?: string;
     name: string;
     realGames: number;
     regularSeasonFormat: RegularSeasonFormat;
