@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div fxFlex="90">
+    <div fxFlex="100">
       <div class="form-group">
         <label for="email" class="control-label">Email</label>
         <input type="text" class="form-control" id="email" name="email" formControlName="email"
@@ -22,15 +22,15 @@
       </div>
     </div>
 
-    <div fxFlex="10">
-      <div class="form-group">
+    <!-- <div fxFlex="100" *ngIf="superAdmin">
+      <div class="form-group form-check">
+        <input type="checkbox" class="form-check-input" id="admin" name="admin" formControlName="admin"
+        [ngClass]="{'is-invalid': form.controls.admin.invalid && form.controls.admin.dirty}">
         <label for="admin" class="control-label">Amministratore</label>
-        <input type="checkbox" class="form-control" id="admin" name="admin" formControlName="admin"
-          [ngClass]="{'is-invalid': form.controls.admin.invalid && form.controls.admin.dirty}">
         <div *ngIf="form.get('admin').hasError('required') && form.get('admin').dirty" class="invalid-feedback">
           Il campo Amministratore è obbligatorio</div>
       </div>
-    </div>
+    </div> -->
 
     <div fxFlex="100">
       <div class="form-group">

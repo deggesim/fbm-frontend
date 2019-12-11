@@ -1,6 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from '../models/user';
+import { Role, User } from '../models/user';
+import { AuthService } from '../services/auth.service';
 import * as globals from '../shared/globals';
 import { SharedService } from '../shared/shared.service';
 
@@ -15,25 +16,29 @@ export class UserProfileComponent implements OnInit {
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
+  user: User;
+  superAdmin: boolean;
 
   constructor(
     private fb: FormBuilder,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private authService: AuthService,
   ) {
+    this.user = this.authService.getLoggedUser();
     this.createForm();
   }
 
   ngOnInit() {
+    this.superAdmin = Role.SuperAdmin === this.user.role;
   }
 
   createForm() {
-    const user: User = JSON.parse(localStorage.getItem('user'));
     this.form = this.fb.group({
-      _id: user._id,
-      email: [user.email, Validators.required],
+      _id: this.user._id,
+      name: [this.user.name, Validators.required],
+      email: [this.user.email, Validators.required],
       newPassword: [undefined, Validators.required],
       confirmPassword: [undefined, Validators.required],
-      admin: [undefined, Validators.required],
     });
   }
 
@@ -44,7 +49,7 @@ export class UserProfileComponent implements OnInit {
         name: this.form.value.name,
         email: this.form.value.email,
         password: this.form.value.newPassword,
-        admin: this.form.value.admin,
+        role: this.user.role,
       };
       this.salva.emit(user);
     } else {

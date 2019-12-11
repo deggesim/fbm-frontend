@@ -5,6 +5,9 @@ import * as globals from './shared/globals';
 import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +26,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     private cdRef: ChangeDetectorRef,
     public spinnerService: SpinnerService,
     private sharedService: SharedService,
-    private authService: AuthService
+    private authService: AuthService,
   ) { }
 
   ngOnInit() {
@@ -40,15 +43,12 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   public async logout() {
-    try {
-      await this.authService.logout();
+    this.authService.logout().subscribe((user: User) => {
       const title = 'Logout';
       const message = 'Logout effettuato correttamente';
       this.sharedService.notifica(globals.toastType.warning, title, message);
       this.router.navigate(['/home']);
-    } catch (error) {
-      console.error(error);
-    }
+    });
   }
 
   public annulla() {
@@ -56,15 +56,12 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   public async salva(user: User) {
-    try {
-      this.mostraPopupUserProfile = false;
-      await this.authService.salva(user).toPromise();
+    this.mostraPopupUserProfile = false;
+    this.authService.update(user).subscribe(() => {
       const title = 'Modifica user';
       const message = 'User modificato correttamente';
       this.sharedService.notifica(globals.toastType.success, title, message);
-    } catch (error) {
-      console.error(error);
-    }
+    });
   }
 
 }

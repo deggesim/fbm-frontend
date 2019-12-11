@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { League } from 'src/app/models/league';
 import { User } from 'src/app/models/user';
+import { AuthService } from 'src/app/services/auth.service';
 import { NewSeasonService } from 'src/app/services/new-season.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-new-season-step-two',
@@ -27,7 +27,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private sharedService: SharedService,
+    private authService: AuthService,
     private newSeasonService: NewSeasonService,
   ) {
     this.league = this.router.getCurrentNavigation().extras.state.data;
@@ -55,7 +55,13 @@ export class NewSeasonStepTwoComponent implements OnInit {
   confirm() {
     const teams = this.form.get('teamsArray').value as FantasyTeam[];
     this.league.fantasyTeams = teams;
-    this.newSeasonService.createLeague(this.league).subscribe();
+    const $league = this.newSeasonService.createLeague(this.league);
+    const $user = this.authService.refresh();
+
+    forkJoin([$league, $user]).subscribe(() => {
+      this.router.navigate(['/home']);
+    });
+
   }
 
   get teamsArray() {

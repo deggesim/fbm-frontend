@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { League } from '../models/league';
 import { Login } from '../models/login';
 import { AuthService } from '../services/auth.service';
 import * as globals from '../shared/globals';
 import { SharedService } from '../shared/shared.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-home',
@@ -11,13 +14,20 @@ import { SharedService } from '../shared/shared.service';
 })
 export class HomeComponent implements OnInit {
 
+  listaLeghe: League[] = [];
+
   constructor(
     private sharedService: SharedService,
     private authService: AuthService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
     console.log('init HomeComponent');
+    if (this.isLoggedIn()) {
+      const userLogged = this.authService.getLoggedUser();
+      this.listaLeghe = userLogged.leagues;
+    }
   }
 
   public isLoggedIn() {
@@ -25,14 +35,17 @@ export class HomeComponent implements OnInit {
   }
 
   public async login(user: Login) {
-    try {
-      await this.authService.login(user).toPromise();
+    this.authService.login(user).subscribe((loginObj: { user: User, token: string}) => {
+      this.listaLeghe = loginObj.user.leagues;
       const title = 'Login';
       const message = 'Login effettuato correttamente';
       this.sharedService.notifica(globals.toastType.success, title, message);
-    } catch (error) {
-      console.error(error);
-    }
+    });
+  }
+
+  public selectLeague(league: League) {
+    this.authService.setSelectedLeague(league);
+    this.router.navigate(['/teams/trades']);
   }
 
 }

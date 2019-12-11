@@ -5,7 +5,13 @@ export interface User {
   name: string;
   email: string;
   password: string;
-  admin: boolean;
+  role: Role;
   leagues?: League[];
   tokens?: string[];
+}
+
+export enum Role {
+  'User' = 'User',
+  'Admin' = 'Admin',
+  'SuperAdmin' = 'SuperAdmin',
 }

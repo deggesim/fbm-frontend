@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as jwt_decode from 'jwt-decode';
+import * as jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
 import { shareReplay, tap } from 'rxjs/operators';
+import { League } from '../models/league';
 import { Login } from '../models/login';
-import { User } from '../models/user';
+import { Role, User } from '../models/user';
 import { environment } from './../../environments/environment';
 
 @Injectable()
@@ -23,15 +24,25 @@ export class AuthService {
   }
 
   public logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('expires_at');
-    return this.http.post<User>(`${this.endpoint}/user/logout`, {});
+    return this.http.post<User>(`${this.endpoint}/users/logout`, {}).pipe(
+      tap(() => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('expires_at');
+      }),
+      shareReplay()
+    );
   }
 
-  public salva(user: User) {
+  public update(user: User) {
     return this.http.patch<{ user: User, token: string }>(`${this.endpoint}/users/me`, user)
       .pipe(
         tap((res: { user: User, token: string }) => localStorage.setItem('user', JSON.stringify(user))), shareReplay());
+  }
+
+  public refresh() {
+    return this.http.get(`${this.endpoint}/users/me`)
+      .pipe(
+        tap((res: { user: User, token: string }) => this.setSession(res)), shareReplay());
   }
 
   public isLoggedIn() {
@@ -44,7 +55,28 @@ export class AuthService {
 
   public isAdmin() {
     const user: User = JSON.parse(localStorage.getItem('user'));
-    return this.isLoggedIn() && user.admin;
+    return this.isLoggedIn() && (Role.Admin === user.role || Role.SuperAdmin === user.role);
+  }
+
+  public isSuperAdmin() {
+    const user: User = JSON.parse(localStorage.getItem('user'));
+    return this.isLoggedIn() && Role.SuperAdmin === user.role;
+  }
+
+  public getLoggedUser(): User {
+    if (this.isLoggedIn()) {
+      return JSON.parse(localStorage.getItem('user'));
+    } else {
+      return null;
+    }
+  }
+
+  public setSelectedLeague(league: League) {
+    localStorage.setItem('league', JSON.stringify(league));
+  }
+
+  public getSelectedLeague(): League {
+    return JSON.parse(localStorage.getItem('league'));
   }
 
   private getExpiration() {
@@ -56,7 +88,8 @@ export class AuthService {
   private setSession(authResult: { user: User, token: string }) {
     const user = authResult.user;
     const token = authResult.token;
-    const exp = jwt_decode(token).exp;
+    const decoded: any = jwtDecode(token);
+    const exp = decoded.exp;
     const expiresAt = moment().add(exp);
 
     localStorage.setItem('token', token);

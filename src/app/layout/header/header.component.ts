@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
 
   isCollapsed = true;
   breadcrumbs: IBreadcrumb[] = [];
+  admin: boolean;
 
   constructor(
     private router: Router,
@@ -32,17 +33,22 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     // subscribe to the NavigationEnd event
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe((event: NavigationEnd) => {
         // set breadcrumbs
         const root: ActivatedRoute = this.activatedRoute.root;
         this.breadcrumbs = this.getBreadcrumbs(root);
-      }
-      );
+      });
+    this.admin = this.authService.isAdmin();
   }
 
   public isLoggedIn() {
     return this.authService.isLoggedIn();
+  }
+
+  public isAdmin() {
+    return this.authService.isAdmin();
   }
 
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
