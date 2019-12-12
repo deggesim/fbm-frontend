@@ -2,39 +2,77 @@
   <a class="navbar-brand" routerLink="/home">
     <fa-icon icon="basketball-ball" size="2x"></fa-icon>
   </a>
-  <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="collapseExample"
-    (click)="isCollapsed = !isCollapsed">
+  <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="collapseExample" (click)="isCollapsed = !isCollapsed">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" [collapse]="isCollapsed">
     <ul class="navbar-nav mr-auto">
+
+      <!-- SQUADRE -->
       <li class="nav-item dropdown" dropdown>
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="exchange-alt" class="menu-padding"></fa-icon>Squadre
+          <fa-icon icon="shield-alt" class="menu-padding"></fa-icon>Squadre
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active"
-            (click)="isCollapsed = true;">Mercato libero</a>
-          <a class="dropdown-item" routerLink="/teams/trades" routerLinkActive="active"
-            (click)="isCollapsed = true;">Scambi</a>
+          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true;">Mercato libero</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Asta fantamercato</a>
+          <a class="dropdown-item" routerLink="/teams/trades" routerLinkActive="active" (click)="isCollapsed = true;">Scambi</a>
         </ul>
       </li>
+
+      <!-- COMPETIZIONI -->
+      <li class="nav-item dropdown" dropdown>
+        <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
+          <fa-icon icon="calendar-alt" class="menu-padding"></fa-icon>Competizioni
+        </a>
+        <ul *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item" (click)="isCollapsed = true;">Calendario</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Classifica</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Formazioni</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Valutazioni e pagelle</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Risultati</a>
+        </ul>
+      </li>
+
+      <!-- GESTIONE LEGA -->
+      <li class="nav-item dropdown" dropdown *ngIf="isAdmin()">
+        <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
+          <fa-icon icon="cogs" class="menu-padding"></fa-icon>Gestione lega
+        </a>
+        <ul *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item" (click)="isCollapsed = true;">Fantasquadre</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Gestione turni</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Gestione giornate</a>
+        </ul>
+      </li>
+
+      <!-- PRESEASON -->
+      <li class="nav-item dropdown" dropdown *ngIf="isAdmin()">
+        <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
+          <fa-icon icon="tools" class="menu-padding"></fa-icon>Preseason
+        </a>
+        <ul *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item" (click)="isCollapsed = true;">Impostazioni</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Parametri</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Squadre</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Ruoli</a>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Giocatori</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Completa preseason</a>
+        </ul>
+      </li>
+
+      <!-- ADMIN -->
       <li class="nav-item dropdown" dropdown *ngIf="isAdmin()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
           <fa-icon icon="user-cog" class="menu-padding"></fa-icon>Admin
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/admin/new-season" routerLinkActive="active"
-            (click)="isCollapsed = true;">Nuova Stagione</a>
-          <!-- <a class="dropdown-item" routerLink="/admin/players" routerLinkActive="active"
-            (click)="isCollapsed = true;">Giocatori</a>
-          <a class="dropdown-item" routerLink="/admin/teams" routerLinkActive="active"
-            (click)="isCollapsed = true;">Squadre</a>
-          <a class="dropdown-item" routerLink="/admin/fantasy-teams" routerLinkActive="active"
-            (click)="isCollapsed = true;">Fantasquadre</a>
-          <a class="dropdown-item" routerLink="/admin/rounds" routerLinkActive="active"
-            (click)="isCollapsed = true;">Gestione turni</a> -->
+          <a class="dropdown-item" routerLink="/admin/new-season" routerLinkActive="active" (click)="isCollapsed = true;">Nuova Stagione</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="isCollapsed = true;">Gestione utenti</a>
         </ul>
       </li>
     </ul>
@@ -58,8 +96,7 @@
   <ol class="breadcrumb">
     <li class="breadcrumb-item active" *ngFor="let b of breadcrumbs; let i = index">
       <span *ngIf="i != breadcrumbs.length - 1; else elseLink">
-        <a [routerLink]="[b.url, b.params]" routerLinkActive="selezionato"
-          [routerLinkActiveOptions]="{ exact: true }">{{b.label}}</a>
+        <a [routerLink]="[b.url, b.params]" routerLinkActive="selezionato" [routerLinkActiveOptions]="{ exact: true }">{{b.label}}</a>
       </span>
       <ng-template #elseLink>
         <span>{{b.label}}</span>
