@@ -1,13 +1,10 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from './models/user';
 import { AuthService } from './services/auth.service';
 import * as globals from './shared/globals';
 import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
-import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
-import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',

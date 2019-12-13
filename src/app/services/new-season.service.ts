@@ -15,8 +15,16 @@ export class NewSeasonService {
     private http: HttpClient
   ) { }
 
-  public createLeague(league: League) {
+  public create(league: League) {
     return this.http.post<League>(`${this.endpoint}/leagues`, league);
+  }
+
+  public read(leagueId: string) {
+    return this.http.get<League>(`${this.endpoint}/leagues/${leagueId}`);
+  }
+
+  public update(league: League) {
+    return this.http.patch<League>(`${this.endpoint}/leagues/${league._id}`, league);
   }
 
   public insertFantasyTeams(leagueId: string, fantasyTeams: FantasyTeam[]) {

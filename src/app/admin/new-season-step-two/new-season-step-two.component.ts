@@ -57,7 +57,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
     const fantasyTeams = this.form.get('teamsArray').value as FantasyTeam[];
     const $user = this.authService.refresh();
 
-    const $league = this.newSeasonService.createLeague(this.league).pipe(
+    const $league = this.newSeasonService.create(this.league).pipe(
       switchMap((league: League) => {
         return this.newSeasonService.insertFantasyTeams(league._id, fantasyTeams);
       })

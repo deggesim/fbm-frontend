@@ -14,7 +14,7 @@ export class FantasyTeamService {
     private http: HttpClient
   ) { }
 
-  public get() {
+  public read() {
     return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`);
   }
 }

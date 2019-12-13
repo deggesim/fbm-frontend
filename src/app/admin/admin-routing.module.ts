@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from '../guards/admin.guard';
-import { NewSeasonComponent } from './new-season/new-season.component';
-import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { UsersResolverService } from '../services/resolvers/users-resolver.service';
+import { EditLeagueComponent } from './edit-league/edit-league.component';
+import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
+import { NewSeasonComponent } from './new-season/new-season.component';
+import { LeagueResolverService } from '../services/resolvers/league-resolver.service';
 
 const routes: Routes = [
   {
@@ -11,7 +13,7 @@ const routes: Routes = [
     data: {
       breadcrumb: 'Nuova stagione'
     },
-    // canActivate: [AdminGuard],
+    canActivate: [AdminGuard],
     children: [
       {
         path: '',
@@ -36,6 +38,17 @@ const routes: Routes = [
       }
     ],
   },
+  {
+    path: 'edit-league',
+    component: EditLeagueComponent,
+    data: {
+      breadcrumb: 'Impostazioni'
+    },
+    resolve: {
+      league: LeagueResolverService,
+    },
+    canActivate: [AdminGuard],
+  }
 ];
 
 @NgModule({

@@ -9,11 +9,13 @@ import { UsersResolverService } from '../services/resolvers/users-resolver.servi
 import { AdminRoutingModule } from './admin-routing.module';
 import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
+import { EditLeagueComponent } from './edit-league/edit-league.component';
 
 @NgModule({
   declarations: [
     NewSeasonComponent,
     NewSeasonStepTwoComponent,
+    EditLeagueComponent,
   ],
   imports: [
     ReactiveFormsModule,
