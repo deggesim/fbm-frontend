@@ -10,7 +10,6 @@
         <thead class="thead-dark">
           <tr>
             <th>Nome</th>
-            <th>Squadre</th>
             <th>Formato stagione regolare</th>
             <th>Formato playoff</th>
             <th>Formato coppa</th>
@@ -20,12 +19,11 @@
 
         <tbody>
           <tr *ngFor="let item of listaLeghe" class="manina" (click)="selectLeague(item)">
-            <td width="30%">{{item.name}}</td>
-            <td width="10%">{{item.fantasyTeams.length}}</td>
-            <td width="15%">{{item.regularSeasonFormat.value.label}}</td>
-            <td width="15%">{{item.playoffFormat.value.label}}</td>
-            <td width="15%">{{item.playoutFormat.value.label}}</td>
-            <td width="15%">{{item.cupFormat.value.label}}</td>
+            <td width="20%">{{item.name}}</td>
+            <td width="20%">{{item.regularSeasonFormat.value.label}}</td>
+            <td width="20%">{{item.playoffFormat.value.label}}</td>
+            <td width="20%">{{item.playoutFormat.value.label}}</td>
+            <td width="20%">{{item.cupFormat.value.label}}</td>
           </tr>
         </tbody>
       </table>

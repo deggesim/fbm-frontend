@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { League } from 'src/app/models/league';
 import { User } from 'src/app/models/user';
@@ -53,10 +54,14 @@ export class NewSeasonStepTwoComponent implements OnInit {
   }
 
   confirm() {
-    const teams = this.form.get('teamsArray').value as FantasyTeam[];
-    this.league.fantasyTeams = teams;
-    const $league = this.newSeasonService.createLeague(this.league);
+    const fantasyTeams = this.form.get('teamsArray').value as FantasyTeam[];
     const $user = this.authService.refresh();
+
+    const $league = this.newSeasonService.createLeague(this.league).pipe(
+      switchMap((league: League) => {
+        return this.newSeasonService.insertFantasyTeams(league._id, fantasyTeams);
+      })
+    );
 
     forkJoin([$league, $user]).subscribe(() => {
       this.router.navigate(['/home']);

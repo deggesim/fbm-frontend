@@ -3,7 +3,6 @@ import { User } from './user';
 export interface FantasyTeam {
     _id?: string;
     name: string;
-    owners: User[];
     initialBalance?: number;
     outgo?: number;
     totalContracts?: number;
@@ -11,4 +10,6 @@ export interface FantasyTeam {
     extraPlayers?: number;
     pointsPenalty?: number;
     balancePenalty?: number;
+    // formations: Formation[];
+    owners: User[];
 }
