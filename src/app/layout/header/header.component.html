@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
   <a class="navbar-brand" routerLink="/home">
     <fa-icon icon="basketball-ball" size="2x"></fa-icon>
   </a>
@@ -79,12 +79,12 @@
 
     <ul class="navbar-nav" *ngIf="isLoggedIn()">
       <li class="nav-item">
-        <a class="nav-link manina" (click)="logout.emit()">
+        <a class="nav-link manina nowrap" (click)="logout.emit()">
           <fa-icon icon="sign-out-alt" class="menu-padding"></fa-icon>Logout
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link manina" (click)="profile.emit()">
+        <a class="nav-link manina nowrap" (click)="profile.emit()">
           <fa-icon icon="user-circle" class="menu-padding"></fa-icon>Profilo Utente
         </a>
       </li>
