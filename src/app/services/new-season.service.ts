@@ -27,8 +27,4 @@ export class NewSeasonService {
     return this.http.patch<League>(`${this.endpoint}/leagues/${league._id}`, league);
   }
 
-  public insertFantasyTeams(leagueId: string, fantasyTeams: FantasyTeam[]) {
-    return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/fantasy-teams`, fantasyTeams);
-  }
-
 }

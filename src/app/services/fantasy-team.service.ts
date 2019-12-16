@@ -14,7 +14,11 @@ export class FantasyTeamService {
     private http: HttpClient
   ) { }
 
-  public read() {
-    return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`);
+  public read(leagueId: string) {
+    return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams?league=${leagueId}`);
+  }
+
+  public create(leagueId: string, fantasyTeams: FantasyTeam[]) {
+    return this.http.post<FantasyTeam[]>(`${this.endpoint}/fantasy-teams?league=${leagueId}`, fantasyTeams);
   }
 }

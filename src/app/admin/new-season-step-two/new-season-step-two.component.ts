@@ -8,6 +8,7 @@ import { League } from 'src/app/models/league';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { NewSeasonService } from 'src/app/services/new-season.service';
+import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
 
 @Component({
   selector: 'app-new-season-step-two',
@@ -30,6 +31,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private newSeasonService: NewSeasonService,
+    private fantastyTeamsService: FantasyTeamService,
   ) {
     this.league = this.router.getCurrentNavigation().extras.state.data;
     this.createForm();
@@ -59,7 +61,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
 
     const $league = this.newSeasonService.create(this.league).pipe(
       switchMap((league: League) => {
-        return this.newSeasonService.insertFantasyTeams(league._id, fantasyTeams);
+        return this.fantastyTeamsService.create(league._id, fantasyTeams);
       })
     );
 
