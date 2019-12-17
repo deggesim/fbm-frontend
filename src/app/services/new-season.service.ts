@@ -27,4 +27,8 @@ export class NewSeasonService {
     return this.http.patch<League>(`${this.endpoint}/leagues/${league._id}`, league);
   }
 
+  public populate(league: League) {
+    return this.http.post<League>(`${this.endpoint}/leagues/${league._id}/populate`, null);
+  }
+
 }

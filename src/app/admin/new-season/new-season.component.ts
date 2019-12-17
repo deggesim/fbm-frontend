@@ -24,34 +24,35 @@ export class NewSeasonComponent implements OnInit {
   ];
 
   playoffFormatList: PlayoffFormat[] = [
-    PlayoffFormat.QF3SF5F5,
-    PlayoffFormat.QF5SF5F5,
-    PlayoffFormat.QF3SF5F7,
-    PlayoffFormat.QF5SF5F7,
-    PlayoffFormat.SF3F3,
-    PlayoffFormat.SF3F5,
-    PlayoffFormat.SF5F5,
-    PlayoffFormat.SF5F7,
-    PlayoffFormat.QF2SF5F5,
+    PlayoffFormat.QF3_SF5_F5,
+    PlayoffFormat.QF5_SF5_F5,
+    PlayoffFormat.QF3_SF5_F7,
+    PlayoffFormat.QF5_SF5_F7,
+    PlayoffFormat.SF3_F3,
+    PlayoffFormat.SF3_F5,
+    PlayoffFormat.SF5_F5,
+    PlayoffFormat.SF5_F7,
+    PlayoffFormat.QF2_SQ8_SF5_F5,
+    PlayoffFormat.QF2_SQ4_SF5_F5,
   ];
 
   playoutFormatList: PlayoutFormat[] = [
-    PlayoutFormat.SF3F5,
-    PlayoutFormat.SF5F5,
-    PlayoutFormat.SRR4SF3F5,
-    PlayoutFormat.SRR4SF5F5,
-    PlayoutFormat.DRR4SF3F5,
-    PlayoutFormat.DRR4SF5F5,
-    PlayoutFormat.SRR4F5,
-    PlayoutFormat.DRR4F5,
-    PlayoutFormat.SF5F7,
+    PlayoutFormat.SF3_F5,
+    PlayoutFormat.SF5_F5,
+    PlayoutFormat.SRR4_SF3_F5,
+    PlayoutFormat.SRR4_SF5_F5,
+    PlayoutFormat.DRR4_SF3_F5,
+    PlayoutFormat.DRR4_SF5_F5,
+    PlayoutFormat.SRR4_F5,
+    PlayoutFormat.DRR4_F5,
+    PlayoutFormat.SF5_F7,
   ];
 
   cupFormatList: CupFormat[] = [
     CupFormat.F8,
-    CupFormat.QF2F4,
-    CupFormat.QF2SF2F,
-    CupFormat.QF2SF2F2,
+    CupFormat.QF2_F4,
+    CupFormat.QF2_SF2_F,
+    CupFormat.QF2_SF2_F2,
   ];
 
   constructor(

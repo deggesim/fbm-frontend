@@ -3,7 +3,6 @@ import { PlayoffFormat } from './formats/playoff-format';
 import { PlayoutFormat } from './formats/playout-format';
 import { RegularSeasonFormat } from './formats/regular-season-format';
 import { Parameter } from './parameter';
-import { FantasyTeam } from './fantasy-team';
 
 export interface League {
     _id?: string;
@@ -18,5 +17,4 @@ export interface League {
     playoutFirstRealFixture: number;
     cupFirstRealFixture: number;
     parameters?: Parameter[];
-    fantasyTeams?: FantasyTeam[];
 }
