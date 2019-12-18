@@ -1,6 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as _ from 'lodash';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { itLocale } from 'ngx-bootstrap/locale';
@@ -44,7 +43,7 @@ export class SharedService {
       case 403:
         titolo = 'Utente non autorizzato';
         descrizione = response.error || response.message;
-        if (_.isNil(descrizione)) {
+        if (descrizione == null) {
           descrizione = 'L\'utente non è autorizzato ad eseguire l\'operazione richiesta';
         }
         break;
@@ -55,7 +54,7 @@ export class SharedService {
       case 500:
         titolo = 'Errore server';
         descrizione = response.error || response.message;
-        if (_.isNil(descrizione)) {
+        if (descrizione == null) {
           descrizione = 'Si è verificato un errore imprevisto';
         }
         break;

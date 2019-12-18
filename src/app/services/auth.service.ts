@@ -20,31 +20,39 @@ export class AuthService {
   public login(user: Login) {
     return this.http.post<{ user: Login, token: string }>(`${this.endpoint}/users/login`, user)
       .pipe(
-        tap((res: { user: User, token: string }) => this.setSession(res)), shareReplay());
+        tap((res: { user: User, token: string }) => this.setSession(res)),
+        shareReplay()
+      );
   }
 
   public logout() {
-    return this.http.post<User>(`${this.endpoint}/users/logout`, {}).pipe(
-      tap(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('expires_at');
-      }),
-      shareReplay()
-    );
+    return this.http.post<User>(`${this.endpoint}/users/logout`, {})
+      .pipe(
+        tap(() => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('expires_at');
+        }),
+        shareReplay()
+      );
   }
 
   public update(user: User) {
-    return this.http.patch<{ user: User, token: string }>(`${this.endpoint}/users/me`, user)
+    return this.http.patch<User>(`${this.endpoint}/users/me`, user)
       .pipe(
-        tap((res: { user: User, token: string }) => localStorage.setItem('user', JSON.stringify(user))), shareReplay());
+        tap((res: User) => localStorage.setItem('user', JSON.stringify(res))),
+        shareReplay()
+      );
   }
 
   public refresh() {
     return this.http.get(`${this.endpoint}/users/me`)
       .pipe(
-        tap((res: { user: User, token: string }) => this.setSession(res)), shareReplay());
+        tap((res: { user: User, token: string }) => this.setSession(res)),
+        shareReplay()
+      );
   }
 
+  // metodi d'utilità
   public isLoggedIn() {
     return moment().isBefore(this.getExpiration());
   }
@@ -79,6 +87,7 @@ export class AuthService {
     return JSON.parse(localStorage.getItem('league'));
   }
 
+  // metodi privati
   private getExpiration() {
     const expiration = localStorage.getItem('expires_at');
     const expiresAt = JSON.parse(expiration);
