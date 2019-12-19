@@ -25,12 +25,13 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AuthInterceptor } from './http-interceptors/auth-interceptor.service';
 import { GlobalInterceptor } from './http-interceptors/global-interceptor.service';
+import { TenantInterceptor } from './http-interceptors/tenant-interceptor.service';
 import { HeaderComponent } from './layout/header/header.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './services/auth.service';
 import { ErrorPageComponent } from './shared/error-page.component';
 import { NotaComponent } from './shared/nota/nota.component';
-import { PopupConfermaComponent } from './shared/popup-conferma/popup-conferma.component';
+import { SharedModule } from './shared/shared.module';
 import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
 import { UserProfileComponent } from './user-profile/user-profile.component';
@@ -39,7 +40,6 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
   declarations: [
     AppComponent,
     HeaderComponent,
-    PopupConfermaComponent,
     NotaComponent,
     ErrorPageComponent,
     HomeComponent,
@@ -69,10 +69,12 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     ToastrModule.forRoot(), // ToastrModule added
     ToastContainerModule,
     FontAwesomeModule,
+    SharedModule,
     AppRoutingModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TenantInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: GlobalInterceptor, multi: true },
     // resolver
     // altri servizi

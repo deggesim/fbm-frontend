@@ -154,7 +154,7 @@ caption {
 }
 
 // flottante
-.float {
+@mixin float-mixin() {
   position: fixed;
   width: 60px;
   height: 60px;
@@ -168,10 +168,20 @@ caption {
   z-index: 1;
 }
 
+.float {
+  @include float-mixin();
+}
+
+.float-2 {
+  @include float-mixin();
+  background-color: #17a2b8;
+  right: 120px;
+}
+
 .my-float {
   margin-top: 22px;
   font-size: x-large;
-  line-height: 1rem;
+  line-height: 2.5em;
 }
 
 .nowrap {

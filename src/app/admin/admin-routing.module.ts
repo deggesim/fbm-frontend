@@ -6,6 +6,8 @@ import { EditLeagueComponent } from './edit-league/edit-league.component';
 import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
 import { LeagueResolverService } from '../services/resolvers/league-resolver.service';
+import { ListComponent } from './teams/list/list.component';
+import { TeamResolverService } from '../services/resolvers/team-resolver.service';
 
 const routes: Routes = [
   {
@@ -30,12 +32,12 @@ const routes: Routes = [
         path: 'step-two',
         component: NewSeasonStepTwoComponent,
         data: {
-          breadcrumb: 'Squadre'
+          breadcrumb: 'Fantasquadre'
         },
         resolve: {
           users: UsersResolverService
         },
-      }
+      },
     ],
   },
   {
@@ -48,6 +50,16 @@ const routes: Routes = [
       league: LeagueResolverService,
     },
     canActivate: [AdminGuard],
+  },
+  {
+    path: 'teams',
+    component: ListComponent,
+    data: {
+      breadcrumb: 'Squadre'
+    },
+    resolve: {
+      users: TeamResolverService
+    },
   }
 ];
 
