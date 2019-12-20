@@ -64,6 +64,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
       tap(league => newLeague = league),
       switchMap((league: League) => {
         console.log(league);
+        this.authService.setSelectedLeague(league);
         return this.fantastyTeamsService.create(fantasyTeams);
       }),
       switchMap(() => this.newSeasonService.populate(newLeague)),

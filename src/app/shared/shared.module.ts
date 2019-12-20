@@ -1,23 +1,25 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PopupConfermaComponent } from './popup-conferma/popup-conferma.component';
-import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
-
-
+import { PopupConfermaComponent } from './popup-conferma/popup-conferma.component';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
   declarations: [
-    PopupConfermaComponent
+    PopupConfermaComponent,
+    UploadComponent
   ],
   imports: [
     CommonModule,
     ModalModule,
+    ReactiveFormsModule
   ],
   exports: [
     CommonModule,
     FormsModule,
-    PopupConfermaComponent
+    PopupConfermaComponent,
+    UploadComponent
   ]
 })
 export class SharedModule { }

@@ -21,6 +21,7 @@ export class ListComponent implements OnInit {
   titoloModale: string;
 
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfermaComponent;
+  @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfermaComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,10 +42,6 @@ export class ListComponent implements OnInit {
     this.teamSelected = undefined;
     this.mostraPopupModifica = true;
     this.titoloModale = 'Nuova squadra';
-  }
-
-  upload() {
-    console.log('upload');
   }
 
   modifica(team: Team): void {
@@ -96,7 +93,7 @@ export class ListComponent implements OnInit {
     this.popupConfermaElimina.apriModale();
   }
 
-  async confermaElimina(team: Team) {
+  confermaElimina() {
     try {
       if (this.teamSelected) {
         this.teamService.delete(this.teamSelected._id).pipe(
@@ -116,6 +113,26 @@ export class ListComponent implements OnInit {
     } catch (error) {
       console.error(error);
     }
+  }
+
+  apriPopupUpload() {
+    this.popupUpload.apriModale();
+  }
+
+  confermaUpload(file: File) {
+    console.log('upload');
+    console.log(file);
+
+    const formData = new FormData();
+    formData.append('teams', file);
+    this.teamService.upload(formData).pipe(
+      switchMap((teams: Team[]) => {
+        return this.teamService.read();
+      }),
+    ).subscribe((teams: Team[]) => {
+      this.teams = teams;
+      this.popupUpload.chiudiModale();
+    });
   }
 
 }
