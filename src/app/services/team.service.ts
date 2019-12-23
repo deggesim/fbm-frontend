@@ -30,7 +30,9 @@ export class TeamService {
     return this.http.delete<Team>(`${this.endpoint}/teams/${id}`);
   }
 
-  public upload(formData: FormData) {
+  public upload(file: File) {
+    const formData = new FormData();
+    formData.append('teams', file);
     return this.http.post<Team[]>(`${this.endpoint}/teams/upload`, formData);
   }
 }

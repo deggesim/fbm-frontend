@@ -48,7 +48,7 @@ export class EditComponent implements OnInit, OnChanges {
 
   save(): void {
     const { fullName, sponsor, name, city, abbreviation } = this.form.value;
-    const team: Team = { _id: this.team._id, fullName, sponsor, name, city, abbreviation, real: true };
+    const team: Team = { _id: this.team ? this.team._id : null, fullName, sponsor, name, city, abbreviation, real: true };
     this.salva.emit(team);
   }
 

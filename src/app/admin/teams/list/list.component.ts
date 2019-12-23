@@ -33,7 +33,7 @@ export class ListComponent implements OnInit {
     console.log('init ListComponent');
     this.route.data.subscribe(
       (data) => {
-        this.teams = data.lista;
+        this.teams = data.teams;
       }
     );
   }
@@ -105,10 +105,9 @@ export class ListComponent implements OnInit {
             this.teamSelected = undefined;
           }),
           switchMap(() => this.teamService.read()),
-          tap((teams: Team[]) => {
-            this.teams = teams;
-          })
-        );
+        ).subscribe((teams: Team[]) => {
+          this.teams = teams;
+        });
       }
     } catch (error) {
       console.error(error);
@@ -120,12 +119,7 @@ export class ListComponent implements OnInit {
   }
 
   confermaUpload(file: File) {
-    console.log('upload');
-    console.log(file);
-
-    const formData = new FormData();
-    formData.append('teams', file);
-    this.teamService.upload(formData).pipe(
+    this.teamService.upload(file).pipe(
       switchMap((teams: Team[]) => {
         return this.teamService.read();
       }),

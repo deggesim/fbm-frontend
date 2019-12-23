@@ -58,7 +58,7 @@ const routes: Routes = [
       breadcrumb: 'Squadre'
     },
     resolve: {
-      users: TeamResolverService
+      teams: TeamResolverService
     },
   }
 ];
