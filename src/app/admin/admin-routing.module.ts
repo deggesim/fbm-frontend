@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from '../guards/admin.guard';
+import { LeagueResolverService } from '../services/resolvers/league-resolver.service';
+import { PlayerResolverService } from '../services/resolvers/player-resolver.service';
+import { TeamResolverService } from '../services/resolvers/team-resolver.service';
 import { UsersResolverService } from '../services/resolvers/users-resolver.service';
 import { EditLeagueComponent } from './edit-league/edit-league.component';
 import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
-import { LeagueResolverService } from '../services/resolvers/league-resolver.service';
+import { ListComponent as PlayerListComponent } from './players/list/list.component';
 import { ListComponent } from './teams/list/list.component';
-import { TeamResolverService } from '../services/resolvers/team-resolver.service';
 
 const routes: Routes = [
   {
@@ -60,7 +62,17 @@ const routes: Routes = [
     resolve: {
       teams: TeamResolverService
     },
-  }
+  },
+  {
+    path: 'players',
+    component: PlayerListComponent,
+    data: {
+      breadcrumb: 'Giocatori'
+    },
+    resolve: {
+      teams: PlayerResolverService
+    },
+  },
 ];
 
 @NgModule({

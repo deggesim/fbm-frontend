@@ -1,7 +1,5 @@
-import { Role } from './role';
-import { Tenant } from './tenant';
 
-export interface Player extends Tenant {
+export interface Player {
     _id?: string;
     name: string;
     nationality: string;
@@ -9,5 +7,5 @@ export interface Player extends Tenant {
     yearBirth: number;
     height: number;
     weight: number;
-    role: Role;
+    role: string;
 }
