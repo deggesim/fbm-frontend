@@ -70,7 +70,7 @@ const routes: Routes = [
       breadcrumb: 'Giocatori'
     },
     resolve: {
-      teams: PlayerResolverService
+      players: PlayerResolverService
     },
   },
 ];

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
-import { Player } from 'src/app/models/player';
+import { Player, Role } from 'src/app/models/player';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SharedService } from 'src/app/shared/shared.service';
 
@@ -16,6 +16,8 @@ export class EditComponent implements OnInit, OnChanges {
 
   form: FormGroup;
 
+  roles: Role[];
+
   constructor(
     private fb: FormBuilder,
     public sharedService: SharedService,
@@ -25,6 +27,7 @@ export class EditComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     console.log('EditComponent');
+    this.roles = [Role.Playmaker, Role.PlayGuardia, Role.Guardia, Role.GuardiaAla, Role.Ala, Role.AlaCentro, Role.Centro];
   }
 
   ngOnChanges(changes: SimpleChanges): void {

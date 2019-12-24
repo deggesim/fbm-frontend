@@ -27,7 +27,9 @@ export class HomeComponent implements OnInit {
     if (this.isLoggedIn()) {
       const userLogged = this.authService.getLoggedUser();
       this.listaLeghe = userLogged.leagues;
-      this.authService.setSelectedLeague(this.listaLeghe[0]);
+      if (this.listaLeghe != null && this.listaLeghe.length > 0) {
+        this.authService.setSelectedLeague(this.listaLeghe[0]);
+      }
     }
   }
 
@@ -38,7 +40,9 @@ export class HomeComponent implements OnInit {
   public async login(user: Login) {
     this.authService.login(user).subscribe((loginObj: { user: User, token: string }) => {
       this.listaLeghe = loginObj.user.leagues;
-      this.authService.setSelectedLeague(this.listaLeghe[0]);
+      if (this.listaLeghe != null && this.listaLeghe.length > 0) {
+        this.authService.setSelectedLeague(this.listaLeghe[0]);
+      }
       const title = 'Login';
       const message = 'Login effettuato correttamente';
       this.sharedService.notifica(globals.toastType.success, title, message);

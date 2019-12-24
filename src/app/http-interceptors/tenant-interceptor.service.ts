@@ -9,8 +9,9 @@ import { League } from '../models/league';
 export class TenantInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const league: League = JSON.parse(localStorage.getItem('league'));
-    if (league) {
+    const leagueString = localStorage.getItem('league');
+    if (leagueString != null) {
+      const league: League = JSON.parse(localStorage.getItem('league'));
       const cloned = req.clone({
         headers: req.headers.set('league', league._id)
       });

@@ -36,34 +36,35 @@ export class SharedService {
     let descrizione = '';
     console.error(response);
 
-    switch (response.status) {
-      case -1:
-      case 0:
-      case 401:
-      case 403:
-        titolo = 'Utente non autorizzato';
-        descrizione = response.error || response.message;
-        if (descrizione == null) {
-          descrizione = 'L\'utente non è autorizzato ad eseguire l\'operazione richiesta';
-        }
-        break;
-      case 422:
-        titolo = 'Errori nella validazione';
-        descrizione = response.error || response.message;
-        break;
-      case 500:
-        titolo = 'Errore server';
-        descrizione = response.error || response.message;
-        if (descrizione == null) {
+    if (response != null) {
+      switch (response.status) {
+        case -1:
+        case 0:
+        case 401:
+        case 403:
+          titolo = 'Utente non autorizzato';
+          descrizione = response.error || response.message;
+          if (descrizione == null) {
+            descrizione = 'L\'utente non è autorizzato ad eseguire l\'operazione richiesta';
+          }
+          break;
+        case 422:
+          titolo = 'Errori nella validazione';
+          descrizione = response.error || response.message;
+          break;
+        case 500:
+          titolo = 'Errore server';
+          descrizione = response.error || response.message;
+          if (descrizione == null) {
+            descrizione = 'Si è verificato un errore imprevisto';
+          }
+          break;
+        default:
+          titolo = 'Problema generico';
           descrizione = 'Si è verificato un errore imprevisto';
-        }
-        break;
-      default:
-        titolo = 'Problema generico';
-        descrizione = 'Si è verificato un errore imprevisto';
-        break;
+          break;
+      }
     }
-
     this.notifica(globals.toastType.error, titolo, descrizione);
   }
 

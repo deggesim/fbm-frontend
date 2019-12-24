@@ -6,6 +6,8 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { TeamResolverService } from '../services/resolvers/team-resolver.service';
 import { UsersResolverService } from '../services/resolvers/users-resolver.service';
 import { SharedModule } from '../shared/shared.module';
@@ -17,7 +19,6 @@ import { EditComponent as PlayerEditComponent } from './players/edit/edit.compon
 import { ListComponent as PlayerListComponent } from './players/list/list.component';
 import { EditComponent } from './teams/edit/edit.component';
 import { ListComponent } from './teams/list/list.component';
-
 
 @NgModule({
   declarations: [
@@ -34,6 +35,8 @@ import { ListComponent } from './teams/list/list.component';
     CommonModule,
     FlexLayoutModule,
     NgSelectModule,
+    PaginationModule,
+    TooltipModule,
     FontAwesomeModule,
     SharedModule,
     ModalModule,
