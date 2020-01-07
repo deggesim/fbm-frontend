@@ -10,6 +10,7 @@ import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step
 import { NewSeasonComponent } from './new-season/new-season.component';
 import { ListComponent as PlayerListComponent } from './players/list/list.component';
 import { ListComponent } from './teams/list/list.component';
+import { ParametersComponent } from './parameters/parameters.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,13 @@ const routes: Routes = [
       league: LeagueResolverService,
     },
     canActivate: [AdminGuard],
+  },
+  {
+    path: 'parameters',
+    component: ParametersComponent,
+    data: {
+      breadcrumb: 'Parametri'
+    },
   },
   {
     path: 'teams',

@@ -61,7 +61,6 @@ export class UploadComponent implements OnInit {
   }
 
   uploadEvent() {
-    console.log('this.form.value.file', this.form.value.file);
     this.upload.emit(this.form.value.file);
   }
 

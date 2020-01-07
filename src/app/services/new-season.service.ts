@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import { League } from '../models/league';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { FantasyTeam } from '../models/fantasy-team';
+import { League } from '../models/league';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +28,10 @@ export class NewSeasonService {
 
   public populate(league: League) {
     return this.http.post<League>(`${this.endpoint}/leagues/${league._id}/populate`, null);
+  }
+
+  public setParameters(leagueId: string, parameters: Array<{parameter: string, value: string}>) {
+    return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/parameters`, parameters);
   }
 
 }

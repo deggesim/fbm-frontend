@@ -156,6 +156,8 @@ export class ListComponent implements OnInit {
         })
       ).subscribe((players: Player[]) => {
         this.players = players;
+        this.size = this.players.length;
+        this.listaPaginata = this.buildPage();
       });
   }
 
@@ -182,6 +184,8 @@ export class ListComponent implements OnInit {
           switchMap(() => this.playerService.read()),
         ).subscribe((players: Player[]) => {
           this.players = players;
+          this.size = this.players.length;
+          this.listaPaginata = this.buildPage();
         });
       }
     } catch (error) {
@@ -200,6 +204,8 @@ export class ListComponent implements OnInit {
       }),
     ).subscribe((players: Player[]) => {
       this.players = players;
+      this.size = this.players.length;
+      this.listaPaginata = this.buildPage();
       this.popupUpload.chiudiModale();
     });
   }

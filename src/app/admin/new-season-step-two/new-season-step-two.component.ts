@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { League } from 'src/app/models/league';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
-import { NewSeasonService } from 'src/app/services/new-season.service';
 import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
+import { NewSeasonService } from 'src/app/services/new-season.service';
 
 @Component({
   selector: 'app-new-season-step-two',
@@ -57,10 +56,9 @@ export class NewSeasonStepTwoComponent implements OnInit {
 
   confirm() {
     const fantasyTeams = this.form.get('teamsArray').value as FantasyTeam[];
-    const $user = this.authService.refresh();
     let newLeague: League;
 
-    const $league = this.newSeasonService.create(this.league).pipe(
+    this.newSeasonService.create(this.league).pipe(
       tap(league => newLeague = league),
       switchMap((league: League) => {
         console.log(league);
@@ -68,9 +66,8 @@ export class NewSeasonStepTwoComponent implements OnInit {
         return this.fantastyTeamsService.create(fantasyTeams);
       }),
       switchMap(() => this.newSeasonService.populate(newLeague)),
-    );
-
-    forkJoin([$league, $user]).subscribe(() => {
+      switchMap(() => this.authService.refresh())
+    ).subscribe(() => {
       this.router.navigate(['/home']);
     });
 

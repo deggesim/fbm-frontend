@@ -48,7 +48,7 @@
   
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">
-          <label for="role" class="control-label">Ruolo</label>
+          <label for="role" class="control-label">Ruolo *</label>
           <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina"
             [ngClass]="{'ng-select-error': form.controls.role.invalid && form.controls.role.dirty}">
           </ng-select>
