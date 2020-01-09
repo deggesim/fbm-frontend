@@ -20,6 +20,7 @@ import { ListComponent as PlayerListComponent } from './players/list/list.compon
 import { EditComponent } from './teams/edit/edit.component';
 import { ListComponent } from './teams/list/list.component';
 import { ParametersComponent } from './parameters/parameters.component';
+import { RolesComponent } from './roles/roles.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { ParametersComponent } from './parameters/parameters.component';
     PlayerListComponent,
     PlayerEditComponent,
     ParametersComponent,
+    RolesComponent,
   ],
   imports: [
     ReactiveFormsModule,

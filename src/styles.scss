@@ -57,3 +57,14 @@ a {
   background-color: #212529;
   border-color: #212529;
 }
+
+ng-select.ng-invalid.ng-touched .ng-select-container {
+  border-color: #dc3545;
+}
+
+.ng-select-invalid-feedback {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 80%;
+  color: #dc3545;
+}

@@ -6,7 +6,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { NewSeasonService } from 'src/app/services/new-season.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import * as globals from '../../shared/globals';
-import { EMPTY, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-parameters',

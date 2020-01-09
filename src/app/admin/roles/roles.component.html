@@ -1,0 +1,79 @@
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
+
+  <fieldset class="fieldset">
+    <legend class="legend">
+      <fa-icon icon="map-marked" class="icon-padding"></fa-icon>Ruoli
+    </legend>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="Playmaker" class="control-label">Playmaker</label>
+          <ng-select id="Playmaker" name="Playmaker" [items]="spots" formControlName="Playmaker" clearAllText="Elimina" [multiple]="true" [closeOnSelect]="false" [hideSelected]="true">
+          </ng-select>
+          <div *ngIf="form.get('Playmaker').hasError('required') && form.get('Playmaker').dirty" class="ng-select-invalid-feedback">Il campo Playmaker è obbligatorio</div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="Play/Guardia" class="control-label">Play/Guardia</label>
+          <ng-select id="Play/Guardia" name="Play/Guardia" [items]="spots" formControlName="Play/Guardia" clearAllText="Elimina" [multiple]="true" [closeOnSelect]="false" [hideSelected]="true">
+          </ng-select>
+          <div *ngIf="form.get('Play/Guardia').hasError('required') && form.get('Play/Guardia').dirty" class="ng-select-invalid-feedback">Il campo Play/Guardia è obbligatorio</div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="Guardia" class="control-label">Guardia</label>
+          <ng-select id="Guardia" name="Guardia" [items]="spots" formControlName="Guardia" clearAllText="Elimina" [multiple]="true" [closeOnSelect]="false" [hideSelected]="true">
+          </ng-select>
+          <div *ngIf="form.get('Guardia').hasError('required') && form.get('Guardia').dirty" class="ng-select-invalid-feedback">Il campo Guardia è obbligatorio</div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="Guardia/Ala" class="control-label">Guardia/Ala</label>
+          <ng-select id="Guardia/Ala" name="Guardia/Ala" [items]="spots" formControlName="Guardia/Ala" clearAllText="Elimina" [multiple]="true" [closeOnSelect]="false" [hideSelected]="true">
+          </ng-select>
+          <div *ngIf="form.get('Guardia/Ala').hasError('required') && form.get('Guardia/Ala').dirty" class="ng-select-invalid-feedback">Il campo Guardia/Ala è obbligatorio</div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="Ala" class="control-label">Ala</label>
+          <ng-select id="Ala" name="Ala" [items]="spots" formControlName="Ala" clearAllText="Elimina" [multiple]="true" [closeOnSelect]="false" [hideSelected]="true">
+          </ng-select>
+          <div *ngIf="form.get('Ala').hasError('required') && form.get('Ala').dirty" class="ng-select-invalid-feedback">Il campo Ala è obbligatorio</div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="Ala/Centro" class="control-label">Ala/Centro</label>
+          <ng-select id="Ala/Centro" name="Ala/Centro" [items]="spots" formControlName="Ala/Centro" clearAllText="Elimina" [multiple]="true" [closeOnSelect]="false" [hideSelected]="true">
+          </ng-select>
+          <div *ngIf="form.get('Ala/Centro').hasError('required') && form.get('Ala/Centro').dirty" class="ng-select-invalid-feedback">Il campo Ala/Centro è obbligatorio</div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="Centro" class="control-label">Centro</label>
+          <ng-select id="Centro" name="Centro" [items]="spots" formControlName="Centro" clearAllText="Elimina" [multiple]="true" [closeOnSelect]="false" [hideSelected]="true">
+          </ng-select>
+          <div *ngIf="form.get('Centro').hasError('required') && form.get('Centro').dirty" class="ng-select-invalid-feedback">Il campo Centro è obbligatorio</div>
+        </div>
+      </div>
+
+    </div>
+  </fieldset>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;
+  </div>
+
+</form>

@@ -30,8 +30,12 @@ export class NewSeasonService {
     return this.http.post<League>(`${this.endpoint}/leagues/${league._id}/populate`, null);
   }
 
-  public setParameters(leagueId: string, parameters: Array<{parameter: string, value: string}>) {
+  public setParameters(leagueId: string, parameters: Array<{ parameter: string, value: string }>) {
     return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/parameters`, parameters);
+  }
+
+  public setRoles(leagueId: string, roles: Array<{ role: string, spots: number[] }>) {
+    return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/roles`, roles);
   }
 
 }

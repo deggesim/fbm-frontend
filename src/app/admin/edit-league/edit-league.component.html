@@ -30,10 +30,10 @@
       <div fxFlex="69" fxFlex.xs="49">
         <div class="form-group" [ngClass]="{'is-invalid': form.controls.regularSeasonFormat.invalid && form.controls.regularSeasonFormat.dirty}">
           <label for="regularSeasonFormat" class="control-label">Stagione regolare *</label>
-          <ng-select id="regularSeasonFormat" name="regularSeasonFormat" [items]="regularSeasonFormatList" bindLabel="value.label" formControlName="regularSeasonFormat" clearAllText="Elimina"
-            [ngClass]="{'ng-select-error': form.controls.regularSeasonFormat.invalid && form.controls.regularSeasonFormat.dirty}">
+          <ng-select id="regularSeasonFormat" name="regularSeasonFormat" [items]="regularSeasonFormatList" bindLabel="value.label" formControlName="regularSeasonFormat"
+            clearAllText="Elimina">
           </ng-select>
-          <div *ngIf="form.get('regularSeasonFormat').hasError('required') && form.get('regularSeasonFormat').dirty" class="invalid-feedback">
+          <div *ngIf="form.get('regularSeasonFormat').hasError('required') && form.get('regularSeasonFormat').dirty" class="ng-select-invalid-feedback">
             Il campo Stagione regolare è obbligatorio
           </div>
         </div>
@@ -53,10 +53,9 @@
       <div fxFlex="69" fxFlex.xs="49">
         <div class="form-group" [ngClass]="{'is-invalid': form.controls.playoffFormat.invalid && form.controls.playoffFormat.dirty}">
           <label for="playoffFormat" class="control-label">Playoff *</label>
-          <ng-select id="playoffFormat" name="playoffFormat" [items]="playoffFormatList" bindLabel="value.label" formControlName="playoffFormat" clearAllText="Elimina"
-            [ngClass]="{'ng-select-error': form.controls.playoffFormat.invalid && form.controls.playoffFormat.dirty}">
+          <ng-select id="playoffFormat" name="playoffFormat" [items]="playoffFormatList" bindLabel="value.label" formControlName="playoffFormat" clearAllText="Elimina">
           </ng-select>
-          <div *ngIf="form.get('playoffFormat').hasError('required') && form.get('playoffFormat').dirty" class="invalid-feedback">
+          <div *ngIf="form.get('playoffFormat').hasError('required') && form.get('playoffFormat').dirty" class="ng-select-invalid-feedback">
             Il campo Playoff è obbligatorio
           </div>
         </div>
@@ -76,10 +75,9 @@
       <div fxFlex="69" fxFlex.xs="49">
         <div class="form-group" [ngClass]="{'is-invalid': form.controls.playoutFormat.invalid && form.controls.playoutFormat.dirty}">
           <label for="playoutFormat" class="control-label">Playout *</label>
-          <ng-select id="playoutFormat" name="playoutFormat" [items]="playoutFormatList" bindLabel="value.label" formControlName="playoutFormat" clearAllText="Elimina"
-            [ngClass]="{'ng-select-error': form.controls.playoutFormat.invalid && form.controls.playoutFormat.dirty}">
+          <ng-select id="playoutFormat" name="playoutFormat" [items]="playoutFormatList" bindLabel="value.label" formControlName="playoutFormat" clearAllText="Elimina">
           </ng-select>
-          <div *ngIf="form.get('playoutFormat').hasError('required') && form.get('playoutFormat').dirty" class="invalid-feedback">
+          <div *ngIf="form.get('playoutFormat').hasError('required') && form.get('playoutFormat').dirty" class="ng-select-invalid-feedback">
             Il campo Playout è obbligatorio
           </div>
         </div>
@@ -100,10 +98,9 @@
       <div fxFlex="69" fxFlex.xs="49">
         <div class="form-group" [ngClass]="{'is-invalid': form.controls.cupFormat.invalid && form.controls.cupFormat.dirty}">
           <label for="cupFormat" class="control-label">Coppa di lega *</label>
-          <ng-select id="cupFormat" name="cupFormat" [items]="cupFormatList" bindLabel="value.label" formControlName="cupFormat" clearAllText="Elimina"
-            [ngClass]="{'ng-select-error': form.controls.cupFormat.invalid && form.controls.cupFormat.dirty}">
+          <ng-select id="cupFormat" name="cupFormat" [items]="cupFormatList" bindLabel="value.label" formControlName="cupFormat" clearAllText="Elimina">
           </ng-select>
-          <div *ngIf="form.get('cupFormat').hasError('required') && form.get('cupFormat').dirty" class="invalid-feedback">
+          <div *ngIf="form.get('cupFormat').hasError('required') && form.get('cupFormat').dirty" class="ng-select-invalid-feedback">
             Il campo Coppa di lega è obbligatorio
           </div>
         </div>

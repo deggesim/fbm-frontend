@@ -2,7 +2,6 @@ import { CupFormat } from './formats/cup-format';
 import { PlayoffFormat } from './formats/playoff-format';
 import { PlayoutFormat } from './formats/playout-format';
 import { RegularSeasonFormat } from './formats/regular-season-format';
-import { Parameter } from './parameter';
 
 export interface League {
     _id?: string;
@@ -17,4 +16,15 @@ export interface League {
     playoutFirstRealFixture: number;
     cupFirstRealFixture: number;
     parameters?: Parameter[];
+    roles?: Role[];
+}
+
+export interface Role {
+    role: string;
+    spots: number[];
+}
+
+export interface Parameter {
+    parameter: string;
+    value: number;
 }

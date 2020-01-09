@@ -9,8 +9,9 @@ import { EditLeagueComponent } from './edit-league/edit-league.component';
 import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
 import { ListComponent as PlayerListComponent } from './players/list/list.component';
-import { ListComponent } from './teams/list/list.component';
+import { ListComponent as TeamListComponent } from './teams/list/list.component';
 import { ParametersComponent } from './parameters/parameters.component';
+import { RolesComponent } from './roles/roles.component';
 
 const routes: Routes = [
   {
@@ -63,12 +64,19 @@ const routes: Routes = [
   },
   {
     path: 'teams',
-    component: ListComponent,
+    component: TeamListComponent,
     data: {
       breadcrumb: 'Squadre'
     },
     resolve: {
       teams: TeamResolverService
+    },
+  },
+  {
+    path: 'roles',
+    component: RolesComponent,
+    data: {
+      breadcrumb: 'Ruoli'
     },
   },
   {
