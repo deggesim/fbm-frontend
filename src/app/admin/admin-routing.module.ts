@@ -12,6 +12,7 @@ import { ListComponent as PlayerListComponent } from './players/list/list.compon
 import { ListComponent as TeamListComponent } from './teams/list/list.component';
 import { ParametersComponent } from './parameters/parameters.component';
 import { RolesComponent } from './roles/roles.component';
+import { RoundsComponent } from './rounds/rounds.component';
 
 const routes: Routes = [
   {
@@ -45,49 +46,73 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'edit-league',
-    component: EditLeagueComponent,
+    path: 'preseason',
     data: {
-      breadcrumb: 'Impostazioni'
-    },
-    resolve: {
-      league: LeagueResolverService,
+      breadcrumb: 'Preseason'
     },
     canActivate: [AdminGuard],
+    children: [
+      {
+        path: 'edit-league',
+        component: EditLeagueComponent,
+        data: {
+          breadcrumb: 'Impostazioni'
+        },
+        resolve: {
+          league: LeagueResolverService,
+        },
+      },
+      {
+        path: 'parameters',
+        component: ParametersComponent,
+        data: {
+          breadcrumb: 'Parametri'
+        },
+      },
+      {
+        path: 'teams',
+        component: TeamListComponent,
+        data: {
+          breadcrumb: 'Squadre'
+        },
+        resolve: {
+          teams: TeamResolverService
+        },
+      },
+      {
+        path: 'roles',
+        component: RolesComponent,
+        data: {
+          breadcrumb: 'Ruoli'
+        },
+      },
+      {
+        path: 'players',
+        component: PlayerListComponent,
+        data: {
+          breadcrumb: 'Giocatori'
+        },
+        resolve: {
+          players: PlayerResolverService
+        },
+      },
+    ],
   },
   {
-    path: 'parameters',
-    component: ParametersComponent,
+    path: 'league-management',
     data: {
-      breadcrumb: 'Parametri'
+      breadcrumb: 'Gestione lega'
     },
-  },
-  {
-    path: 'teams',
-    component: TeamListComponent,
-    data: {
-      breadcrumb: 'Squadre'
-    },
-    resolve: {
-      teams: TeamResolverService
-    },
-  },
-  {
-    path: 'roles',
-    component: RolesComponent,
-    data: {
-      breadcrumb: 'Ruoli'
-    },
-  },
-  {
-    path: 'players',
-    component: PlayerListComponent,
-    data: {
-      breadcrumb: 'Giocatori'
-    },
-    resolve: {
-      players: PlayerResolverService
-    },
+    canActivate: [AdminGuard],
+    children: [
+      {
+        path: 'rounds',
+        component: RoundsComponent,
+        data: {
+          breadcrumb: 'Gestione turni'
+        },
+      },
+    ],
   },
 ];
 

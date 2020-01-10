@@ -21,6 +21,7 @@ import { EditComponent } from './teams/edit/edit.component';
 import { ListComponent } from './teams/list/list.component';
 import { ParametersComponent } from './parameters/parameters.component';
 import { RolesComponent } from './roles/roles.component';
+import { RoundsComponent } from './rounds/rounds.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { RolesComponent } from './roles/roles.component';
     PlayerEditComponent,
     ParametersComponent,
     RolesComponent,
+    RoundsComponent,
   ],
   imports: [
     ReactiveFormsModule,
