@@ -42,7 +42,7 @@
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item" (click)="isCollapsed = true;">Fantasquadre</a>
-          <a class="dropdown-item" (click)="isCollapsed = true;">Gestione turni</a>
+          <a class="dropdown-item" routerLink="/admin/league-management/rounds" routerLinkActive="active" (click)="isCollapsed = true;">Gestione turni</a>
           <a class="dropdown-item" (click)="isCollapsed = true;">Gestione giornate</a>
         </ul>
       </li>
@@ -53,12 +53,12 @@
           <fa-icon icon="tools" class="menu-padding"></fa-icon>Preseason
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/admin/edit-league" routerLinkActive="active" (click)="isCollapsed = true;">Impostazioni</a>
-          <a class="dropdown-item" routerLink="/admin/parameters" routerLinkActive="active" (click)="isCollapsed = true;">Parametri</a>
+          <a class="dropdown-item" routerLink="/admin/preseason/edit-league" routerLinkActive="active" (click)="isCollapsed = true;">Impostazioni</a>
+          <a class="dropdown-item" routerLink="/admin/preseason/parameters" routerLinkActive="active" (click)="isCollapsed = true;">Parametri</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" routerLink="/admin/teams" routerLinkActive="active" (click)="isCollapsed = true;">Squadre</a>
-          <a class="dropdown-item" routerLink="/admin/roles" (click)="isCollapsed = true;">Ruoli</a>
-          <a class="dropdown-item" routerLink="/admin/players" routerLinkActive="active" (click)="isCollapsed = true;">Giocatori</a>
+          <a class="dropdown-item" routerLink="/admin/preseason/teams" routerLinkActive="active" (click)="isCollapsed = true;">Squadre</a>
+          <a class="dropdown-item" routerLink="/admin/preseason/roles" (click)="isCollapsed = true;">Ruoli</a>
+          <a class="dropdown-item" routerLink="/admin/preseason/players" routerLinkActive="active" (click)="isCollapsed = true;">Giocatori</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" (click)="isCollapsed = true;">Completa preseason</a>
         </ul>

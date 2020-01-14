@@ -17,6 +17,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
@@ -54,6 +55,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     HttpClientModule,
     FlexLayoutModule,
     NgSelectModule,
+    // ngx-bootstrap
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
     PaginationModule.forRoot(),
@@ -64,6 +66,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     AccordionModule.forRoot(),
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
+    SortableModule.forRoot(),
+    // fine ngx-bootstrap
     DeviceDetectorModule.forRoot(),
     NgxChartsModule,
     ToastrModule.forRoot(), // ToastrModule added

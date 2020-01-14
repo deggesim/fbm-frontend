@@ -1,5 +1,6 @@
 import { FantasyTeam } from './fantasy-team';
 import { Fixture } from './fixture';
+import { Match } from './match';
 
 export interface Round {
     _id: string;

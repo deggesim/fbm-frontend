@@ -13,6 +13,8 @@ import { ListComponent as TeamListComponent } from './teams/list/list.component'
 import { ParametersComponent } from './parameters/parameters.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
+import { RoundResolverService } from '../services/resolvers/round-resolver.service';
+import { FantasyTeamResolverService } from '../services/resolvers/fantasy-team-resolver.service';
 
 const routes: Routes = [
   {
@@ -110,6 +112,10 @@ const routes: Routes = [
         component: RoundsComponent,
         data: {
           breadcrumb: 'Gestione turni'
+        },
+        resolve: {
+          rounds: RoundResolverService,
+          fantasyTeams: FantasyTeamResolverService
         },
       },
     ],
