@@ -16,6 +16,7 @@ import { ListComponent as PlayerListComponent } from './players/list/list.compon
 import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
 import { ListComponent as TeamListComponent } from './teams/list/list.component';
+import { ListComponent as UserListComponent } from './users/list/list.component';
 
 const routes: Routes = [
   {
@@ -130,6 +131,16 @@ const routes: Routes = [
         },
       },
     ],
+  },
+  {
+    path: 'users',
+    component: UserListComponent,
+    data: {
+      breadcrumb: 'Gestione utenti'
+    },
+    resolve: {
+      users: UsersResolverService
+    },
   },
 ];
 

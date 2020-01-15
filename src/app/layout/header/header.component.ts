@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user';
 
 interface IBreadcrumb {
   label: string;
@@ -23,6 +24,7 @@ export class HeaderComponent implements OnInit {
   isCollapsed = true;
   breadcrumbs: IBreadcrumb[] = [];
   admin: boolean;
+  user: User;
 
   constructor(
     private router: Router,
@@ -41,6 +43,7 @@ export class HeaderComponent implements OnInit {
         this.breadcrumbs = this.getBreadcrumbs(root);
       });
     this.admin = this.authService.isAdmin();
+    this.user = this.authService.getLoggedUser();
   }
 
   public isLoggedIn() {

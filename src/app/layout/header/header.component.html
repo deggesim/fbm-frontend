@@ -12,7 +12,7 @@
       <!-- SQUADRE -->
       <li class="nav-item dropdown" dropdown>
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="shield-alt" class="menu-padding"></fa-icon>Squadre
+          <fa-icon icon="shield-alt" class="icon-padding"></fa-icon>Squadre
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true;">Mercato libero</a>
@@ -24,7 +24,7 @@
       <!-- COMPETIZIONI -->
       <li class="nav-item dropdown" dropdown>
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="calendar-alt" class="menu-padding"></fa-icon>Competizioni
+          <fa-icon icon="calendar-alt" class="icon-padding"></fa-icon>Competizioni
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item" (click)="isCollapsed = true;">Calendario</a>
@@ -38,7 +38,7 @@
       <!-- GESTIONE LEGA -->
       <li class="nav-item dropdown" dropdown *ngIf="isAdmin()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="cogs" class="menu-padding"></fa-icon>Gestione lega
+          <fa-icon icon="cogs" class="icon-padding"></fa-icon>Gestione lega
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item" routerLink="/admin/league-management/fantasy-teams" routerLinkActive="active" (click)="isCollapsed = true;">Fantasquadre</a>
@@ -50,7 +50,7 @@
       <!-- PRESEASON -->
       <li class="nav-item dropdown" dropdown *ngIf="isAdmin()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="tools" class="menu-padding"></fa-icon>Preseason
+          <fa-icon icon="tools" class="icon-padding"></fa-icon>Preseason
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item" routerLink="/admin/preseason/edit-league" routerLinkActive="active" (click)="isCollapsed = true;">Impostazioni</a>
@@ -67,12 +67,12 @@
       <!-- ADMIN -->
       <li class="nav-item dropdown" dropdown *ngIf="isAdmin()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="user-cog" class="menu-padding"></fa-icon>Admin
+          <fa-icon icon="user-cog" class="icon-padding"></fa-icon>Admin
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item" routerLink="/admin/new-season" routerLinkActive="active" (click)="isCollapsed = true;">Nuova Stagione</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" (click)="isCollapsed = true;">Gestione utenti</a>
+          <a class="dropdown-item" routerLink="/admin/users" routerLinkActive="active" (click)="isCollapsed = true;">Gestione utenti</a>
         </ul>
       </li>
     </ul>
@@ -80,12 +80,12 @@
     <ul class="navbar-nav" *ngIf="isLoggedIn()">
       <li class="nav-item">
         <a class="nav-link manina nowrap" (click)="logout.emit()">
-          <fa-icon icon="sign-out-alt" class="menu-padding"></fa-icon>Logout
+          <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link manina nowrap" (click)="profile.emit()">
-          <fa-icon icon="user-circle" class="menu-padding"></fa-icon>Profilo Utente
+          <app-user-role-icon [role]="user.role"></app-user-role-icon>{{user.name}}
         </a>
       </li>
     </ul>

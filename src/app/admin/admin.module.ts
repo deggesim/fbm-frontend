@@ -26,6 +26,8 @@ import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
 import { EditComponent as TeamEditComponent } from './teams/edit/edit.component';
 import { ListComponent as TeamListComponent } from './teams/list/list.component';
+import { ListComponent as UsersListComponent } from './users/list/list.component';
+import { EditComponent as UserEditComponent } from './users/edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { ListComponent as TeamListComponent } from './teams/list/list.component'
     RoundsComponent,
     TeamListComponent,
     TeamEditComponent,
+    UsersListComponent,
+    UserEditComponent
   ],
   imports: [
     ReactiveFormsModule,

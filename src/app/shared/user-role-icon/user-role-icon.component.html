@@ -1,0 +1,6 @@
+<ng-container [ngSwitch]="role">
+  <fa-icon *ngSwitchCase="'User'" icon="user" class="user icon-padding" tooltip="Utente"></fa-icon>
+  <fa-icon *ngSwitchCase="'Admin'" icon="user-cog" class="admin icon-padding" tooltip="Amministratore"></fa-icon>
+  <fa-icon *ngSwitchCase="'SuperAdmin'" icon="users-cog" class="super-admin icon-padding" tooltip="Amministratore globale"></fa-icon>
+  <fa-icon *ngSwitchDefault icon="user" class="userr icon-padding" tooltip="Utnte"></fa-icon>
+</ng-container>

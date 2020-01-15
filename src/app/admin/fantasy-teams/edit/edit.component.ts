@@ -30,7 +30,7 @@ export class EditComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log('EditComponent');
     this.usersLoading = true;
-    this.userService.getUsers().subscribe((users: User[]) => {
+    this.userService.read().subscribe((users: User[]) => {
       this.users = users;
       this.usersLoading = false;
     });

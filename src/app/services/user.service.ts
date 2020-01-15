@@ -14,8 +14,26 @@ export class UserService {
     private http: HttpClient
   ) { }
 
-  public getUsers() {
+  public read() {
     return this.http.get<User[]>(`${this.endpoint}/users`);
+  }
+
+  public create(user: User) {
+    return this.http.post<User>(`${this.endpoint}/users`, user);
+  }
+
+  public update(user: User) {
+    return this.http.patch<User>(`${this.endpoint}/users/${user._id}`, user);
+  }
+
+  public delete(id: string) {
+    return this.http.delete<User>(`${this.endpoint}/users/${id}`);
+  }
+
+  public upload(file: File) {
+    const formData = new FormData();
+    formData.append('users', file);
+    return this.http.post<User[]>(`${this.endpoint}/users/upload`, formData);
   }
 
 }
