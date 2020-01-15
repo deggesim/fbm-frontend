@@ -15,6 +15,8 @@ import { UsersResolverService } from '../services/resolvers/users-resolver.servi
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { EditLeagueComponent } from './edit-league/edit-league.component';
+import { EditComponent as FantasyTeamEditComponent } from './fantasy-teams/edit/edit.component';
+import { ListComponent as FantasyTeamListComponent } from './fantasy-teams/list/list.component';
 import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
 import { ParametersComponent } from './parameters/parameters.component';
@@ -22,21 +24,23 @@ import { EditComponent as PlayerEditComponent } from './players/edit/edit.compon
 import { ListComponent as PlayerListComponent } from './players/list/list.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
-import { EditComponent } from './teams/edit/edit.component';
-import { ListComponent } from './teams/list/list.component';
+import { EditComponent as TeamEditComponent } from './teams/edit/edit.component';
+import { ListComponent as TeamListComponent } from './teams/list/list.component';
 
 @NgModule({
   declarations: [
     NewSeasonComponent,
     NewSeasonStepTwoComponent,
     EditLeagueComponent,
-    ListComponent,
-    EditComponent,
+    FantasyTeamEditComponent,
+    FantasyTeamListComponent,
     PlayerListComponent,
     PlayerEditComponent,
     ParametersComponent,
     RolesComponent,
     RoundsComponent,
+    TeamListComponent,
+    TeamEditComponent,
   ],
   imports: [
     ReactiveFormsModule,

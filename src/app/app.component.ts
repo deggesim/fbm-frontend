@@ -21,7 +21,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
   constructor(
     private router: Router,
     private cdRef: ChangeDetectorRef,
-    public spinnerService: SpinnerService,
+    private spinnerService: SpinnerService,
     private sharedService: SharedService,
     private authService: AuthService,
   ) { }

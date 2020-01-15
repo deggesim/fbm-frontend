@@ -1,20 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from '../guards/admin.guard';
+import { FantasyTeamResolverService } from '../services/resolvers/fantasy-team-resolver.service';
 import { LeagueResolverService } from '../services/resolvers/league-resolver.service';
 import { PlayerResolverService } from '../services/resolvers/player-resolver.service';
+import { RoundResolverService } from '../services/resolvers/round-resolver.service';
 import { TeamResolverService } from '../services/resolvers/team-resolver.service';
 import { UsersResolverService } from '../services/resolvers/users-resolver.service';
 import { EditLeagueComponent } from './edit-league/edit-league.component';
+import { ListComponent as FantasyTeamListComponent } from './fantasy-teams/list/list.component';
 import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
-import { ListComponent as PlayerListComponent } from './players/list/list.component';
-import { ListComponent as TeamListComponent } from './teams/list/list.component';
 import { ParametersComponent } from './parameters/parameters.component';
+import { ListComponent as PlayerListComponent } from './players/list/list.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
-import { RoundResolverService } from '../services/resolvers/round-resolver.service';
-import { FantasyTeamResolverService } from '../services/resolvers/fantasy-team-resolver.service';
+import { ListComponent as TeamListComponent } from './teams/list/list.component';
 
 const routes: Routes = [
   {
@@ -107,6 +108,16 @@ const routes: Routes = [
     },
     canActivate: [AdminGuard],
     children: [
+      {
+        path: 'fantasy-teams',
+        component: FantasyTeamListComponent,
+        data: {
+          breadcrumb: 'Fantasquadre'
+        },
+        resolve: {
+          fantasyTeams: FantasyTeamResolverService
+        },
+      },
       {
         path: 'rounds',
         component: RoundsComponent,

@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EMPTY } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Team } from 'src/app/models/team';
 import { TeamService } from 'src/app/services/team.service';
 import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from 'src/app/shared/shared.service';
 import * as globals from '../../../shared/globals';
-import { tap, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-list',
+  selector: 'app-team-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
@@ -59,28 +60,40 @@ export class ListComponent implements OnInit {
   }
 
   async salva(team: Team) {
-    try {
-      if (team._id == null) {
-        this.teamService.create(team).subscribe(() => {
+    if (team._id == null) {
+      this.teamService.create(team).pipe(
+        catchError((err) => {
+          this.sharedService.notifyError(err);
+          return EMPTY;
+        }),
+        tap(() => {
           this.mostraPopupModifica = false;
           const title = 'Nuova squadra';
           const message = 'Nuova squadra inserita correttamente';
           this.sharedService.notifica(globals.toastType.success, title, message);
-        });
-      } else {
-        this.teamService.update(team).subscribe(() => {
+          this.teamSelected = undefined;
+        }),
+        switchMap(() => this.teamService.read())
+      ).subscribe((teams: Team[]) => {
+        this.teams = teams;
+      });
+    } else {
+      this.teamService.update(team).pipe(
+        catchError((err) => {
+          this.sharedService.notifyError(err);
+          return EMPTY;
+        }),
+        tap(() => {
           this.mostraPopupModifica = false;
           const title = 'Modifica squadra';
           const message = 'Squadra modificata correttamente';
           this.sharedService.notifica(globals.toastType.success, title, message);
-        });
-      }
-      this.teamSelected = undefined;
-      this.teamService.read().subscribe((teams: Team[]) => {
+          this.teamSelected = undefined;
+        }),
+        switchMap(() => this.teamService.read())
+      ).subscribe((teams: Team[]) => {
         this.teams = teams;
       });
-    } catch (error) {
-      console.error(error);
     }
   }
 
@@ -94,23 +107,23 @@ export class ListComponent implements OnInit {
   }
 
   confermaElimina() {
-    try {
-      if (this.teamSelected) {
-        this.teamService.delete(this.teamSelected._id).pipe(
-          tap(() => {
-            this.popupConfermaElimina.chiudiModale();
-            const title = 'Squadra eliminata';
-            const message = 'La squadra è stata eliminata correttamente';
-            this.sharedService.notifica(globals.toastType.success, title, message);
-            this.teamSelected = undefined;
-          }),
-          switchMap(() => this.teamService.read()),
-        ).subscribe((teams: Team[]) => {
-          this.teams = teams;
-        });
-      }
-    } catch (error) {
-      console.error(error);
+    if (this.teamSelected) {
+      this.teamService.delete(this.teamSelected._id).pipe(
+        catchError((err) => {
+          this.sharedService.notifyError(err);
+          return EMPTY;
+        }),
+        tap(() => {
+          this.popupConfermaElimina.chiudiModale();
+          const title = 'Squadra eliminata';
+          const message = 'La squadra è stata eliminata correttamente';
+          this.sharedService.notifica(globals.toastType.success, title, message);
+          this.teamSelected = undefined;
+        }),
+        switchMap(() => this.teamService.read()),
+      ).subscribe((teams: Team[]) => {
+        this.teams = teams;
+      });
     }
   }
 

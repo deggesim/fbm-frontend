@@ -41,7 +41,7 @@
           <fa-icon icon="cogs" class="menu-padding"></fa-icon>Gestione lega
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" (click)="isCollapsed = true;">Fantasquadre</a>
+          <a class="dropdown-item" routerLink="/admin/league-management/fantasy-teams" routerLinkActive="active" (click)="isCollapsed = true;">Fantasquadre</a>
           <a class="dropdown-item" routerLink="/admin/league-management/rounds" routerLinkActive="active" (click)="isCollapsed = true;">Gestione turni</a>
           <a class="dropdown-item" (click)="isCollapsed = true;">Gestione giornate</a>
         </ul>

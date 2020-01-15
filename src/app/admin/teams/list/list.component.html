@@ -19,7 +19,7 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let team of teams" class="manina">
+      <tr *ngFor="let team of teams">
         <td>{{team.fullName}}</td>
         <td>{{team.sponsor}}</td>
         <td>{{team.name}}</td>
@@ -47,7 +47,7 @@
 </ng-template>
 
 <!-- popup elimina -->
-<app-popup-conferma #popupConfermaElimina titolo="Elimina voce di spesa" btnConferma="Elimina" btnAnnulla="Annulla" (conferma)="confermaElimina()" (annulla)="popupConfermaElimina.chiudiModale()">
+<app-popup-conferma #popupConfermaElimina titolo="Elimina squadra" btnConferma="Elimina" btnAnnulla="Annulla" (conferma)="confermaElimina()" (annulla)="popupConfermaElimina.chiudiModale()">
 </app-popup-conferma>
 
 <!-- popup inserimento/modifica squadra -->
@@ -61,7 +61,7 @@
       </div>
 
       <div class="modal-body">
-        <app-edit [team]="teamSelected" (salva)="salva($event)" (annulla)="annulla()"></app-edit>
+        <app-team-edit [team]="teamSelected" (salva)="salva($event)" (annulla)="annulla()"></app-team-edit>
       </div>
     </div>
 

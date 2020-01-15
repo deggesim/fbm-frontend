@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Team } from 'src/app/models/team';
-import { SharedService } from 'src/app/shared/shared.service';
-import { moment } from 'ngx-bootstrap/chronos/test/chain';
 
 @Component({
-  selector: 'app-edit',
+  selector: 'app-team-edit',
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
@@ -19,7 +17,6 @@ export class EditComponent implements OnInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    public sharedService: SharedService,
   ) {
     this.createForm();
   }

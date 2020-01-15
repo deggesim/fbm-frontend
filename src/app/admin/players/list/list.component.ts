@@ -171,25 +171,25 @@ export class ListComponent implements OnInit {
   }
 
   confermaElimina() {
-    try {
-      if (this.playerSelected) {
-        this.playerService.delete(this.playerSelected._id).pipe(
-          tap(() => {
-            this.popupConfermaElimina.chiudiModale();
-            const title = 'Giocatore eliminata';
-            const message = 'Il giocatore è stato eliminato correttamente';
-            this.sharedService.notifica(globals.toastType.success, title, message);
-            this.playerSelected = undefined;
-          }),
-          switchMap(() => this.playerService.read()),
-        ).subscribe((players: Player[]) => {
-          this.players = players;
-          this.size = this.players.length;
-          this.listaPaginata = this.buildPage();
-        });
-      }
-    } catch (error) {
-      console.error(error);
+    if (this.playerSelected) {
+      this.playerService.delete(this.playerSelected._id).pipe(
+        catchError((err) => {
+          this.sharedService.notifyError(err);
+          return EMPTY;
+        }),
+        tap(() => {
+          this.popupConfermaElimina.chiudiModale();
+          const title = 'Giocatore eliminata';
+          const message = 'Il giocatore è stato eliminato correttamente';
+          this.sharedService.notifica(globals.toastType.success, title, message);
+          this.playerSelected = undefined;
+        }),
+        switchMap(() => this.playerService.read()),
+      ).subscribe((players: Player[]) => {
+        this.players = players;
+        this.size = this.players.length;
+        this.listaPaginata = this.buildPage();
+      });
     }
   }
 

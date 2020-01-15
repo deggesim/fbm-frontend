@@ -31,7 +31,7 @@
         </thead>
     
         <tbody>
-          <tr *ngFor="let player of listaPaginata" class="manina">
+          <tr *ngFor="let player of listaPaginata">
             <td>{{player.name}}</td>
             <td>{{player.nationality}}</td>
             <td>{{player.number}}</td>
@@ -69,7 +69,7 @@
   </ng-template>
   
   <!-- popup elimina -->
-  <app-popup-conferma #popupConfermaElimina titolo="Elimina voce di spesa" btnConferma="Elimina" btnAnnulla="Annulla" (conferma)="confermaElimina()" (annulla)="popupConfermaElimina.chiudiModale()">
+  <app-popup-conferma #popupConfermaElimina titolo="Elimina giocatore" btnConferma="Elimina" btnAnnulla="Annulla" (conferma)="confermaElimina()" (annulla)="popupConfermaElimina.chiudiModale()">
   </app-popup-conferma>
   
   <!-- popup inserimento/modifica giocatore -->

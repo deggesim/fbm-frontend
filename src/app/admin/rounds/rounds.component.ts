@@ -51,17 +51,10 @@ export class RoundsComponent implements OnInit {
 
   checkLength(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-      console.log('checkLength - control.value.length = ' + (control.value ? control.value.length : ''));
       if (this.form && this.form.value.round) {
-        console.log('this.form.value.round', this.form.value.round);
         const lengthRequested = this.form.value.round.teams;
         const wrongValue = control.value.length !== lengthRequested;
-        console.log(wrongValue);
-        console.log(this.form.valid);
-        console.log('this.form.get(\'round\').errors', this.form.get('round').errors);
-        console.log('this.form.get(\'unsortedList\').errors', this.form.get('unsortedList').errors);
-        console.log('this.form.get(\'sortedList\').errors', this.form.get('sortedList').errors);
-        return wrongValue ? { wrongLength: { value: lengthRequested } } : null;
+        return wrongValue ? { wrongLength: { value: control.value.length } } : null;
       }
     };
   }

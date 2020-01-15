@@ -1,0 +1,92 @@
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
+
+  <div fxLayout="row wrap" fxLayoutAlign="space-between">
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="name" class="control-label">Nome</label>
+        <input type="text" class="form-control" id="name" name="name" formControlName="name">
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="initialBalance" class="control-label">Bilancio</label>
+        <input type="number" class="form-control" id="initialBalance" name="initialBalance" formControlName="initialBalance"
+          [ngClass]="{'is-invalid': form.controls.initialBalance.invalid && form.controls.initialBalance.dirty}">
+        <app-error-message [form-control]="form.get('initialBalance')" name="Bilancio"></app-error-message>
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="outgo" class="control-label">Crediti spesi</label>
+        <input type="number" class="form-control" id="outgo" name="outgo" formControlName="outgo"
+          [ngClass]="{'is-invalid': form.controls.outgo.invalid && form.controls.outgo.dirty}">
+        <app-error-message [form-control]="form.get('outgo')" name="Crediti spesi"></app-error-message>
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="totalContracts" class="control-label"># Contratti</label>
+        <input type="number" class="form-control" id="totalContracts" name="totalContracts" formControlName="totalContracts"
+          [ngClass]="{'is-invalid': form.controls.totalContracts.invalid && form.controls.totalContracts.dirty}">
+        <app-error-message [form-control]="form.get('totalContracts')" name="# Contratti"></app-error-message>
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="playersInRoster" class="control-label"># Giocatori</label>
+        <input type="number" class="form-control" id="playersInRoster" name="playersInRoster" formControlName="playersInRoster"
+          [ngClass]="{'is-invalid': form.controls.playersInRoster.invalid && form.controls.playersInRoster.dirty}">
+        <app-error-message [form-control]="form.get('playersInRoster')" name="# Giocatori"></app-error-message>
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="extraPlayers" class="control-label">Visti spesi</label>
+        <input type="number" class="form-control" id="extraPlayers" name="extraPlayers" formControlName="extraPlayers"
+          [ngClass]="{'is-invalid': form.controls.extraPlayers.invalid && form.controls.extraPlayers.dirty}">
+        <app-error-message [form-control]="form.get('extraPlayers')" name="Visti spesi"></app-error-message>
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="pointsPenalty" class="control-label">Punti di penalità</label>
+        <input type="number" class="form-control" id="pointsPenalty" name="pointsPenalty" formControlName="pointsPenalty"
+          [ngClass]="{'is-invalid': form.controls.pointsPenalty.invalid && form.controls.pointsPenalty.dirty}">
+        <app-error-message [form-control]="form.get('pointsPenalty')" name="Punti di penalità"></app-error-message>
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="balancePenalty" class="control-label">Malus crediti</label>
+        <input type="number" class="form-control" id="balancePenalty" name="balancePenalty" formControlName="balancePenalty"
+          [ngClass]="{'is-invalid': form.controls.balancePenalty.invalid && form.controls.balancePenalty.dirty}">
+        <app-error-message [form-control]="form.get('balancePenalty')" name="Malus crediti"></app-error-message>
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="owners" class="control-label">Proprietari</label>
+        <ng-select id="owners" [items]="users" [multiple]="true" [trackByFn]="trackUserByFn"
+          [loading]="usersLoading" typeToSearchText="Inserisci almeno due caratteri" bindLabel="email"
+          formControlName="owners" clearAllText="Elimina">
+        </ng-select>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="annulla.emit()">Annulla</button>
+  </div>
+
+</form>

@@ -4,11 +4,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopupConfermaComponent } from './popup-conferma/popup-conferma.component';
 import { UploadComponent } from './upload/upload.component';
+import { ErrorMessageComponent } from './error-message/error-message.component';
 
 @NgModule({
   declarations: [
     PopupConfermaComponent,
-    UploadComponent
+    UploadComponent,
+    ErrorMessageComponent
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,8 @@ import { UploadComponent } from './upload/upload.component';
     CommonModule,
     FormsModule,
     PopupConfermaComponent,
-    UploadComponent
+    UploadComponent,
+    ErrorMessageComponent
   ]
 })
 export class SharedModule { }

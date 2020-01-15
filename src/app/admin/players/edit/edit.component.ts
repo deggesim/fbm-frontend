@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Player, Role } from 'src/app/models/player';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-player-edit',
@@ -20,7 +19,6 @@ export class EditComponent implements OnInit, OnChanges {
 
   constructor(
     private fb: FormBuilder,
-    public sharedService: SharedService,
   ) {
     this.createForm();
   }
