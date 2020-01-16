@@ -13,7 +13,7 @@
             <div fxFlex="49" fxFlex.xs="100">
               <div class="form-group">
                 <label for="data" class="control-label">File</label>
-                <input type="file" class="form-control" (change)="onFileChange($event)">
+                <input #uploadElement type="file" class="form-control" (change)="onFileChange($event)">
               </div>
             </div>
           </div>

@@ -7,11 +7,23 @@ import { League } from '../models/league';
 import { Login } from '../models/login';
 import { Role, User } from '../models/user';
 import { environment } from './../../environments/environment';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
 
   private endpoint = environment.endpoint;
+
+  private $user = new BehaviorSubject<User>(null);
+  private $userObservable = this.$user.asObservable();
+
+  public get userObservable(): Observable<User> {
+    return this.$userObservable;
+  }
+
+  public set user(user: User) {
+    this.$user.next(user);
+  }
 
   constructor(
     private http: HttpClient
@@ -29,6 +41,7 @@ export class AuthService {
     return this.http.post<User>(`${this.endpoint}/users/logout`, {})
       .pipe(
         tap(() => {
+          localStorage.removeItem('user');
           localStorage.removeItem('token');
           localStorage.removeItem('expires_at');
         }),
@@ -104,6 +117,7 @@ export class AuthService {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+    this.user = user;
   }
 
 }

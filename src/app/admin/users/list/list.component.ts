@@ -52,13 +52,6 @@ export class ListComponent implements OnInit {
     this.titoloModale = 'Modifica utente';
   }
 
-  clona(user: User): void {
-    const { name, email, password, role } = user;
-    this.userSelected = { name, email, password, role };
-    this.mostraPopupModifica = true;
-    this.titoloModale = 'Clona utente';
-  }
-
   async salva(user: User) {
     if (user._id == null) {
       this.userService.create(user).pipe(
@@ -133,7 +126,11 @@ export class ListComponent implements OnInit {
 
   confermaUpload(file: File) {
     this.userService.upload(file).pipe(
-      switchMap((users: User[]) => {
+      catchError((err) => {
+        this.sharedService.notifyError(err);
+        return EMPTY;
+      }),
+      switchMap(() => {
         return this.userService.read();
       }),
     ).subscribe((users: User[]) => {

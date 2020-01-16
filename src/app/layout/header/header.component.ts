@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@
 import { filter } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user';
+import { BehaviorSubject } from 'rxjs';
 
 interface IBreadcrumb {
   label: string;
@@ -30,7 +31,13 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService
-  ) { }
+  ) {
+    this.authService.userObservable.subscribe(
+      (user: User) => {
+        this.user = user;
+      }
+    );
+  }
 
   ngOnInit() {
     // subscribe to the NavigationEnd event
@@ -43,7 +50,6 @@ export class HeaderComponent implements OnInit {
         this.breadcrumbs = this.getBreadcrumbs(root);
       });
     this.admin = this.authService.isAdmin();
-    this.user = this.authService.getLoggedUser();
   }
 
   public isLoggedIn() {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
@@ -14,6 +14,7 @@ export class UploadComponent implements OnInit {
   @Output() annulla: EventEmitter<any> = new EventEmitter();
 
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
+  @ViewChild('uploadElement', { static: false }) uploadElement: ElementRef;
 
   form: FormGroup;
 
@@ -33,6 +34,8 @@ export class UploadComponent implements OnInit {
   }
 
   chiudiModale() {
+    this.form.reset();
+    this.uploadElement.nativeElement.value = '';
     this.modal.hide();
   }
 

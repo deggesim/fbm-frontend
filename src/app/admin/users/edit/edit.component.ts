@@ -30,8 +30,8 @@ export class EditComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const user: User = changes.user.currentValue;
     if (user != null) {
-      const { name, email, password, role } = user;
-      this.form.patchValue({ name, email, password, role });
+      const { name, email, role } = user;
+      this.form.patchValue({ name, email, role });
     }
   }
 
@@ -39,7 +39,7 @@ export class EditComponent implements OnInit, OnChanges {
     this.form = this.fb.group({
       name: [undefined, Validators.required],
       email: [undefined, Validators.required],
-      password: [undefined, Validators.required],
+      password: [undefined],
       role: [undefined, Validators.required],
     });
   }
