@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
 import { League } from '../models/league';
 import { Login } from '../models/login';
 import { Role, User } from '../models/user';
 import { environment } from './../../environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +17,10 @@ export class AuthService {
   private $user = new BehaviorSubject<User>(null);
   private $userObservable = this.$user.asObservable();
 
+  constructor(
+    private http: HttpClient
+  ) { }
+
   public get userObservable(): Observable<User> {
     return this.$userObservable;
   }
@@ -24,10 +28,6 @@ export class AuthService {
   public set user(user: User) {
     this.$user.next(user);
   }
-
-  constructor(
-    private http: HttpClient
-  ) { }
 
   public login(user: Login) {
     return this.http.post<{ user: Login, token: string }>(`${this.endpoint}/users/login`, user)
