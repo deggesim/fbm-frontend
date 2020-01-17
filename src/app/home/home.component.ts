@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
-  public async login(user: Login) {
+  public login(user: Login) {
     this.authService.login(user).subscribe((loginObj: { user: User, token: string }) => {
       this.listaLeghe = loginObj.user.leagues;
       if (this.listaLeghe != null && this.listaLeghe.length > 0) {
@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
 
   public selectLeague(league: League) {
     this.authService.setSelectedLeague(league);
-    this.router.navigate(['/admin/edit-league']);
+    this.router.navigate(['/admin/preseason/edit-league']);
   }
 
 }

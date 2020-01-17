@@ -62,7 +62,7 @@ export class ListComponent implements OnInit {
     this.mostraPopupModifica = true;
   }
 
-  async salva(fantasyTeam: FantasyTeam) {
+  salva(fantasyTeam: FantasyTeam) {
     this.fantasyTeamService.update(fantasyTeam).pipe(
       catchError((err) => {
         this.sharedService.notifyError(err);

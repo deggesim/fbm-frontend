@@ -52,7 +52,7 @@ export class ListComponent implements OnInit {
     this.titoloModale = 'Modifica utente';
   }
 
-  async salva(user: User) {
+  salva(user: User) {
     if (user._id == null) {
       this.userService.create(user).pipe(
         catchError((err) => {

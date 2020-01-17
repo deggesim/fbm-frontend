@@ -1,13 +1,17 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { itLocale } from 'ngx-bootstrap/locale';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
+import { AuthService } from '../services/auth.service';
 import * as globals from './globals';
 
 @Injectable()
 export class SharedService {
+
+  private endpoint = environment.endpoint;
 
   private bsConfig: Partial<BsDatepickerConfig> = {
     containerClass: 'theme-dark-blue',
@@ -16,8 +20,10 @@ export class SharedService {
   };
 
   constructor(
+    private http: HttpClient,
     private localeService: BsLocaleService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService,
   ) {
     defineLocale('it', itLocale);
     this.localeService.use('it');
@@ -75,5 +81,15 @@ export class SharedService {
     titolo = 'Errore server';
     descrizione = 'Si è verificato un problema nel download del documento';
     this.notifica(globals.toastType.error, titolo, descrizione);
+  }
+
+  public isPreseason() {
+    const selectedLeague = this.authService.getSelectedLeague();
+    return this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-preseason`);
+  }
+
+  public isOffseason() {
+    const selectedLeague = this.authService.getSelectedLeague();
+    return this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-offseason`);
   }
 }

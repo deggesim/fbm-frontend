@@ -75,7 +75,7 @@ export class RoundsComponent implements OnInit {
     this.selectedRound = null;
   }
 
-  async save() {
+  save() {
     this.selectedRound.fantasyTeams = this.form.value.sortedList;
     this.roundService.matches(this.selectedRound).subscribe((round: Round) => {
       const title = 'Generazione incontri';

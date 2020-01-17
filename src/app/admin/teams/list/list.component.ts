@@ -59,7 +59,7 @@ export class ListComponent implements OnInit {
     this.titoloModale = 'Clona squadra';
   }
 
-  async salva(team: Team) {
+  salva(team: Team) {
     if (team._id == null) {
       this.teamService.create(team).pipe(
         catchError((err) => {

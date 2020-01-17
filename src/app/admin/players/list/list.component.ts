@@ -113,7 +113,7 @@ export class ListComponent implements OnInit {
     this.titoloModale = 'Clona giocatore';
   }
 
-  async salva(player: Player) {
+  salva(player: Player) {
     let $playersObservable: Observable<Player>;
     if (player._id == null) {
       $playersObservable = this.playerService.create(player)

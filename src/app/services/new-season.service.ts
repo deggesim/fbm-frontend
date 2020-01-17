@@ -38,4 +38,8 @@ export class NewSeasonService {
     return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/roles`, roles);
   }
 
+  public completePreseason(leagueId: string) {
+    return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/complete-preseason`, null);
+  }
+
 }

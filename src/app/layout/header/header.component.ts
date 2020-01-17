@@ -21,6 +21,7 @@ export class HeaderComponent implements OnInit {
   @Output() openLogin: EventEmitter<any> = new EventEmitter(true);
   @Output() logout: EventEmitter<any> = new EventEmitter(true);
   @Output() profile: EventEmitter<any> = new EventEmitter(true);
+  @Output() completePreseason: EventEmitter<any> = new EventEmitter(true);
 
   isCollapsed = true;
   breadcrumbs: IBreadcrumb[] = [];
@@ -53,11 +54,11 @@ export class HeaderComponent implements OnInit {
   }
 
   public isLoggedIn() {
-    return this.authService.isLoggedIn();
+    return (this.user != null) && this.authService.isLoggedIn();
   }
 
   public isAdmin() {
-    return this.authService.isAdmin();
+    return (this.user != null) && this.authService.isAdmin();
   }
 
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
@@ -104,4 +105,5 @@ export class HeaderComponent implements OnInit {
     // we should never get here, but just in case
     return breadcrumbs;
   }
+
 }
