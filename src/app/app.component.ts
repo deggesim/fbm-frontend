@@ -34,13 +34,13 @@ export class AppComponent implements OnInit, AfterViewChecked {
     console.log('ngOnInit AppComponent');
     if (this.authService.isLoggedIn()) {
       this.authService.user = JSON.parse(localStorage.getItem('user'));
+      this.sharedService.isPreseason().subscribe((res: boolean) => {
+        console.log('this.sharedService.isPreseason()', res);
+      });
+      this.sharedService.isOffseason().subscribe((res: boolean) => {
+        console.log('this.sharedService.isOffseason()', res);
+      });
     }
-    this.sharedService.isPreseason().subscribe((res: boolean) => {
-      console.log('this.sharedService.isPreseason()', res);
-    });
-    this.sharedService.isOffseason().subscribe((res: boolean) => {
-      console.log('this.sharedService.isOffseason()', res);
-    });
   }
 
   ngAfterViewChecked(): void {
