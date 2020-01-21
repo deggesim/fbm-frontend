@@ -50,20 +50,19 @@ import { EditComponent as UserEditComponent } from './users/edit/edit.component'
     ReactiveFormsModule,
     CommonModule,
     FlexLayoutModule,
+    // ngx-bootstrap
     NgSelectModule,
     PaginationModule,
     TooltipModule,
     SortableModule,
     AccordionModule,
+    ModalModule,
+    // fine ngx-bootstrap
     FontAwesomeModule,
     SharedModule,
-    ModalModule,
     AdminRoutingModule
   ],
-  providers: [
-    UsersResolverService,
-    TeamResolverService
-  ]
+  providers: []
 })
 export class AdminModule {
   constructor(

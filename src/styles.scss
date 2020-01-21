@@ -4,6 +4,10 @@
 @import 'styles/project-colors';
 
 // padding per la navbar bootstrap fixed top
+html {
+  font-size: 14px;
+}
+
 body {
   padding-top: 70px;
 }

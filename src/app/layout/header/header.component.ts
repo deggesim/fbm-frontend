@@ -1,9 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, tap, switchMap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { User } from 'src/app/models/user';
 import { BehaviorSubject } from 'rxjs';
+import { SharedService } from 'src/app/shared/shared.service';
 
 interface IBreadcrumb {
   label: string;
@@ -27,11 +28,13 @@ export class HeaderComponent implements OnInit {
   breadcrumbs: IBreadcrumb[] = [];
   admin: boolean;
   user: User;
+  transactionLabel: string;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private sharedService: SharedService,
   ) {
     this.authService.userObservable.subscribe(
       (user: User) => {
@@ -51,6 +54,9 @@ export class HeaderComponent implements OnInit {
         this.breadcrumbs = this.getBreadcrumbs(root);
       });
     this.admin = this.authService.isAdmin();
+    this.sharedService.isPreseason().subscribe((preSeason: boolean) => {
+        this.transactionLabel = preSeason ? 'Asta fantamercato' : 'Mercato libero';
+    });
   }
 
   public isLoggedIn() {

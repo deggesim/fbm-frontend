@@ -15,8 +15,7 @@
           <fa-icon icon="shield-alt" class="icon-padding"></fa-icon>Squadre
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true;">Mercato libero</a>
-          <a class="dropdown-item" (click)="isCollapsed = true;">Asta fantamercato</a>
+          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true;">{{transactionLabel}}</a>
           <a class="dropdown-item" routerLink="/teams/trades" routerLinkActive="active" (click)="isCollapsed = true;">Scambi</a>
         </ul>
       </li>
