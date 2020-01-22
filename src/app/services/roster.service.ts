@@ -18,6 +18,10 @@ export class RosterService {
     return this.http.get<Roster[]>(`${this.endpoint}/rosters`);
   }
 
+  public freePlayers() {
+    return this.http.get<Roster[]>(`${this.endpoint}/rosters/free`);
+  }
+
   public create(roster: Roster) {
     return this.http.post<Roster>(`${this.endpoint}/rosters`, roster);
   }

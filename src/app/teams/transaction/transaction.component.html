@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
 
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
 
@@ -13,7 +13,13 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="roster" class="control-label">Giocatore</label>
-        <ng-select id="roster" [items]="rosters" [bindLabel]="roster.player.name + ' - ' + roster.player.nationality + ' - ' + roster.team.fullName" formControlName="player" clearAllText="Elimina" (change)="selectPlayer($event)">
+        <ng-select id="roster" [items]="rosters" bindLabel="player.name" formControlName="roster" clearAllText="Elimina" (change)="selectRoster($event)">
+          <ng-template ng-option-tmp let-item="item">
+            {{item.player.name}} - {{item.player.role}} - {{item.team.fullName}}
+        </ng-template>
+          <ng-template ng-label-tmp let-item="item">
+            {{item.player.name}} - {{item.player.role}} - {{item.team.fullName}}
+          </ng-template>
         </ng-select>
       </div>
     </div>
@@ -81,7 +87,7 @@
 
 </form>
 
-<ng-container *ngIf="fantasyRoster && fantasyRoster.length > 0; else empty">
+<ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
   <div class="table-responsive">
     <table class="table table-hover">
       <thead class="thead-dark">
@@ -97,7 +103,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let fr of fantasyRoster">
+        <tr *ngFor="let fr of fantasyRosters">
           <td>{{fr.roster.player.name}}</td>
           <td>{{fr.status}}</td>
           <td>{{fr.contract}}</td>
@@ -106,15 +112,15 @@
           <td>{{fr.roster.team.fullName}}</td>
 
           <td class="text-nowrap">
-            <button type="button" class="btn btn-warning" (click)="modifica(player)" tooltip="Modifica" placement="top">
+            <button type="button" class="btn btn-success" (click)="modifica(fr)" tooltip="Modifica" placement="top">
               <fa-icon icon="pencil-alt"></fa-icon>
             </button>&nbsp;
-            <button type="button" class="btn btn-success" (click)="clona(player)" tooltip="Clona" placement="top">
-              <fa-icon icon="clone"></fa-icon>
-            </button>&nbsp;
-            <button type="button" class="btn btn-danger" (click)="apriPopupElimina(player)" tooltip="Elimina" placement="top">
+            <button type="button" class="btn btn-warning" (click)="apriPopupRilascia(fr)" tooltip="Rilascia" placement="top">
               <fa-icon icon="trash"></fa-icon>
             </button>
+            <button type="button" class="btn btn-danger" (click)="apriPopupRimuovi(fr)" tooltip="Rimuovi" placement="top">
+              <fa-icon icon="trash"></fa-icon>
+            </button>&nbsp;
           </td>
         </tr>
       </tbody>
@@ -125,3 +131,13 @@
 <ng-template #empty>
   <h4>Nessun giocatore presente</h4>
 </ng-template>
+
+<!-- popup rilascia -->
+<app-popup-conferma #popupRilascia titolo="Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, i visti spesi ed il numero di contratti firmati non diminuiranno."
+  btnConferma="Rilascia" btnAnnulla="Annulla" (conferma)="rilascia()" (annulla)="popupRilascia.chiudiModale()">
+</app-popup-conferma>
+
+<!-- popup rimuovi -->
+<app-popup-conferma #popupRimuovi titolo="Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, i visti spesi ed il numero di contratti firmati diminuiranno di uno."
+  btnConferma="Rimuovi" btnAnnulla="Annulla" (conferma)="rimuovi()" (annulla)="popupRimuovi.chiudiModale()">
+</app-popup-conferma>

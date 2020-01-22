@@ -14,8 +14,8 @@ export class FantasyRosterService {
     private http: HttpClient
   ) { }
 
-  public read() {
-    return this.http.get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters`);
+  public read(fantasyTeamId: string) {
+    return this.http.get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}`);
   }
 
   public create(fantasyRoster: FantasyRoster) {
@@ -28,5 +28,13 @@ export class FantasyRosterService {
 
   public delete(id: string) {
     return this.http.delete<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${id}`);
+  }
+
+  public release(id: string) {
+    return this.http.delete<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${id}/release`);
+  }
+
+  public remove(id: string) {
+    return this.http.delete<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${id}/remove`);
   }
 }

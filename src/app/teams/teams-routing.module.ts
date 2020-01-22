@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
 import { FantasyTeamResolverService } from '../services/resolvers/fantasy-team-resolver.service';
-import { RosterResolverService } from '../services/resolvers/roster-resolver.service';
+import { FreePlayersResolverService } from '../services/resolvers/free-players-resolver.service';
 import { TradeComponent } from './trade/trade.component';
 import { TransactionComponent } from './transaction/transaction.component';
 
@@ -15,7 +15,7 @@ const routes: Routes = [
     },
     resolve: {
       fantasyTeams: FantasyTeamResolverService,
-      rosters: RosterResolverService,
+      rosters: FreePlayersResolverService,
     },
     canActivate: [AuthGuard],
   },

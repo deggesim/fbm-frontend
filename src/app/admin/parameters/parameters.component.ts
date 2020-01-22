@@ -49,7 +49,7 @@ export class ParametersComponent implements OnInit {
     });
   }
 
-  save() {
+  salva() {
     const parameters = [];
     Object.keys(this.form.controls).forEach(key => {
       parameters.push({ parameter: key, value: this.form.controls[key].value });

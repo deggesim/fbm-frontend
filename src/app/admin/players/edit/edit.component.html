@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="salvaGiocatore()" class="needs-validation" novalidate>
 
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
 
@@ -6,7 +6,7 @@
       <div class="form-group">
         <label for="name" class="control-label">Nome *</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name" [ngClass]="{'is-invalid': form.controls.name.invalid && form.controls.name.dirty}">
-        <div *ngIf="form.get('name').hasError('required') && form.get('name').dirty" class="invalid-feedback">Il campo Nome è obbligatorio</div>
+        <app-error-message [form-control]="form.get('name')" name="Nome"></app-error-message>
       </div>
     </div>
 
@@ -15,42 +15,61 @@
         <label for="nationality" class="control-label">Nazionalità *</label>
         <input type="text" class="form-control" id="nationality" name="nationality" formControlName="nationality"
           [ngClass]="{'is-invalid': form.controls.nationality.invalid && form.controls.nationality.dirty}">
-        <div *ngIf="form.get('nationality').hasError('required') && form.get('nationality').dirty" class="invalid-feedback">Il campo Nazionalità è obbligatorio</div>
+        <app-error-message [form-control]="form.get('nationality')" name="Nazionalità"></app-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="number" class="control-label">Numero</label>
-        <input type="text" class="form-control" id="number" name="number" formControlName="number" maxlength="2">
+        <input type="text" class="form-control" id="number" name="number" formControlName="number" maxlength="2" [ngClass]="{'is-invalid': form.controls.number.invalid && form.controls.number.dirty}">
+        <app-error-message [form-control]="form.get('number')" name="Numero"></app-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="yearBirth" class="control-label">Anno di nascita</label>
-        <input type="number" class="form-control" id="yearBirth" name="yearBirth" formControlName="yearBirth" min="1900" max="2999">
+        <input type="number" class="form-control" id="yearBirth" name="yearBirth" formControlName="yearBirth" min="1900" max="2999"
+          [ngClass]="{'is-invalid': form.controls.yearBirth.invalid && form.controls.yearBirth.dirty}">
+        <app-error-message [form-control]="form.get('yearBirth')" name="Anno di nascita"></app-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="height" class="control-label">Altezza</label>
-        <input type="number" class="form-control" id="height" name="height" formControlName="height" min="150" max="2999">
+        <input type="number" class="form-control" id="height" name="height" formControlName="height" min="150" max="2999"
+          [ngClass]="{'is-invalid': form.controls.height.invalid && form.controls.height.dirty}">
+        <app-error-message [form-control]="form.get('height')" name="Altezza"></app-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="weight" class="control-label">Peso</label>
-        <input type="number" class="form-control" id="weight" name="weight" formControlName="weight" min="50" max="199">
+        <input type="number" class="form-control" id="weight" name="weight" formControlName="weight" min="50" max="199"
+          [ngClass]="{'is-invalid': form.controls.weight.invalid && form.controls.weight.dirty}">
+        <app-error-message [form-control]="form.get('weight')" name="Peso"></app-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="role" class="control-label">Ruolo *</label>
-        <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina">
+        <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina"
+          [ngClass]="{'is-invalid': form.controls.role.invalid && form.controls.role.dirty}">
+        </ng-select>
+        <app-error-message [form-control]="form.get('role')" name="Ruolo"></app-error-message>
+      </div>
+    </div>
+
+    <div fxFlex="49" fxFlex.xs="100">
+      <div class="form-group">
+        <label for="team" class="control-label">Squadra *</label>
+        <ng-select id="team" name="team" [items]="teams" bindLabel="fullName" formControlName="team" clearAllText="Elimina"
+          [ngClass]="{'is-invalid': form.controls.team.invalid && form.controls.team.dirty}">
+          <app-error-message [form-control]="form.get('team')" name="Squadra"></app-error-message>
         </ng-select>
       </div>
     </div>

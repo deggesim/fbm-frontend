@@ -5,7 +5,7 @@
     <fa-icon icon="upload" class="my-float"></fa-icon>
   </div>
   
-  <ng-container *ngIf="players && players.length > 0; else empty">
+  <ng-container *ngIf="rosters && rosters.length > 0; else empty">
     <form #form="ngForm" class="form-inline pb-1">
       <div class="input-group">
         <input type="text" class="form-control" id="filtro" name="filtro" #filtro="ngModel" [(ngModel)]="filter" (keyup)="applicaFiltro(filtro.value)"
@@ -26,28 +26,30 @@
             <th>Altezza</th>
             <th>Peso</th>
             <th>Ruolo</th>
+            <th>Squadra</th>
             <th>Azioni</th>
           </tr>
         </thead>
     
         <tbody>
-          <tr *ngFor="let player of listaPaginata">
-            <td>{{player.name}}</td>
-            <td>{{player.nationality}}</td>
-            <td>{{player.number}}</td>
-            <td>{{player.yearBirth}}</td>
-            <td>{{player.height}}</td>
-            <td>{{player.weight}}</td>
-            <td>{{player.role}}</td>
+          <tr *ngFor="let roster of listaPaginata">
+            <td>{{roster.player.name}}</td>
+            <td>{{roster.player.nationality}}</td>
+            <td>{{roster.player.number}}</td>
+            <td>{{roster.player.yearBirth}}</td>
+            <td>{{roster.player.height}}</td>
+            <td>{{roster.player.weight}}</td>
+            <td>{{roster.player.role}}</td>
+            <td>{{roster.team.fullName}}</td>
     
             <td class="text-nowrap">
-              <button type="button" class="btn btn-warning" (click)="modifica(player)" tooltip="Modifica" placement="top">
+              <button type="button" class="btn btn-warning" (click)="modifica(roster)" tooltip="Modifica" placement="top">
                 <fa-icon icon="pencil-alt"></fa-icon>
               </button>&nbsp;
-              <button type="button" class="btn btn-success" (click)="clona(player)" tooltip="Clona" placement="top">
+              <button type="button" class="btn btn-success" (click)="clona(roster)" tooltip="Clona" placement="top">
                 <fa-icon icon="clone"></fa-icon>
               </button>&nbsp;
-              <button type="button" class="btn btn-danger" (click)="apriPopupElimina(player)" tooltip="Elimina" placement="top">
+              <button type="button" class="btn btn-danger" (click)="apriPopupElimina(roster)" tooltip="Elimina" placement="top">
                 <fa-icon icon="trash"></fa-icon>
               </button>
             </td>
@@ -83,7 +85,7 @@
         </div>
   
         <div class="modal-body">
-          <app-player-edit [player]="playerSelected" (salva)="salva($event)" (annulla)="annulla()"></app-player-edit>
+          <app-player-edit [roster]="rosterSelected" (salva)="salva($event)" (annulla)="annulla()"></app-player-edit>
         </div>
       </div>
   
@@ -91,5 +93,5 @@
   </div>
   
   <!-- popup upload -->
-  <app-upload #popupUpload titolo="Upload squadre" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></app-upload>
+  <app-upload #popupUpload titolo="Upload giocatori" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></app-upload>
   

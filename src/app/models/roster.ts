@@ -6,5 +6,5 @@ export interface Roster {
     _id?: string;
     player: Player;
     team: Team;
-    realFixture: RealFixture;
+    realFixture?: RealFixture;
 }

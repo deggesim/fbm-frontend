@@ -18,6 +18,10 @@ export class FantasyTeamService {
     return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`);
   }
 
+  public readOne(id: string) {
+    return this.http.get<FantasyTeam>(`${this.endpoint}/fantasy-teams/${id}`);
+  }
+
   public create(fantasyTeams: FantasyTeam[]) {
     return this.http.post<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`, fantasyTeams);
   }

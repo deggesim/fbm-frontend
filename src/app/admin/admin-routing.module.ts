@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from '../guards/admin.guard';
 import { FantasyTeamResolverService } from '../services/resolvers/fantasy-team-resolver.service';
 import { LeagueResolverService } from '../services/resolvers/league-resolver.service';
-import { PlayerResolverService } from '../services/resolvers/player-resolver.service';
+import { RosterResolverService } from '../services/resolvers/roster-resolver.service';
 import { RoundResolverService } from '../services/resolvers/round-resolver.service';
 import { TeamResolverService } from '../services/resolvers/team-resolver.service';
 import { UsersResolverService } from '../services/resolvers/users-resolver.service';
@@ -97,7 +97,7 @@ const routes: Routes = [
           breadcrumb: 'Giocatori'
         },
         resolve: {
-          players: PlayerResolverService
+          rosters: RosterResolverService
         },
       },
     ],

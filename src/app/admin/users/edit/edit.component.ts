@@ -11,7 +11,7 @@ import { User } from 'src/app/models/user';
 export class EditComponent implements OnInit, OnChanges {
 
   @Input() user: User;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
+  @Output() salvaEventEmitter: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
@@ -44,10 +44,10 @@ export class EditComponent implements OnInit, OnChanges {
     });
   }
 
-  save(): void {
+  salva(): void {
     const { name, email, password, role } = this.form.value;
     const user: User = { _id: this.user ? this.user._id : null, name, email, password, role };
-    this.salva.emit(user);
+    this.salvaEventEmitter.emit(user);
   }
 
 }

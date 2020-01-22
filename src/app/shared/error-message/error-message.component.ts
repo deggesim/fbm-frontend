@@ -16,11 +16,11 @@ export class ErrorMessageComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    const obs = this.formControl.valueChanges;
-    obs.subscribe(value => {
-      console.log(value)
-      console.log('this.formControl.hasError(\'required\')', this.formControl.hasError('required'));
-    });
+    // const obs = this.formControl.valueChanges;
+    // obs.subscribe(value => {
+    //   console.log(value)
+    //   console.log('this.formControl.hasError(\'required\')', this.formControl.hasError('required'));
+    // });
   }
 
 }

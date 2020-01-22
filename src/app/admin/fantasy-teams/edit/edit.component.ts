@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 export class EditComponent implements OnInit, OnChanges {
 
   @Input() fantasyTeam: FantasyTeam;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
+  @Output() salvaEventEmitter: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
@@ -87,7 +87,7 @@ export class EditComponent implements OnInit, OnChanges {
     };
   }
 
-  save(): void {
+  salva(): void {
     const {
       name,
       initialBalance,
@@ -111,7 +111,7 @@ export class EditComponent implements OnInit, OnChanges {
       balancePenalty,
       owners
     };
-    this.salva.emit(fantasyTeam);
+    this.salvaEventEmitter.emit(fantasyTeam);
   }
 
   trackUserByFn(user: User) {
