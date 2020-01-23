@@ -1,13 +1,5 @@
 @import 'project-colors';
 
-.blocco {
-  border: 1px solid $colore_domanda_sezione;
-  border-radius: 4px;
-  background-color: $color_grigio_chiaro;
-  margin: 1rem;
-  padding: 1rem;
-}
-
 .fieldset {
   background: $color_grigio_chiaro;
   margin: 1rem;
@@ -30,61 +22,6 @@
   font-size: 15px;
 }
 
-.ttable {
-  padding: 1rem;
-  @media (max-width: 599px) {
-    padding: 0.5rem;
-  }
-
-  .riga {
-    padding-top: 0.4rem;
-    padding-bottom: 0.4rem;
-    &.line {
-      border-bottom: 1px solid $colore_ttable_riga_dispari;
-    }
-    &.colora:nth-child(even) {
-      background-color: $colore_ttable_riga_pari;
-    }
-  }
-
-  .colonna {
-    padding-top: 0.4rem;
-    padding-bottom: 0.4rem;
-    margin-right: 1rem;
-    display: inline-block;
-    min-width: 30%;
-    padding-left: 1rem;
-    &.line {
-      border-left: 2px solid $colore_ttable_riga_dispari;
-    }
-  }
-
-  .alabel {
-    font-weight: 900;
-    margin-right: 10px;
-    min-width: 15rem;
-    display: inline-block;
-  }
-}
-
-.domanda-sezione {
-  padding: 1rem;
-
-  .domanda-testo {
-    margin-top: 0.2em;
-    font-size: 1.2em;
-    border-bottom: 1px solid $colore_domanda_sezione;
-    padding-bottom: 0.2rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .benvenuto-testo {
-    border-bottom: 1px solid $colore_domanda_sezione;
-    padding-bottom: 0.5rem;
-    margin-bottom: 2rem;
-  }
-}
-
 .padding {
   padding: 1rem;
 }
@@ -97,60 +34,8 @@
   width: 100%;
 }
 
-.radio-label {
-  font-weight: 400;
-  padding-left: 1rem;
-  vertical-align: top;
-  display: inline;
-}
-
-.inline {
-  display: inline-flex;
-}
-
-// Custom table
-.customFieldset {
-  padding: 10px;
-  border-radius: 0.5rem;
-  border: 1px solid #CECECE;
-}
-
-.customLegend {
-  width: inherit;
-  border-radius: 0.5rem;
-  border: 1px solid #CECECE;
-  background-color: white;
-  margin-bottom: auto;
-  font-size: 15px;
-}
-
-caption {
-  font-weight: 700;
-  color: #286090;
-  padding-bottom: 0;
-  // border-bottom: 1px solid #E5E5E5;
-  width: 100%;
-}
-
-.spaceClass {
-  padding-bottom: 15px;
-}
-
 .manina {
   cursor: pointer;
-}
-
-// statistiche
-.barre-orizzontali-mensile {
-  height: calc((100vh - 210px) * 3);
-}
-
-.barre-orizzontali-annuale {
-  height: calc(100vh - 210px);
-}
-
-.torta {
-  height: calc(100vh - 210px);
 }
 
 // flottante

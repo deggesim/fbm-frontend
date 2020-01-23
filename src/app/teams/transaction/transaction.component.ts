@@ -9,6 +9,7 @@ import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { Roster } from 'src/app/models/roster';
 import { FantasyRosterService } from 'src/app/services/fantasy-roster.service';
 import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
+import { RosterService } from 'src/app/services/roster.service';
 import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from 'src/app/shared/shared.service';
 import * as globals from '../../shared/globals';
@@ -38,6 +39,7 @@ export class TransactionComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private sharedService: SharedService,
+    private rosterService: RosterService,
     private fantasyRosterService: FantasyRosterService,
     private fantasyTeamService: FantasyTeamService,
   ) {
@@ -67,15 +69,23 @@ export class TransactionComponent implements OnInit {
 
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
     this.fantasyTeamSelected = fantasyTeam;
-    this.fantasyRosterService.read(this.fantasyTeamSelected._id).subscribe((fr: FantasyRoster[]) => {
-      this.fantasyRosters = fr;
-    });
-
+    if (fantasyTeam != null) {
+      this.fantasyRosterService.read(fantasyTeam._id).subscribe((fantasyRosters: FantasyRoster[]) => {
+        this.fantasyRosters = fantasyRosters;
+      });
+      if (this.rosterSelected != null) {
+        this.modal.show();
+      }
+    } else {
+      this.fantasyRosters = null;
+    }
   }
 
   selectRoster(roster: Roster) {
     this.rosterSelected = roster;
-    this.modal.show();
+    if (this.fantasyTeamSelected != null) {
+      this.modal.show();
+    }
   }
 
   manageContract(draft: boolean) {
@@ -101,12 +111,21 @@ export class TransactionComponent implements OnInit {
           this.sharedService.notifyError(err);
           return EMPTY;
         }),
+        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        tap((fantasyTeam: FantasyTeam) => {
+          this.fantasyTeamSelected = fantasyTeam;
+        }),
+        switchMap(() => this.rosterService.freePlayers()),
+        tap((rosters: Roster[]) => { this.rosters = rosters; }),
         switchMap(() => this.fantasyRosterService.read(this.fantasyTeamSelected._id)),
       ).subscribe((fr: FantasyRoster[]) => {
         this.fantasyRosters = fr;
         const title = 'Modifica tesseramento';
         const message = 'Tesseramento modificato correttamente';
         this.sharedService.notifica(globals.toastType.success, title, message);
+        this.rosterSelected = null;
+        this.form.get('roster').reset();
+        this.modal.hide();
       });
     } else {
       const fantasyRoster: FantasyRoster = {
@@ -118,12 +137,21 @@ export class TransactionComponent implements OnInit {
           this.sharedService.notifyError(err);
           return EMPTY;
         }),
+        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        tap((fantasyTeam: FantasyTeam) => {
+          this.fantasyTeamSelected = fantasyTeam;
+        }),
+        switchMap(() => this.rosterService.freePlayers()),
+        tap((rosters: Roster[]) => { this.rosters = rosters; }),
         switchMap(() => this.fantasyRosterService.read(this.fantasyTeamSelected._id)),
       ).subscribe((fr: FantasyRoster[]) => {
         this.fantasyRosters = fr;
         const title = 'Nuovo tesseramento';
         const message = 'Giocatore tesserato correttamente';
         this.sharedService.notifica(globals.toastType.success, title, message);
+        this.rosterSelected = null;
+        this.form.get('roster').reset();
+        this.modal.hide();
       });
     }
   }
@@ -135,6 +163,8 @@ export class TransactionComponent implements OnInit {
       contract: 1,
       yearContract: 1,
     });
+    this.rosterSelected = null;
+    this.form.get('roster').reset();
     this.modal.hide();
   }
 
@@ -146,6 +176,8 @@ export class TransactionComponent implements OnInit {
       contract: fantasyRoster.contract,
       yearContract: fantasyRoster.yearContract,
     });
+    this.rosterSelected = null;
+    this.form.get('roster').reset();
     this.modal.show();
   }
 
@@ -165,15 +197,19 @@ export class TransactionComponent implements OnInit {
         this.sharedService.notifyError(err);
         return EMPTY;
       }),
-      tap(() => {
-        this.popupRimuovi.chiudiModale();
-        const title = 'Giocatore rimosso';
-        const message = 'Il giocatore è stato rimosso correttamente.';
-        this.sharedService.notifica(globals.toastType.success, title, message);
+      switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+      tap((fantasyTeam: FantasyTeam) => {
+        this.fantasyTeamSelected = fantasyTeam;
       }),
-      switchMap(() => this.fantasyTeamService.readOne(this.fantasyTeamSelected._id)),
-    ).subscribe((fantasyTeam: FantasyTeam) => {
-      this.fantasyRosters = fantasyTeam.fantasyRosters;
+      switchMap(() => this.rosterService.freePlayers()),
+      tap((rosters: Roster[]) => { this.rosters = rosters; }),
+      switchMap(() => this.fantasyRosterService.read(this.fantasyTeamSelected._id)),
+    ).subscribe((fantasyRosters: FantasyRoster[]) => {
+      this.fantasyRosters = fantasyRosters;
+      const title = 'Giocatore rimosso';
+      const message = 'Il giocatore è stato rimosso correttamente.';
+      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.popupRimuovi.chiudiModale();
     });
   }
 
@@ -183,15 +219,19 @@ export class TransactionComponent implements OnInit {
         this.sharedService.notifyError(err);
         return EMPTY;
       }),
-      tap(() => {
-        this.popupRilascia.chiudiModale();
-        const title = 'Giocatore rilasciato';
-        const message = 'Il giocatore è stato rilasciato correttamente.';
-        this.sharedService.notifica(globals.toastType.success, title, message);
+      switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+      tap((fantasyTeam: FantasyTeam) => {
+        this.fantasyTeamSelected = fantasyTeam;
       }),
-      switchMap(() => this.fantasyTeamService.readOne(this.fantasyTeamSelected._id)),
-    ).subscribe((fantasyTeam: FantasyTeam) => {
-      this.fantasyRosters = fantasyTeam.fantasyRosters;
+      switchMap(() => this.rosterService.freePlayers()),
+      tap((rosters: Roster[]) => { this.rosters = rosters; }),
+      switchMap(() => this.fantasyRosterService.read(this.fantasyTeamSelected._id)),
+    ).subscribe((fantasyRosters: FantasyRoster[]) => {
+      this.fantasyRosters = fantasyRosters;
+      const title = 'Giocatore rilasciato';
+      const message = 'Il giocatore è stato rilasciato correttamente.';
+      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.popupRilascia.chiudiModale();
     });
   }
 }

@@ -18,7 +18,7 @@ export class FantasyTeamService {
     return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`);
   }
 
-  public readOne(id: string) {
+  public get(id: string) {
     return this.http.get<FantasyTeam>(`${this.endpoint}/fantasy-teams/${id}`);
   }
 
