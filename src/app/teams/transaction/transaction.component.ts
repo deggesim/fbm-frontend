@@ -65,6 +65,14 @@ export class TransactionComponent implements OnInit {
       contract: [1, Validators.required],
       yearContract: [1, Validators.required],
     });
+
+    this.form.get('draft').valueChanges.subscribe((draft: boolean) => {
+      if (draft) {
+        this.form.get('contract').disable();
+      } else {
+        this.form.get('contract').enable();
+      }
+    });
   }
 
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
@@ -86,15 +94,6 @@ export class TransactionComponent implements OnInit {
     if (this.fantasyTeamSelected != null) {
       this.modal.show();
     }
-  }
-
-  manageContract(draft: boolean) {
-    if (draft) {
-      this.form.get('contract').disable();
-    } else {
-      this.form.get('contract').enable();
-    }
-    console.log(draft);
   }
 
   salva() {
@@ -126,6 +125,7 @@ export class TransactionComponent implements OnInit {
         this.rosterSelected = null;
         this.form.get('roster').reset();
         this.modal.hide();
+        this.fantasyRosterSelected = null;
       });
     } else {
       const fantasyRoster: FantasyRoster = {
@@ -210,6 +210,7 @@ export class TransactionComponent implements OnInit {
       const message = 'Il giocatore è stato rimosso correttamente.';
       this.sharedService.notifica(globals.toastType.success, title, message);
       this.popupRimuovi.chiudiModale();
+      this.fantasyRosterSelected = null;
     });
   }
 
@@ -232,6 +233,7 @@ export class TransactionComponent implements OnInit {
       const message = 'Il giocatore è stato rilasciato correttamente.';
       this.sharedService.notifica(globals.toastType.success, title, message);
       this.popupRilascia.chiudiModale();
+      this.fantasyRosterSelected = null;
     });
   }
 }
