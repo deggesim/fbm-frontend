@@ -1,13 +1,13 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { EMPTY } from 'rxjs';
+import { catchError, filter, switchMap, tap } from 'rxjs/operators';
 import { User } from './models/user';
 import { AuthService } from './services/auth.service';
 import { NewSeasonService } from './services/new-season.service';
 import * as globals from './shared/globals';
 import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
-import { catchError } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -34,12 +34,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     console.log('ngOnInit AppComponent');
     if (this.authService.isLoggedIn()) {
       this.authService.user = JSON.parse(localStorage.getItem('user'));
-      this.sharedService.isPreseason().subscribe((res: boolean) => {
-        console.log('this.sharedService.isPreseason()', res);
-      });
-      this.sharedService.isOffseason().subscribe((res: boolean) => {
-        console.log('this.sharedService.isOffseason()', res);
-      });
+      this.authService.leagueStatusObservableChain.subscribe();
     }
   }
 
@@ -80,7 +75,11 @@ export class AppComponent implements OnInit, AfterViewChecked {
         this.sharedService.notifyError(err);
         return EMPTY;
       }),
+      switchMap(() => this.authService.leagueStatusObservableChain)
     ).subscribe(() => {
+      const title = 'Presason completata';
+      const message = 'Il torneo ora è nella fase "Stagione regolare"';
+      this.sharedService.notifica(globals.toastType.success, title, message);
       this.router.navigate(['/home']);
     });
   }

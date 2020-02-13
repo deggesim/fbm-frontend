@@ -1,10 +1,8 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
-import { filter, tap, switchMap } from 'rxjs/operators';
-import { AuthService } from 'src/app/services/auth.service';
+import { filter } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
-import { BehaviorSubject } from 'rxjs';
-import { SharedService } from 'src/app/shared/shared.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 interface IBreadcrumb {
   label: string;
@@ -28,17 +26,22 @@ export class HeaderComponent implements OnInit {
   breadcrumbs: IBreadcrumb[] = [];
   admin: boolean;
   user: User;
-  transactionLabel: string;
+  leagueStatus: string;
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
-    private sharedService: SharedService,
   ) {
     this.authService.userObservable.subscribe(
       (user: User) => {
         this.user = user;
+      }
+    );
+
+    this.authService.leagueStatusObservable.subscribe(
+      (leagueStatus: string) => {
+        this.leagueStatus = leagueStatus;
       }
     );
   }
@@ -54,9 +57,6 @@ export class HeaderComponent implements OnInit {
         this.breadcrumbs = this.getBreadcrumbs(root);
       });
     this.admin = this.authService.isAdmin();
-    this.sharedService.isPreseason().subscribe((preSeason: boolean) => {
-        this.transactionLabel = preSeason ? 'Asta fantamercato' : 'Mercato libero';
-    });
   }
 
   public isLoggedIn() {
@@ -65,6 +65,14 @@ export class HeaderComponent implements OnInit {
 
   public isAdmin() {
     return (this.user != null) && this.authService.isAdmin();
+  }
+
+  public isPreseason() {
+    return (this.leagueStatus != null) && this.leagueStatus === 'Preseason';
+  }
+
+  get transactionLabel() {
+    return this.isPreseason() ? 'Asta fantamercato' : 'Mercato libero';
   }
 
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {

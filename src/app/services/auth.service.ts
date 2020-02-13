@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import * as jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { shareReplay, tap } from 'rxjs/operators';
+import { filter, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { League } from '../models/league';
 import { Login } from '../models/login';
 import { Role, User } from '../models/user';
@@ -17,6 +17,28 @@ export class AuthService {
   private $user = new BehaviorSubject<User>(null);
   private $userObservable = this.$user.asObservable();
 
+  private $leagueStatus = new BehaviorSubject<string>(null);
+  private $leagueStatusObservable = this.$leagueStatus.asObservable();
+  private $leagueStatusObservableChain = this.isPreseason().pipe(
+    filter((preseason: boolean) => {
+    if (preseason) {
+      this.leagueStatus = 'Preseason';
+    }
+    return !preseason;
+  }), switchMap(() => this.isOffseason()), filter((offseason: boolean) => {
+    if (offseason) {
+      this.leagueStatus = 'Offseason';
+    }
+    return !offseason;
+  }), switchMap(() => this.isPostSeason()), filter((postseason: boolean) => {
+    if (postseason) {
+      this.leagueStatus = 'Offseason';
+    }
+    return !postseason;
+  }), tap(() => {
+    this.leagueStatus = 'Stagione Regolare';
+  }));
+
   constructor(
     private http: HttpClient
   ) { }
@@ -27,6 +49,33 @@ export class AuthService {
 
   public set user(user: User) {
     this.$user.next(user);
+  }
+
+  public get leagueStatusObservableChain(): Observable<boolean> {
+    return this.$leagueStatusObservableChain;
+  }
+
+  public set leagueStatus(leagueStatus: string) {
+    this.$leagueStatus.next(leagueStatus);
+  }
+
+  public get leagueStatusObservable(): Observable<string> {
+    return this.$leagueStatusObservable;
+  }
+
+  public isPreseason() {
+    const selectedLeague = this.getSelectedLeague();
+    return this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-preseason`);
+  }
+
+  public isOffseason() {
+    const selectedLeague = this.getSelectedLeague();
+    return this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-offseason`);
+  }
+
+  public isPostSeason() {
+    const selectedLeague = this.getSelectedLeague();
+    return this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-postseason`);
   }
 
   public login(user: Login) {
@@ -118,6 +167,7 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
     this.user = user;
+    this.leagueStatusObservableChain.subscribe();
   }
 
 }
