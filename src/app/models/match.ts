@@ -1,6 +1,7 @@
 import { FantasyTeam } from './fantasy-team';
 
 export interface Match {
+    _id: string;
     homeTeam: FantasyTeam;
     awayTeam: FantasyTeam;
     homeRanking: number;
@@ -14,6 +15,8 @@ export interface Match {
     awayPlusMinus: number;
     homeGrade: number;
     awayGrade: number;
+    homeScore: number;
+    awayScore: number;
     overtime: number;
     completed: boolean;
 }

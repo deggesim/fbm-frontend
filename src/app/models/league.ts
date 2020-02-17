@@ -28,3 +28,10 @@ export interface Parameter {
     parameter: string;
     value: number;
 }
+
+export enum Status {
+    'Preseason' = 'Preseason',
+    'RegularSeason' = 'Stagione Regolare',
+    'Postseason' = 'Playoff/Playout',
+    'Offseason' = 'Offseason'
+}

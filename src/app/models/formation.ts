@@ -3,6 +3,7 @@ import { Fixture } from './fixture';
 import { Player } from './player';
 
 export interface Formation {
+    _id: string;
     fantasyTeam: FantasyTeam;
     player: Player;
     spot: number;

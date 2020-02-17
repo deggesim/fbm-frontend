@@ -1,0 +1,84 @@
+<form [formGroup]="form" (ngSubmit)="salvaEvent()" class="needs-validation" novalidate>
+
+  <ng-container formArrayName="matchArray" *ngFor="let match of matches; let i=index">
+    <fieldset class="fieldset" [formGroupName]="i">
+      <legend class="legend">
+        <fa-icon icon="basketball-ball" class="icon-padding"></fa-icon>{{match.homeTeam.name}} - {{match.awayTeam.name}}
+      </legend>
+      <div fxLayout="row wrap" fxLayoutAlign="space-between">
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="homeRanking-{{i}}" class="control-label">Valutazione casa</label>
+            <input type="number" class="form-control" id="homeRanking-{{i}}" formControlName="homeRanking">
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="awayRanking-{{i}}" class="control-label">Valutazione trasferta</label>
+            <input type="number" class="form-control" id="awayRanking-{{i}}" formControlName="awayRanking">
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="homeGrade-{{i}}" class="control-label">Voti casa</label>
+            <input type="number" class="form-control" id="homeGrade-{{i}}" formControlName="homeGrade">
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="awayGrade-{{i}}" class="control-label">Voti trasferta</label>
+            <input type="number" class="form-control" id="awayGrade-{{i}}" formControlName="awayGrade">
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="homeScore-{{i}}" class="control-label">Punteggio casa *</label>
+            <input type="number" class="form-control" id="homeScore-{{i}}" formControlName="homeScore"
+              [ngClass]="{'is-invalid': form.controls.matchArray.at(i).controls.homeScore.invalid && form.controls.matchArray.at(i).controls.homeScore.dirty}">
+            <div *ngIf="form.get('matchArray').at(i).controls.homeScore.hasError('required') && form.get('matchArray').at(i).controls.homeScore.dirty" class="invalid-feedback">
+              Il campo Punteggio casa è obbligatorio
+            </div>
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="awayScore-{{i}}" class="control-label">Punteggio trasferta *</label>
+            <input type="number" class="form-control" id="awayScore-{{i}}" formControlName="awayScore"
+              [ngClass]="{'is-invalid': form.controls.matchArray.at(i).controls.awayScore.invalid && form.controls.matchArray.at(i).controls.awayScore.dirty}">
+            <div *ngIf="form.get('matchArray').at(i).controls.awayScore.hasError('required') && form.get('matchArray').at(i).controls.awayScore.dirty" class="invalid-feedback">
+              Il campo Punteggio trasferta è obbligatorio
+            </div>
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="overtime-{{i}}" class="control-label">Overtime</label>
+            <input type="number" class="form-control" id="overtime-{{i}}" formControlName="overtime">
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="completed-{{i}}" class="control-label">Completata</label>
+            <input type="checkbox" class="form-control" id="completed-{{i}}" formControlName="completed">
+          </div>
+        </div>
+
+      </div>
+    </fieldset>
+
+  </ng-container>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="annulla.emit()">Annulla</button>
+  </div>
+
+</form>

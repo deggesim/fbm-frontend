@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@
 import { filter } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
+import { Status } from 'src/app/models/league';
 
 interface IBreadcrumb {
   label: string;
@@ -67,8 +68,13 @@ export class HeaderComponent implements OnInit {
     return (this.user != null) && this.authService.isAdmin();
   }
 
+  public getSelectedLeague() {
+    const league = this.authService.getSelectedLeague();
+    return league != null ? league.name : '';
+  }
+
   public isPreseason() {
-    return (this.leagueStatus != null) && this.leagueStatus === 'Preseason';
+    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
   }
 
   get transactionLabel() {

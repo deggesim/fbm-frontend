@@ -10,8 +10,6 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { TeamResolverService } from '../services/resolvers/team-resolver.service';
-import { UsersResolverService } from '../services/resolvers/users-resolver.service';
 import { SharedModule } from '../shared/shared.module';
 import { AdminRoutingModule } from './admin-routing.module';
 import { EditLeagueComponent } from './edit-league/edit-league.component';
@@ -26,8 +24,8 @@ import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
 import { EditComponent as TeamEditComponent } from './teams/edit/edit.component';
 import { ListComponent as TeamListComponent } from './teams/list/list.component';
-import { ListComponent as UsersListComponent } from './users/list/list.component';
 import { EditComponent as UserEditComponent } from './users/edit/edit.component';
+import { ListComponent as UserListComponent } from './users/list/list.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +41,7 @@ import { EditComponent as UserEditComponent } from './users/edit/edit.component'
     RoundsComponent,
     TeamListComponent,
     TeamEditComponent,
-    UsersListComponent,
+    UserListComponent,
     UserEditComponent
   ],
   imports: [

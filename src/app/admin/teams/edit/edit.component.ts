@@ -10,7 +10,7 @@ import { Team } from 'src/app/models/team';
 export class EditComponent implements OnInit, OnChanges {
 
   @Input() team: Team;
-  @Output() salvaEventEmitter: EventEmitter<any> = new EventEmitter(true);
+  @Output() salva: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
@@ -43,10 +43,10 @@ export class EditComponent implements OnInit, OnChanges {
     });
   }
 
-  salva(): void {
+  salvaEvent(): void {
     const { fullName, sponsor, name, city, abbreviation } = this.form.value;
     const team: Team = { _id: this.team ? this.team._id : null, fullName, sponsor, name, city, abbreviation, real: true };
-    this.salvaEventEmitter.emit(team);
+    this.salva.emit(team);
   }
 
 }

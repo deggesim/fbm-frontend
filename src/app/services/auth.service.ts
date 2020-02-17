@@ -4,7 +4,7 @@ import * as jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, shareReplay, switchMap, tap } from 'rxjs/operators';
-import { League } from '../models/league';
+import { League, Status } from '../models/league';
 import { Login } from '../models/login';
 import { Role, User } from '../models/user';
 import { environment } from './../../environments/environment';
@@ -22,21 +22,21 @@ export class AuthService {
   private $leagueStatusObservableChain = this.isPreseason().pipe(
     filter((preseason: boolean) => {
     if (preseason) {
-      this.leagueStatus = 'Preseason';
+      this.leagueStatus = Status.Preseason;
     }
     return !preseason;
   }), switchMap(() => this.isOffseason()), filter((offseason: boolean) => {
     if (offseason) {
-      this.leagueStatus = 'Offseason';
+      this.leagueStatus = Status.Offseason;
     }
     return !offseason;
   }), switchMap(() => this.isPostSeason()), filter((postseason: boolean) => {
     if (postseason) {
-      this.leagueStatus = 'Offseason';
+      this.leagueStatus = Status.Postseason;
     }
     return !postseason;
   }), tap(() => {
-    this.leagueStatus = 'Stagione Regolare';
+    this.leagueStatus = Status.RegularSeason;
   }));
 
   constructor(

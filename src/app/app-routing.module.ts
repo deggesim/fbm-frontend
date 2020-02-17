@@ -18,6 +18,11 @@ const routes: Routes = [
     loadChildren: () => import('./teams/teams.module').then(mod => mod.TeamsModule),
   },
   {
+    path: 'competitions',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./competitions/competitions.module').then(mod => mod.CompetitionsModule),
+  },
+  {
     path: 'admin',
     canActivate: [AuthGuard],
     loadChildren: () => import('./admin/admin.module').then(mod => mod.AdminModule),
