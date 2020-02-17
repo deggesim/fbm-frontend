@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  padding-top: 70px;
+  padding-top: 4.5rem;
 }
 
 button:disabled {
@@ -65,6 +65,10 @@ a {
   color: #FFFFFF;
   background-color: #212529;
   border-color: #212529;
+}
+
+.breadcrumb {
+  padding: 0.25rem 1rem;
 }
 
 // ng-select
