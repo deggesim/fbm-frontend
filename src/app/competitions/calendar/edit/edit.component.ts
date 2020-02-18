@@ -30,6 +30,7 @@ export class EditComponent implements OnInit, OnChanges {
     if (matches != null) {
       for (const match of matches) {
         this.matchArray.push(this.fb.group({
+          _id: match._id,
           homeRanking: [match.homeRanking],
           awayRanking: [match.awayRanking],
           homeGrade: [match.homeGrade],
@@ -54,7 +55,7 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   salvaEvent(): void {
-    this.salva.emit(this.matches);
+    this.salva.emit(this.form.get('matchArray').value);
   }
 
 }
