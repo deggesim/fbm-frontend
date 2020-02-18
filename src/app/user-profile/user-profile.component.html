@@ -6,7 +6,7 @@
       <div class="form-group">
         <label for="name" class="control-label">Nome</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name"
-          [ngClass]="{'is-invalid': form.controls.name.invalid && form.controls.name.dirty}">
+          [ngClass]="{'is-invalid': form.get('name').invalid && form.get('name').dirty}">
         <div *ngIf="form.get('name').hasError('required') && form.get('name').dirty" class="invalid-feedback">
           Il campo Nome è obbligatorio</div>
       </div>
@@ -16,7 +16,7 @@
       <div class="form-group">
         <label for="email" class="control-label">Email</label>
         <input type="text" class="form-control" id="email" name="email" formControlName="email"
-          [ngClass]="{'is-invalid': form.controls.email.invalid && form.controls.email.dirty}">
+          [ngClass]="{'is-invalid': form.get('email').invalid && form.get('email').dirty}">
         <div *ngIf="form.get('email').hasError('required') && form.get('email').dirty" class="invalid-feedback">
           Il campo Email è obbligatorio</div>
       </div>
@@ -25,7 +25,7 @@
     <!-- <div fxFlex="100" *ngIf="superAdmin">
       <div class="form-group form-check">
         <input type="checkbox" class="form-check-input" id="admin" name="admin" formControlName="admin"
-        [ngClass]="{'is-invalid': form.controls.admin.invalid && form.controls.admin.dirty}">
+        [ngClass]="{'is-invalid': form.get('admin').invalid && form.get('admin').dirty}">
         <label for="admin" class="control-label">Amministratore</label>
         <div *ngIf="form.get('admin').hasError('required') && form.get('admin').dirty" class="invalid-feedback">
           Il campo Amministratore è obbligatorio</div>
@@ -36,7 +36,7 @@
       <div class="form-group">
         <label for="newPassword" class="control-label">Nuova password</label>
         <input type="password" class="form-control" id="newPassword" name="newPassword" formControlName="newPassword"
-          [ngClass]="{'is-invalid': form.controls.newPassword.invalid && form.controls.newPassword.dirty}">
+          [ngClass]="{'is-invalid': form.get('newPassword').invalid && form.get('newPassword').dirty}">
         <div *ngIf="form.get('newPassword').hasError('required') && form.get('newPassword').dirty"
           class="invalid-feedback">
           Il campo Nuova password è obbligatorio</div>
@@ -48,7 +48,7 @@
         <label for="confirmPassword" class="control-label">Conferma password</label>
         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
           formControlName="confirmPassword"
-          [ngClass]="{'is-invalid': form.controls.confirmPassword.invalid && form.controls.confirmPassword.dirty}">
+          [ngClass]="{'is-invalid': form.get('confirmPassword').invalid && form.get('confirmPassword').dirty}">
         <div *ngIf="form.get('confirmPassword').hasError('required') && form.get('confirmPassword').dirty"
           class="invalid-feedback">
           Il campo Conferma password è obbligatorio</div>

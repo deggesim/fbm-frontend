@@ -13,7 +13,7 @@
       <div class="form-group">
         <label for="initialBalance" class="control-label">Bilancio</label>
         <input type="number" class="form-control" id="initialBalance" name="initialBalance" formControlName="initialBalance"
-          [ngClass]="{'is-invalid': form.controls.initialBalance.invalid && form.controls.initialBalance.dirty}">
+          [ngClass]="{'is-invalid': form.get('initialBalance').invalid && form.get('initialBalance').dirty}">
         <app-error-message [form-control]="form.get('initialBalance')" name="Bilancio"></app-error-message>
       </div>
     </div>
@@ -22,7 +22,7 @@
       <div class="form-group">
         <label for="outgo" class="control-label">Crediti spesi</label>
         <input type="number" class="form-control" id="outgo" name="outgo" formControlName="outgo"
-          [ngClass]="{'is-invalid': form.controls.outgo.invalid && form.controls.outgo.dirty}">
+          [ngClass]="{'is-invalid': form.get('outgo').invalid && form.get('outgo').dirty}">
         <app-error-message [form-control]="form.get('outgo')" name="Crediti spesi"></app-error-message>
       </div>
     </div>
@@ -31,7 +31,7 @@
       <div class="form-group">
         <label for="totalContracts" class="control-label"># Contratti</label>
         <input type="number" class="form-control" id="totalContracts" name="totalContracts" formControlName="totalContracts"
-          [ngClass]="{'is-invalid': form.controls.totalContracts.invalid && form.controls.totalContracts.dirty}">
+          [ngClass]="{'is-invalid': form.get('totalContracts').invalid && form.get('totalContracts').dirty}">
         <app-error-message [form-control]="form.get('totalContracts')" name="# Contratti"></app-error-message>
       </div>
     </div>
@@ -40,7 +40,7 @@
       <div class="form-group">
         <label for="playersInRoster" class="control-label"># Giocatori</label>
         <input type="number" class="form-control" id="playersInRoster" name="playersInRoster" formControlName="playersInRoster"
-          [ngClass]="{'is-invalid': form.controls.playersInRoster.invalid && form.controls.playersInRoster.dirty}">
+          [ngClass]="{'is-invalid': form.get('playersInRoster').invalid && form.get('playersInRoster').dirty}">
         <app-error-message [form-control]="form.get('playersInRoster')" name="# Giocatori"></app-error-message>
       </div>
     </div>
@@ -49,7 +49,7 @@
       <div class="form-group">
         <label for="extraPlayers" class="control-label">Visti spesi</label>
         <input type="number" class="form-control" id="extraPlayers" name="extraPlayers" formControlName="extraPlayers"
-          [ngClass]="{'is-invalid': form.controls.extraPlayers.invalid && form.controls.extraPlayers.dirty}">
+          [ngClass]="{'is-invalid': form.get('extraPlayers').invalid && form.get('extraPlayers').dirty}">
         <app-error-message [form-control]="form.get('extraPlayers')" name="Visti spesi"></app-error-message>
       </div>
     </div>
@@ -58,7 +58,7 @@
       <div class="form-group">
         <label for="pointsPenalty" class="control-label">Punti di penalità</label>
         <input type="number" class="form-control" id="pointsPenalty" name="pointsPenalty" formControlName="pointsPenalty"
-          [ngClass]="{'is-invalid': form.controls.pointsPenalty.invalid && form.controls.pointsPenalty.dirty}">
+          [ngClass]="{'is-invalid': form.get('pointsPenalty').invalid && form.get('pointsPenalty').dirty}">
         <app-error-message [form-control]="form.get('pointsPenalty')" name="Punti di penalità"></app-error-message>
       </div>
     </div>
@@ -67,7 +67,7 @@
       <div class="form-group">
         <label for="balancePenalty" class="control-label">Malus crediti</label>
         <input type="number" class="form-control" id="balancePenalty" name="balancePenalty" formControlName="balancePenalty"
-          [ngClass]="{'is-invalid': form.controls.balancePenalty.invalid && form.controls.balancePenalty.dirty}">
+          [ngClass]="{'is-invalid': form.get('balancePenalty').invalid && form.get('balancePenalty').dirty}">
         <app-error-message [form-control]="form.get('balancePenalty')" name="Malus crediti"></app-error-message>
       </div>
     </div>

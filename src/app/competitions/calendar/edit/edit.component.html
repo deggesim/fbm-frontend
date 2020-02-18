@@ -39,8 +39,8 @@
           <div class="form-group">
             <label for="homeScore-{{i}}" class="control-label">Punteggio casa *</label>
             <input type="number" class="form-control" id="homeScore-{{i}}" formControlName="homeScore"
-              [ngClass]="{'is-invalid': form.controls.matchArray.at(i).controls.homeScore.invalid && form.controls.matchArray.at(i).controls.homeScore.dirty}">
-            <div *ngIf="form.get('matchArray').at(i).controls.homeScore.hasError('required') && form.get('matchArray').at(i).controls.homeScore.dirty" class="invalid-feedback">
+              [ngClass]="{'is-invalid': form.get('matchArray').at(i).get('homeScore').invalid && form.get('matchArray').at(i).get('homeScore').dirty}">
+            <div *ngIf="form.get('matchArray').at(i).get('homeScore').hasError('required') && form.get('matchArray').at(i).get('homeScore').dirty" class="invalid-feedback">
               Il campo Punteggio casa è obbligatorio
             </div>
           </div>
@@ -50,8 +50,8 @@
           <div class="form-group">
             <label for="awayScore-{{i}}" class="control-label">Punteggio trasferta *</label>
             <input type="number" class="form-control" id="awayScore-{{i}}" formControlName="awayScore"
-              [ngClass]="{'is-invalid': form.controls.matchArray.at(i).controls.awayScore.invalid && form.controls.matchArray.at(i).controls.awayScore.dirty}">
-            <div *ngIf="form.get('matchArray').at(i).controls.awayScore.hasError('required') && form.get('matchArray').at(i).controls.awayScore.dirty" class="invalid-feedback">
+              [ngClass]="{'is-invalid': form.get('matchArray').at(i).get('awayScore').invalid && form.get('matchArray').at(i).get('awayScore').dirty}">
+            <div *ngIf="form.get('matchArray').at(i).get('awayScore').hasError('required') && form.get('matchArray').at(i).get('awayScore').dirty" class="invalid-feedback">
               Il campo Punteggio trasferta è obbligatorio
             </div>
           </div>

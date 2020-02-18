@@ -5,7 +5,7 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="fullName" class="control-label">Nome completo *</label>
-        <input type="text" class="form-control" id="fullName" name="fullName" formControlName="fullName" [ngClass]="{'is-invalid': form.controls.fullName.invalid && form.controls.fullName.dirty}">
+        <input type="text" class="form-control" id="fullName" name="fullName" formControlName="fullName" [ngClass]="{'is-invalid': form.get('fullName').invalid && form.get('fullName').dirty}">
         <div *ngIf="form.get('fullName').hasError('required') && form.get('fullName').dirty" class="invalid-feedback">Il campo Nome completo è obbligatorio</div>
       </div>
     </div>

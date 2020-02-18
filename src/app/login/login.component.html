@@ -10,7 +10,7 @@
         <div class="form-group">
           <label for="email" class="control-label">Email</label>
           <input type="text" class="form-control" id="email" name="email" formControlName="email"
-            [ngClass]="{'is-invalid': form.controls.email.invalid && form.controls.email.dirty}">
+            [ngClass]="{'is-invalid': form.get('email').invalid && form.get('email').dirty}">
           <div *ngIf="form.get('email').hasError('required') && form.get('email').dirty" class="invalid-feedback">
             Il campo email è obbligatorio</div>
         </div>
@@ -20,7 +20,7 @@
         <div class="form-group">
           <label for="password" class="control-label">Password</label>
           <input type="password" class="form-control" id="password" name="password" formControlName="password"
-            [ngClass]="{'is-invalid': form.controls.password.invalid && form.controls.password.dirty}">
+            [ngClass]="{'is-invalid': form.get('password').invalid && form.get('password').dirty}">
           <div *ngIf="form.get('password').hasError('required') && form.get('password').dirty" class="invalid-feedback">
             Il campo password è obbligatorio</div>
         </div>

@@ -55,7 +55,7 @@
 
               <div fxFlex="100">
                 <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="draft" name="draft" formControlName="draft" [ngClass]="{'is-invalid': form.controls.draft.invalid && form.controls.draft.dirty}">
+                  <input type="checkbox" class="form-check-input" id="draft" name="draft" formControlName="draft" [ngClass]="{'is-invalid': form.get('draft').invalid && form.get('draft').dirty}">
                   <label class="form-check-label" for="draft">Draft</label>
                   <app-error-message [form-control]="form.get('draft')" name="Draft"></app-error-message>
                 </div>

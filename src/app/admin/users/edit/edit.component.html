@@ -12,26 +12,26 @@
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">
           <label for="email" class="control-label">Email</label>
-          <input type="email" class="form-control" id="email" name="email" formControlName="email" [ngClass]="{'is-invalid': form.controls.email.invalid && form.controls.email.dirty}">
-          <app-error-message [form-control]="form.controls.email" name="Email"></app-error-message>
+          <input type="email" class="form-control" id="email" name="email" formControlName="email" [ngClass]="{'is-invalid': form.get('email').invalid && form.get('email').dirty}">
+          <app-error-message [form-control]="form.get('email')" name="Email"></app-error-message>
         </div>
       </div>
   
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">
           <label for="password" class="control-label">Password</label>
-          <input type="text" class="form-control" id="password" name="password" formControlName="password" [ngClass]="{'is-invalid': form.controls.password.invalid && form.controls.password.dirty}">
-          <app-error-message [form-control]="form.controls.password" name="Password"></app-error-message>
+          <input type="text" class="form-control" id="password" name="password" formControlName="password" [ngClass]="{'is-invalid': form.get('password').invalid && form.get('password').dirty}">
+          <app-error-message [form-control]="form.get('password')" name="Password"></app-error-message>
         </div>
       </div>
   
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group" [ngClass]="{'is-invalid': form.controls.role.invalid && form.controls.role.dirty}">
+        <div class="form-group" [ngClass]="{'is-invalid': form.get('role').invalid && form.get('role').dirty}">
             <label for="role" class="control-label">Ruolo</label>
             <ng-select id="role" name="role" [items]="roleList" formControlName="role" clearAllText="Elimina">
             </ng-select>
           </div>
-          <app-error-message [form-control]="form.controls.role" name="Ruolo"></app-error-message>
+          <app-error-message [form-control]="form.get('role')" name="Ruolo"></app-error-message>
       </div>
   
     </div>
