@@ -16,7 +16,7 @@
         <div accordion-heading>
           <span>{{fixture.name}}</span>
           <span class="fa-pull-right">
-            <button type="button" class="btn btn-warning" (click)="modifica(fixture, $event)" tooltip="Modifica" placement="top">
+            <button type="button" class="btn btn-warning" (click)="modifica(fixture, $event)" tooltip="Modifica" placement="top" *ngIf="fixture.matches && fixture.matches.length > 0">
               <fa-icon icon="pencil-alt"></fa-icon>
             </button>
           </span>

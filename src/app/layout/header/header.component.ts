@@ -73,6 +73,11 @@ export class HeaderComponent implements OnInit {
     return league != null ? league.name : '';
   }
 
+  public leagueSelected(): boolean {
+    const league = this.authService.getSelectedLeague();
+    return league != null;
+  }
+
   public isPreseason() {
     return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
   }

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, EMPTY } from 'rxjs';
 import { filter, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { League, Status } from '../models/league';
 import { Login } from '../models/login';
@@ -65,17 +65,17 @@ export class AuthService {
 
   public isPreseason() {
     const selectedLeague = this.getSelectedLeague();
-    return this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-preseason`);
+    return selectedLeague != null ? this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-preseason`) : EMPTY;
   }
 
   public isOffseason() {
     const selectedLeague = this.getSelectedLeague();
-    return this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-offseason`);
+    return selectedLeague != null ? this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-offseason`) : EMPTY;
   }
 
   public isPostSeason() {
     const selectedLeague = this.getSelectedLeague();
-    return this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-postseason`);
+    return selectedLeague != null ? this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-postseason`) : EMPTY;
   }
 
   public login(user: Login) {

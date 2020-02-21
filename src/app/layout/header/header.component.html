@@ -10,7 +10,7 @@
     <ul class="navbar-nav mr-auto">
 
       <!-- SQUADRE -->
-      <li class="nav-item dropdown" dropdown>
+      <li class="nav-item dropdown" dropdown *ngIf="leagueSelected()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
           <fa-icon icon="shield-alt" class="icon-padding"></fa-icon>Squadre
         </a>
@@ -21,7 +21,7 @@
       </li>
 
       <!-- COMPETIZIONI -->
-      <li class="nav-item dropdown" dropdown *ngIf="!isPreseason()">
+      <li class="nav-item dropdown" dropdown *ngIf="leagueSelected() && !isPreseason()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
           <fa-icon icon="calendar-alt" class="icon-padding"></fa-icon>Competizioni
         </a>
@@ -35,7 +35,7 @@
       </li>
 
       <!-- GESTIONE LEGA -->
-      <li class="nav-item dropdown" dropdown *ngIf="isAdmin()">
+      <li class="nav-item dropdown" dropdown *ngIf="isAdmin() && leagueSelected()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
           <fa-icon icon="cogs" class="icon-padding"></fa-icon>Gestione lega
         </a>
@@ -49,7 +49,7 @@
       </li>
 
       <!-- PRESEASON -->
-      <li class="nav-item dropdown" dropdown *ngIf="isAdmin() && isPreseason()">
+      <li class="nav-item dropdown" dropdown *ngIf="isAdmin() && leagueSelected() && isPreseason()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
           <fa-icon icon="tools" class="icon-padding"></fa-icon>Preseason
         </a>
