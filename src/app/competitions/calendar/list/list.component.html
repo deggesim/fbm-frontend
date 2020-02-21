@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend">
       <fa-icon icon="list-ol" class="icon-padding"></fa-icon>Calendario
@@ -38,7 +38,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let match of fixture.matches" (click)="modifica()">
+                <tr *ngFor="let match of fixture.matches">
                   <td class="text-nowrap">{{match.homeTeam.name}} - {{match.awayTeam.name}}</td>
                   <td>{{match.homeRanking}}</td>
                   <td>{{match.awayRanking}}</td>

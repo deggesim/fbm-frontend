@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Match } from 'src/app/models/match';
 
 @Component({
@@ -52,6 +52,10 @@ export class EditComponent implements OnInit, OnChanges {
 
   get matchArray(): FormArray {
     return this.form.get('matchArray') as FormArray;
+  }
+
+  getFormControl(index: number, controlName: string): AbstractControl {
+    return (this.form.get('matchArray') as FormArray).at(index).get(controlName);
   }
 
   salvaEvent(): void {

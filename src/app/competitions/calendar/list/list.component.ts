@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { EMPTY } from 'rxjs';
@@ -27,6 +27,7 @@ export class ListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private cd: ChangeDetectorRef,
     private sharedService: SharedService,
     private roundService: RoundService,
     private matchService: MatchService,
@@ -81,6 +82,9 @@ export class ListComponent implements OnInit {
       switchMap(() => this.roundService.read())
     ).subscribe((rounds: Round[]) => {
       this.rounds = rounds;
+      this.selectedRound = rounds.find((round: Round) => {
+        return this.selectedRound._id === round._id;
+      });
     });
   }
 
