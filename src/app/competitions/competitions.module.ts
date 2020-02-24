@@ -11,11 +11,13 @@ import { SharedModule } from '../shared/shared.module';
 import { EditComponent as CalendarEditComponent } from './calendar/edit/edit.component';
 import { ListComponent as CalendarListComponent } from './calendar/list/list.component';
 import { CompetitionsRoutingModule } from './competitions-routing.module';
+import { StandingsComponent } from './standings/standings.component';
 
 @NgModule({
   declarations: [
     CalendarListComponent,
-    CalendarEditComponent
+    CalendarEditComponent,
+    StandingsComponent
   ],
   imports: [
     ReactiveFormsModule,

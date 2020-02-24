@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '../guards/auth.guard';
 import { RoundResolverService } from '../services/resolvers/round-resolver.service';
 import { ListComponent as CalendarListComponent} from './calendar/list/list.component';
+import { StandingsComponent } from './standings/standings.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,17 @@ const routes: Routes = [
     component: CalendarListComponent,
     data: {
       breadcrumb: 'Calendario'
+    },
+    resolve: {
+      rounds: RoundResolverService,
+    },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'standings',
+    component: StandingsComponent,
+    data: {
+      breadcrumb: 'Classifiche'
     },
     resolve: {
       rounds: RoundResolverService,
