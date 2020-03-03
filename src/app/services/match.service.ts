@@ -26,8 +26,8 @@ export class MatchService {
     return this.http.patch<Match>(`${this.endpoint}/matches/${match._id}`, match);
   }
 
-  public updateFixture(matches: Match[]) {
-    return this.http.patch<Match>(`${this.endpoint}/matches/multiple`, matches);
+  public updateFixture(matches: Match[], fixtureId: string) {
+    return this.http.patch<Match>(`${this.endpoint}/matches/fixture/${fixtureId}`, matches);
   }
 
   public delete(id: string) {

@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY } from 'rxjs';
+import { EMPTY, Observable } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Fixture } from 'src/app/models/fixture';
 import { Match } from 'src/app/models/match';
@@ -10,6 +10,7 @@ import { MatchService } from 'src/app/services/match.service';
 import { RoundService } from 'src/app/services/round.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import * as globals from '../../../shared/globals';
+import { FixtureService } from 'src/app/services/fixture.service';
 
 @Component({
   selector: 'app-calendar-list',
@@ -21,16 +22,17 @@ export class ListComponent implements OnInit {
   form: FormGroup;
   rounds: Round[];
   selectedRound: Round;
+  selectedFixture: Fixture;
   matches: Match[];
   mostraPopupModifica: boolean;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private cd: ChangeDetectorRef,
     private sharedService: SharedService,
     private roundService: RoundService,
     private matchService: MatchService,
+    private fixtureService: FixtureService,
   ) {
     this.createForm();
   }
@@ -46,6 +48,7 @@ export class ListComponent implements OnInit {
 
   onChange(round: Round) {
     this.selectedRound = round;
+    this.selectedFixture = null;
   }
 
   createForm() {
@@ -57,17 +60,19 @@ export class ListComponent implements OnInit {
   reset() {
     this.form.reset();
     this.selectedRound = null;
+    this.selectedFixture = null;
   }
 
   modifica(fixture: Fixture, event: any) {
     console.log('modifica');
+    this.selectedFixture = fixture;
     this.matches = fixture.matches;
     this.mostraPopupModifica = true;
     event.stopPropagation(); event.preventDefault();
   }
 
   salva(matches: Match[]) {
-    this.matchService.updateFixture(matches).pipe(
+    this.matchService.updateFixture(matches, this.selectedFixture._id).pipe(
       catchError((err) => {
         this.sharedService.notifyError(err);
         return EMPTY;
@@ -79,12 +84,13 @@ export class ListComponent implements OnInit {
         this.sharedService.notifica(globals.toastType.success, title, message);
         this.matches = undefined;
       }),
-      switchMap(() => this.roundService.read())
+      switchMap(() => this.roundService.read()),
     ).subscribe((rounds: Round[]) => {
       this.rounds = rounds;
       this.selectedRound = rounds.find((round: Round) => {
         return this.selectedRound._id === round._id;
       });
+      this.selectedFixture = null;
     });
   }
 
