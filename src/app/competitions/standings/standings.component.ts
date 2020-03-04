@@ -32,7 +32,7 @@ export class StandingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init RoundsComponent');
+    console.log('init StandingsComponent');
     this.route.data.subscribe(
       (data) => {
         this.rounds = data.rounds.filter((round: Round) => round.roundRobin);

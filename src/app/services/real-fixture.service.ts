@@ -15,18 +15,18 @@ export class RealFixtureService {
   ) { }
 
   public read() {
-    return this.http.get<RealFixture[]>(`${this.endpoint}/realFixtures`);
+    return this.http.get<RealFixture[]>(`${this.endpoint}/real-fixtures`);
   }
 
   public create(realFixture: RealFixture) {
-    return this.http.post<RealFixture>(`${this.endpoint}/realFixtures`, realFixture);
+    return this.http.post<RealFixture>(`${this.endpoint}/real-fixtures`, realFixture);
   }
 
   public update(realFixture: RealFixture) {
-    return this.http.patch<RealFixture>(`${this.endpoint}/realFixtures/${realFixture._id}`, realFixture);
+    return this.http.patch<RealFixture>(`${this.endpoint}/real-fixtures/${realFixture._id}`, realFixture);
   }
 
   public delete(id: string) {
-    return this.http.delete<RealFixture>(`${this.endpoint}/realFixtures/${id}`);
+    return this.http.delete<RealFixture>(`${this.endpoint}/real-fixtures/${id}`);
   }
 }

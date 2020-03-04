@@ -4,11 +4,9 @@
       <fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifiche
     </legend>
 
-    <div>
-      <div class="form-group">
-        <ng-select id="round" name="round" [items]="rounds" bindLabel="name" formControlName="round" clearAllText="Elimina" (change)="onChange($event)" placeholder="Round">
-        </ng-select>
-      </div>
+    <div class="form-group">
+      <ng-select id="round" name="round" [items]="rounds" bindLabel="name" formControlName="round" clearAllText="Elimina" (change)="onChange($event)" placeholder="Round">
+      </ng-select>
     </div>
 
     <div class="table-responsive" *ngIf="selectedRound; else empty">

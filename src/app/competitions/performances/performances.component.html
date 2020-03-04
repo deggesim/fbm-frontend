@@ -1,1 +1,78 @@
-<p>performances works!</p>
+<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+  <fieldset class="fieldset">
+    <legend class="legend">
+      <fa-icon icon="pencil-alt" class="icon-padding"></fa-icon>Valutazioni
+    </legend>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+      <div fxFlex="49" fxFlex.xs="100" class="form-group">
+        <ng-select id="team" name="team" [items]="teams" bindLabel="name" formControlName="team" clearAllText="Elimina" (change)="onChangeTeam($event)" placeholder="Sqaudra">
+        </ng-select>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100" class="form-group">
+        <ng-select id="realFixture" name="realFixture" [items]="realFixtures" bindLabel="name" formControlName="realFixture" clearAllText="Elimina" (change)="onChangeRealFixture($event)"
+          placeholder="Giornata">
+        </ng-select>
+      </div>
+    </div>
+
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="tutti" value="0" (change)="onChangeFilter($event)">
+      <label class="form-check-label" for="tutti">Tutti</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="signed" value="1" (change)="onChangeFilter($event)">
+      <label class="form-check-label" for="signed">Solo giocatori tesserati</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input class="form-check-input" type="radio" id="lineup" value="2" (change)="onChangeFilter($event)">
+      <label class="form-check-label" for="lineup">Solo giocatori schierati</label>
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+      <div fxFlex="74" fxFlex.xs="49" class="form-group">
+        <input type="text" class="form-control" id="url" formControlName="url" placeholder="Url valutazioni">
+      </div>
+
+      <div fxFlex="26" fxFlex.xs="49" class="form-group">
+        <button type="button" class="btn btn-primary" [disabled]="form.get('url').value == null" (click)="retrievePerformances()">Recupero valutazioni</button>
+      </div>
+    </div>
+
+    <ng-container formArrayName="performanceArray" *ngFor="let performance of performances; let i=index">
+      <div fxLayout="row wrap" fxLayoutAlign="space-between" [formGroupName]="i">
+
+        <div fxFlex="24" fxFlex.xs="49">
+          {{performance.player.name}} - {{performance.player.nationality}} - {{performance.player.status}} - {{performance.player.role}}
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="ranking-{{i}}" class="control-label">Valutazione</label>
+            <input type="number" class="form-control" id="ranking-{{i}}" formControlName="ranking">
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="minutes-{{i}}" class="control-label">Minuti</label>
+            <input type="number" class="form-control" id="minutes-{{i}}" formControlName="minutes">
+          </div>
+        </div>
+
+        <div fxFlex="24" fxFlex.xs="49">
+          <div class="form-group">
+            <label for="grade-{{i}}" class="control-label">Voto</label>
+            <input type="number" class="form-control" id="grade-{{i}}" formControlName="grade">
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
+      </div>
+    </ng-container>
+  </fieldset>
+
+</form>

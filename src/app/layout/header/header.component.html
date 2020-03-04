@@ -27,9 +27,9 @@
         </a>
         <ul *dropdownMenu class="dropdown-menu">
           <a class="dropdown-item" routerLink="/competitions/calendar" routerLinkActive="active" (click)="isCollapsed = true;">Calendario</a>
-          <a class="dropdown-item" routerLink="/competitions/standings" routerLinkActive="active"  (click)="isCollapsed = true;">Classifiche</a>
+          <a class="dropdown-item" routerLink="/competitions/standings" routerLinkActive="active" (click)="isCollapsed = true;">Classifiche</a>
           <a class="dropdown-item" (click)="isCollapsed = true;">Formazioni</a>
-          <a class="dropdown-item" (click)="isCollapsed = true;">Valutazioni e pagelle</a>
+          <a class="dropdown-item" routerLink="/competitions/performances" routerLinkActive="active" (click)="isCollapsed = true;">Valutazioni e pagelle</a>
           <a class="dropdown-item" (click)="isCollapsed = true;">Risultati</a>
         </ul>
       </li>
@@ -106,5 +106,3 @@
     <li class="ml-auto">{{getSelectedLeague()}} - {{leagueStatus}}</li>
   </ol>
 </nav>
-
-
