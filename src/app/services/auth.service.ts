@@ -2,10 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
-import { BehaviorSubject, Observable, EMPTY } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
 import { filter, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { Fixture } from '../models/fixture';
 import { League, Status } from '../models/league';
 import { Login } from '../models/login';
+import { RealFixture } from '../models/real-fixture';
 import { Role, User } from '../models/user';
 import { environment } from './../../environments/environment';
 
@@ -21,23 +23,23 @@ export class AuthService {
   private $leagueStatusObservable = this.$leagueStatus.asObservable();
   private $leagueStatusObservableChain = this.isPreseason().pipe(
     filter((preseason: boolean) => {
-    if (preseason) {
-      this.leagueStatus = Status.Preseason;
-    }
-    return !preseason;
-  }), switchMap(() => this.isOffseason()), filter((offseason: boolean) => {
-    if (offseason) {
-      this.leagueStatus = Status.Offseason;
-    }
-    return !offseason;
-  }), switchMap(() => this.isPostSeason()), filter((postseason: boolean) => {
-    if (postseason) {
-      this.leagueStatus = Status.Postseason;
-    }
-    return !postseason;
-  }), tap(() => {
-    this.leagueStatus = Status.RegularSeason;
-  }));
+      if (preseason) {
+        this.leagueStatus = Status.Preseason;
+      }
+      return !preseason;
+    }), switchMap(() => this.isOffseason()), filter((offseason: boolean) => {
+      if (offseason) {
+        this.leagueStatus = Status.Offseason;
+      }
+      return !offseason;
+    }), switchMap(() => this.isPostSeason()), filter((postseason: boolean) => {
+      if (postseason) {
+        this.leagueStatus = Status.Postseason;
+      }
+      return !postseason;
+    }), tap(() => {
+      this.leagueStatus = Status.RegularSeason;
+    }));
 
   constructor(
     private http: HttpClient
@@ -63,19 +65,29 @@ export class AuthService {
     return this.$leagueStatusObservable;
   }
 
-  public isPreseason() {
+  public isPreseason(): Observable<boolean> {
     const selectedLeague = this.getSelectedLeague();
     return selectedLeague != null ? this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-preseason`) : EMPTY;
   }
 
-  public isOffseason() {
+  public isOffseason(): Observable<boolean> {
     const selectedLeague = this.getSelectedLeague();
     return selectedLeague != null ? this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-offseason`) : EMPTY;
   }
 
-  public isPostSeason() {
+  public isPostSeason(): Observable<boolean> {
     const selectedLeague = this.getSelectedLeague();
     return selectedLeague != null ? this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-postseason`) : EMPTY;
+  }
+
+  public nextFixture(): Observable<Fixture> {
+    const selectedLeague = this.getSelectedLeague();
+    return selectedLeague != null ? this.http.get<Fixture>(`${this.endpoint}/leagues/${selectedLeague._id}/next-fixture`) : EMPTY;
+  }
+
+  public nextRealFixture(): Observable<RealFixture> {
+    const selectedLeague = this.getSelectedLeague();
+    return selectedLeague != null ? this.http.get<RealFixture>(`${this.endpoint}/leagues/${selectedLeague._id}/next-realfixture`) : EMPTY;
   }
 
   public login(user: Login) {

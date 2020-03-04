@@ -1,9 +1,8 @@
 import { FantasyTeam } from '../models/fantasy-team';
-import { Fixture } from '../models/fixture';
 import { Match } from '../models/match';
 import { TableItem } from '../models/table-item';
 
-export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], nextFixture: Fixture, trend: number, turn: string): TableItem => {
+export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], trend: number): TableItem => {
   // init values
   let points = 0;
   let games = 0;
@@ -120,7 +119,6 @@ export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], nextFixtu
       trend: trendString,
       trendAvaragePointsMade,
       trendAvaragePointsAgainst,
-      turn
     };
   } else {
     tableItem = { fantasyTeam };
