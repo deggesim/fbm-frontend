@@ -26,6 +26,10 @@ export class PerformanceService {
     return this.http.post<Performance>(`${this.endpoint}/performances`, performance);
   }
 
+  public boxScore(teamId: string, realFixtureId: string, url: string) {
+    return this.http.post<Performance[]>(`${this.endpoint}/performances/team/${teamId}/real-fixture/${realFixtureId}`, { url });
+  }
+
   public update(performance: Performance) {
     return this.http.patch<Performance>(`${this.endpoint}/performances/${performance._id}`, performance);
   }

@@ -43,25 +43,25 @@
     <ng-container formArrayName="performanceArray" *ngFor="let performance of performances; let i=index">
       <div fxLayout="row wrap" fxLayoutAlign="space-between" [formGroupName]="i">
 
-        <div fxFlex="24" fxFlex.xs="49">
-          {{performance.player.name}} - {{performance.player.nationality}} - {{performance.player.status}} - {{performance.player.role}}
+        <div fxFlex="69" fxFlex.xs="100">
+          {{getPlayer(performance)}}
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
             <label for="ranking-{{i}}" class="control-label">Valutazione</label>
             <input type="number" class="form-control" id="ranking-{{i}}" formControlName="ranking">
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
             <label for="minutes-{{i}}" class="control-label">Minuti</label>
             <input type="number" class="form-control" id="minutes-{{i}}" formControlName="minutes">
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
             <label for="grade-{{i}}" class="control-label">Voto</label>
             <input type="number" class="form-control" id="grade-{{i}}" formControlName="grade">
@@ -69,10 +69,11 @@
         </div>
       </div>
 
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
-      </div>
     </ng-container>
   </fieldset>
+  
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
+  </div>
 
 </form>

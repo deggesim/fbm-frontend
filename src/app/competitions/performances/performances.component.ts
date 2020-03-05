@@ -88,7 +88,23 @@ export class PerformancesComponent implements OnInit {
 
   retrievePerformances() {
     console.log('retrievePerformances');
-    console.log(this.form.controls.url);
+    console.log(this.form.value.url);
+    this.performanceService.boxScore(this.selectedTeam._id, this.selectedRealFixture._id, this.form.value.url)
+      .subscribe((performances: Performance[]) => {
+        this.performanceArray.clear();
+        for (const performance of performances) {
+          this.performanceArray.push(this.fb.group({
+            _id: performance._id,
+            ranking: [performance.ranking],
+            minutes: [performance.minutes],
+            grade: [performance.grade],
+          }));
+        }
+      })
+  }
+
+  getPlayer(performance: Performance) {
+    return `${performance.player.name} - ${performance.player.nationality} - ${performance.player.role}`;
   }
 
   salva() {
