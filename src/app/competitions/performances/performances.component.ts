@@ -71,9 +71,10 @@ export class PerformancesComponent implements OnInit {
   }
 
   loadPerformances() {
+    this.form.get('performanceArray').reset();
+    this.performanceArray.clear();
     this.performanceService.getByRealFixture(this.selectedTeam._id, this.selectedRealFixture._id)
       .subscribe((performances: Performance[]) => {
-        console.log(performances);
         this.performances = performances;
         for (const performance of performances) {
           this.performanceArray.push(this.fb.group({
@@ -91,7 +92,9 @@ export class PerformancesComponent implements OnInit {
     console.log(this.form.value.url);
     this.performanceService.boxScore(this.selectedTeam._id, this.selectedRealFixture._id, this.form.value.url)
       .subscribe((performances: Performance[]) => {
+        this.form.get('performanceArray').reset();
         this.performanceArray.clear();
+        this.performances = performances;
         for (const performance of performances) {
           this.performanceArray.push(this.fb.group({
             _id: performance._id,
@@ -100,7 +103,7 @@ export class PerformancesComponent implements OnInit {
             grade: [performance.grade],
           }));
         }
-      })
+      });
   }
 
   getPlayer(performance: Performance) {
