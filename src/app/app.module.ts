@@ -31,7 +31,6 @@ import { HeaderComponent } from './layout/header/header.component';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './services/auth.service';
 import { ErrorPageComponent } from './shared/error-page.component';
-import { NotaComponent } from './shared/nota/nota.component';
 import { SharedModule } from './shared/shared.module';
 import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
@@ -41,7 +40,6 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
   declarations: [
     AppComponent,
     HeaderComponent,
-    NotaComponent,
     ErrorPageComponent,
     HomeComponent,
     LoginComponent,

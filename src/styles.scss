@@ -1,15 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
-@import '../node_modules/bootstrap/scss/bootstrap';
 
-@import 'styles/project-colors';
+@import 'styles/variables';
+@import '../node_modules/bootstrap/scss/bootstrap';
+@import 'styles/bootswatch';
 
 // padding per la navbar bootstrap fixed top
-html {
-  font-size: 14px;
-}
+// html {
+//   font-size: 14px;
+// }
 
 body {
-  padding-top: 4.5rem;
+  padding-top: 5rem;
 }
 
 button:disabled {
@@ -21,50 +22,10 @@ button:disabled {
 .modal-header {
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
-  background-color: $color_blu_10;
 }
 
 .modal-content {
   border-radius: 0.5rem;
-}
-
-.dropdown-item {
-  &.active, &:active {
-    color: #FFFFFF;
-    text-decoration: none;
-    background-color: #6C757D;
-  }
-  &:hover, &:focus {
-    color: #16181B;
-    text-decoration: none;
-    background-color: #F8F9FA;
-  }
-  &.active, &:active {
-    color: #FFFFFF;
-    text-decoration: none;
-    background-color: #6C757D;
-  }
-}
-
-a {
-  color: #212529;
-}
-
-// customizzazione bootstrap
-.page-link {
-  color: #212529;
-  &:hover {
-    color: #212529;
-  }
-  &:focus {
-    box-shadow: 0 0 0 0.2rem rgba(145, 145, 145, 0.25);
-  }
-}
-
-.page-item.active .page-link {
-  color: #FFFFFF;
-  background-color: #212529;
-  border-color: #212529;
 }
 
 .breadcrumb {
@@ -73,14 +34,32 @@ a {
 
 // ng-select
 ng-select.ng-invalid.ng-touched .ng-select-container {
-  border-color: #dc3545;
+  border-color: $danger;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 0 3px $gray-700;
 }
 
 .ng-select-invalid-feedback {
   width: 100%;
   margin-top: 0.25rem;
   font-size: 80%;
-  color: #dc3545;
+  color: $danger;
+}
+
+.ng-dropdown-panel {
+	.ng-dropdown-panel-items {
+		.ng-option.ng-option-selected {
+			color: $gray-700;
+			background-color: $gray-500;
+		}
+		.ng-option.ng-option-selected.ng-option-marked {
+			color: $gray-700;
+			background-color: $gray-500;
+		}
+		.ng-option.ng-option-marked {
+			background-color: $gray-400;
+			color: $gray-700;
+		}
+	}
 }
 
 // Sortable
@@ -93,12 +72,12 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
   cursor: grab;
   border: 1px solid transparent;
   border-radius: 4px;
-  border-color: #adadad;
-  background-color: white;
+  border-color: $gray-800;
+  background-color: $gray-600;
 }
 
 .sortable-item-active {
-  background-color: #e6e6e6;
+  background-color: $gray-500;
   box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 }
 

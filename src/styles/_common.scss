@@ -1,20 +1,21 @@
-@import 'project-colors';
+@import 'variables';
 
 .fieldset {
-  background: $color_grigio_chiaro;
+  background: $gray-700;
   margin: 1rem;
   border-radius: 0.5rem;
   padding-top: 0.35em;
   padding-right: 0.625em;
   padding-bottom: 0;
   padding-left: 0.625em;
-  border: 1px solid #CECECE;
+  border: 1px solid $gray-900;
 }
 
 .legend {
-  border: 1px solid #CECECE;
+  color: $gray-400;
+  border: 1px solid $gray-700;
   border-radius: 0.5rem;
-  background-color: white;
+  background-color: $gray-900;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   width: inherit;
@@ -30,10 +31,6 @@
   padding-right: 4px;
 }
 
-.block {
-  width: 100%;
-}
-
 .manina {
   cursor: pointer;
 }
@@ -45,11 +42,10 @@
   height: 60px;
   bottom: 40px;
   right: 40px;
-  background-color: #28A745;
-  color: #FFFFFF;
+  background-color: $success;
   border-radius: 50px;
   text-align: center;
-  box-shadow: 2px 2px 3px #999999;
+  box-shadow: 2px 2px 3px $gray-700;
   z-index: 1;
 }
 
@@ -59,7 +55,7 @@
 
 .float-2 {
   @include float-mixin();
-  background-color: #17a2b8;
+  background-color: $primary;
   right: 120px;
 }
 
