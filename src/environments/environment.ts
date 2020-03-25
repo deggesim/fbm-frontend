@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  endpoint: 'https://fbm-server.herokuapp.com'
+  endpoint: 'http://localhost:5000'
 };
 
 /*
