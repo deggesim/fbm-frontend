@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
@@ -17,6 +17,7 @@ export class UploadComponent implements OnInit {
   @ViewChild('uploadElement', { static: false }) uploadElement: ElementRef;
 
   form: FormGroup;
+  fileName = 'Scelta file';
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -41,7 +42,7 @@ export class UploadComponent implements OnInit {
 
   createForm() {
     this.form = this.fb.group({
-      file: [undefined],
+      file: [undefined, Validators.required],
     });
   }
 
@@ -49,7 +50,8 @@ export class UploadComponent implements OnInit {
     const reader = new FileReader();
 
     if (event.target.files && event.target.files.length) {
-      const file = event.target.files[0];
+      const file: File = event.target.files[0];
+      this.fileName = file.name;
       reader.readAsDataURL(file);
 
       reader.onload = () => {
@@ -64,7 +66,9 @@ export class UploadComponent implements OnInit {
   }
 
   uploadEvent() {
-    this.upload.emit(this.form.value.file);
+    if (this.form.valid) {
+      this.upload.emit(this.form.value.file);
+    }
   }
 
 }

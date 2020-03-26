@@ -82,6 +82,7 @@ export class TransactionComponent implements OnInit {
         this.fantasyRosters = fantasyRosters;
       });
       if (this.rosterSelected != null) {
+        this.resetForm();
         this.modal.show();
       }
     } else {
@@ -92,6 +93,7 @@ export class TransactionComponent implements OnInit {
   selectRoster(roster: Roster) {
     this.rosterSelected = roster;
     if (this.fantasyTeamSelected != null) {
+      this.resetForm();
       this.modal.show();
     }
   }
@@ -157,12 +159,7 @@ export class TransactionComponent implements OnInit {
   }
 
   annulla() {
-    this.form.patchValue({
-      status: undefined,
-      draft: false,
-      contract: 1,
-      yearContract: 1,
-    });
+    this.resetForm();
     this.rosterSelected = null;
     this.form.get('roster').reset();
     this.modal.hide();
@@ -235,5 +232,15 @@ export class TransactionComponent implements OnInit {
       this.popupRilascia.chiudiModale();
       this.fantasyRosterSelected = null;
     });
+  }
+
+  private resetForm() {
+    this.form.patchValue({
+      status: undefined,
+      draft: false,
+      contract: 1,
+      yearContract: 1,
+    });
+    this.form.markAsPristine();
   }
 }

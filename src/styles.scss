@@ -4,18 +4,24 @@
 @import '../node_modules/bootstrap/scss/bootstrap';
 @import 'styles/bootswatch';
 
-// padding per la navbar bootstrap fixed top
-// html {
-//   font-size: 14px;
-// }
+html {
+  font-size: 14px;
+}
 
+// padding per la navbar bootstrap fixed top
 body {
   padding-top: 5rem;
 }
 
+// fix calendario
 button:disabled {
   cursor: not-allowed;
   pointer-events: all !important;
+}
+
+// bootstrap
+.form-control:disabled, .form-control[readonly] {
+  color: $gray-500;
 }
 
 // customizzazione modal
@@ -26,6 +32,11 @@ button:disabled {
 
 .modal-content {
   border-radius: 0.5rem;
+}
+
+.modal-title {
+  width: 100%;
+  text-align: center;
 }
 
 .breadcrumb {
@@ -84,3 +95,15 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
 .sortable-wrapper {
   min-height: 150px;
 }
+
+// toastr
+.toast-container {
+	.ngx-toastr {
+		box-shadow: 0 0 12px $gray-800;
+    color: $body-color;
+		&:hover {
+			box-shadow: 0 0 12px $gray-700;
+		}
+	}
+}
+

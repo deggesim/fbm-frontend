@@ -155,6 +155,7 @@ export class AuthService {
 
   public setSelectedLeague(league: League) {
     localStorage.setItem('league', JSON.stringify(league));
+    this.leagueStatusObservableChain.subscribe();
   }
 
   public getSelectedLeague(): League {

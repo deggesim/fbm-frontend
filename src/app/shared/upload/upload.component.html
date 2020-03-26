@@ -1,25 +1,31 @@
 <div class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false}" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header titolo">
         <h4 class="modal-title">{{titolo}}</h4>
       </div>
       <div class="modal-body">
 
-        <form [formGroup]="form" (ngSubmit)="uploadEvent()" class="needs-validation" novalidate>
+        <form [formGroup]="form" class="needs-validation" novalidate>
 
           <div fxLayout="row wrap" fxLayoutAlign="space-between">
 
             <div fxFlex="49" fxFlex.xs="100">
               <div class="form-group">
-                <label for="data" class="control-label">File</label>
-                <input #uploadElement type="file" class="form-control" (change)="onFileChange($event)">
+                <div class="input-group mb-3">
+                  <div class="custom-file">
+                    <input #uploadElement type="file" class="custom-file-input" (change)="onFileChange($event)">
+                    <label for="data" class="custom-file-label">{{fileName}}</label>
+                  </div>
+                  <div class="input-group-append">
+                    <span class="input-group-text" [ngClass]="{'manina': form.get('file').valid}" (click)="uploadEvent()">Upload</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Upload</button>&nbsp;
             <button type="button" class="btn btn-primary" (click)="annulla.emit()">Annulla</button>
           </div>
 

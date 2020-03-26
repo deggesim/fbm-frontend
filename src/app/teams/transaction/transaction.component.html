@@ -31,65 +31,25 @@
 
     </div>
 
-    <div class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: false}" tabindex="-1" status="dialog" aria-hidden="true">
-
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-
-          <div class="modal-header titolo">
-            <h4 class="modal-title">Acquista giocatore</h4>
-          </div>
-
-          <div class="modal-body">
-
-            <div fxLayout="row wrap" fxLayoutAlign="space-between">
-
-              <div fxFlex="100">
-                <div class="form-group">
-                  <label for="status" class="control-label">Status</label>
-                  <ng-select id="status" name="status" [items]="statusList" bindLabel="status" formControlName="status" clearAllText="Elimina">
-                  </ng-select>
-                  <app-error-message [form-control]="form.get('status')" name="Status"></app-error-message>
-                </div>
-              </div>
-
-              <div fxFlex="100">
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="draft" name="draft" formControlName="draft" [ngClass]="{'is-invalid': form.get('draft').invalid && form.get('draft').dirty}">
-                  <label class="form-check-label" for="draft">Draft</label>
-                  <app-error-message [form-control]="form.get('draft')" name="Draft"></app-error-message>
-                </div>
-              </div>
-
-              <div fxFlex="49">
-                <div class="form-group">
-                  <label for="contract" class="control-label">Costo</label>
-                  <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200">
-                  <app-error-message [form-control]="form.get('contract')" name="Costo"></app-error-message>
-                </div>
-              </div>
-
-              <div fxFlex="49">
-                <div class="form-group">
-                  <label for="yearContract" class="control-label">Anno di contratto</label>
-                  <input type="number" class="form-control" id="yearContract" name="yearContract" formControlName="yearContract" min="1" max="3">
-                  <app-error-message [form-control]="form.get('yearContract')" name="Anno di contratto"></app-error-message>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="text-center">
-              <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Conferma</button>&nbsp;
-              <button type="button" class="btn btn-primary" (click)="annulla()">Annulla</button>
-            </div>
-
-          </div>
-        </div>
+    <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeamSelected">
+      <div>
+        Crediti residui: {{fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo}}
+      </div>
+      <div>
+        Contratti stipulati: {{fantasyTeamSelected.totalContracts}}
+      </div>
+      <div>
+        Giocatori nel roster: {{fantasyTeamSelected.playersInRoster}}
+      </div>
+      <div>
+        Visti spesi: {{fantasyTeamSelected.extraPlayers}}
       </div>
     </div>
 
     <ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
+
+      <hr>
+
       <div class="table-responsive">
         <table class="table table-hover">
           <thead class="thead-dark">
@@ -108,7 +68,7 @@
             <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
               <td>{{fr.roster.player.name}}</td>
               <td>{{fr.status}}</td>
-              <td>{{fr.contract}}</td>
+              <td>{{fr.contract != null ? fr.contract : 'D'}}</td>
               <td>{{fr.yearContract}}</td>
               <td>{{fr.roster.player.role}}</td>
               <td>{{fr.roster.team.fullName}}</td>
@@ -136,26 +96,77 @@
       </div>
     </ng-template>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeamSelected">
-      <div>
-        Crediti residui: {{fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo}}
-      </div>
-      <div>
-        Contratti stipulati: {{fantasyTeamSelected.totalContracts}}
-      </div>
-      <div>
-        Giocatori nel roster: {{fantasyTeamSelected.playersInRoster}}
-      </div>
-      <div>
-        Visti spesi: {{fantasyTeamSelected.extraPlayers}}
-      </div>
-    </div>
-
   </fieldset>
 
+  <div class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: false}" tabindex="-1" status="dialog" aria-hidden="true">
+
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+
+        <div class="modal-header titolo">
+          <h4 class="modal-title">Acquista giocatore</h4>
+        </div>
+
+        <div class="modal-body">
+
+          <div fxLayout="row wrap" fxLayoutAlign="space-between">
+
+            <div fxFlex="100" *ngIf="rosterSelected">
+              <h6>{{rosterSelected.player.name}} - {{rosterSelected.player.nationality}} - {{rosterSelected.player.role}}</h6>
+            </div>
+
+            <div fxFlex="100" *ngIf="rosterSelected">
+              <h6>{{rosterSelected.team.fullName}}</h6>
+            </div>
+
+            <div fxFlex="100">
+              <div class="form-group">
+                <label for="status" class="control-label">Status</label>
+                <ng-select id="status" name="status" [items]="statusList" bindLabel="status" formControlName="status" clearAllText="Elimina">
+                </ng-select>
+                <app-error-message [form-control]="form.get('status')" name="Status"></app-error-message>
+              </div>
+            </div>
+
+            <div fxFlex="100">
+              <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="draft" name="draft" formControlName="draft" [ngClass]="{'is-invalid': form.get('draft').invalid && form.get('draft').dirty}">
+                  <label class="custom-control-label" for="draft">Draft</label>
+                  <app-error-message [form-control]="form.get('draft')" name="Draft"></app-error-message>
+                </div>
+              </div>
+            </div>
+
+            <div fxFlex="49">
+              <div class="form-group">
+                <label for="contract" class="control-label">Costo</label>
+                <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200">
+                <app-error-message [form-control]="form.get('contract')" name="Costo"></app-error-message>
+              </div>
+            </div>
+
+            <div fxFlex="49">
+              <div class="form-group">
+                <label for="yearContract" class="control-label">Anno di contratto</label>
+                <input type="number" class="form-control" id="yearContract" name="yearContract" formControlName="yearContract" min="1" max="3">
+                <app-error-message [form-control]="form.get('yearContract')" name="Anno di contratto"></app-error-message>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Conferma</button>&nbsp;
+            <button type="button" class="btn btn-primary" (click)="annulla()">Annulla</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
 </form>
-
-
 
 <!-- popup rilascia -->
 <app-popup-conferma #popupRilascia titolo="Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, i visti spesi ed il numero di contratti firmati non diminuiranno."
