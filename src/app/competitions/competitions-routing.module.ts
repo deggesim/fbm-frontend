@@ -7,6 +7,7 @@ import { TeamResolverService } from '../services/resolvers/team-resolver.service
 import { ListComponent as CalendarListComponent } from './calendar/list/list.component';
 import { PerformancesComponent } from './performances/performances.component';
 import { StandingsComponent } from './standings/standings.component';
+import { FormationsComponent } from './formations/formations.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,17 @@ const routes: Routes = [
     component: StandingsComponent,
     data: {
       breadcrumb: 'Classifiche'
+    },
+    resolve: {
+      rounds: RoundResolverService,
+    },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'lineup',
+    component: FormationsComponent,
+    data: {
+      breadcrumb: 'Formazioni'
     },
     resolve: {
       rounds: RoundResolverService,

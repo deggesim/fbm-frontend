@@ -7,7 +7,6 @@ import { RoundService } from 'src/app/services/round.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import * as globals from '../../shared/globals';
 
-
 @Component({
   selector: 'app-rounds',
   templateUrl: './rounds.component.html',
@@ -18,8 +17,8 @@ export class RoundsComponent implements OnInit {
   form: FormGroup;
 
   rounds: Round[];
-  fantasyTeams: FantasyTeam[];
   selectedRound: Round;
+  fantasyTeams: FantasyTeam[];
 
   constructor(
     private fb: FormBuilder,
@@ -61,7 +60,7 @@ export class RoundsComponent implements OnInit {
 
   onChange(round: Round) {
     this.selectedRound = round;
-    if (round.fantasyTeams != null && round.fantasyTeams.length > 0) {
+    if (round != null && round.fantasyTeams != null && round.fantasyTeams.length > 0) {
       this.form.get('unsortedList').reset();
       this.form.get('sortedList').setValue(round.fantasyTeams);
     } else {

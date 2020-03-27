@@ -13,13 +13,15 @@ import { ListComponent as CalendarListComponent } from './calendar/list/list.com
 import { CompetitionsRoutingModule } from './competitions-routing.module';
 import { StandingsComponent } from './standings/standings.component';
 import { PerformancesComponent } from './performances/performances.component';
+import { FormationsComponent } from './formations/formations.component';
 
 @NgModule({
   declarations: [
     CalendarListComponent,
     CalendarEditComponent,
     StandingsComponent,
-    PerformancesComponent
+    PerformancesComponent,
+    FormationsComponent
   ],
   imports: [
     ReactiveFormsModule,

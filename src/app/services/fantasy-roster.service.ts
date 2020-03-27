@@ -14,8 +14,8 @@ export class FantasyRosterService {
     private http: HttpClient
   ) { }
 
-  public read(fantasyTeamId: string) {
-    return this.http.get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}`);
+  public read(fantasyTeamId: string, realFixtureId: string) {
+    return this.http.get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}/real-fixture/${realFixtureId}`);
   }
 
   public create(fantasyRoster: FantasyRoster) {

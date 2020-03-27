@@ -6,7 +6,9 @@ import { EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { FantasyRoster } from 'src/app/models/fantasy-roster';
 import { FantasyTeam } from 'src/app/models/fantasy-team';
+import { RealFixture } from 'src/app/models/real-fixture';
 import { Roster } from 'src/app/models/roster';
+import { AuthService } from 'src/app/services/auth.service';
 import { FantasyRosterService } from 'src/app/services/fantasy-roster.service';
 import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
 import { RosterService } from 'src/app/services/roster.service';
@@ -38,6 +40,7 @@ export class TransactionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private sharedService: SharedService,
     private rosterService: RosterService,
     private fantasyRosterService: FantasyRosterService,
@@ -78,7 +81,9 @@ export class TransactionComponent implements OnInit {
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
     this.fantasyTeamSelected = fantasyTeam;
     if (fantasyTeam != null) {
-      this.fantasyRosterService.read(fantasyTeam._id).subscribe((fantasyRosters: FantasyRoster[]) => {
+      this.authService.nextRealFixture().pipe(
+        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, nextRealFixture._id))
+      ).subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;
       });
       if (this.rosterSelected != null) {
@@ -118,7 +123,8 @@ export class TransactionComponent implements OnInit {
         }),
         switchMap(() => this.rosterService.freePlayers()),
         tap((rosters: Roster[]) => { this.rosters = rosters; }),
-        switchMap(() => this.fantasyRosterService.read(this.fantasyTeamSelected._id)),
+        switchMap(() => this.authService.nextRealFixture()),
+        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
       ).subscribe((fr: FantasyRoster[]) => {
         this.fantasyRosters = fr;
         const title = 'Modifica tesseramento';
@@ -145,7 +151,8 @@ export class TransactionComponent implements OnInit {
         }),
         switchMap(() => this.rosterService.freePlayers()),
         tap((rosters: Roster[]) => { this.rosters = rosters; }),
-        switchMap(() => this.fantasyRosterService.read(this.fantasyTeamSelected._id)),
+        switchMap(() => this.authService.nextRealFixture()),
+        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
       ).subscribe((fr: FantasyRoster[]) => {
         this.fantasyRosters = fr;
         const title = 'Nuovo tesseramento';
@@ -200,7 +207,8 @@ export class TransactionComponent implements OnInit {
       }),
       switchMap(() => this.rosterService.freePlayers()),
       tap((rosters: Roster[]) => { this.rosters = rosters; }),
-      switchMap(() => this.fantasyRosterService.read(this.fantasyTeamSelected._id)),
+      switchMap(() => this.authService.nextRealFixture()),
+      switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
     ).subscribe((fantasyRosters: FantasyRoster[]) => {
       this.fantasyRosters = fantasyRosters;
       const title = 'Giocatore rimosso';
@@ -223,7 +231,8 @@ export class TransactionComponent implements OnInit {
       }),
       switchMap(() => this.rosterService.freePlayers()),
       tap((rosters: Roster[]) => { this.rosters = rosters; }),
-      switchMap(() => this.fantasyRosterService.read(this.fantasyTeamSelected._id)),
+      switchMap(() => this.authService.nextRealFixture()),
+      switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
     ).subscribe((fantasyRosters: FantasyRoster[]) => {
       this.fantasyRosters = fantasyRosters;
       const title = 'Giocatore rilasciato';

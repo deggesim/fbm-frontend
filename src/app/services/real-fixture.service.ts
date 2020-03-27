@@ -18,6 +18,10 @@ export class RealFixtureService {
     return this.http.get<RealFixture[]>(`${this.endpoint}/real-fixtures`);
   }
 
+  public getByFixture(fixtureId: string) {
+    return this.http.get<RealFixture>(`${this.endpoint}/real-fixtures/fixture/${fixtureId}`);
+  }
+
   public create(realFixture: RealFixture) {
     return this.http.post<RealFixture>(`${this.endpoint}/real-fixtures`, realFixture);
   }
