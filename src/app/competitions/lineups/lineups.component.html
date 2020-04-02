@@ -1,0 +1,106 @@
+<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+
+  <fieldset class="fieldset">
+    <legend class="legend">
+      <fa-icon icon="list-ol" class="icon-padding"></fa-icon>Formazione
+    </legend>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+
+      <div fxFlex="33" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="round" class="control-label">Round</label>
+          <ng-select id="round" name="round" [items]="rounds" bindLabel="name" formControlName="round" clearAllText="Elimina" (change)="onChangeRound($event)">
+          </ng-select>
+        </div>
+      </div>
+
+      <div fxFlex="33" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="fixture" class="control-label">Giornata</label>
+          <ng-select id="fixture" name="fixture" [items]="fixtures" bindLabel="name" formControlName="fixture" clearAllText="Elimina" (change)="onChangeFixture($event)">
+          </ng-select>
+        </div>
+      </div>
+
+      <div fxFlex="33" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="fantasyTeam" class="control-label">Fantasquadra</label>
+          <ng-select id="fantasyTeam" name="fantasyTeam" [items]="fantasyTeams" bindLabel="name" formControlName="fantasyTeam" clearAllText="Elimina" (change)="onChangeFantasyTeam($event)">
+          </ng-select>
+        </div>
+      </div>
+
+      <ng-container *ngIf="fantasyRosters">
+        <div fxFlex="100">
+          <hr>
+        </div>
+
+        <!-- PLAYERS-->
+        <div fxFlex="49" fxFlex.xs="100">
+          <label>Roster</label>
+          <div class="table">
+            <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Nome</th>
+                  <th>Naz.</th>
+                  <th>Ruolo</th>
+                  <th>Squadra</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let fantasyRoster of fantasyRosters" class="manina table-secondary lineup-height" [ngClass]="{'greyed-out': playerChoosen(fantasyRoster)}"
+                  (click)="addPlayer(fantasyRoster)">
+                  <td>{{fantasyRoster.roster.player.name}}</td>
+                  <td>{{fantasyRoster.roster.player.nationality}}</td>
+                  <td>{{fantasyRoster.roster.player.role | roleShort}}</td>
+                  <td>{{fantasyRoster.roster.team.fullName}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- LINEUP-->
+        <div fxFlex="50" fxFlex.xs="100">
+          <label>Formazione</label>
+          <div class="table">
+            <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Spot</th>
+                  <th>Nome</th>
+                  <th>Naz.</th>
+                  <th>Ruolo</th>
+                  <th>Ordine panchina</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let player of lineup; let i=index" class="manina table-secondary lineup-height" (click)="removePlayer(i)">
+                  <td>{{player?.spot}}</td>
+                  <td>{{player?.fantasyRoster.roster.player.name}}</td>
+                  <td>{{player?.fantasyRoster.roster.player.nationality}}</td>
+                  <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
+                  <td>{{player?.benchOrder}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </ng-container>
+
+    </div>
+  </fieldset>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="ripristina()">Ripristina</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="svuota()">Svuota</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="importa()">Importa</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="inviaEmail()">Invia mail</button>&nbsp;
+  </div>
+
+</form>

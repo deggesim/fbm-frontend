@@ -1,15 +1,13 @@
-import { FantasyTeam } from './fantasy-team';
+import { FantasyRoster } from './fantasy-roster';
 import { Fixture } from './fixture';
-import { Player } from './player';
 
-export interface Formation {
-    _id: string;
-    fantasyTeam: FantasyTeam;
-    player: Player;
+export interface Lineup {
+    _id?: string;
+    fantasyRoster: FantasyRoster;
     spot: number;
     benchOrder: number;
     fixture: Fixture;
-    matchReport: {
+    matchReport?: {
         realRanking: number;
         realRanking40Min: number;
         minutesUsed: number;

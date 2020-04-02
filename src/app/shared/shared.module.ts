@@ -8,13 +8,15 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
 import { PopupConfermaComponent } from './popup-conferma/popup-conferma.component';
 import { UploadComponent } from './upload/upload.component';
 import { UserRoleIconComponent } from './user-role-icon/user-role-icon.component';
+import { RoleShortPipe } from './role-short.pipe';
 
 @NgModule({
   declarations: [
     PopupConfermaComponent,
     UploadComponent,
     ErrorMessageComponent,
-    UserRoleIconComponent
+    UserRoleIconComponent,
+    RoleShortPipe
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { UserRoleIconComponent } from './user-role-icon/user-role-icon.component
     PopupConfermaComponent,
     UploadComponent,
     ErrorMessageComponent,
-    UserRoleIconComponent
+    UserRoleIconComponent,
+    RoleShortPipe
   ]
 })
 export class SharedModule { }

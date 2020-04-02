@@ -1,5 +1,5 @@
 import { FantasyRoster } from './fantasy-roster';
-import { Formation } from './formation';
+import { Lineup } from './lineup';
 import { User } from './user';
 
 export interface FantasyTeam {
@@ -13,6 +13,6 @@ export interface FantasyTeam {
     pointsPenalty?: number;
     balancePenalty?: number;
     fantasyRosters?: FantasyRoster[];
-    formations?: Formation[];
+    lineups?: Lineup[];
     owners: User[];
 }

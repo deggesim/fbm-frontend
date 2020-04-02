@@ -5,9 +5,9 @@ import { RealFixtureResolverService } from '../services/resolvers/real-fixture-r
 import { RoundResolverService } from '../services/resolvers/round-resolver.service';
 import { TeamResolverService } from '../services/resolvers/team-resolver.service';
 import { ListComponent as CalendarListComponent } from './calendar/list/list.component';
+import { LineupsComponent } from './lineups/lineups.component';
 import { PerformancesComponent } from './performances/performances.component';
 import { StandingsComponent } from './standings/standings.component';
-import { FormationsComponent } from './formations/formations.component';
 
 const routes: Routes = [
   {
@@ -33,8 +33,8 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'lineup',
-    component: FormationsComponent,
+    path: 'lineups',
+    component: LineupsComponent,
     data: {
       breadcrumb: 'Formazioni'
     },
