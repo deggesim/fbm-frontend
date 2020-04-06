@@ -8,7 +8,7 @@ import { PlayerService } from 'src/app/services/player.service';
 import { RosterService } from 'src/app/services/roster.service';
 import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../../shared/globals';
+import { isEmpty, toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-player-list',
@@ -74,7 +74,7 @@ export class ListComponent implements OnInit {
   }
 
   abilitaPaginazione() {
-    return !globals.isEmpty(this.rosters) && this.rosters.length > this.pageSize;
+    return !isEmpty(this.rosters) && this.rosters.length > this.pageSize;
   }
 
   pageChange(event) {
@@ -147,7 +147,7 @@ export class ListComponent implements OnInit {
           this.mostraPopupModifica = false;
           const title = 'Nuovo giocatore';
           const message = 'Nuovo giocatore inserito correttamente';
-          this.sharedService.notifica(globals.toastType.success, title, message);
+          this.sharedService.notifica(toastType.success, title, message);
         }),
         switchMap(() => this.rosterService.read()),
         tap(() => {
@@ -172,7 +172,7 @@ export class ListComponent implements OnInit {
           this.mostraPopupModifica = false;
           const title = 'Modifica giocatore';
           const message = 'Giocatore modificato correttamente';
-          this.sharedService.notifica(globals.toastType.success, title, message);
+          this.sharedService.notifica(toastType.success, title, message);
         }),
         switchMap(() => this.rosterService.read()),
         tap(() => {
@@ -208,7 +208,7 @@ export class ListComponent implements OnInit {
           this.popupConfermaElimina.chiudiModale();
           const title = 'Giocatore eliminata';
           const message = 'Il giocatore è stato eliminato correttamente';
-          this.sharedService.notifica(globals.toastType.success, title, message);
+          this.sharedService.notifica(toastType.success, title, message);
           this.rosterSelected = undefined;
         }),
         switchMap(() => this.rosterService.read()),

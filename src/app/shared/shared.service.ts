@@ -4,7 +4,7 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { itLocale } from 'ngx-bootstrap/locale';
 import { ToastrService } from 'ngx-toastr';
-import * as globals from './globals';
+import { toastType } from './globals';
 
 @Injectable()
 export class SharedService {
@@ -65,7 +65,7 @@ export class SharedService {
           break;
       }
     }
-    this.notifica(globals.toastType.error, titolo, descrizione);
+    this.notifica(toastType.error, titolo, descrizione);
   }
 
   notifyErrorDownload(response: Response) {
@@ -74,6 +74,6 @@ export class SharedService {
     const tipoOperazione = 'alert';
     titolo = 'Errore server';
     descrizione = 'Si è verificato un problema nel download del documento';
-    this.notifica(globals.toastType.error, titolo, descrizione);
+    this.notifica(toastType.error, titolo, descrizione);
   }
 }

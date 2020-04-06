@@ -6,7 +6,7 @@ import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../../shared/globals';
+import { toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-user-list',
@@ -63,7 +63,7 @@ export class ListComponent implements OnInit {
           this.mostraPopupModifica = false;
           const title = 'Nuovo utente';
           const message = 'Nuovo utente inserito correttamente';
-          this.sharedService.notifica(globals.toastType.success, title, message);
+          this.sharedService.notifica(toastType.success, title, message);
           this.userSelected = undefined;
         }),
         switchMap(() => this.userService.read())
@@ -80,7 +80,7 @@ export class ListComponent implements OnInit {
           this.mostraPopupModifica = false;
           const title = 'Modifica utente';
           const message = 'Utente modificato correttamente';
-          this.sharedService.notifica(globals.toastType.success, title, message);
+          this.sharedService.notifica(toastType.success, title, message);
           this.userSelected = undefined;
         }),
         switchMap(() => this.userService.read())
@@ -110,7 +110,7 @@ export class ListComponent implements OnInit {
           this.popupConfermaElimina.chiudiModale();
           const title = 'Utente eliminato';
           const message = 'L\'utente è stato eliminato correttamente';
-          this.sharedService.notifica(globals.toastType.success, title, message);
+          this.sharedService.notifica(toastType.success, title, message);
           this.userSelected = undefined;
         }),
         switchMap(() => this.userService.read()),

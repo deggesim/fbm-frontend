@@ -1,11 +1,11 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EMPTY } from 'rxjs';
-import { catchError, filter, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { User } from './models/user';
 import { AuthService } from './services/auth.service';
 import { NewSeasonService } from './services/new-season.service';
-import * as globals from './shared/globals';
+import { toastType } from './shared/globals';
 import { SharedService } from './shared/shared.service';
 import { SpinnerService } from './shared/spinner.service';
 
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.authService.logout().subscribe((user: User) => {
       const title = 'Logout';
       const message = 'Logout effettuato correttamente';
-      this.sharedService.notifica(globals.toastType.warning, title, message);
+      this.sharedService.notifica(toastType.warning, title, message);
       this.router.navigate(['/home']);
     });
   }
@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.authService.update(user).subscribe(() => {
       const title = 'Modifica user';
       const message = 'User modificato correttamente';
-      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.sharedService.notifica(toastType.success, title, message);
     });
   }
 
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     ).subscribe(() => {
       const title = 'Presason completata';
       const message = 'Il torneo ora è nella fase "Stagione regolare"';
-      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.sharedService.notifica(toastType.success, title, message);
       this.router.navigate(['/home']);
     });
   }

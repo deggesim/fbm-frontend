@@ -5,7 +5,7 @@ import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { Round } from 'src/app/models/round';
 import { RoundService } from 'src/app/services/round.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../shared/globals';
+import { isEmpty, toastType } from '../../shared/globals';
 
 @Component({
   selector: 'app-rounds',
@@ -60,7 +60,7 @@ export class RoundsComponent implements OnInit {
 
   onChange(round: Round) {
     this.selectedRound = round;
-    if (round != null && round.fantasyTeams != null && round.fantasyTeams.length > 0) {
+    if (round != null && round.fantasyTeams != null && !isEmpty(round.fantasyTeams)) {
       this.form.get('unsortedList').reset();
       this.form.get('sortedList').setValue(round.fantasyTeams);
     } else {
@@ -79,7 +79,7 @@ export class RoundsComponent implements OnInit {
     this.roundService.matches(this.selectedRound).subscribe((round: Round) => {
       const title = 'Generazione incontri';
       const message = 'Il calendario del round è stato generato correttamente';
-      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.sharedService.notifica(toastType.success, title, message);
       this.selectedRound = round;
     });
   }

@@ -14,7 +14,7 @@ import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
 import { RosterService } from 'src/app/services/roster.service';
 import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../shared/globals';
+import { toastType } from '../../shared/globals';
 
 @Component({
   selector: 'app-transaction',
@@ -129,7 +129,7 @@ export class TransactionComponent implements OnInit {
         this.fantasyRosters = fr;
         const title = 'Modifica tesseramento';
         const message = 'Tesseramento modificato correttamente';
-        this.sharedService.notifica(globals.toastType.success, title, message);
+        this.sharedService.notifica(toastType.success, title, message);
         this.rosterSelected = null;
         this.form.get('roster').reset();
         this.modal.hide();
@@ -157,7 +157,7 @@ export class TransactionComponent implements OnInit {
         this.fantasyRosters = fr;
         const title = 'Nuovo tesseramento';
         const message = 'Giocatore tesserato correttamente';
-        this.sharedService.notifica(globals.toastType.success, title, message);
+        this.sharedService.notifica(toastType.success, title, message);
         this.rosterSelected = null;
         this.form.get('roster').reset();
         this.modal.hide();
@@ -213,7 +213,7 @@ export class TransactionComponent implements OnInit {
       this.fantasyRosters = fantasyRosters;
       const title = 'Giocatore rimosso';
       const message = 'Il giocatore è stato rimosso correttamente.';
-      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.sharedService.notifica(toastType.success, title, message);
       this.popupRimuovi.chiudiModale();
       this.fantasyRosterSelected = null;
     });
@@ -237,7 +237,7 @@ export class TransactionComponent implements OnInit {
       this.fantasyRosters = fantasyRosters;
       const title = 'Giocatore rilasciato';
       const message = 'Il giocatore è stato rilasciato correttamente.';
-      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.sharedService.notifica(toastType.success, title, message);
       this.popupRilascia.chiudiModale();
       this.fantasyRosterSelected = null;
     });

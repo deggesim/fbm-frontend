@@ -10,3 +10,10 @@ export interface FantasyRoster {
     yearContract: number;
     realFixture: RealFixture;
 }
+
+export enum PlayerStatus {
+    'Ext' = 'EXT',
+    'Com' = 'COM',
+    'Str' = 'STR',
+    'Ita' = 'ITA'
+}

@@ -5,7 +5,7 @@ import { League } from 'src/app/models/league';
 import { AuthService } from 'src/app/services/auth.service';
 import { NewSeasonService } from 'src/app/services/new-season.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../shared/globals';
+import { toastType } from '../../shared/globals';
 
 @Component({
   selector: 'app-roles',
@@ -61,7 +61,7 @@ export class RolesComponent implements OnInit {
     ).subscribe(() => {
       const title = 'Modifica ruoli';
       const message = 'I ruoli della lega sono stati modificati con successo';
-      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.sharedService.notifica(toastType.success, title, message);
     });
   }
 

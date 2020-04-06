@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Role, User } from '../models/user';
 import { AuthService } from '../services/auth.service';
-import * as globals from '../shared/globals';
+import { toastType } from '../shared/globals';
 import { SharedService } from '../shared/shared.service';
 
 @Component({
@@ -55,7 +55,7 @@ export class UserProfileComponent implements OnInit {
     } else {
       const title = 'Errore password';
       const message = 'Le password non coincidono';
-      this.sharedService.notifica(globals.toastType.warning, title, message);
+      this.sharedService.notifica(toastType.warning, title, message);
     }
   }
 

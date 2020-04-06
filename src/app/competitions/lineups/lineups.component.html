@@ -88,12 +88,20 @@
               </tbody>
             </table>
           </div>
+          <div class="padding text-center">
+            <app-error-message [form-control]="form.get('lineup')" name="Formazione"></app-error-message>
+          </div>
+          <div class="padding text-center">
+            <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="openModalBenchOrder()">Ordine panchina</button>&nbsp;
+          </div>
         </div>
 
       </ng-container>
 
     </div>
   </fieldset>
+
+  <pre>{{form.get('lineup').errors | json}}</pre>
 
   <div class="text-center">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;

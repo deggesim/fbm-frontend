@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { Fixture } from 'src/app/models/fixture';
 import { Match } from 'src/app/models/match';
 import { Round } from 'src/app/models/round';
+import { FixtureService } from 'src/app/services/fixture.service';
 import { MatchService } from 'src/app/services/match.service';
 import { RoundService } from 'src/app/services/round.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../../shared/globals';
-import { FixtureService } from 'src/app/services/fixture.service';
+import { toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-calendar-list',
@@ -81,7 +81,7 @@ export class ListComponent implements OnInit {
         this.mostraPopupModifica = false;
         const title = 'Modifica risultati';
         const message = 'Risultati modificati correttamente';
-        this.sharedService.notifica(globals.toastType.success, title, message);
+        this.sharedService.notifica(toastType.success, title, message);
         this.matches = undefined;
       }),
       switchMap(() => this.roundService.read()),

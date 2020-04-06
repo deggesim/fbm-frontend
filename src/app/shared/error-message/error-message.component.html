@@ -1,3 +1,4 @@
 <div *ngIf="formControl.hasError('required') && formControl.dirty" class="error-message">Il campo {{formControlName}} è obbligatorio</div>
 <div *ngIf="formControl.hasError('min') && formControl.dirty" class="error-message">Il campo {{formControlName}} è inferiore a {{formControl.errors.min.min}}</div>
 <div *ngIf="formControl.hasError('max') && formControl.dirty" class="error-message">Il campo {{formControlName}} è superiore a {{formControl.errors.max.max}}</div>
+<div *ngIf="formControl.hasError('lineupInvalid') && formControl.dirty" class="error-message">La formazione inserita è sbagliata</div>

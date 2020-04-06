@@ -5,7 +5,7 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../../shared/globals';
+import { toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-fantasy-team-list',
@@ -72,7 +72,7 @@ export class ListComponent implements OnInit {
         this.mostraPopupModifica = false;
         const title = 'Modifica squadra';
         const message = 'Squadra modificata correttamente';
-        this.sharedService.notifica(globals.toastType.success, title, message);
+        this.sharedService.notifica(toastType.success, title, message);
         this.fantasyTeamSelected = undefined;
       }),
       switchMap(() => this.fantasyTeamService.read())

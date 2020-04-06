@@ -8,7 +8,7 @@ import { RegularSeasonFormat } from 'src/app/models/formats/regular-season-forma
 import { League } from 'src/app/models/league';
 import { NewSeasonService } from 'src/app/services/new-season.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../shared/globals';
+import { toastType } from '../../shared/globals';
 
 @Component({
   selector: 'app-edit-league',
@@ -134,7 +134,7 @@ export class EditLeagueComponent implements OnInit {
     this.newSeasonService.update(league).subscribe(() => {
       const title = 'Modifica lega';
       const message = 'Lega modificata con successo';
-      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.sharedService.notifica(toastType.success, title, message);
     });
 
   }

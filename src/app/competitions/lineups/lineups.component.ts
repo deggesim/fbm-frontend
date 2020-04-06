@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
-import { FantasyRoster } from 'src/app/models/fantasy-roster';
+import { FantasyRoster, PlayerStatus } from 'src/app/models/fantasy-roster';
 import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { Fixture } from 'src/app/models/fixture';
 import { Lineup } from 'src/app/models/lineup';
@@ -11,7 +11,9 @@ import { Round } from 'src/app/models/round';
 import { FantasyRosterService } from 'src/app/services/fantasy-roster.service';
 import { RealFixtureService } from 'src/app/services/real-fixture.service';
 import { SharedService } from 'src/app/shared/shared.service';
-import * as globals from '../../shared/globals';
+import { isEmpty, toastType } from '../../shared/globals';
+import { lineUpValid, count } from 'src/app/util/lineup';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-lineups',
@@ -32,6 +34,7 @@ export class LineupsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private sharedService: SharedService,
     private realFixtureService: RealFixtureService,
     private fantasyRosterService: FantasyRosterService,
@@ -60,10 +63,28 @@ export class LineupsComponent implements OnInit {
   }
 
   lineupValidator = (control: AbstractControl) => {
-    // tslint:disable-next-line: prefer-const
-    let lineupInvalid = false;
-    // TODO controllo formazione
-    if (lineupInvalid) {
+    const lineup: Lineup[] = control.value;
+    const lineupValid = lineUpValid(lineup, this.authService.getSelectedLeague());
+    if (!lineupValid) {
+      return { lineupInvalid: true };
+    }
+
+    // count EXT, COM, STR, ITA
+    const MAX_EXT_OPT_345 = this.authService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_EXT_OPT_345');
+    if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
+      return { lineupInvalid: true };
+    }
+    const MAX_STRANGERS_OPT_55 = this.authService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_STRANGERS_OPT_55');
+    if ((count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com)) > MAX_STRANGERS_OPT_55.value) {
+      return { lineupInvalid: true };
+    }
+    // TODO
+    // const MAX_STR = this.authService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_STR');
+    // if (count(lineup, PlayerStatus.Str) > MAX_STR.value) {
+    //   return { lineupInvalid: true };
+    // }
+    const MIN_NAT_PLAYERS = this.authService.getSelectedLeague().parameters.find(param => param.parameter === 'MIN_NAT_PLAYERS');
+    if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
       return { lineupInvalid: true };
     }
     return null;
@@ -75,10 +96,10 @@ export class LineupsComponent implements OnInit {
     this.fantasyRosters = null;
     this.form.get('lineup').reset();
     if (round != null) {
-      if (round.fixtures != null && round.fixtures.length > 0) {
+      if (round.fixtures != null && !isEmpty(round.fixtures)) {
         this.fixtures = round.fixtures;
       }
-      if (round.fantasyTeams != null && round.fantasyTeams.length > 0) {
+      if (round.fantasyTeams != null && !isEmpty(round.fantasyTeams)) {
         this.fantasyTeams = round.fantasyTeams;
       }
       this.form.get('fixture').enable();
@@ -111,6 +132,7 @@ export class LineupsComponent implements OnInit {
   }
 
   addPlayer(fantasyRoster: FantasyRoster) {
+    this.form.get('lineup').markAsDirty();
     const playerFound = this.lineup.find((player: Lineup) => {
       if (player != null) {
         return player.fantasyRoster._id === fantasyRoster._id;
@@ -146,6 +168,10 @@ export class LineupsComponent implements OnInit {
     return found != null;
   }
 
+  openModalBenchOrder() {
+    console.log('openModalBenchOrder');
+  }
+
   reset() {
     this.form.reset();
     this.fixtures = null;
@@ -158,7 +184,7 @@ export class LineupsComponent implements OnInit {
     // TODO
     const title = 'Formazione salvata';
     const message = 'La formazione è stata salvata correttamente';
-    this.sharedService.notifica(globals.toastType.success, title, message);
+    this.sharedService.notifica(toastType.success, title, message);
   }
 
   ripristina() {

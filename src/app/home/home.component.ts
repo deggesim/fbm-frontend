@@ -4,7 +4,7 @@ import { League, Status } from '../models/league';
 import { Login } from '../models/login';
 import { User } from '../models/user';
 import { AuthService } from '../services/auth.service';
-import * as globals from '../shared/globals';
+import { isEmpty, toastType } from '../shared/globals';
 import { SharedService } from '../shared/shared.service';
 
 @Component({
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
     if (this.isLoggedIn()) {
       const userLogged = this.authService.getLoggedUser();
       this.listaLeghe = userLogged.leagues;
-      if (this.listaLeghe != null && this.listaLeghe.length > 0) {
+      if (this.listaLeghe != null && !isEmpty(this.listaLeghe)) {
         this.authService.setSelectedLeague(this.listaLeghe[0]);
       }
     }
@@ -51,12 +51,12 @@ export class HomeComponent implements OnInit {
   public login(user: Login) {
     this.authService.login(user).subscribe((loginObj: { user: User, token: string }) => {
       this.listaLeghe = loginObj.user.leagues;
-      if (this.listaLeghe != null && this.listaLeghe.length > 0) {
+      if (this.listaLeghe != null && !isEmpty(this.listaLeghe)) {
         this.authService.setSelectedLeague(this.listaLeghe[0]);
       }
       const title = 'Login';
       const message = 'Login effettuato correttamente';
-      this.sharedService.notifica(globals.toastType.success, title, message);
+      this.sharedService.notifica(toastType.success, title, message);
     });
   }
 
