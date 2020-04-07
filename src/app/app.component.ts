@@ -1,7 +1,7 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EMPTY } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 import { User } from './models/user';
 import { AuthService } from './services/auth.service';
 import { NewSeasonService } from './services/new-season.service';
@@ -48,12 +48,15 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   public logout() {
-    this.authService.logout().subscribe((user: User) => {
-      const title = 'Logout';
-      const message = 'Logout effettuato correttamente';
-      this.sharedService.notifica(toastType.warning, title, message);
-      this.router.navigate(['/home']);
-    });
+    this.authService.logout().pipe(
+      tap((user: User) => {
+        const title = 'Logout';
+        const message = 'Logout effettuato correttamente';
+        this.sharedService.notifica(toastType.warning, title, message);
+        this.router.navigate(['/home']);
+      }),
+      switchMap(() => this.authService.leagueStatusObservableChain)
+    ).subscribe();
   }
 
   public annulla() {

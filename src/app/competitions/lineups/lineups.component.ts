@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { FantasyRoster, PlayerStatus } from 'src/app/models/fantasy-roster';
 import { FantasyTeam } from 'src/app/models/fantasy-team';
 import { Fixture } from 'src/app/models/fixture';
 import { Lineup } from 'src/app/models/lineup';
 import { RealFixture } from 'src/app/models/real-fixture';
 import { Round } from 'src/app/models/round';
+import { AuthService } from 'src/app/services/auth.service';
 import { FantasyRosterService } from 'src/app/services/fantasy-roster.service';
+import { LineupService } from 'src/app/services/lineup.service';
 import { RealFixtureService } from 'src/app/services/real-fixture.service';
 import { SharedService } from 'src/app/shared/shared.service';
+import { count, lineUpValid } from 'src/app/util/lineup';
 import { isEmpty, toastType } from '../../shared/globals';
-import { lineUpValid, count } from 'src/app/util/lineup';
-import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-lineups',
@@ -29,7 +30,7 @@ export class LineupsComponent implements OnInit {
   realFixture: RealFixture;
   fantasyTeams: FantasyTeam[];
   fantasyRosters: FantasyRoster[];
-  lineup: Lineup[] = [null, null, null, null, null, null, null, null, null, null, null, null];
+  lineup: Lineup[];
 
   constructor(
     private fb: FormBuilder,
@@ -38,8 +39,10 @@ export class LineupsComponent implements OnInit {
     private sharedService: SharedService,
     private realFixtureService: RealFixtureService,
     private fantasyRosterService: FantasyRosterService,
+    private lineupService: LineupService,
   ) {
     this.createForm();
+    this.lineup = this.initLineup();
   }
 
   ngOnInit() {
@@ -123,10 +126,16 @@ export class LineupsComponent implements OnInit {
   onChangeFantasyTeam(fantasyTeam: FantasyTeam) {
     if (fantasyTeam != null) {
       this.realFixtureService.getByFixture(this.form.value.fixture._id).pipe(
-        switchMap((realFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, realFixture._id))
-      ).subscribe((fantasyRosters: FantasyRoster[]) => {
-        this.fantasyRosters = fantasyRosters;
-        console.log(this.fantasyRosters);
+        switchMap((realFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, realFixture._id)),
+        tap((fantasyRosters: FantasyRoster[]) => {
+          this.fantasyRosters = fantasyRosters;
+          this.lineup = this.initLineup();
+        }),
+        switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id)),
+      ).subscribe((lineup: Lineup[]) => {
+        if (lineup != null && !isEmpty(lineup)) {
+          this.lineup = lineup;
+        }
       });
     }
   }
@@ -181,10 +190,11 @@ export class LineupsComponent implements OnInit {
   }
 
   salva() {
-    // TODO
-    const title = 'Formazione salvata';
-    const message = 'La formazione è stata salvata correttamente';
-    this.sharedService.notifica(toastType.success, title, message);
+    this.lineupService.save(this.lineup.filter(lineup => lineup != null)).subscribe(() => {
+      const title = 'Formazione salvata';
+      const message = 'La formazione è stata salvata correttamente';
+      this.sharedService.notifica(toastType.success, title, message);
+    });
   }
 
   ripristina() {
@@ -201,5 +211,9 @@ export class LineupsComponent implements OnInit {
 
   inviaEmail() {
     console.log('inviaEmail');
+  }
+
+  private initLineup(): Lineup[] {
+    return [null, null, null, null, null, null, null, null, null, null, null, null];
   }
 }

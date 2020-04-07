@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
-import { BehaviorSubject, EMPTY, Observable } from 'rxjs';
-import { filter, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, EMPTY, Observable, forkJoin } from 'rxjs';
+import { shareReplay, tap } from 'rxjs/operators';
 import { Fixture } from '../models/fixture';
 import { League, Status } from '../models/league';
 import { Login } from '../models/login';
@@ -21,25 +21,6 @@ export class AuthService {
 
   private $leagueStatus = new BehaviorSubject<string>(null);
   private $leagueStatusObservable = this.$leagueStatus.asObservable();
-  private $leagueStatusObservableChain = this.isPreseason().pipe(
-    filter((preseason: boolean) => {
-      if (preseason) {
-        this.leagueStatus = Status.Preseason;
-      }
-      return !preseason;
-    }), switchMap(() => this.isOffseason()), filter((offseason: boolean) => {
-      if (offseason) {
-        this.leagueStatus = Status.Offseason;
-      }
-      return !offseason;
-    }), switchMap(() => this.isPostSeason()), filter((postseason: boolean) => {
-      if (postseason) {
-        this.leagueStatus = Status.Postseason;
-      }
-      return !postseason;
-    }), tap(() => {
-      this.leagueStatus = Status.RegularSeason;
-    }));
 
   constructor(
     private http: HttpClient
@@ -53,8 +34,20 @@ export class AuthService {
     this.$user.next(user);
   }
 
-  public get leagueStatusObservableChain(): Observable<boolean> {
-    return this.$leagueStatusObservableChain;
+  public get leagueStatusObservableChain() {
+    return forkJoin([this.isPreseason(), this.isOffseason(), this.isPostSeason()]).pipe(
+      tap((values: boolean[]) => {
+        if (values[0]) {
+          this.leagueStatus = Status.Preseason;
+        } else if (values[1]) {
+          this.leagueStatus = Status.Offseason;
+        } else if (values[2]) {
+          this.leagueStatus = Status.Postseason;
+        } else {
+          this.leagueStatus = Status.RegularSeason;
+        }
+      })
+    );
   }
 
   public set leagueStatus(leagueStatus: string) {
@@ -105,6 +98,7 @@ export class AuthService {
           localStorage.removeItem('user');
           localStorage.removeItem('token');
           localStorage.removeItem('expires_at');
+          localStorage.removeItem('league');
         }),
         shareReplay()
       );
@@ -155,7 +149,6 @@ export class AuthService {
 
   public setSelectedLeague(league: League) {
     localStorage.setItem('league', JSON.stringify(league));
-    this.leagueStatusObservableChain.subscribe();
   }
 
   public getSelectedLeague(): League {
@@ -180,7 +173,6 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
     this.user = user;
-    this.leagueStatusObservableChain.subscribe();
   }
 
 }

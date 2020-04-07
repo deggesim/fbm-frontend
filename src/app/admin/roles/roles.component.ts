@@ -57,7 +57,8 @@ export class RolesComponent implements OnInit {
       tap((league: League) => {
         this.authService.setSelectedLeague(league);
       }),
-      switchMap(() => this.authService.refresh())
+      switchMap(() => this.authService.refresh()),
+      switchMap(() => this.authService.leagueStatusObservableChain)
     ).subscribe(() => {
       const title = 'Modifica ruoli';
       const message = 'I ruoli della lega sono stati modificati con successo';

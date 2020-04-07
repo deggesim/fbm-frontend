@@ -66,7 +66,8 @@ export class NewSeasonStepTwoComponent implements OnInit {
         return this.fantastyTeamsService.create(fantasyTeams);
       }),
       switchMap(() => this.newSeasonService.populate(newLeague)),
-      switchMap(() => this.authService.refresh())
+      switchMap(() => this.authService.refresh()),
+      switchMap(() => this.authService.leagueStatusObservableChain)
     ).subscribe(() => {
       this.router.navigate(['/home']);
     });
