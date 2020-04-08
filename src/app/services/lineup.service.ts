@@ -22,8 +22,8 @@ export class LineupService {
     return this.http.get<Lineup[]>(`${this.endpoint}/lineups/fantasy-team/${fantasyTeamId}/fixture/${fixtureId}`);
   }
 
-  public save(lineup: Lineup[]) {
-    return this.http.post<Lineup>(`${this.endpoint}/lineups`, lineup);
+  public save(fantasyTeamId: string, fixtureId: string, lineup: Lineup[]) {
+    return this.http.post<Lineup>(`${this.endpoint}/lineups/fantasy-team/${fantasyTeamId}/fixture/${fixtureId}`, lineup);
   }
 
   public update(lineup: Lineup) {

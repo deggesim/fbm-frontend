@@ -14,7 +14,7 @@ import { LineupService } from 'src/app/services/lineup.service';
 import { RealFixtureService } from 'src/app/services/real-fixture.service';
 import { SharedService } from 'src/app/shared/shared.service';
 import { count, lineUpValid } from 'src/app/util/lineup';
-import { isEmpty, toastType } from '../../shared/globals';
+import { AppConfig, isEmpty, toastType } from '../../shared/globals';
 
 @Component({
   selector: 'app-lineups',
@@ -27,7 +27,6 @@ export class LineupsComponent implements OnInit {
 
   rounds: Round[];
   fixtures: Fixture[];
-  realFixture: RealFixture;
   fantasyTeams: FantasyTeam[];
   fantasyRosters: FantasyRoster[];
   lineup: Lineup[];
@@ -134,7 +133,14 @@ export class LineupsComponent implements OnInit {
         switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id)),
       ).subscribe((lineup: Lineup[]) => {
         if (lineup != null && !isEmpty(lineup)) {
-          this.lineup = lineup;
+          this.lineup = lineup.map((player: Lineup) => {
+            return {
+              fantasyRoster: player.fantasyRoster,
+              spot: player.spot,
+              benchOrder: player.benchOrder,
+              fixture: player.fixture
+            };
+          });
         }
       });
     }
@@ -151,7 +157,7 @@ export class LineupsComponent implements OnInit {
       // find first hole
       let index = this.lineup.indexOf(null);
       index = index === -1 ? this.lineup.length : index;
-      const benchOrder = index > 4 ? index + 1 - 5 : null;
+      const benchOrder = (index > AppConfig.Starters - 1 && index < AppConfig.MinPlayersInLineup) ? index + 1 - AppConfig.Starters : null;
       const newPlayer: Lineup = {
         fantasyRoster,
         spot: index + 1,
@@ -164,6 +170,7 @@ export class LineupsComponent implements OnInit {
   }
 
   removePlayer(index: number) {
+    this.form.get('lineup').markAsDirty();
     this.lineup[index] = null;
     this.form.get('lineup').setValue(this.lineup);
   }
@@ -190,7 +197,8 @@ export class LineupsComponent implements OnInit {
   }
 
   salva() {
-    this.lineupService.save(this.lineup.filter(lineup => lineup != null)).subscribe(() => {
+    const filteredLineup = this.lineup.filter(lineup => lineup != null);
+    this.lineupService.save(this.form.value.fantasyTeam._id, this.form.value.fixture._id, filteredLineup).subscribe(() => {
       const title = 'Formazione salvata';
       const message = 'La formazione è stata salvata correttamente';
       this.sharedService.notifica(toastType.success, title, message);
@@ -198,11 +206,29 @@ export class LineupsComponent implements OnInit {
   }
 
   ripristina() {
-    console.log('ripristina');
+    this.lineupService.lineupByTeam(this.form.value.fantasyTeam._id, this.form.value.fixture._id).subscribe((lineup: Lineup[]) => {
+      if (lineup != null && !isEmpty(lineup)) {
+        this.lineup = lineup.map((player: Lineup) => {
+          return {
+            fantasyRoster: player.fantasyRoster,
+            spot: player.spot,
+            benchOrder: player.benchOrder,
+            fixture: player.fixture
+          };
+        });
+        this.form.get('lineup').markAsPristine();
+      }
+    });
   }
 
   svuota() {
-    console.log('svuota');
+    this.lineupService.delete(this.form.value.fantasyTeam._id, this.form.value.fixture._id).subscribe(() => {
+      this.lineup = this.initLineup();
+      this.form.get('lineup').markAsPristine();
+      const title = 'Formazione eliminata';
+      const message = 'La formazione è stata eliminata correttamente';
+      this.sharedService.notifica(toastType.success, title, message);
+    });
   }
 
   importa() {
@@ -214,6 +240,10 @@ export class LineupsComponent implements OnInit {
   }
 
   private initLineup(): Lineup[] {
-    return [null, null, null, null, null, null, null, null, null, null, null, null];
+    const initLineup: Lineup[] = [];
+    for (let i = 0; i < AppConfig.MaxPlayersInLineup; i++) {
+      initLineup.push(null);
+    }
+    return initLineup;
   }
 }
