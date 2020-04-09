@@ -110,3 +110,33 @@
   </div>
 
 </form>
+
+<!-- popup modifica panchina -->
+<div *ngIf="mostraPopupPanchina" class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: true}" tabindex="-1" role="dialog" aria-hidden="true">
+
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header titolo">
+        <h4 class="modal-title">Ordine panchinari</h4>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="benchForm" (ngSubmit)="salvaPanchina()" class="needs-validation" novalidate>
+          <ng-template #sortedListTemplate let-item="item" let-index="index"><span>{{index + 1}}: {{item.value.fantasyRoster.roster.player.name}}</span></ng-template>
+
+          <div class="form-group">
+            <bs-sortable formControlName="sortedList" items="benchPlayers" [itemTemplate]="sortedListTemplate" itemClass="sortable-item" itemActiveClass="sortable-item-active"
+              placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper"></bs-sortable>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;
+            <button type="button" class="btn btn-primary" (click)="annulla()">Annulla</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>

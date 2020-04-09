@@ -14,8 +14,8 @@
         </div>
       </div>
 
-      <ng-template #sortedListTemplate let-item="item" let-index="index"><span>#{{index + 1}}: {{item.initData.name}}</span></ng-template>
-      <ng-template #unsortedListTemplate let-item="item" let-index="index"><span>{{item.initData.name}}</span></ng-template>
+      <ng-template #sortedListTemplate let-item="item" let-index="index"><span>#{{index + 1}}: {{item.value.name}}</span></ng-template>
+      <ng-template #unsortedListTemplate let-item="item" let-index="index"><span>{{item.value.name}}</span></ng-template>
 
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">

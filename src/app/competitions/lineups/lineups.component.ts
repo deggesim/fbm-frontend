@@ -24,6 +24,9 @@ import { AppConfig, isEmpty, toastType } from '../../shared/globals';
 export class LineupsComponent implements OnInit {
 
   form: FormGroup;
+  benchForm: FormGroup;
+  benchPlayers: Lineup[];
+  mostraPopupPanchina: boolean;
 
   rounds: Round[];
   fixtures: Fixture[];
@@ -41,6 +44,7 @@ export class LineupsComponent implements OnInit {
     private lineupService: LineupService,
   ) {
     this.createForm();
+    this.createBenchForm();
     this.lineup = this.initLineup();
   }
 
@@ -62,6 +66,12 @@ export class LineupsComponent implements OnInit {
     });
     this.form.get('fixture').disable();
     this.form.get('fantasyTeam').disable();
+  }
+
+  createBenchForm() {
+    this.benchForm = this.fb.group({
+      sortedList: [undefined],
+    });
   }
 
   lineupValidator = (control: AbstractControl) => {
@@ -141,6 +151,8 @@ export class LineupsComponent implements OnInit {
               fixture: player.fixture
             };
           });
+          this.form.get('lineup').setValue(this.lineup);
+          this.form.get('lineup').markAsDirty();
         }
       });
     }
@@ -185,7 +197,25 @@ export class LineupsComponent implements OnInit {
   }
 
   openModalBenchOrder() {
-    console.log('openModalBenchOrder');
+    this.benchPlayers = this.lineup.filter(player => player.benchOrder != null);
+    this.benchForm.get('sortedList').setValue(this.benchPlayers);
+    this.mostraPopupPanchina = true;
+  }
+
+  salvaPanchina() {
+    const newOrder: Lineup[] = this.benchForm.value.sortedList;
+    let i = 1;
+    for (const player of newOrder) {
+      player.benchOrder = i++;
+    }
+    newOrder.sort((a: Lineup, b: Lineup) => a.spot - b.spot);
+    this.lineup.splice(AppConfig.FirstBenchPlayerIndex, AppConfig.PlayersInBench, ...newOrder);
+    this.form.get('lineup').setValue(this.lineup);
+    this.mostraPopupPanchina = false;
+  }
+
+  annulla(): void {
+    this.mostraPopupPanchina = false;
   }
 
   reset() {

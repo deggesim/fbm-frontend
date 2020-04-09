@@ -35,7 +35,7 @@ export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
 
     // formation still valid: check roles for bench, one exception allowed
     let roleException = 0;
-    for (let i = AppConfig.FirstBenchPlayerIndex - 1; i <= AppConfig.LastBenchPlayerIndex - 1; i++) {
+    for (let i = AppConfig.FirstBenchPlayerIndex; i <= AppConfig.LastBenchPlayerIndex; i++) {
 
       const benchPlayer = lineup[i];
       const role = benchPlayer.fantasyRoster.roster.player.role;
@@ -48,7 +48,7 @@ export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
         let jollyValid = false;
         // the exception is valid if the role is adjacent to a legitimate role
         for (const leagueRoleSpot of leagueRole.spots) {
-          if (leagueRoleSpot <= AppConfig.LastBenchPlayerIndex && leagueRoleSpot === spot - 1 || leagueRoleSpot === spot + 1) {
+          if (leagueRoleSpot <= AppConfig.LastBenchPlayerIndex + 1 && leagueRoleSpot === spot - 1 || leagueRoleSpot === spot + 1) {
             jollyValid = true;
             break;
           }
