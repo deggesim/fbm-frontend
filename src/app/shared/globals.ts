@@ -15,5 +15,5 @@ export enum AppConfig {
   'DefaultGrade' = 5.5,
   'NecessaryGrades' = 10,
   'FirstBenchPlayerIndex' = 5,
-  'LastBenchPlayerIndex' = 9
+  'LastBenchPlayerIndex' = 9,
 }

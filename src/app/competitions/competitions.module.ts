@@ -15,6 +15,7 @@ import { CompetitionsRoutingModule } from './competitions-routing.module';
 import { LineupsComponent } from './lineups/lineups.component';
 import { PerformancesComponent } from './performances/performances.component';
 import { StandingsComponent } from './standings/standings.component';
+import { ResultsComponent } from './results/results.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { StandingsComponent } from './standings/standings.component';
     CalendarEditComponent,
     StandingsComponent,
     PerformancesComponent,
-    LineupsComponent
+    LineupsComponent,
+    ResultsComponent
   ],
   imports: [
     ReactiveFormsModule,
