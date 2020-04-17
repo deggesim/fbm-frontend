@@ -13,6 +13,10 @@ body {
   padding-top: 5rem;
 }
 
+form {
+  margin-bottom: 1rem;
+}
+
 // fix calendario
 button:disabled {
   cursor: not-allowed;
