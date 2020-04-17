@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Player } from '@app/models/player';
+import { PlayerService } from '@app/services/player.service';
 import { Observable } from 'rxjs';
-import { Player } from 'src/app/models/player';
-import { PlayerService } from '../player.service';
 
 @Injectable({
   providedIn: 'root'

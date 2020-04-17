@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FantasyTeam } from '@app/models/fantasy-team';
+import { League } from '@app/models/league';
+import { User } from '@app/models/user';
+import { AuthService } from '@app/services/auth.service';
+import { FantasyTeamService } from '@app/services/fantasy-team.service';
+import { NewSeasonService } from '@app/services/new-season.service';
 import { switchMap, tap } from 'rxjs/operators';
-import { FantasyTeam } from 'src/app/models/fantasy-team';
-import { League } from 'src/app/models/league';
-import { User } from 'src/app/models/user';
-import { AuthService } from 'src/app/services/auth.service';
-import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
-import { NewSeasonService } from 'src/app/services/new-season.service';
 
 @Component({
   selector: 'app-new-season-step-two',

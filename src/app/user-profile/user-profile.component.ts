@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Role, User } from '../models/user';
-import { AuthService } from '../services/auth.service';
-import { toastType } from '../shared/globals';
-import { SharedService } from '../shared/shared.service';
+import { Role, User } from '@app/models/user';
+import { AuthService } from '@app/services/auth.service';
+import { toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
   selector: 'app-user-profile',

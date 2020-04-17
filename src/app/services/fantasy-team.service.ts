@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { FantasyTeam } from '@app/models/fantasy-team';
 import { environment } from 'src/environments/environment';
-import { FantasyTeam } from '../models/fantasy-team';
 
 @Injectable({
   providedIn: 'root'

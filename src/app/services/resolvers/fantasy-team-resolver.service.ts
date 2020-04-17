@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { FantasyTeam } from 'src/app/models/fantasy-team';
-import { FantasyTeamService } from '../fantasy-team.service';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { FantasyTeam } from '@app/models/fantasy-team';
+import { FantasyTeamService } from '@app/services/fantasy-team.service';
 import { Observable } from 'rxjs';
 
 @Injectable({

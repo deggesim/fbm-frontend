@@ -1,9 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@angular/router';
+import { Status } from '@app/models/league';
+import { User } from '@app/models/user';
+import { AuthService } from '@app/services/auth.service';
 import { filter } from 'rxjs/operators';
-import { User } from 'src/app/models/user';
-import { AuthService } from 'src/app/services/auth.service';
-import { Status } from 'src/app/models/league';
 
 interface IBreadcrumb {
   label: string;

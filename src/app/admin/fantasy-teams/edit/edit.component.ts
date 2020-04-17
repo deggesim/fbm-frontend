@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { FantasyTeam } from 'src/app/models/fantasy-team';
-import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
+import { FantasyTeam } from '@app/models/fantasy-team';
+import { User } from '@app/models/user';
+import { UserService } from '@app/services/user.service';
 
 @Component({
   selector: 'app-fantasy-team-edit',

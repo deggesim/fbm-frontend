@@ -2,10 +2,10 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { SharedService } from '@app/shared/shared.service';
+import { SpinnerService } from '@app/shared/spinner.service';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { SharedService } from './../shared/shared.service';
-import { SpinnerService } from './../shared/spinner.service';
 
 @Injectable()
 export class GlobalInterceptor implements HttpInterceptor {

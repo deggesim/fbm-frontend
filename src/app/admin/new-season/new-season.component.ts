@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CupFormat } from 'src/app/models/formats/cup-format';
-import { PlayoffFormat } from 'src/app/models/formats/playoff-format';
-import { PlayoutFormat } from 'src/app/models/formats/playout-format';
-import { RegularSeasonFormat } from 'src/app/models/formats/regular-season-format';
-import { League } from 'src/app/models/league';
+import { CupFormat } from '@app/models/formats/cup-format';
+import { PlayoffFormat } from '@app/models/formats/playoff-format';
+import { PlayoutFormat } from '@app/models/formats/playout-format';
+import { RegularSeasonFormat } from '@app/models/formats/regular-season-format';
+import { League } from '@app/models/league';
 
 @Component({
   selector: 'app-new-season',

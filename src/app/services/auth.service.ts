@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Fixture } from '@app/models/fixture';
+import { League, Status } from '@app/models/league';
+import { Login } from '@app/models/login';
+import { RealFixture } from '@app/models/real-fixture';
+import { Role, User } from '@app/models/user';
+import { environment } from '@env/environment';
 import * as jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
-import { BehaviorSubject, EMPTY, Observable, forkJoin } from 'rxjs';
+import { BehaviorSubject, EMPTY, forkJoin, Observable } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
-import { Fixture } from '../models/fixture';
-import { League, Status } from '../models/league';
-import { Login } from '../models/login';
-import { RealFixture } from '../models/real-fixture';
-import { Role, User } from '../models/user';
-import { environment } from './../../environments/environment';
 
 @Injectable()
 export class AuthService {

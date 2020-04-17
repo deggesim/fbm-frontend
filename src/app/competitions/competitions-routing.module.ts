@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '../guards/auth.guard';
-import { RealFixtureResolverService } from '../services/resolvers/real-fixture-resolver.service';
-import { RoundResolverService } from '../services/resolvers/round-resolver.service';
-import { TeamResolverService } from '../services/resolvers/team-resolver.service';
+import { AuthGuard } from '@app/guards/auth.guard';
+import { RealFixtureResolverService } from '@app/services/resolvers/real-fixture-resolver.service';
+import { RoundResolverService } from '@app/services/resolvers/round-resolver.service';
+import { TeamResolverService } from '@app/services/resolvers/team-resolver.service';
 import { ListComponent as CalendarListComponent } from './calendar/list/list.component';
 import { LineupsComponent } from './lineups/lineups.component';
 import { PerformancesComponent } from './performances/performances.component';

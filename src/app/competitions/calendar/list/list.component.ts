@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Fixture } from '@app/models/fixture';
+import { Match } from '@app/models/match';
+import { Round } from '@app/models/round';
+import { FixtureService } from '@app/services/fixture.service';
+import { MatchService } from '@app/services/match.service';
+import { RoundService } from '@app/services/round.service';
+import { toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
 import { EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { Fixture } from 'src/app/models/fixture';
-import { Match } from 'src/app/models/match';
-import { Round } from 'src/app/models/round';
-import { FixtureService } from 'src/app/services/fixture.service';
-import { MatchService } from 'src/app/services/match.service';
-import { RoundService } from 'src/app/services/round.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import { toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-calendar-list',

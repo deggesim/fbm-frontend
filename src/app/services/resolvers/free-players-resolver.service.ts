@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Roster } from '@app/models/roster';
+import { RosterService } from '@app/services/roster.service';
 import { Observable } from 'rxjs';
-import { Roster } from 'src/app/models/roster';
-import { RosterService } from '../roster.service';
 
 @Injectable({
   providedIn: 'root'

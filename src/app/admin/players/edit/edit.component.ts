@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Player, Role } from 'src/app/models/player';
-import { Roster } from 'src/app/models/roster';
-import { Team } from 'src/app/models/team';
-import { TeamService } from 'src/app/services/team.service';
+import { Role } from '@app/models/player';
+import { Roster } from '@app/models/roster';
+import { Team } from '@app/models/team';
+import { TeamService } from '@app/services/team.service';
 
 @Component({
   selector: 'app-player-edit',

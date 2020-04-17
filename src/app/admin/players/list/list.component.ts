@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Player } from '@app/models/player';
+import { Roster } from '@app/models/roster';
+import { PlayerService } from '@app/services/player.service';
+import { RosterService } from '@app/services/roster.service';
+import { isEmpty, toastType } from '@app/shared/globals';
+import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
+import { SharedService } from '@app/shared/shared.service';
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { Player } from 'src/app/models/player';
-import { Roster } from 'src/app/models/roster';
-import { PlayerService } from 'src/app/services/player.service';
-import { RosterService } from 'src/app/services/roster.service';
-import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
-import { SharedService } from 'src/app/shared/shared.service';
-import { isEmpty, toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-player-list',

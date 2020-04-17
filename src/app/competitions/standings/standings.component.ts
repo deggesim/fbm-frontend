@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Round } from 'src/app/models/round';
-import { TableItem } from 'src/app/models/table-item';
-import { AuthService } from 'src/app/services/auth.service';
-import { Fixture } from 'src/app/models/fixture';
-import { Match } from 'src/app/models/match';
-import { calculator } from 'src/app/util/standings';
-import { Parameter } from 'src/app/models/league';
+import { Fixture } from '@app/models/fixture';
+import { Parameter } from '@app/models/league';
+import { Match } from '@app/models/match';
+import { Round } from '@app/models/round';
+import { TableItem } from '@app/models/table-item';
+import { AuthService } from '@app/services/auth.service';
+import { calculator } from '@app/util/standings';
 
 @Component({
   selector: 'app-standings',

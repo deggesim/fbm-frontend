@@ -1,7 +1,7 @@
-import { League, Role, Status } from '../models/league';
-import { Lineup } from '../models/lineup';
-import { AppConfig, isEmpty } from '../shared/globals';
-import { PlayerStatus } from '../models/fantasy-roster';
+import { PlayerStatus } from '@app/models/fantasy-roster';
+import { League, Role } from '@app/models/league';
+import { Lineup } from '@app/models/lineup';
+import { AppConfig, isEmpty } from '@app/shared/globals';
 
 export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
   if (fullLineup == null || isEmpty(fullLineup)) {

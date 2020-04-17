@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { League } from 'src/app/models/league';
-import { NewSeasonService } from '../new-season.service';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { User } from 'src/app/models/user';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { League } from '@app/models/league';
+import { AuthService } from '@app/services/auth.service';
+import { NewSeasonService } from '@app/services/new-season.service';
 import { Observable } from 'rxjs';
-import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'

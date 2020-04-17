@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FantasyTeam } from 'src/app/models/fantasy-team';
-import { Round } from 'src/app/models/round';
-import { RoundService } from 'src/app/services/round.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import { isEmpty, toastType } from '../../shared/globals';
+import { FantasyTeam } from '@app/models/fantasy-team';
+import { Round } from '@app/models/round';
+import { RoundService } from '@app/services/round.service';
+import { isEmpty, toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
   selector: 'app-rounds',

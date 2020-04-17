@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { FantasyRoster, PlayerStatus } from '@app/models/fantasy-roster';
+import { FantasyTeam } from '@app/models/fantasy-team';
+import { Fixture } from '@app/models/fixture';
+import { Lineup } from '@app/models/lineup';
+import { RealFixture } from '@app/models/real-fixture';
+import { Round } from '@app/models/round';
+import { AuthService } from '@app/services/auth.service';
+import { FantasyRosterService } from '@app/services/fantasy-roster.service';
+import { LineupService } from '@app/services/lineup.service';
+import { RealFixtureService } from '@app/services/real-fixture.service';
+import { AppConfig, isEmpty, toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
+import { count, lineUpValid } from '@app/util/lineup';
 import { switchMap, tap } from 'rxjs/operators';
-import { FantasyRoster, PlayerStatus } from 'src/app/models/fantasy-roster';
-import { FantasyTeam } from 'src/app/models/fantasy-team';
-import { Fixture } from 'src/app/models/fixture';
-import { Lineup } from 'src/app/models/lineup';
-import { RealFixture } from 'src/app/models/real-fixture';
-import { Round } from 'src/app/models/round';
-import { AuthService } from 'src/app/services/auth.service';
-import { FantasyRosterService } from 'src/app/services/fantasy-roster.service';
-import { LineupService } from 'src/app/services/lineup.service';
-import { RealFixtureService } from 'src/app/services/real-fixture.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import { count, lineUpValid } from 'src/app/util/lineup';
-import { AppConfig, isEmpty, toastType } from '../../shared/globals';
 
 @Component({
   selector: 'app-lineups',

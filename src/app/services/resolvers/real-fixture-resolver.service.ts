@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { RealFixture } from 'src/app/models/real-fixture';
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { RealFixtureService } from '../real-fixture.service';
+import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { RealFixture } from '@app/models/real-fixture';
+import { RealFixtureService } from '@app/services/real-fixture.service';
 import { Observable } from 'rxjs';
 
 @Injectable({

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { League } from '@app/models/league';
+import { AuthService } from '@app/services/auth.service';
+import { NewSeasonService } from '@app/services/new-season.service';
+import { toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
 import { switchMap, tap } from 'rxjs/operators';
-import { League } from 'src/app/models/league';
-import { AuthService } from 'src/app/services/auth.service';
-import { NewSeasonService } from 'src/app/services/new-season.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import { toastType } from '../../shared/globals';
 
 @Component({
   selector: 'app-roles',

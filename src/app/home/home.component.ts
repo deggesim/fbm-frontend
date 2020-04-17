@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { League, Status } from '@app/models/league';
+import { Login } from '@app/models/login';
+import { User } from '@app/models/user';
+import { AuthService } from '@app/services/auth.service';
+import { isEmpty, toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
 import { switchMap, tap } from 'rxjs/operators';
-import { League, Status } from '../models/league';
-import { Login } from '../models/login';
-import { User } from '../models/user';
-import { AuthService } from '../services/auth.service';
-import { isEmpty, toastType } from '../shared/globals';
-import { SharedService } from '../shared/shared.service';
 
 @Component({
   selector: 'app-home',

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Team } from 'src/app/models/team';
+import { Team } from '@app/models/team';
 
 @Component({
   selector: 'app-team-edit',

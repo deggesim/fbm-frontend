@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Performance } from 'src/app/models/performance';
-import { RealFixture } from 'src/app/models/real-fixture';
-import { Team } from 'src/app/models/team';
-import { PerformanceService } from 'src/app/services/performance.service';
+import { Performance } from '@app/models/performance';
+import { RealFixture } from '@app/models/real-fixture';
+import { Team } from '@app/models/team';
+import { PerformanceService } from '@app/services/performance.service';
 
 @Component({
   selector: 'app-performances',

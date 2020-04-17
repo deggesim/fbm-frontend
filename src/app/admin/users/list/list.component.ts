@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { User } from '@app/models/user';
+import { UserService } from '@app/services/user.service';
+import { toastType } from '@app/shared/globals';
+import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
+import { SharedService } from '@app/shared/shared.service';
 import { EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { User } from 'src/app/models/user';
-import { UserService } from 'src/app/services/user.service';
-import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
-import { SharedService } from 'src/app/shared/shared.service';
-import { toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-user-list',

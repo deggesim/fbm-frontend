@@ -1,7 +1,7 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { League } from '@app/models/league';
 import { Observable } from 'rxjs';
-import { League } from '../models/league';
 
 @Injectable({
   providedIn: 'root'

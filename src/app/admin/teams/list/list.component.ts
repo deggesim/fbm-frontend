@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Team } from '@app/models/team';
+import { TeamService } from '@app/services/team.service';
+import { toastType } from '@app/shared/globals';
+import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
+import { SharedService } from '@app/shared/shared.service';
 import { EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { Team } from 'src/app/models/team';
-import { TeamService } from 'src/app/services/team.service';
-import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
-import { SharedService } from 'src/app/shared/shared.service';
-import { toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-team-list',

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FantasyTeam } from '@app/models/fantasy-team';
+import { FantasyTeamService } from '@app/services/fantasy-team.service';
+import { toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
 import { EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { FantasyTeam } from 'src/app/models/fantasy-team';
-import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
-import { SharedService } from 'src/app/shared/shared.service';
-import { toastType } from '../../../shared/globals';
 
 @Component({
   selector: 'app-fantasy-team-list',

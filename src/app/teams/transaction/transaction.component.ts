@@ -1,20 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { FantasyRoster } from '@app/models/fantasy-roster';
+import { FantasyTeam } from '@app/models/fantasy-team';
+import { RealFixture } from '@app/models/real-fixture';
+import { Roster } from '@app/models/roster';
+import { AuthService } from '@app/services/auth.service';
+import { FantasyRosterService } from '@app/services/fantasy-roster.service';
+import { FantasyTeamService } from '@app/services/fantasy-team.service';
+import { RosterService } from '@app/services/roster.service';
+import { toastType } from '@app/shared/globals';
+import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
+import { SharedService } from '@app/shared/shared.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { EMPTY } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { FantasyRoster } from 'src/app/models/fantasy-roster';
-import { FantasyTeam } from 'src/app/models/fantasy-team';
-import { RealFixture } from 'src/app/models/real-fixture';
-import { Roster } from 'src/app/models/roster';
-import { AuthService } from 'src/app/services/auth.service';
-import { FantasyRosterService } from 'src/app/services/fantasy-roster.service';
-import { FantasyTeamService } from 'src/app/services/fantasy-team.service';
-import { RosterService } from 'src/app/services/roster.service';
-import { PopupConfermaComponent } from 'src/app/shared/popup-conferma/popup-conferma.component';
-import { SharedService } from 'src/app/shared/shared.service';
-import { toastType } from '../../shared/globals';
 
 @Component({
   selector: 'app-transaction',

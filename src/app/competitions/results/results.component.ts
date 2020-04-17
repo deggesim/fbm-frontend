@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Fixture } from 'src/app/models/fixture';
-import { Match } from 'src/app/models/match';
-import { Round } from 'src/app/models/round';
-import { AuthService } from 'src/app/services/auth.service';
-import { RealFixtureService } from 'src/app/services/real-fixture.service';
-import { isEmpty } from 'src/app/shared/globals';
-import { SharedService } from 'src/app/shared/shared.service';
-import { LineupService } from 'src/app/services/lineup.service';
+import { Fixture } from '@app/models/fixture';
+import { Lineup } from '@app/models/lineup';
+import { Match } from '@app/models/match';
+import { Round } from '@app/models/round';
+import { LineupService } from '@app/services/lineup.service';
+import { isEmpty } from '@app/shared/globals';
 import { forkJoin } from 'rxjs';
-import { Lineup } from 'src/app/models/lineup';
 
 @Component({
   selector: 'app-results',
@@ -106,6 +103,10 @@ export class ResultsComponent implements OnInit {
         }
       });
     }
+  }
+
+  salva() {
+    console.log('salva');
   }
 
 }
