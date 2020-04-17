@@ -22,8 +22,8 @@ export class MatchService {
     return this.http.post<Match>(`${this.endpoint}/matches`, match);
   }
 
-  public compute(matchId: string, fixtureId: string) {
-    return this.http.post<Match>(`${this.endpoint}/matches/${matchId}/fixture/${fixtureId}/compute`, null);
+  public compute(roundId: string, fixtureId: string, matchId: string) {
+    return this.http.post<Match>(`${this.endpoint}/matches/${matchId}/round/${roundId}/fixture/${fixtureId}/compute`, null);
   }
 
   public update(match: Match) {

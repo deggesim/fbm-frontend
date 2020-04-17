@@ -6,6 +6,7 @@ import { Lineup } from '@app/models/lineup';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
 import { LineupService } from '@app/services/lineup.service';
+import { MatchService } from '@app/services/match.service';
 import { isEmpty } from '@app/shared/globals';
 import { forkJoin } from 'rxjs';
 
@@ -28,6 +29,7 @@ export class ResultsComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private lineupService: LineupService,
+    private matchService: MatchService,
   ) {
     this.createForm();
   }
@@ -74,39 +76,47 @@ export class ResultsComponent implements OnInit {
 
   onChangeMatch(match: Match) {
     if (match != null) {
-      const homeTeam = match.homeTeam;
-      const awayTeam = match.awayTeam;
-      const $homeTeamLineup = this.lineupService.lineupByTeam(homeTeam._id, this.form.value.fixture._id);
-      const $awayTeamLineup = this.lineupService.lineupByTeam(awayTeam._id, this.form.value.fixture._id);
-      forkJoin([$homeTeamLineup, $awayTeamLineup]).subscribe(lineups => {
-        this.homeTeamLineup = lineups[0];
-        this.awayTeamLineup = lineups[1];
-        if (this.homeTeamLineup != null && !isEmpty(this.homeTeamLineup)) {
-          this.homeTeamLineup = this.homeTeamLineup.map((player: Lineup) => {
-            return {
-              fantasyRoster: player.fantasyRoster,
-              spot: player.spot,
-              benchOrder: player.benchOrder,
-              fixture: player.fixture,
-              matchReport: player.matchReport
-            };
-          });
-          this.awayTeamLineup = this.awayTeamLineup.map((player: Lineup) => {
-            return {
-              fantasyRoster: player.fantasyRoster,
-              spot: player.spot,
-              benchOrder: player.benchOrder,
-              fixture: player.fixture,
-              matchReport: player.matchReport
-            };
-          });
-        }
-      });
+      this.loadLineups(match);
     }
   }
 
   salva() {
     console.log('salva');
+    const { round, fixture, match } = this.form.value;
+    this.matchService.compute(round._id, fixture._id, match._id).subscribe((matchComputed) => {
+      this.loadLineups(matchComputed);
+    });
+  }
+
+  private loadLineups(match: Match) {
+    const homeTeam = match.homeTeam;
+    const awayTeam = match.awayTeam;
+    const $homeTeamLineup = this.lineupService.lineupByTeam(homeTeam._id, this.form.value.fixture._id);
+    const $awayTeamLineup = this.lineupService.lineupByTeam(awayTeam._id, this.form.value.fixture._id);
+    forkJoin([$homeTeamLineup, $awayTeamLineup]).subscribe(lineups => {
+      this.homeTeamLineup = lineups[0];
+      this.awayTeamLineup = lineups[1];
+      if (this.homeTeamLineup != null && !isEmpty(this.homeTeamLineup)) {
+        this.homeTeamLineup = this.homeTeamLineup.map((player: Lineup) => {
+          return {
+            fantasyRoster: player.fantasyRoster,
+            spot: player.spot,
+            benchOrder: player.benchOrder,
+            fixture: player.fixture,
+            matchReport: player.matchReport
+          };
+        });
+        this.awayTeamLineup = this.awayTeamLineup.map((player: Lineup) => {
+          return {
+            fantasyRoster: player.fantasyRoster,
+            spot: player.spot,
+            benchOrder: player.benchOrder,
+            fixture: player.fixture,
+            matchReport: player.matchReport
+          };
+        });
+      }
+    });
   }
 
 }
