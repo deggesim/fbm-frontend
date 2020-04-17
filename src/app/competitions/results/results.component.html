@@ -1,1 +1,123 @@
-<p>results works!</p>
+<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+
+  <fieldset class="fieldset">
+    <legend class="legend">
+      <fa-icon icon="poll-h" class="icon-padding"></fa-icon>Risultati
+    </legend>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+
+      <div fxFlex="33" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="round" class="control-label">Round</label>
+          <ng-select id="round" name="round" [items]="rounds" bindLabel="name" formControlName="round" clearAllText="Elimina" (change)="onChangeRound($event)">
+          </ng-select>
+        </div>
+      </div>
+
+      <div fxFlex="33" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="fixture" class="control-label">Giornata</label>
+          <ng-select id="fixture" name="fixture" [items]="fixtures" bindLabel="name" formControlName="fixture" clearAllText="Elimina" (change)="onChangeFixture($event)">
+          </ng-select>
+        </div>
+      </div>
+
+      <div fxFlex="33" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="match" class="control-label">Incontro</label>
+          <ng-select id="match" name="match" [items]="matches" formControlName="match" clearAllText="Elimina" (change)="onChangeMatch($event)">
+            <ng-template ng-label-tmp let-item="item" let-index="index">
+              {{item.homeTeam.name}} - {{item.awayTeam.name}}
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+              {{item.homeTeam.name}} - {{item.awayTeam.name}}
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+
+      <ng-container *ngIf="matches">
+        <div fxFlex="100">
+          <hr>
+        </div>
+
+        <!-- SQUADRA 1 -->
+        <ng-container *ngIf="form.value.match">
+          <div fxFlex="49" fxFlex.lt-md="100">
+            <div><label>{{form.value.match.homeTeam.name}}</label></div>
+            <div><label>Fattore campo: {{form.value.match.homeFactor}}</label></div>
+            <div><label>Punteggio: {{form.value.match.homeScore}}</label></div>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Nome</th>
+                    <th>Ruolo</th>
+                    <th>Ordine panchina</th>
+                    <th>Ranking</th>
+                    <th>Ranking 40 minuti</th>
+                    <th>Minuti usati</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let player of homeTeamLineup; let i=index" class="table-secondary lineup-height">
+                    <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
+                    <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
+                    <td>{{player?.benchOrder}}</td>
+                    <td>{{player?.matchReport?.realRanking}}</td>
+                    <td>{{player?.matchReport?.realRanking40Min}}</td>
+                    <td>{{player?.matchReport?.minutesUsed}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-container>
+
+        <!-- SQUADRA 2 -->
+        <ng-container *ngIf="form.value.match">
+          <div fxFlex="49" fxFlex.lt-md="100">
+            <div><label>{{form.value.match.awayTeam.name}}</label></div>
+            <div><label>&nbsp;</label></div>
+            <div><label>Punteggio: {{form.value.match.awayScore}}</label></div>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Nome</th>
+                    <th>Ruolo</th>
+                    <th>Ordine panchina</th>
+                    <th>Ranking</th>
+                    <th>Ranking 40 minuti</th>
+                    <th>Minuti usati</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr *ngFor="let player of awayTeamLineup; let i=index" class="table-secondary lineup-height">
+                    <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
+                    <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
+                    <td>{{player?.benchOrder}}</td>
+                    <td>{{player?.matchReport?.realRanking}}</td>
+                    <td>{{player?.matchReport?.realRanking40Min}}</td>
+                    <td>{{player?.matchReport?.minutesUsed}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </ng-container>
+
+      </ng-container>
+
+    </div>
+  </fieldset>
+
+  <div class="text-center padding">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Calcola risultato</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="ripristina()">Risultato forum</button>&nbsp;
+    <button type="button" class="btn btn-primary" (click)="inviaEmail()">Invia mail</button>&nbsp;
+  </div>
+
+</form>

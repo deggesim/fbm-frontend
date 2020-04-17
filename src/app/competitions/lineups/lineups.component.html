@@ -2,7 +2,7 @@
 
   <fieldset class="fieldset">
     <legend class="legend">
-      <fa-icon icon="list-ol" class="icon-padding"></fa-icon>Formazione
+      <fa-icon icon="list-ol" class="icon-padding"></fa-icon>Formazioni
     </legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
 
@@ -36,16 +36,16 @@
         </div>
 
         <!-- PLAYERS-->
-        <div fxFlex="49" fxFlex.xs="100">
+        <div fxFlex="49" fxFlex.lt-md="100">
           <label>Roster</label>
-          <div class="table">
+          <div class="table-responsive">
             <table class="table table-hover">
               <thead class="thead-dark">
                 <tr>
                   <th>Nome</th>
                   <th>Naz.</th>
                   <th>Ruolo</th>
-                  <th>Squadra</th>
+                  <th fxHide.md fxHide.xs>Squadra</th>
                 </tr>
               </thead>
 
@@ -55,7 +55,7 @@
                   <td>{{fantasyRoster.roster.player.name}}</td>
                   <td>{{fantasyRoster.roster.player.nationality}}</td>
                   <td>{{fantasyRoster.roster.player.role | roleShort}}</td>
-                  <td>{{fantasyRoster.roster.team.fullName}}</td>
+                  <td fxHide.md fxHide.xs>{{fantasyRoster.roster.team.fullName}}</td>
                 </tr>
               </tbody>
             </table>
@@ -63,9 +63,9 @@
         </div>
 
         <!-- LINEUP-->
-        <div fxFlex="50" fxFlex.xs="100">
+        <div fxFlex="49" fxFlex.lt-md="100">
           <label>Formazione</label>
-          <div class="table">
+          <div class="table-responsive">
             <table class="table table-hover">
               <thead class="thead-dark">
                 <tr>
@@ -80,7 +80,7 @@
               <tbody>
                 <tr *ngFor="let player of lineup; let i=index" class="manina table-secondary lineup-height" (click)="removePlayer(i)">
                   <td>{{player?.spot}}</td>
-                  <td>{{player?.fantasyRoster.roster.player.name}}</td>
+                  <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
                   <td>{{player?.fantasyRoster.roster.player.nationality}}</td>
                   <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
                   <td>{{player?.benchOrder}}</td>
@@ -130,7 +130,7 @@
               placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper"></bs-sortable>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">°Conferma</button>&nbsp;
             <button type="button" class="btn btn-primary" (click)="annulla()">Annulla</button>
           </div>
         </form>

@@ -46,6 +46,10 @@ export class PerformancesComponent implements OnInit {
       filter: [0],
       performanceArray: this.fb.array([])
     });
+
+    this.form.get('filter').valueChanges.subscribe((value: number) => {
+      console.log(value);
+    });
   }
 
   get performanceArray(): FormArray {
@@ -67,7 +71,7 @@ export class PerformancesComponent implements OnInit {
   }
 
   onChangeFilter(event: any) {
-    console.log(event.value);
+    console.log(event);
   }
 
   loadPerformances() {
@@ -111,8 +115,8 @@ export class PerformancesComponent implements OnInit {
   }
 
   salva() {
-    console.log('salva');
-    console.log(this.form);
+    const performances = this.form.get('performanceArray').value as Performance[];
+    this.performanceService.save(performances).subscribe();
   }
 
 }

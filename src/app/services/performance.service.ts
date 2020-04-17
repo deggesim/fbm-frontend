@@ -22,8 +22,8 @@ export class PerformanceService {
     return this.http.get<Performance[]>(`${this.endpoint}/performances/team/${teamId}/real-fixture/${realFixtureId}`);
   }
 
-  public create(performance: Performance) {
-    return this.http.post<Performance>(`${this.endpoint}/performances`, performance);
+  public save(performances: Performance[]) {
+    return this.http.post<Performance>(`${this.endpoint}/performances`, performances);
   }
 
   public boxScore(teamId: string, realFixtureId: string, url: string) {

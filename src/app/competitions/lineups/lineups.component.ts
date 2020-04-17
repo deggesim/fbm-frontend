@@ -197,7 +197,7 @@ export class LineupsComponent implements OnInit {
   }
 
   openModalBenchOrder() {
-    this.benchPlayers = this.lineup.filter(player => player.benchOrder != null);
+    this.benchPlayers = this.lineup.filter(player => player != null && player.benchOrder != null);
     this.benchForm.get('sortedList').setValue(this.benchPlayers);
     this.mostraPopupPanchina = true;
   }

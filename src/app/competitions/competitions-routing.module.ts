@@ -7,6 +7,7 @@ import { TeamResolverService } from '../services/resolvers/team-resolver.service
 import { ListComponent as CalendarListComponent } from './calendar/list/list.component';
 import { LineupsComponent } from './lineups/lineups.component';
 import { PerformancesComponent } from './performances/performances.component';
+import { ResultsComponent } from './results/results.component';
 import { StandingsComponent } from './standings/standings.component';
 
 const routes: Routes = [
@@ -52,6 +53,17 @@ const routes: Routes = [
     resolve: {
       teams: TeamResolverService,
       realFixtures: RealFixtureResolverService
+    },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'results',
+    component: ResultsComponent,
+    data: {
+      breadcrumb: 'Risultati'
+    },
+    resolve: {
+      rounds: RoundResolverService,
     },
     canActivate: [AuthGuard],
   },
