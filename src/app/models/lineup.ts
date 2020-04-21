@@ -7,6 +7,7 @@ export interface Lineup {
     spot: number;
     benchOrder: number;
     fixture: Fixture;
+    performance?: Performance;
     matchReport?: {
         realRanking: number;
         realRanking40Min: number;

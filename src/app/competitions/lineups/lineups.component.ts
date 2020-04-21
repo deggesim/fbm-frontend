@@ -143,14 +143,7 @@ export class LineupsComponent implements OnInit {
         switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id)),
       ).subscribe((lineup: Lineup[]) => {
         if (lineup != null && !isEmpty(lineup)) {
-          this.lineup = lineup.map((player: Lineup) => {
-            return {
-              fantasyRoster: player.fantasyRoster,
-              spot: player.spot,
-              benchOrder: player.benchOrder,
-              fixture: player.fixture
-            };
-          });
+          this.lineup = lineup;
           this.form.get('lineup').setValue(this.lineup);
           this.form.get('lineup').markAsDirty();
         }
@@ -247,6 +240,9 @@ export class LineupsComponent implements OnInit {
           };
         });
         this.form.get('lineup').markAsPristine();
+        const title = 'Formazione ripristinata';
+        const message = 'La formazione è stata ripristinata correttamente';
+        this.sharedService.notifica(toastType.success, title, message);
       }
     });
   }

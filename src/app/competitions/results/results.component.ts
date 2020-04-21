@@ -7,8 +7,9 @@ import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
 import { LineupService } from '@app/services/lineup.service';
 import { MatchService } from '@app/services/match.service';
-import { isEmpty } from '@app/shared/globals';
+import { isEmpty, toastType } from '@app/shared/globals';
 import { forkJoin } from 'rxjs';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
   selector: 'app-results',
@@ -22,12 +23,14 @@ export class ResultsComponent implements OnInit {
   rounds: Round[];
   fixtures: Fixture[];
   matches: Match[];
+  selectedMatch: Match;
   homeTeamLineup: Lineup[];
   awayTeamLineup: Lineup[];
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private sharedService: SharedService,
     private lineupService: LineupService,
     private matchService: MatchService,
   ) {
@@ -76,6 +79,7 @@ export class ResultsComponent implements OnInit {
 
   onChangeMatch(match: Match) {
     if (match != null) {
+      this.selectedMatch = match;
       this.loadLineups(match);
     }
   }
@@ -84,6 +88,10 @@ export class ResultsComponent implements OnInit {
     console.log('salva');
     const { round, fixture, match } = this.form.value;
     this.matchService.compute(round._id, fixture._id, match._id).subscribe((matchComputed) => {
+      this.selectedMatch = matchComputed;
+      const title = 'Risultato calcolato';
+      const message = 'Il risultato è stato calcolato correttamente';
+      this.sharedService.notifica(toastType.success, title, message);
       this.loadLineups(matchComputed);
     });
   }
@@ -96,26 +104,6 @@ export class ResultsComponent implements OnInit {
     forkJoin([$homeTeamLineup, $awayTeamLineup]).subscribe(lineups => {
       this.homeTeamLineup = lineups[0];
       this.awayTeamLineup = lineups[1];
-      if (this.homeTeamLineup != null && !isEmpty(this.homeTeamLineup)) {
-        this.homeTeamLineup = this.homeTeamLineup.map((player: Lineup) => {
-          return {
-            fantasyRoster: player.fantasyRoster,
-            spot: player.spot,
-            benchOrder: player.benchOrder,
-            fixture: player.fixture,
-            matchReport: player.matchReport
-          };
-        });
-        this.awayTeamLineup = this.awayTeamLineup.map((player: Lineup) => {
-          return {
-            fantasyRoster: player.fantasyRoster,
-            spot: player.spot,
-            benchOrder: player.benchOrder,
-            fixture: player.fixture,
-            matchReport: player.matchReport
-          };
-        });
-      }
     });
   }
 

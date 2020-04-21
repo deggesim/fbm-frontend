@@ -5,6 +5,8 @@ import { Performance } from '@app/models/performance';
 import { RealFixture } from '@app/models/real-fixture';
 import { Team } from '@app/models/team';
 import { PerformanceService } from '@app/services/performance.service';
+import { toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
 
 @Component({
   selector: 'app-performances',
@@ -23,6 +25,7 @@ export class PerformancesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private sharedService: SharedService,
     private performanceService: PerformanceService,
   ) {
     this.createForm();
@@ -107,6 +110,9 @@ export class PerformancesComponent implements OnInit {
             grade: [performance.grade],
           }));
         }
+        const title = 'Valutazioni recuperate';
+        const message = 'Le valutazioni sono state recuperate correttamente';
+        this.sharedService.notifica(toastType.success, title, message);
       });
   }
 
@@ -116,7 +122,11 @@ export class PerformancesComponent implements OnInit {
 
   salva() {
     const performances = this.form.get('performanceArray').value as Performance[];
-    this.performanceService.save(performances).subscribe();
+    this.performanceService.save(performances).subscribe(() => {
+      const title = 'Valutazioni salvate';
+      const message = 'Le valutazioni sono state salvate correttamente';
+      this.sharedService.notifica(toastType.success, title, message);
+    });
   }
 
 }

@@ -42,11 +42,11 @@
         </div>
 
         <!-- SQUADRA 1 -->
-        <ng-container *ngIf="form.value.match">
+        <ng-container *ngIf="selectedMatch">
           <div fxFlex="49" fxFlex.lt-md="100">
-            <div><label>{{form.value.match.homeTeam.name}}</label></div>
-            <div><label>Fattore campo: {{form.value.match.homeFactor}}</label></div>
-            <div><label>Punteggio: {{form.value.match.homeScore}}</label></div>
+            <div><label>{{selectedMatch.homeTeam.name}}</label></div>
+            <div><label>Fattore campo: {{selectedMatch.homeFactor}}</label></div>
+            <div><label>Valutazione: {{selectedMatch.homeRanking}} - Pagelle: {{selectedMatch.homeGrade}} - Punteggio: {{selectedMatch.homeScore}}</label></div>
             <div class="table-responsive">
               <table class="table table-hover">
                 <thead class="thead-dark">
@@ -56,6 +56,7 @@
                     <th>Ordine panchina</th>
                     <th>Val.</th>
                     <th>Minuti</th>
+                    <th>Voto</th>
                     <th>Val. dopo 40 minuti</th>
                     <th>Val. usata</th>
                     <th>Minuti usati</th>
@@ -67,8 +68,9 @@
                     <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
                     <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
                     <td>{{player?.benchOrder}}</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{player?.performance.ranking}}</td>
+                    <td>{{player?.performance.minutes}}</td>
+                    <td>{{player?.performance.grade}}</td>
                     <td>{{player?.matchReport?.realRanking40Min}}</td>
                     <td>{{player?.matchReport?.realRanking}}</td>
                     <td>{{player?.matchReport?.minutesUsed}}</td>
@@ -80,11 +82,11 @@
         </ng-container>
 
         <!-- SQUADRA 2 -->
-        <ng-container *ngIf="form.value.match">
+        <ng-container *ngIf="selectedMatch">
           <div fxFlex="49" fxFlex.lt-md="100">
-            <div><label>{{form.value.match.awayTeam.name}}</label></div>
+            <div><label>{{selectedMatch.awayTeam.name}}</label></div>
             <div><label>&nbsp;</label></div>
-            <div><label>Punteggio: {{form.value.match.awayScore}}</label></div>
+            <div><label>Valutazione: {{selectedMatch.awayRanking}} - Pagelle: {{selectedMatch.awayGrade}} - Punteggio: {{selectedMatch.awayScore}}</label></div>
             <div class="table-responsive">
               <table class="table table-hover">
                 <thead class="thead-dark">
@@ -94,6 +96,7 @@
                     <th>Ordine panchina</th>
                     <th>Val.</th>
                     <th>Minuti</th>
+                    <th>Voto</th>
                     <th>Val. dopo 40 minuti</th>
                     <th>Val. usata</th>
                     <th>Minuti usati</th>
@@ -105,8 +108,9 @@
                     <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
                     <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
                     <td>{{player?.benchOrder}}</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{player?.performance.ranking}}</td>
+                    <td>{{player?.performance.minutes}}</td>
+                    <td>{{player?.performance.grade}}</td>
                     <td>{{player?.matchReport?.realRanking40Min}}</td>
                     <td>{{player?.matchReport?.realRanking}}</td>
                     <td>{{player?.matchReport?.minutesUsed}}</td>
