@@ -21,6 +21,7 @@ export class PerformancesComponent implements OnInit {
   selectedTeam: Team;
   selectedRealFixture: RealFixture;
   performances: Performance[];
+  disableRetrieve = true;
 
   constructor(
     private fb: FormBuilder,
@@ -42,10 +43,11 @@ export class PerformancesComponent implements OnInit {
   }
 
   createForm() {
+    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
     this.form = this.fb.group({
       team: [undefined, Validators.required],
       realFixture: [undefined, Validators.required],
-      url: [undefined],
+      url: [undefined, [Validators.pattern(urlRegex)]],
       filter: [0],
       performanceArray: this.fb.array([])
     });
@@ -53,6 +55,7 @@ export class PerformancesComponent implements OnInit {
     this.form.get('filter').valueChanges.subscribe((value: number) => {
       console.log(value);
     });
+
   }
 
   get performanceArray(): FormArray {
@@ -95,8 +98,6 @@ export class PerformancesComponent implements OnInit {
   }
 
   retrievePerformances() {
-    console.log('retrievePerformances');
-    console.log(this.form.value.url);
     this.performanceService.boxScore(this.selectedTeam._id, this.selectedRealFixture._id, this.form.value.url)
       .subscribe((performances: Performance[]) => {
         this.form.get('performanceArray').reset();

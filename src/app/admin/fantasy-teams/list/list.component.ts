@@ -4,8 +4,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 import { FantasyTeamService } from '@app/services/fantasy-team.service';
 import { toastType } from '@app/shared/globals';
 import { SharedService } from '@app/shared/shared.service';
-import { EMPTY } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-fantasy-team-list',
@@ -64,10 +63,6 @@ export class ListComponent implements OnInit {
 
   salva(fantasyTeam: FantasyTeam) {
     this.fantasyTeamService.update(fantasyTeam).pipe(
-      catchError((err) => {
-        this.sharedService.notifyError(err);
-        return EMPTY;
-      }),
       tap(() => {
         this.mostraPopupModifica = false;
         const title = 'Modifica squadra';

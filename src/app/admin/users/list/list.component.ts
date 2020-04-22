@@ -5,8 +5,7 @@ import { UserService } from '@app/services/user.service';
 import { toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
-import { EMPTY } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-list',
@@ -55,10 +54,6 @@ export class ListComponent implements OnInit {
   salva(user: User) {
     if (user._id == null) {
       this.userService.create(user).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.mostraPopupModifica = false;
           const title = 'Nuovo utente';
@@ -72,10 +67,6 @@ export class ListComponent implements OnInit {
       });
     } else {
       this.userService.update(user).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.mostraPopupModifica = false;
           const title = 'Modifica utente';
@@ -102,10 +93,6 @@ export class ListComponent implements OnInit {
   confermaElimina() {
     if (this.userSelected) {
       this.userService.delete(this.userSelected._id).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.popupConfermaElimina.chiudiModale();
           const title = 'Utente eliminato';
@@ -126,10 +113,6 @@ export class ListComponent implements OnInit {
 
   confermaUpload(file: File) {
     this.userService.upload(file).pipe(
-      catchError((err) => {
-        this.sharedService.notifyError(err);
-        return EMPTY;
-      }),
       switchMap(() => {
         return this.userService.read();
       }),

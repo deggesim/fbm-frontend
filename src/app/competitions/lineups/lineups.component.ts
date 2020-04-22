@@ -32,6 +32,8 @@ export class LineupsComponent implements OnInit {
   fixtures: Fixture[];
   fantasyTeams: FantasyTeam[];
   fantasyRosters: FantasyRoster[];
+  fantasyRostersPresent = false;
+  allFieldsSelected = false;
   lineup: Lineup[];
 
   constructor(
@@ -107,6 +109,9 @@ export class LineupsComponent implements OnInit {
     this.form.get('fantasyTeam').reset();
     this.fantasyRosters = null;
     this.form.get('lineup').reset();
+    this.lineup = this.initLineup();
+    this.fantasyRostersPresent = false;
+    this.allFieldsSelected = false;
     if (round != null) {
       if (round.fixtures != null && !isEmpty(round.fixtures)) {
         this.fixtures = round.fixtures;
@@ -125,6 +130,10 @@ export class LineupsComponent implements OnInit {
   onChangeFixture(fixture: Fixture) {
     this.form.get('fantasyTeam').reset();
     this.fantasyRosters = null;
+    this.form.get('lineup').reset();
+    this.lineup = this.initLineup();
+    this.fantasyRostersPresent = false;
+    this.allFieldsSelected = false;
     if (fixture != null) {
       this.form.get('fantasyTeam').enable();
     } else {
@@ -137,11 +146,17 @@ export class LineupsComponent implements OnInit {
       this.realFixtureService.getByFixture(this.form.value.fixture._id).pipe(
         switchMap((realFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, realFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
-          this.fantasyRosters = fantasyRosters;
-          this.lineup = this.initLineup();
+          this.fantasyRostersPresent = fantasyRosters != null && !isEmpty(fantasyRosters);
+          this.allFieldsSelected = true;
+          if (this.fantasyRostersPresent) {
+            this.fantasyRosters = fantasyRosters;
+            this.lineup = this.initLineup();
+          }
         }),
         switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id)),
       ).subscribe((lineup: Lineup[]) => {
+        this.form.get('lineup').reset();
+        this.lineup = this.initLineup();
         if (lineup != null && !isEmpty(lineup)) {
           this.lineup = lineup;
           this.form.get('lineup').setValue(this.lineup);

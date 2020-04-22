@@ -1,7 +1,6 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { EMPTY } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { User } from './models/user';
 import { AuthService } from './services/auth.service';
 import { NewSeasonService } from './services/new-season.service';
@@ -74,10 +73,6 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   public completePreseason() {
     this.newSeasonService.completePreseason(this.authService.getSelectedLeague()._id).pipe(
-      catchError((err) => {
-        this.sharedService.notifyError(err);
-        return EMPTY;
-      }),
       switchMap(() => this.authService.leagueStatusObservableChain)
     ).subscribe(() => {
       const title = 'Presason completata';

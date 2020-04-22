@@ -13,8 +13,7 @@ import { toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { EMPTY } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction',
@@ -113,10 +112,6 @@ export class TransactionComponent implements OnInit {
         realFixture: this.fantasyRosterSelected.realFixture
       };
       this.fantasyRosterService.update(fantasyRoster).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
@@ -141,10 +136,6 @@ export class TransactionComponent implements OnInit {
         ...this.form.value,
       };
       this.fantasyRosterService.create(fantasyRoster).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
@@ -197,10 +188,6 @@ export class TransactionComponent implements OnInit {
 
   rimuovi() {
     this.fantasyRosterService.remove(this.fantasyRosterSelected._id).pipe(
-      catchError((err) => {
-        this.sharedService.notifyError(err);
-        return EMPTY;
-      }),
       switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
       tap((fantasyTeam: FantasyTeam) => {
         this.fantasyTeamSelected = fantasyTeam;
@@ -221,10 +208,6 @@ export class TransactionComponent implements OnInit {
 
   rilascia() {
     this.fantasyRosterService.release(this.fantasyRosterSelected._id).pipe(
-      catchError((err) => {
-        this.sharedService.notifyError(err);
-        return EMPTY;
-      }),
       switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
       tap((fantasyTeam: FantasyTeam) => {
         this.fantasyTeamSelected = fantasyTeam;

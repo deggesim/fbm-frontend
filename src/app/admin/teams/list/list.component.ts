@@ -5,8 +5,7 @@ import { TeamService } from '@app/services/team.service';
 import { toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
-import { EMPTY } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-team-list',
@@ -62,10 +61,6 @@ export class ListComponent implements OnInit {
   salva(team: Team) {
     if (team._id == null) {
       this.teamService.create(team).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.mostraPopupModifica = false;
           const title = 'Nuova squadra';
@@ -79,10 +74,6 @@ export class ListComponent implements OnInit {
       });
     } else {
       this.teamService.update(team).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.mostraPopupModifica = false;
           const title = 'Modifica squadra';
@@ -109,10 +100,6 @@ export class ListComponent implements OnInit {
   confermaElimina() {
     if (this.teamSelected) {
       this.teamService.delete(this.teamSelected._id).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.popupConfermaElimina.chiudiModale();
           const title = 'Squadra eliminata';

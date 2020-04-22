@@ -9,8 +9,7 @@ import { MatchService } from '@app/services/match.service';
 import { RoundService } from '@app/services/round.service';
 import { toastType } from '@app/shared/globals';
 import { SharedService } from '@app/shared/shared.service';
-import { EMPTY } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar-list',
@@ -73,10 +72,6 @@ export class ListComponent implements OnInit {
 
   salva(matches: Match[]) {
     this.matchService.updateFixture(matches, this.selectedFixture._id).pipe(
-      catchError((err) => {
-        this.sharedService.notifyError(err);
-        return EMPTY;
-      }),
       tap(() => {
         this.mostraPopupModifica = false;
         const title = 'Modifica risultati';

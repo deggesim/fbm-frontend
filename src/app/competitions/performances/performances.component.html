@@ -36,7 +36,8 @@
       </div>
 
       <div fxFlex="26" fxFlex.xs="49" class="form-group">
-        <button type="button" class="btn btn-primary" [disabled]="form.get('url').value == null" (click)="retrievePerformances()">Recupero valutazioni</button>
+        <button type="button" class="btn btn-primary" [disabled]="form.get('url').pristine || form.get('url').invalid || selectedTeam == null || selectedRealFixture == null"
+          (click)="retrievePerformances()">Recupero valutazioni</button>
       </div>
     </div>
 

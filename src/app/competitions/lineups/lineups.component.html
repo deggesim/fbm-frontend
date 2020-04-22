@@ -30,7 +30,7 @@
         </div>
       </div>
 
-      <ng-container *ngIf="fantasyRosters">
+      <ng-container *ngIf="fantasyRostersPresent && allFieldsSelected">
         <div fxFlex="100">
           <hr>
         </div>
@@ -96,6 +96,10 @@
           </div>
         </div>
 
+      </ng-container>
+
+      <ng-container *ngIf="!fantasyRostersPresent && allFieldsSelected">
+        <h4>Roster assente per il round e la giornata selezionati</h4>
       </ng-container>
 
     </div>

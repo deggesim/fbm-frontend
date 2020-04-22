@@ -7,8 +7,8 @@ import { RosterService } from '@app/services/roster.service';
 import { isEmpty, toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
-import { EMPTY, Observable } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player-list',
@@ -131,18 +131,10 @@ export class ListComponent implements OnInit {
     let $rostersObservable: Observable<Roster[]>;
     if (roster._id == null) {
       $rostersObservable = this.playerService.create(roster.player).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap((player: Player) => {
           roster.player = player;
         }),
         switchMap(() => this.rosterService.create(roster)),
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.mostraPopupModifica = false;
           const title = 'Nuovo giocatore';
@@ -156,18 +148,10 @@ export class ListComponent implements OnInit {
       );
     } else {
       $rostersObservable = this.playerService.update(roster.player).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap((player: Player) => {
           roster.player = player;
         }),
         switchMap(() => this.rosterService.update(roster)),
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.mostraPopupModifica = false;
           const title = 'Modifica giocatore';
@@ -200,10 +184,6 @@ export class ListComponent implements OnInit {
   confermaElimina() {
     if (this.rosterSelected) {
       this.rosterService.delete(this.rosterSelected._id).pipe(
-        catchError((err) => {
-          this.sharedService.notifyError(err);
-          return EMPTY;
-        }),
         tap(() => {
           this.popupConfermaElimina.chiudiModale();
           const title = 'Giocatore eliminata';
