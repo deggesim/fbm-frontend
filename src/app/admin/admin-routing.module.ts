@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from '@app/guards/admin.guard';
 import { FantasyTeamResolverService } from '@app/services/resolvers/fantasy-team-resolver.service';
 import { LeagueResolverService } from '@app/services/resolvers/league-resolver.service';
+import { RealFixtureResolverService } from '@app/services/resolvers/real-fixture-resolver.service';
 import { RosterResolverService } from '@app/services/resolvers/roster-resolver.service';
 import { RoundResolverService } from '@app/services/resolvers/round-resolver.service';
 import { TeamResolverService } from '@app/services/resolvers/team-resolver.service';
@@ -13,6 +14,7 @@ import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step
 import { NewSeasonComponent } from './new-season/new-season.component';
 import { ParametersComponent } from './parameters/parameters.component';
 import { ListComponent as PlayerListComponent } from './players/list/list.component';
+import { ListComponent as RealFixtureListComponent } from './real-fixture/list/list.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
 import { ListComponent as TeamListComponent } from './teams/list/list.component';
@@ -128,6 +130,16 @@ const routes: Routes = [
         resolve: {
           rounds: RoundResolverService,
           fantasyTeams: FantasyTeamResolverService
+        },
+      },
+      {
+        path: 'real-fixtures',
+        component: RealFixtureListComponent,
+        data: {
+          breadcrumb: 'Gestione giornate'
+        },
+        resolve: {
+          realFixtures: RealFixtureResolverService,
         },
       },
     ],

@@ -20,6 +20,8 @@ import { NewSeasonComponent } from './new-season/new-season.component';
 import { ParametersComponent } from './parameters/parameters.component';
 import { EditComponent as PlayerEditComponent } from './players/edit/edit.component';
 import { ListComponent as PlayerListComponent } from './players/list/list.component';
+import { EditComponent as RealFixtureEditComponent } from './real-fixture/edit/edit.component';
+import { ListComponent as RealFixtureListComponent } from './real-fixture/list/list.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
 import { EditComponent as TeamEditComponent } from './teams/edit/edit.component';
@@ -42,7 +44,9 @@ import { ListComponent as UserListComponent } from './users/list/list.component'
     TeamListComponent,
     TeamEditComponent,
     UserListComponent,
-    UserEditComponent
+    UserEditComponent,
+    RealFixtureListComponent,
+    RealFixtureEditComponent,
   ],
   imports: [
     ReactiveFormsModule,

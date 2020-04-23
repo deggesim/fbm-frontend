@@ -17,6 +17,11 @@ form {
   margin-bottom: 1rem;
 }
 
+ul {
+  padding-left: 1rem;
+  // list-style-type: none;
+}
+
 // fix calendario
 button:disabled {
   cursor: not-allowed;

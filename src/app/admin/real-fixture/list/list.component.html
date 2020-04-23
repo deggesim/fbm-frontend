@@ -1,0 +1,48 @@
+<div class="table-responsive" *ngIf="realFixtures && realFixtures.length > 0; else empty">
+  <table class="table table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>Nome</th>
+        <th>Preparata</th>
+        <th>Turni</th>
+        <th>Squadre senza partita</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let realFixture of realFixtures" class="table-secondary manina" (click)="modifica(realFixture)">
+        <td>{{realFixture.name}}</td>
+        <td>
+          <fa-icon icon="check" *ngIf="realFixture.prepared"></fa-icon>
+        </td>
+        <td><span [innerHtml]="realFixture.fixtures | toString:'name'"></span></td>
+        <td><span [innerHtml]="realFixture.teamsWithNoGame | toString:'fullName'"></span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #empty>
+  <h4>Nessuna giornata presente</h4>
+</ng-template>
+
+<!-- popup modifica giornata -->
+<div *ngIf="mostraPopupModifica" class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: true}" tabindex="-1" role="dialog" aria-hidden="true">
+
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header titolo">
+        <h4 class="modal-title">Modifica giornata</h4>
+      </div>
+
+      <div class="modal-body">
+        <app-real-fixture-edit [realFixture]="realFixtureSelected" (salva)="salva($event)" (annulla)="annulla()"></app-real-fixture-edit>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- popup upload -->
+<app-upload #popupUpload titolo="Upload squadre" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></app-upload>

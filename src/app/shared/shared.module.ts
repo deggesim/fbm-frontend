@@ -6,9 +6,10 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { PopupConfermaComponent } from './popup-conferma/popup-conferma.component';
+import { RoleShortPipe } from './role-short.pipe';
+import { ToStringPipe } from './to-string.pipe';
 import { UploadComponent } from './upload/upload.component';
 import { UserRoleIconComponent } from './user-role-icon/user-role-icon.component';
-import { RoleShortPipe } from './role-short.pipe';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { RoleShortPipe } from './role-short.pipe';
     UploadComponent,
     ErrorMessageComponent,
     UserRoleIconComponent,
-    RoleShortPipe
+    RoleShortPipe,
+    ToStringPipe,
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,8 @@ import { RoleShortPipe } from './role-short.pipe';
     UploadComponent,
     ErrorMessageComponent,
     UserRoleIconComponent,
-    RoleShortPipe
+    RoleShortPipe,
+    ToStringPipe,
   ]
 })
 export class SharedModule { }
