@@ -6,6 +6,7 @@ import { League } from '@app/models/league';
 import { User } from '@app/models/user';
 import { AuthService } from '@app/services/auth.service';
 import { FantasyTeamService } from '@app/services/fantasy-team.service';
+import { LeagueService } from '@app/services/league.service';
 import { NewSeasonService } from '@app/services/new-season.service';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -29,6 +30,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private authService: AuthService,
+    private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
     private fantastyTeamsService: FantasyTeamService,
   ) {
@@ -62,12 +64,12 @@ export class NewSeasonStepTwoComponent implements OnInit {
       tap(league => newLeague = league),
       switchMap((league: League) => {
         console.log(league);
-        this.authService.setSelectedLeague(league);
+        this.leagueService.setSelectedLeague(league);
         return this.fantastyTeamsService.create(fantasyTeams);
       }),
       switchMap(() => this.newSeasonService.populate(newLeague)),
       switchMap(() => this.authService.refresh()),
-      switchMap(() => this.authService.leagueStatusObservableChain)
+      switchMap(() => this.leagueService.leagueStatusObservableChain)
     ).subscribe(() => {
       this.router.navigate(['/home']);
     });

@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Role } from '@app/models/player';
+import { RealFixture } from '@app/models/real-fixture';
 import { Roster } from '@app/models/roster';
 import { Team } from '@app/models/team';
+import { LeagueService } from '@app/services/league.service';
+import { RealFixtureService } from '@app/services/real-fixture.service';
 import { TeamService } from '@app/services/team.service';
 
 @Component({
@@ -20,10 +23,13 @@ export class EditComponent implements OnInit, OnChanges {
 
   roles: Role[];
   teams: Team[];
+  preparedRealFixtures: RealFixture[];
 
   constructor(
     private fb: FormBuilder,
     private teamService: TeamService,
+    private leagueService: LeagueService,
+    private realFixtureService: RealFixtureService,
   ) {
     this.createForm();
   }
@@ -34,6 +40,9 @@ export class EditComponent implements OnInit, OnChanges {
     this.teamService.read().subscribe((teams: Team[]) => {
       this.teams = teams;
     });
+    this.realFixtureService.read(true).subscribe((realFixtures: RealFixture[]) => {
+      this.preparedRealFixtures = realFixtures;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -43,6 +52,9 @@ export class EditComponent implements OnInit, OnChanges {
       const { name, nationality, number, yearBirth, height, weight, role } = roster.player;
       this.form.patchValue({ name, nationality, number, yearBirth, height, weight, role });
       this.form.get('team').setValue(roster.team);
+      this.leagueService.nextRealFixture().subscribe((realFixture: RealFixture) => {
+        this.form.get('realFixture').setValue(realFixture);
+      });
     }
   }
 
@@ -55,7 +67,8 @@ export class EditComponent implements OnInit, OnChanges {
       height: [undefined],
       weight: [undefined],
       role: [undefined, Validators.required],
-      team: [undefined, Validators.required]
+      team: [undefined, Validators.required],
+      realFixture: [undefined, Validators.required],
     });
   }
 
@@ -68,7 +81,7 @@ export class EditComponent implements OnInit, OnChanges {
       roster = { _id: this.roster._id, player, team: this.form.value.team, realFixture: this.roster.realFixture };
     } else {
       const player = { name, nationality, number, yearBirth, height, weight, role };
-      roster = { player, team: this.form.value.team };
+      roster = { player, team: this.form.value.team, realFixture: this.form.value.realFixture };
     }
     this.salva.emit(roster);
   }

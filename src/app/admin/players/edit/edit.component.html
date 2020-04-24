@@ -74,6 +74,16 @@
       </div>
     </div>
 
+    <div fxFlex="49" fxFlex.xs="100" *ngIf="roster == null">
+      <div class="form-group">
+        <label for="realFixture" class="control-label">Giornata *</label>
+        <ng-select id="realFixture" name="realFixture" [items]="preparedRealFixtures" bindLabel="name" formControlName="realFixture" clearAllText="Elimina"
+          [ngClass]="{'is-invalid': form.get('realFixture').invalid && form.get('realFixture').dirty}">
+          <app-error-message [form-control]="form.get('team')" name="Squadra"></app-error-message>
+        </ng-select>
+      </div>
+    </div>
+
   </div>
 
   <div class="text-center">

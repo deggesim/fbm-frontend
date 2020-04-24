@@ -5,9 +5,9 @@ import { FantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { RealFixture } from '@app/models/real-fixture';
 import { Roster } from '@app/models/roster';
-import { AuthService } from '@app/services/auth.service';
 import { FantasyRosterService } from '@app/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/services/fantasy-team.service';
+import { LeagueService } from '@app/services/league.service';
 import { RosterService } from '@app/services/roster.service';
 import { toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
@@ -39,7 +39,7 @@ export class TransactionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private authService: AuthService,
+    private leagueService: LeagueService,
     private sharedService: SharedService,
     private rosterService: RosterService,
     private fantasyRosterService: FantasyRosterService,
@@ -80,7 +80,7 @@ export class TransactionComponent implements OnInit {
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
     this.fantasyTeamSelected = fantasyTeam;
     if (fantasyTeam != null) {
-      this.authService.nextRealFixture().pipe(
+      this.leagueService.nextRealFixture().pipe(
         switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, nextRealFixture._id))
       ).subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;
@@ -118,7 +118,7 @@ export class TransactionComponent implements OnInit {
         }),
         switchMap(() => this.rosterService.freePlayers()),
         tap((rosters: Roster[]) => { this.rosters = rosters; }),
-        switchMap(() => this.authService.nextRealFixture()),
+        switchMap(() => this.leagueService.nextRealFixture()),
         switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
       ).subscribe((fr: FantasyRoster[]) => {
         this.fantasyRosters = fr;
@@ -142,7 +142,7 @@ export class TransactionComponent implements OnInit {
         }),
         switchMap(() => this.rosterService.freePlayers()),
         tap((rosters: Roster[]) => { this.rosters = rosters; }),
-        switchMap(() => this.authService.nextRealFixture()),
+        switchMap(() => this.leagueService.nextRealFixture()),
         switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
       ).subscribe((fr: FantasyRoster[]) => {
         this.fantasyRosters = fr;
@@ -194,7 +194,7 @@ export class TransactionComponent implements OnInit {
       }),
       switchMap(() => this.rosterService.freePlayers()),
       tap((rosters: Roster[]) => { this.rosters = rosters; }),
-      switchMap(() => this.authService.nextRealFixture()),
+      switchMap(() => this.leagueService.nextRealFixture()),
       switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
     ).subscribe((fantasyRosters: FantasyRoster[]) => {
       this.fantasyRosters = fantasyRosters;
@@ -214,7 +214,7 @@ export class TransactionComponent implements OnInit {
       }),
       switchMap(() => this.rosterService.freePlayers()),
       tap((rosters: Roster[]) => { this.rosters = rosters; }),
-      switchMap(() => this.authService.nextRealFixture()),
+      switchMap(() => this.leagueService.nextRealFixture()),
       switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
     ).subscribe((fantasyRosters: FantasyRoster[]) => {
       this.fantasyRosters = fantasyRosters;

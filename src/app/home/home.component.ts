@@ -4,6 +4,7 @@ import { League, Status } from '@app/models/league';
 import { Login } from '@app/models/login';
 import { User } from '@app/models/user';
 import { AuthService } from '@app/services/auth.service';
+import { LeagueService } from '@app/services/league.service';
 import { isEmpty, toastType } from '@app/shared/globals';
 import { SharedService } from '@app/shared/shared.service';
 import { switchMap, tap } from 'rxjs/operators';
@@ -21,9 +22,10 @@ export class HomeComponent implements OnInit {
   constructor(
     private sharedService: SharedService,
     private authService: AuthService,
+    private leagueService: LeagueService,
     private router: Router,
   ) {
-    this.authService.leagueStatusObservable.subscribe(
+    this.leagueService.leagueStatusObservable.subscribe(
       (leagueStatus: string) => {
         this.leagueStatus = leagueStatus;
       }
@@ -33,16 +35,16 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     console.log('init HomeComponent');
     if (this.isLoggedIn()) {
-      const selectedLeague = this.authService.getSelectedLeague();
+      const selectedLeague = this.leagueService.getSelectedLeague();
       const userLogged = this.authService.getLoggedUser();
       this.listaLeghe = userLogged.leagues;
       const leagueFound = this.listaLeghe.find((league: League) => league._id === selectedLeague._id);
       if (leagueFound != null) {
-        this.authService.setSelectedLeague(leagueFound);
+        this.leagueService.setSelectedLeague(leagueFound);
       } else if (this.listaLeghe != null && !isEmpty(this.listaLeghe)) {
-        this.authService.setSelectedLeague(this.listaLeghe[0]);
+        this.leagueService.setSelectedLeague(this.listaLeghe[0]);
       }
-      this.authService.leagueStatusObservableChain.subscribe();
+      this.leagueService.leagueStatusObservableChain.subscribe();
     }
   }
 
@@ -71,19 +73,19 @@ export class HomeComponent implements OnInit {
       tap((loginObj: { user: User, token: string }) => {
         this.listaLeghe = loginObj.user.leagues;
         if (this.listaLeghe != null && !isEmpty(this.listaLeghe)) {
-          this.authService.setSelectedLeague(this.listaLeghe[0]);
+          this.leagueService.setSelectedLeague(this.listaLeghe[0]);
         }
         const title = 'Login';
         const message = 'Login effettuato correttamente';
         this.sharedService.notifica(toastType.success, title, message);
       }),
-      switchMap(() => this.authService.leagueStatusObservableChain)
+      switchMap(() => this.leagueService.leagueStatusObservableChain)
     ).subscribe();
   }
 
   public selectLeague(league: League) {
-    this.authService.setSelectedLeague(league);
-    this.authService.leagueStatusObservableChain.subscribe(() => {
+    this.leagueService.setSelectedLeague(league);
+    this.leagueService.leagueStatusObservableChain.subscribe(() => {
       if (this.isPreseason()) {
         if (this.authService.isAdmin()) {
           this.router.navigate(['/admin/preseason/edit-league']);

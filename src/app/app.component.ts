@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { switchMap, tap } from 'rxjs/operators';
 import { User } from './models/user';
 import { AuthService } from './services/auth.service';
+import { LeagueService } from './services/league.service';
 import { NewSeasonService } from './services/new-season.service';
 import { toastType } from './shared/globals';
 import { SharedService } from './shared/shared.service';
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     private spinnerService: SpinnerService,
     private sharedService: SharedService,
     private authService: AuthService,
+    private leagueService: LeagueService,
     private newSeasonService: NewSeasonService
   ) { }
 
@@ -33,7 +35,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     console.log('ngOnInit AppComponent');
     if (this.authService.isLoggedIn()) {
       this.authService.user = JSON.parse(localStorage.getItem('user'));
-      this.authService.leagueStatusObservableChain.subscribe();
+      this.leagueService.leagueStatusObservableChain.subscribe();
     }
   }
 
@@ -54,7 +56,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
         this.sharedService.notifica(toastType.warning, title, message);
         this.router.navigate(['/home']);
       }),
-      switchMap(() => this.authService.leagueStatusObservableChain)
+      switchMap(() => this.leagueService.leagueStatusObservableChain)
     ).subscribe();
   }
 
@@ -72,8 +74,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   public completePreseason() {
-    this.newSeasonService.completePreseason(this.authService.getSelectedLeague()._id).pipe(
-      switchMap(() => this.authService.leagueStatusObservableChain)
+    this.newSeasonService.completePreseason(this.leagueService.getSelectedLeague()._id).pipe(
+      switchMap(() => this.leagueService.leagueStatusObservableChain)
     ).subscribe(() => {
       const title = 'Presason completata';
       const message = 'Il torneo ora è nella fase "Stagione regolare"';

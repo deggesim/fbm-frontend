@@ -6,7 +6,7 @@ import { Parameter } from '@app/models/league';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
 import { TableItem } from '@app/models/table-item';
-import { AuthService } from '@app/services/auth.service';
+import { LeagueService } from '@app/services/league.service';
 import { calculator } from '@app/util/standings';
 
 @Component({
@@ -26,7 +26,7 @@ export class StandingsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private authService: AuthService,
+    private leagueService: LeagueService,
   ) {
     this.createForm();
   }
@@ -36,7 +36,7 @@ export class StandingsComponent implements OnInit {
     this.route.data.subscribe(
       (data) => {
         this.rounds = data.rounds.filter((round: Round) => round.roundRobin);
-        this.authService.nextFixture().subscribe((nextFixture: Fixture) => {
+        this.leagueService.nextFixture().subscribe((nextFixture: Fixture) => {
           this.nextFixture = nextFixture;
         });
       }
@@ -68,7 +68,7 @@ export class StandingsComponent implements OnInit {
       }
 
       for (const fantasyTeam of this.selectedRound.fantasyTeams) {
-        this.trend = this.authService.getSelectedLeague().parameters.find((parameter: Parameter) => parameter.parameter === 'TREND');
+        this.trend = this.leagueService.getSelectedLeague().parameters.find((parameter: Parameter) => parameter.parameter === 'TREND');
         const tableItem = calculator(fantasyTeam, matches, this.trend.value);
         this.table.push(tableItem);
       }

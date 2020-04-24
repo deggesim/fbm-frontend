@@ -7,8 +7,8 @@ import { Fixture } from '@app/models/fixture';
 import { Lineup } from '@app/models/lineup';
 import { RealFixture } from '@app/models/real-fixture';
 import { Round } from '@app/models/round';
-import { AuthService } from '@app/services/auth.service';
 import { FantasyRosterService } from '@app/services/fantasy-roster.service';
+import { LeagueService } from '@app/services/league.service';
 import { LineupService } from '@app/services/lineup.service';
 import { RealFixtureService } from '@app/services/real-fixture.service';
 import { AppConfig, isEmpty, toastType } from '@app/shared/globals';
@@ -39,7 +39,7 @@ export class LineupsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private authService: AuthService,
+    private leagueService: LeagueService,
     private sharedService: SharedService,
     private realFixtureService: RealFixtureService,
     private fantasyRosterService: FantasyRosterService,
@@ -78,17 +78,18 @@ export class LineupsComponent implements OnInit {
 
   lineupValidator = (control: AbstractControl) => {
     const lineup: Lineup[] = control.value;
-    const lineupValid = lineUpValid(lineup, this.authService.getSelectedLeague());
+    const lineupValid = lineUpValid(lineup, this.leagueService.getSelectedLeague());
     if (!lineupValid) {
       return { lineupInvalid: true };
     }
 
     // count EXT, COM, STR, ITA
-    const MAX_EXT_OPT_345 = this.authService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_EXT_OPT_345');
+    const MAX_EXT_OPT_345 = this.leagueService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_EXT_OPT_345');
     if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
       return { lineupInvalid: true };
     }
-    const MAX_STRANGERS_OPT_55 = this.authService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_STRANGERS_OPT_55');
+    const MAX_STRANGERS_OPT_55 =
+      this.leagueService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_STRANGERS_OPT_55');
     if ((count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com)) > MAX_STRANGERS_OPT_55.value) {
       return { lineupInvalid: true };
     }
@@ -97,7 +98,7 @@ export class LineupsComponent implements OnInit {
     // if (count(lineup, PlayerStatus.Str) > MAX_STR.value) {
     //   return { lineupInvalid: true };
     // }
-    const MIN_NAT_PLAYERS = this.authService.getSelectedLeague().parameters.find(param => param.parameter === 'MIN_NAT_PLAYERS');
+    const MIN_NAT_PLAYERS = this.leagueService.getSelectedLeague().parameters.find(param => param.parameter === 'MIN_NAT_PLAYERS');
     if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
       return { lineupInvalid: true };
     }

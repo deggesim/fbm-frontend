@@ -6,6 +6,7 @@ import { NewSeasonService } from '@app/services/new-season.service';
 import { toastType } from '@app/shared/globals';
 import { SharedService } from '@app/shared/shared.service';
 import { switchMap, tap } from 'rxjs/operators';
+import { LeagueService } from '@app/services/league.service';
 
 @Component({
   selector: 'app-roles',
@@ -21,6 +22,7 @@ export class RolesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
     private sharedService: SharedService,
   ) {
@@ -29,7 +31,7 @@ export class RolesComponent implements OnInit {
 
   ngOnInit() {
     console.log('RolesComponent');
-    const league = this.authService.getSelectedLeague();
+    const league = this.leagueService.getSelectedLeague();
     for (const role of league.roles) {
       this.form.get(role.role).setValue(role.spots);
     }
@@ -53,12 +55,12 @@ export class RolesComponent implements OnInit {
       roles.push({ role: key, spots: this.form.controls[key].value });
     });
 
-    this.newSeasonService.setRoles(this.authService.getSelectedLeague()._id, roles).pipe(
+    this.newSeasonService.setRoles(this.leagueService.getSelectedLeague()._id, roles).pipe(
       tap((league: League) => {
-        this.authService.setSelectedLeague(league);
+        this.leagueService.setSelectedLeague(league);
       }),
       switchMap(() => this.authService.refresh()),
-      switchMap(() => this.authService.leagueStatusObservableChain)
+      switchMap(() => this.leagueService.leagueStatusObservableChain)
     ).subscribe(() => {
       const title = 'Modifica ruoli';
       const message = 'I ruoli della lega sono stati modificati con successo';

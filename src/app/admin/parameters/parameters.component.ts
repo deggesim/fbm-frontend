@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { League } from '@app/models/league';
 import { AuthService } from '@app/services/auth.service';
+import { LeagueService } from '@app/services/league.service';
 import { NewSeasonService } from '@app/services/new-season.service';
 import { toastType } from '@app/shared/globals';
 import { SharedService } from '@app/shared/shared.service';
@@ -19,6 +20,7 @@ export class ParametersComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
     private sharedService: SharedService,
   ) {
@@ -27,7 +29,7 @@ export class ParametersComponent implements OnInit {
 
   ngOnInit() {
     console.log('ParametersComponent');
-    const league = this.authService.getSelectedLeague();
+    const league = this.leagueService.getSelectedLeague();
     for (const param of league.parameters) {
       this.form.get(param.parameter).setValue(param.value);
     }
@@ -55,12 +57,12 @@ export class ParametersComponent implements OnInit {
       parameters.push({ parameter: key, value: this.form.controls[key].value });
     });
 
-    this.newSeasonService.setParameters(this.authService.getSelectedLeague()._id, parameters).pipe(
+    this.newSeasonService.setParameters(this.leagueService.getSelectedLeague()._id, parameters).pipe(
       tap((league: League) => {
-        this.authService.setSelectedLeague(league);
+        this.leagueService.setSelectedLeague(league);
       }),
       switchMap(() => this.authService.refresh()),
-      switchMap(() => this.authService.leagueStatusObservableChain)
+      switchMap(() => this.leagueService.leagueStatusObservableChain)
     ).subscribe(() => {
       const title = 'Modifica parametri';
       const message = 'I parametri della lega sono stati modificati con successo';

@@ -3,6 +3,7 @@ import { ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET, Router } from '@
 import { Status } from '@app/models/league';
 import { User } from '@app/models/user';
 import { AuthService } from '@app/services/auth.service';
+import { LeagueService } from '@app/services/league.service';
 import { filter } from 'rxjs/operators';
 
 interface IBreadcrumb {
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
+    private leagueService: LeagueService,
   ) {
     this.authService.userObservable.subscribe(
       (user: User) => {
@@ -40,7 +42,7 @@ export class HeaderComponent implements OnInit {
       }
     );
 
-    this.authService.leagueStatusObservable.subscribe(
+    this.leagueService.leagueStatusObservable.subscribe(
       (leagueStatus: string) => {
         this.leagueStatus = leagueStatus;
       }
@@ -69,12 +71,12 @@ export class HeaderComponent implements OnInit {
   }
 
   public getSelectedLeague() {
-    const league = this.authService.getSelectedLeague();
+    const league = this.leagueService.getSelectedLeague();
     return league != null ? league.name : '';
   }
 
   public leagueSelected(): boolean {
-    const league = this.authService.getSelectedLeague();
+    const league = this.leagueService.getSelectedLeague();
     return league != null;
   }
 

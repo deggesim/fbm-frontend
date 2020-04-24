@@ -1,7 +1,7 @@
 <div class="float manina" (click)="nuova()">
   <fa-icon icon="plus" class="my-float"></fa-icon>
 </div>
-<div class="float-2 indent manina" (click)="apriPopupUpload()">
+<div class="float-2 indent manina" (click)="apriPopupUpload()" *ngIf="isPreseason()">
   <fa-icon icon="upload" class="my-float"></fa-icon>
 </div>
 

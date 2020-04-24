@@ -14,8 +14,12 @@ export class RealFixtureService {
     private http: HttpClient
   ) { }
 
-  public read() {
-    return this.http.get<RealFixture[]>(`${this.endpoint}/real-fixtures`);
+  public read(prepared?: boolean) {
+    let endpoint = `${this.endpoint}/real-fixtures`;
+    if (prepared) {
+      endpoint += '?prepared=true';
+    }
+    return this.http.get<RealFixture[]>(endpoint);
   }
 
   public getByFixture(fixtureId: string) {

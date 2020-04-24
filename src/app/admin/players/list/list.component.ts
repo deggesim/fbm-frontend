@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Status } from '@app/models/league';
 import { Player } from '@app/models/player';
 import { Roster } from '@app/models/roster';
+import { LeagueService } from '@app/services/league.service';
 import { PlayerService } from '@app/services/player.service';
 import { RosterService } from '@app/services/roster.service';
 import { isEmpty, toastType } from '@app/shared/globals';
@@ -17,6 +19,7 @@ import { switchMap, tap } from 'rxjs/operators';
 })
 export class ListComponent implements OnInit {
 
+  leagueStatus: string;
   rosters: Roster[];
   listaPaginata: Roster[];
   listaFiltrata: Roster[];
@@ -39,10 +42,17 @@ export class ListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private leagueService: LeagueService,
     private sharedService: SharedService,
     private rosterService: RosterService,
     private playerService: PlayerService,
-  ) { }
+  ) {
+    this.leagueService.leagueStatusObservable.subscribe(
+      (leagueStatus: string) => {
+        this.leagueStatus = leagueStatus;
+      }
+    );
+  }
 
   ngOnInit() {
     console.log('init ListComponent');
@@ -53,6 +63,10 @@ export class ListComponent implements OnInit {
         this.listaPaginata = this.buildPage();
       }
     );
+  }
+
+  public isPreseason() {
+    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
   }
 
   applicaFiltro(filtro: string) {
