@@ -44,9 +44,11 @@
         <!-- SQUADRA 1 -->
         <ng-container *ngIf="selectedMatch">
           <div fxFlex="49" fxFlex.lt-md="100">
-            <div><label>{{selectedMatch.homeTeam.name}}</label></div>
+            <div>
+              <h4>{{selectedMatch.homeTeam.name}} {{selectedMatch.homeScore}}</h4>
+            </div>
             <div><label>Fattore campo: {{selectedMatch.homeFactor}}</label></div>
-            <div><label>Valutazione: {{selectedMatch.homeRanking}} - Pagelle: {{selectedMatch.homeGrade}} - Punteggio: {{selectedMatch.homeScore}}</label></div>
+            <div><label>Valutazione: {{selectedMatch.homeRanking}} - Pagelle: {{selectedMatch.homeGrade}}</label></div>
             <div class="table-responsive">
               <table class="table table-hover">
                 <thead class="thead-dark">
@@ -84,9 +86,11 @@
         <!-- SQUADRA 2 -->
         <ng-container *ngIf="selectedMatch">
           <div fxFlex="49" fxFlex.lt-md="100">
-            <div><label>{{selectedMatch.awayTeam.name}}</label></div>
+            <div>
+              <h4>{{selectedMatch.awayTeam.name}} {{selectedMatch.awayScore}}</h4>
+            </div>
             <div><label>&nbsp;</label></div>
-            <div><label>Valutazione: {{selectedMatch.awayRanking}} - Pagelle: {{selectedMatch.awayGrade}} - Punteggio: {{selectedMatch.awayScore}}</label></div>
+            <div><label>Valutazione: {{selectedMatch.awayRanking}} - Pagelle: {{selectedMatch.awayGrade}}</label></div>
             <div class="table-responsive">
               <table class="table table-hover">
                 <thead class="thead-dark">
