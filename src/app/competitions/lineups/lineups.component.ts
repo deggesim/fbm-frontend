@@ -15,6 +15,8 @@ import { AppConfig, isEmpty, toastType } from '@app/shared/globals';
 import { SharedService } from '@app/shared/shared.service';
 import { count, lineUpValid } from '@app/util/lineup';
 import { switchMap, tap } from 'rxjs/operators';
+import { AuthService } from '@app/services/auth.service';
+import { User } from '@app/models/user';
 
 @Component({
   selector: 'app-lineups',
@@ -35,10 +37,12 @@ export class LineupsComponent implements OnInit {
   fantasyRostersPresent = false;
   allFieldsSelected = false;
   lineup: Lineup[];
+  disableUpdate = true;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private realFixtureService: RealFixtureService,
@@ -108,6 +112,7 @@ export class LineupsComponent implements OnInit {
   onChangeRound(round: Round) {
     this.form.get('fixture').reset();
     this.form.get('fantasyTeam').reset();
+    this.disableUpdate = true;
     this.fantasyRosters = null;
     this.form.get('lineup').reset();
     this.lineup = this.initLineup();
@@ -130,6 +135,7 @@ export class LineupsComponent implements OnInit {
 
   onChangeFixture(fixture: Fixture) {
     this.form.get('fantasyTeam').reset();
+    this.disableUpdate = true;
     this.fantasyRosters = null;
     this.form.get('lineup').reset();
     this.lineup = this.initLineup();
@@ -143,7 +149,16 @@ export class LineupsComponent implements OnInit {
   }
 
   onChangeFantasyTeam(fantasyTeam: FantasyTeam) {
+    this.disableUpdate = true;
     if (fantasyTeam != null) {
+      const teamManagedByLoggedUser =
+        (fantasyTeam.owners as User[]).find((owner) => {
+          const ret = owner._id === this.authService.getLoggedUser()._id;
+          return ret;
+        }) != null;
+      if (this.authService.isAdmin() || teamManagedByLoggedUser) {
+        this.disableUpdate = false;
+      }
       this.realFixtureService.getByFixture(this.form.value.fixture._id).pipe(
         switchMap((realFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, realFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
@@ -168,32 +183,36 @@ export class LineupsComponent implements OnInit {
   }
 
   addPlayer(fantasyRoster: FantasyRoster) {
-    this.form.get('lineup').markAsDirty();
-    const playerFound = this.lineup.find((player: Lineup) => {
-      if (player != null) {
-        return player.fantasyRoster._id === fantasyRoster._id;
+    if (!this.disableUpdate) {
+      this.form.get('lineup').markAsDirty();
+      const playerFound = this.lineup.find((player: Lineup) => {
+        if (player != null) {
+          return player.fantasyRoster._id === fantasyRoster._id;
+        }
+      });
+      if (playerFound == null) {
+        // find first hole
+        let index = this.lineup.indexOf(null);
+        index = index === -1 ? this.lineup.length : index;
+        const benchOrder = (index > AppConfig.Starters - 1 && index < AppConfig.MinPlayersInLineup) ? index + 1 - AppConfig.Starters : null;
+        const newPlayer: Lineup = {
+          fantasyRoster,
+          spot: index + 1,
+          benchOrder,
+          fixture: this.form.value.fixture
+        };
+        this.lineup[index] = newPlayer;
       }
-    });
-    if (playerFound == null) {
-      // find first hole
-      let index = this.lineup.indexOf(null);
-      index = index === -1 ? this.lineup.length : index;
-      const benchOrder = (index > AppConfig.Starters - 1 && index < AppConfig.MinPlayersInLineup) ? index + 1 - AppConfig.Starters : null;
-      const newPlayer: Lineup = {
-        fantasyRoster,
-        spot: index + 1,
-        benchOrder,
-        fixture: this.form.value.fixture
-      };
-      this.lineup[index] = newPlayer;
+      this.form.get('lineup').setValue(this.lineup);
     }
-    this.form.get('lineup').setValue(this.lineup);
   }
 
   removePlayer(index: number) {
-    this.form.get('lineup').markAsDirty();
-    this.lineup[index] = null;
-    this.form.get('lineup').setValue(this.lineup);
+    if (!this.disableUpdate) {
+      this.form.get('lineup').markAsDirty();
+      this.lineup[index] = null;
+      this.form.get('lineup').setValue(this.lineup);
+    }
   }
 
   playerChoosen(fantasyRoster: FantasyRoster): boolean {

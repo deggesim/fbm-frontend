@@ -112,6 +112,26 @@ const routes: Routes = [
     canActivate: [AdminGuard],
     children: [
       {
+        path: 'teams',
+        component: TeamListComponent,
+        data: {
+          breadcrumb: 'Squadre'
+        },
+        resolve: {
+          teams: TeamResolverService
+        },
+      },
+      {
+        path: 'players',
+        component: PlayerListComponent,
+        data: {
+          breadcrumb: 'Giocatori'
+        },
+        resolve: {
+          rosters: RosterResolverService
+        },
+      },
+      {
         path: 'fantasy-teams',
         component: FantasyTeamListComponent,
         data: {

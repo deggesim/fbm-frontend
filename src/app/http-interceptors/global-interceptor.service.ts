@@ -22,7 +22,7 @@ export class GlobalInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
         this.spinnerService.end();
         this.sharedService.notifyError(err);
-        if (401 === err.status || 403 === err.status) {
+        if (401 === err.status) {
           this.router.navigate(['home']);
         }
         return throwError(err);

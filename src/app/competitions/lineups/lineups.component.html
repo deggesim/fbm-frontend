@@ -50,7 +50,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let fantasyRoster of fantasyRosters" class="manina table-secondary lineup-height" [ngClass]="{'greyed-out': playerChoosen(fantasyRoster)}"
+                <tr *ngFor="let fantasyRoster of fantasyRosters" class="table-secondary lineup-height" [ngClass]="{'greyed-out': playerChoosen(fantasyRoster), 'manina': !disableUpdate}"
                   (click)="addPlayer(fantasyRoster)">
                   <td>{{fantasyRoster.roster.player.name}}</td>
                   <td>{{fantasyRoster.roster.player.nationality}}</td>
@@ -78,7 +78,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let player of lineup; let i=index" class="manina table-secondary lineup-height" (click)="removePlayer(i)">
+                <tr *ngFor="let player of lineup; let i=index" class="table-secondary lineup-height" [ngClass]="{'manina': !disableUpdate}" (click)="removePlayer(i)">
                   <td>{{player?.spot}}</td>
                   <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
                   <td>{{player?.fantasyRoster.roster.player.nationality}}</td>
@@ -92,7 +92,7 @@
             <app-error-message [form-control]="form.get('lineup')" name="Formazione"></app-error-message>
           </div>
           <div class="padding text-center">
-            <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="openModalBenchOrder()">Ordine panchina</button>&nbsp;
+            <button type="button" class="btn btn-primary" [disabled]="form.invalid || disableUpdate" (click)="openModalBenchOrder()">Ordine panchina</button>&nbsp;
           </div>
         </div>
 
@@ -106,10 +106,10 @@
   </fieldset>
 
   <div class="text-center padding">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;
-    <button type="button" class="btn btn-primary" (click)="ripristina()">Ripristina</button>&nbsp;
-    <button type="button" class="btn btn-primary" (click)="svuota()">Svuota</button>&nbsp;
-    <button type="button" class="btn btn-primary" (click)="importa()">Importa</button>&nbsp;
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || disableUpdate">Salva</button>&nbsp;
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="ripristina()">Ripristina</button>&nbsp;
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="svuota()">Svuota</button>&nbsp;
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="importa()">Importa</button>&nbsp;
     <button type="button" class="btn btn-primary" (click)="inviaEmail()">Invia mail</button>&nbsp;
   </div>
 
