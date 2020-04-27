@@ -38,16 +38,20 @@ export class LeagueService {
   }
 
   public get leagueStatusObservableChain() {
-    return forkJoin([this.isPreseason(), this.isOffseason(), this.isPostSeason()]).pipe(
-      tap((values: boolean[]) => {
+    return forkJoin([this.isPreseason(), this.isOffseason(), this.isPostSeason(), this.nextRealFixture()]).pipe(
+      tap((values: any[]) => {
+        let nextFixture = '';
+        for (const fixture of values[3].fixtures) {
+          nextFixture += ` - ${fixture.round.name} ${fixture.name}`;
+        }
         if (values[0]) {
-          this.leagueStatus = Status.Preseason;
+          this.leagueStatus = ` - ${Status.Preseason}`;
         } else if (values[1]) {
-          this.leagueStatus = Status.Offseason;
+          this.leagueStatus = ` - ${Status.Offseason}`;
         } else if (values[2]) {
-          this.leagueStatus = Status.Postseason;
+          this.leagueStatus = nextFixture;
         } else {
-          this.leagueStatus = Status.RegularSeason;
+          this.leagueStatus = nextFixture;
         }
       })
     );

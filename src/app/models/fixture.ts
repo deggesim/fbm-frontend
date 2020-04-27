@@ -1,4 +1,5 @@
 import { Match } from './match';
+import { Round } from './round';
 
 export interface Fixture {
     _id: string;
@@ -6,4 +7,5 @@ export interface Fixture {
     unnecessary: boolean;
     completed: boolean;
     matches: Match[];
+    round: Round;
 }
