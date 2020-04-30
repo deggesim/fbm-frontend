@@ -10,7 +10,12 @@ html {
 
 // padding per la navbar bootstrap fixed top
 body {
-  padding-top: 5rem;
+  @include media-breakpoint-up(sm) {
+    padding-top: 7rem;
+  }
+  @include media-breakpoint-down(xs) {
+    padding-top: 5rem;
+  }
 }
 
 form {

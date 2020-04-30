@@ -94,7 +94,7 @@
   </div>
 </nav>
 
-<nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb" class="d-none d-sm-block fixed-breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item active" *ngFor="let b of breadcrumbs; let i = index">
       <span *ngIf="i != breadcrumbs.length - 1; else elseLink">
