@@ -35,8 +35,8 @@ export class EditComponent implements OnInit, OnChanges {
           awayRanking: [match.awayRanking],
           homeGrade: [match.homeGrade],
           awayGrade: [match.awayGrade],
-          homeScore: [match.homeScore, Validators.required],
-          awayScore: [match.awayScore, Validators.required],
+          homeScore: [match.homeScore],
+          awayScore: [match.awayScore],
           overtime: [match.overtime],
           completed: [match.completed],
         }));

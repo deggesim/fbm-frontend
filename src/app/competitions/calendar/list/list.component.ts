@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Fixture } from '@app/models/fixture';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
-import { FixtureService } from '@app/services/fixture.service';
+import { LeagueService } from '@app/services/league.service';
 import { MatchService } from '@app/services/match.service';
 import { RoundService } from '@app/services/round.service';
 import { toastType } from '@app/shared/globals';
@@ -28,10 +28,10 @@ export class ListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private leagueService: LeagueService,
     private sharedService: SharedService,
     private roundService: RoundService,
     private matchService: MatchService,
-    private fixtureService: FixtureService,
   ) {
     this.createForm();
   }
@@ -67,18 +67,18 @@ export class ListComponent implements OnInit {
     this.selectedFixture = fixture;
     this.matches = fixture.matches;
     this.mostraPopupModifica = true;
-    event.stopPropagation(); event.preventDefault();
+    // prevent accordion event
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   salva(matches: Match[]) {
     this.matchService.updateFixture(matches, this.selectedFixture._id).pipe(
       tap(() => {
         this.mostraPopupModifica = false;
-        const title = 'Modifica risultati';
-        const message = 'Risultati modificati correttamente';
-        this.sharedService.notifica(toastType.success, title, message);
         this.matches = undefined;
       }),
+      switchMap(() => this.leagueService.leagueStatusObservableChain),
       switchMap(() => this.roundService.read()),
     ).subscribe((rounds: Round[]) => {
       this.rounds = rounds;
@@ -86,6 +86,9 @@ export class ListComponent implements OnInit {
         return this.selectedRound._id === round._id;
       });
       this.selectedFixture = null;
+      const title = 'Modifica risultati';
+      const message = 'Risultati modificati correttamente';
+      this.sharedService.notifica(toastType.success, title, message);
     });
   }
 
