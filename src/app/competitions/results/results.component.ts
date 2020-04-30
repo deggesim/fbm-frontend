@@ -5,11 +5,13 @@ import { Fixture } from '@app/models/fixture';
 import { Lineup } from '@app/models/lineup';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
+import { LeagueService } from '@app/services/league.service';
 import { LineupService } from '@app/services/lineup.service';
 import { MatchService } from '@app/services/match.service';
 import { isEmpty, toastType } from '@app/shared/globals';
-import { forkJoin } from 'rxjs';
 import { SharedService } from '@app/shared/shared.service';
+import { forkJoin, Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-results',
@@ -30,6 +32,7 @@ export class ResultsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private leagueService: LeagueService,
     private sharedService: SharedService,
     private lineupService: LineupService,
     private matchService: MatchService,
@@ -80,31 +83,37 @@ export class ResultsComponent implements OnInit {
   onChangeMatch(match: Match) {
     if (match != null) {
       this.selectedMatch = match;
-      this.loadLineups(match);
+      this.loadLineups(match).subscribe((lineups) => {
+        this.homeTeamLineup = lineups[0];
+        this.awayTeamLineup = lineups[1];
+      });
     }
   }
 
   salva() {
     console.log('salva');
     const { round, fixture, match } = this.form.value;
-    this.matchService.compute(round._id, fixture._id, match._id).subscribe((matchComputed) => {
-      this.selectedMatch = matchComputed;
+    this.matchService.compute(round._id, fixture._id, match._id).pipe(
+      tap((matchComputed) => {
+        this.selectedMatch = matchComputed;
+      }),
+      switchMap(() => this.leagueService.leagueStatusObservableChain),
+      switchMap(() => this.loadLineups(this.selectedMatch))
+    ).subscribe((lineups) => {
+      this.homeTeamLineup = lineups[0];
+      this.awayTeamLineup = lineups[1];
       const title = 'Risultato calcolato';
       const message = 'Il risultato è stato calcolato correttamente';
       this.sharedService.notifica(toastType.success, title, message);
-      this.loadLineups(matchComputed);
     });
   }
 
-  private loadLineups(match: Match) {
+  private loadLineups(match: Match): Observable<[Lineup[], Lineup[]]> {
     const homeTeam = match.homeTeam;
     const awayTeam = match.awayTeam;
     const $homeTeamLineup = this.lineupService.lineupByTeam(homeTeam._id, this.form.value.fixture._id);
     const $awayTeamLineup = this.lineupService.lineupByTeam(awayTeam._id, this.form.value.fixture._id);
-    forkJoin([$homeTeamLineup, $awayTeamLineup]).subscribe(lineups => {
-      this.homeTeamLineup = lineups[0];
-      this.awayTeamLineup = lineups[1];
-    });
+    return forkJoin([$homeTeamLineup, $awayTeamLineup]);
   }
 
 }
