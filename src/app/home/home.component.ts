@@ -17,7 +17,7 @@ import { switchMap, tap } from 'rxjs/operators';
 export class HomeComponent implements OnInit {
 
   listaLeghe: League[] = [];
-  leagueStatus: string;
+  leagueStatus: Status;
 
   constructor(
     private sharedService: SharedService,
@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
   ) {
     this.leagueService.leagueStatusObservable.subscribe(
-      (leagueStatus: string) => {
+      (leagueStatus: Status) => {
         this.leagueStatus = leagueStatus;
       }
     );
@@ -44,28 +44,12 @@ export class HomeComponent implements OnInit {
       } else if (this.listaLeghe != null && !isEmpty(this.listaLeghe)) {
         this.leagueService.setSelectedLeague(this.listaLeghe[0]);
       }
-      this.leagueService.leagueStatusObservableChain.subscribe();
+      this.leagueService.leagueInfoObservableChain.subscribe();
     }
   }
 
   public isLoggedIn() {
     return this.authService.isLoggedIn();
-  }
-
-  public isPreseason() {
-    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
-  }
-
-  public isRegularSeason() {
-    return (this.leagueStatus != null) && this.leagueStatus === Status.RegularSeason;
-  }
-
-  public isOffSeason() {
-    return (this.leagueStatus != null) && this.leagueStatus === Status.Offseason;
-  }
-
-  public isPostSeason() {
-    return (this.leagueStatus != null) && this.leagueStatus === Status.Postseason;
   }
 
   public login(user: Login) {
@@ -79,25 +63,35 @@ export class HomeComponent implements OnInit {
         const message = 'Login effettuato correttamente';
         this.sharedService.notifica(toastType.success, title, message);
       }),
-      switchMap(() => this.leagueService.leagueStatusObservableChain)
+      switchMap(() => this.leagueService.leagueInfoObservableChain)
     ).subscribe();
   }
 
   public selectLeague(league: League) {
     this.leagueService.setSelectedLeague(league);
-    this.leagueService.leagueStatusObservableChain.subscribe(() => {
-      if (this.isPreseason()) {
-        if (this.authService.isAdmin()) {
-          this.router.navigate(['/admin/preseason/edit-league']);
-        } else {
-          this.router.navigate(['/teams/transactions']);
-        }
-      } else if (this.isRegularSeason()) {
-        this.router.navigate(['/competitions/standings']);
-      } else if (this.isOffSeason()) {
-        this.router.navigate(['/competitions/calendar']);
-      } else {
-        this.router.navigate(['/competitions/results']);
+    this.leagueService.leagueInfoObservableChain.subscribe(() => {
+      switch (this.leagueStatus) {
+        case Status.Preseason:
+          if (this.authService.isAdmin()) {
+            this.router.navigate(['/admin/preseason/edit-league']);
+          } else {
+            this.router.navigate(['/teams/transactions']);
+          }
+          break;
+        case Status.RegularSeason:
+          this.router.navigate(['/competitions/standings']);
+          break;
+        case Status.RegularSeason:
+          this.router.navigate(['/competitions/standings']);
+          break;
+        case Status.Postseason:
+          this.router.navigate(['/competitions/results']);
+          break;
+        case Status.Offseason:
+          this.router.navigate(['/competitions/calendar']);
+          break;
+        default:
+          break;
       }
     });
   }

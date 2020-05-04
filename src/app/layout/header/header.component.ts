@@ -28,7 +28,8 @@ export class HeaderComponent implements OnInit {
   breadcrumbs: IBreadcrumb[] = [];
   admin: boolean;
   user: User;
-  leagueStatus: string;
+  leagueInfo: string;
+  leagueStatus: Status;
 
   constructor(
     private router: Router,
@@ -42,8 +43,14 @@ export class HeaderComponent implements OnInit {
       }
     );
 
+    this.leagueService.leagueInfoObservable.subscribe(
+      (leagueInfo: string) => {
+        this.leagueInfo = leagueInfo;
+      }
+    );
+
     this.leagueService.leagueStatusObservable.subscribe(
-      (leagueStatus: string) => {
+      (leagueStatus: Status) => {
         this.leagueStatus = leagueStatus;
       }
     );

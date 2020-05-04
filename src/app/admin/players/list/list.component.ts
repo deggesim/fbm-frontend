@@ -19,7 +19,8 @@ import { switchMap, tap } from 'rxjs/operators';
 })
 export class ListComponent implements OnInit {
 
-  leagueStatus: string;
+  leagueInfo: string;
+  leagueStatus: Status;
   rosters: Roster[];
   listaPaginata: Roster[];
   listaFiltrata: Roster[];
@@ -47,8 +48,14 @@ export class ListComponent implements OnInit {
     private rosterService: RosterService,
     private playerService: PlayerService,
   ) {
+    this.leagueService.leagueInfoObservable.subscribe(
+      (leagueInfo: string) => {
+        this.leagueInfo = leagueInfo;
+      }
+    );
+
     this.leagueService.leagueStatusObservable.subscribe(
-      (leagueStatus: string) => {
+      (leagueStatus: Status) => {
         this.leagueStatus = leagueStatus;
       }
     );

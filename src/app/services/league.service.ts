@@ -14,7 +14,10 @@ export class LeagueService {
 
   private endpoint = environment.endpoint;
 
-  private $leagueStatus = new BehaviorSubject<string>(null);
+  private $leagueInfo = new BehaviorSubject<string>(null);
+  private $leagueInfoObservable = this.$leagueInfo.asObservable();
+
+  private $leagueStatus = new BehaviorSubject<Status>(null);
   private $leagueStatusObservable = this.$leagueStatus.asObservable();
 
   constructor(
@@ -29,29 +32,43 @@ export class LeagueService {
     localStorage.setItem('league', JSON.stringify(league));
   }
 
-  public set leagueStatus(leagueStatus: string) {
-    this.$leagueStatus.next(leagueStatus);
-  }
-
-  public get leagueStatusObservable(): Observable<string> {
+  public get leagueStatusObservable(): Observable<Status> {
     return this.$leagueStatusObservable;
   }
 
-  public get leagueStatusObservableChain() {
+  public set leagueStatus(leagueStatus: Status) {
+    this.$leagueStatus.next(leagueStatus);
+  }
+
+  public get leagueInfoObservable(): Observable<string> {
+    return this.$leagueInfoObservable;
+  }
+
+  public set leagueInfo(leagueInfo: string) {
+    this.$leagueInfo.next(leagueInfo);
+  }
+
+  public get leagueInfoObservableChain() {
     return forkJoin([this.isPreseason(), this.isOffseason(), this.isPostSeason(), this.nextRealFixture()]).pipe(
       tap((values: any[]) => {
         let nextFixture = '';
         for (const fixture of values[3].fixtures) {
           nextFixture += ` - ${fixture.round.name} ${fixture.name}`;
         }
+        const league = this.getSelectedLeague();
+        const leagueName = league != null ? league.name : '';
         if (values[0]) {
-          this.leagueStatus = ` - ${Status.Preseason}`;
+          this.leagueInfo = `${leagueName} - ${Status.Preseason}`;
+          this.leagueStatus = Status.Preseason;
         } else if (values[1]) {
-          this.leagueStatus = ` - ${Status.Offseason}`;
+          this.leagueInfo = `${leagueName} - ${Status.Offseason}`;
+          this.leagueStatus = Status.Offseason;
         } else if (values[2]) {
-          this.leagueStatus = nextFixture;
+          this.leagueInfo = `${leagueName} ${nextFixture}`;
+          this.leagueStatus = Status.Postseason;
         } else {
-          this.leagueStatus = nextFixture;
+          this.leagueInfo = `${leagueName} ${nextFixture}`;
+          this.leagueStatus = Status.RegularSeason;
         }
       })
     );

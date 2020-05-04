@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     console.log('ngOnInit AppComponent');
     if (this.authService.isLoggedIn()) {
       this.authService.user = JSON.parse(localStorage.getItem('user'));
-      this.leagueService.leagueStatusObservableChain.subscribe();
+      this.leagueService.leagueInfoObservableChain.subscribe();
     }
   }
 
@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
         this.sharedService.notifica(toastType.warning, title, message);
         this.router.navigate(['/home']);
       }),
-      switchMap(() => this.leagueService.leagueStatusObservableChain)
+      switchMap(() => this.leagueService.leagueInfoObservableChain)
     ).subscribe();
   }
 
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   public completePreseason() {
     this.newSeasonService.completePreseason(this.leagueService.getSelectedLeague()._id).pipe(
-      switchMap(() => this.leagueService.leagueStatusObservableChain)
+      switchMap(() => this.leagueService.leagueInfoObservableChain)
     ).subscribe(() => {
       const title = 'Presason completata';
       const message = 'Il torneo ora è nella fase "Stagione regolare"';
