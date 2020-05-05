@@ -2,21 +2,14 @@
 
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div fxFlex="100">
       <div class="form-group">
         <label for="name" class="control-label">Nome</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name">
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
-        <label for="prepared" class="control-label">Preparata</label>
-        <input type="checkbox" class="form-control" id="prepared" formControlName="prepared">
-      </div>
-    </div>
-
-    <div fxFlex="49" fxFlex.xs="100">
+    <div fxFlex="100">
       <div class="form-group">
         <label for="fixtures" class="control-label">Turni</label>
         <ng-select id="fixtures" [items]="fixtures" [multiple]="true" [trackByFn]="trackFixtureByFn" [loading]="fixturesLoading" typeToSearchText="Inserisci almeno due caratteri" bindLabel="name"
@@ -25,7 +18,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div fxFlex="100">
       <div class="form-group">
         <label for="teamsWithNoGame" class="control-label">Squadre senza partite</label>
         <ng-select id="teamsWithNoGame" [items]="teamsWithNoGame" [multiple]="true" [trackByFn]="trackTeamByFn" [loading]="teamsWithNoGameLoading" typeToSearchText="Inserisci almeno due caratteri"

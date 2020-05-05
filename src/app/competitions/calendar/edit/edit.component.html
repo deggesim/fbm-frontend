@@ -7,35 +7,35 @@
       </legend>
       <div fxLayout="row wrap" fxLayoutAlign="space-between">
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="24" fxFlex.sm="49" fxFlex.xs="100">
           <div class="form-group">
             <label for="homeRanking-{{i}}" class="control-label">Valutazione casa</label>
             <input type="number" class="form-control" id="homeRanking-{{i}}" formControlName="homeRanking">
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="24" fxFlex.sm="49" fxFlex.xs="100">
           <div class="form-group">
             <label for="awayRanking-{{i}}" class="control-label">Valutazione trasferta</label>
             <input type="number" class="form-control" id="awayRanking-{{i}}" formControlName="awayRanking">
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="24" fxFlex.sm="49" fxFlex.xs="100">
           <div class="form-group">
             <label for="homeGrade-{{i}}" class="control-label">Voti casa</label>
             <input type="number" class="form-control" id="homeGrade-{{i}}" formControlName="homeGrade">
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="24" fxFlex.sm="49" fxFlex.xs="100">
           <div class="form-group">
             <label for="awayGrade-{{i}}" class="control-label">Voti trasferta</label>
             <input type="number" class="form-control" id="awayGrade-{{i}}" formControlName="awayGrade">
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="24" fxFlex.sm="49" fxFlex.xs="100">
           <div class="form-group">
             <label for="homeScore-{{i}}" class="control-label">Punteggio casa *</label>
             <input type="number" class="form-control" id="homeScore-{{i}}" formControlName="homeScore"
@@ -46,7 +46,7 @@
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="24" fxFlex.sm="49" fxFlex.xs="100">
           <div class="form-group">
             <label for="awayScore-{{i}}" class="control-label">Punteggio trasferta *</label>
             <input type="number" class="form-control" id="awayScore-{{i}}" formControlName="awayScore"
@@ -57,17 +57,19 @@
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="24" fxFlex.sm="49" fxFlex.xs="100">
           <div class="form-group">
             <label for="overtime-{{i}}" class="control-label">Overtime</label>
             <input type="number" class="form-control" id="overtime-{{i}}" formControlName="overtime">
           </div>
         </div>
 
-        <div fxFlex="24" fxFlex.xs="49">
+        <div fxFlex="100">
           <div class="form-group">
-            <label for="completed-{{i}}" class="control-label">Completata</label>
-            <input type="checkbox" class="form-control" id="completed-{{i}}" formControlName="completed">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="completed-{{i}}" formControlName="completed">
+              <label class="custom-control-label" for="completed-{{i}}">Completata</label>
+            </div>
           </div>
         </div>
 
