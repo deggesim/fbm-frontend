@@ -97,7 +97,7 @@ export class ResultsComponent implements OnInit {
       tap((matchComputed) => {
         this.selectedMatch = matchComputed;
       }),
-      switchMap(() => this.leagueService.leagueInfoObservableChain),
+      switchMap(() => this.leagueService.refresh),
       switchMap(() => this.loadLineups(this.selectedMatch))
     ).subscribe((lineups) => {
       this.homeTeamLineup = lineups[0];

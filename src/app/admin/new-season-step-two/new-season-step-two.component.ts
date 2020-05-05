@@ -69,7 +69,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
       }),
       switchMap(() => this.newSeasonService.populate(newLeague)),
       switchMap(() => this.authService.refresh()),
-      switchMap(() => this.leagueService.leagueInfoObservableChain)
+      switchMap(() => this.leagueService.refresh)
     ).subscribe(() => {
       this.router.navigate(['/home']);
     });

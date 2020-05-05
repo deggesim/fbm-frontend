@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
       } else if (this.listaLeghe != null && !isEmpty(this.listaLeghe)) {
         this.leagueService.setSelectedLeague(this.listaLeghe[0]);
       }
-      this.leagueService.leagueInfoObservableChain.subscribe();
+      this.leagueService.refresh.subscribe();
     }
   }
 
@@ -63,13 +63,13 @@ export class HomeComponent implements OnInit {
         const message = 'Login effettuato correttamente';
         this.sharedService.notifica(toastType.success, title, message);
       }),
-      switchMap(() => this.leagueService.leagueInfoObservableChain)
+      switchMap(() => this.leagueService.refresh)
     ).subscribe();
   }
 
   public selectLeague(league: League) {
     this.leagueService.setSelectedLeague(league);
-    this.leagueService.leagueInfoObservableChain.subscribe(() => {
+    this.leagueService.refresh.subscribe(() => {
       switch (this.leagueStatus) {
         case Status.Preseason:
           if (this.authService.isAdmin()) {

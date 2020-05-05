@@ -14,6 +14,7 @@ import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferm
 import { SharedService } from '@app/shared/shared.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { switchMap, tap } from 'rxjs/operators';
+import { Status } from '@app/models/league';
 
 @Component({
   selector: 'app-transaction',
@@ -31,6 +32,7 @@ export class TransactionComponent implements OnInit {
   fantasyRosters: FantasyRoster[];
   fantasyRosterSelected: FantasyRoster;
   statusList = ['EXT', 'COM', 'ITA'];
+  leagueStatus: Status;
 
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
   @ViewChild('popupRilascia', { static: false }) public popupRilascia: PopupConfermaComponent;
@@ -46,6 +48,11 @@ export class TransactionComponent implements OnInit {
     private fantasyTeamService: FantasyTeamService,
   ) {
     this.createForm();
+    this.leagueService.leagueStatusObservable.subscribe(
+      (leagueStatus: Status) => {
+        this.leagueStatus = leagueStatus;
+      }
+    );
   }
 
   ngOnInit() {
@@ -75,6 +82,10 @@ export class TransactionComponent implements OnInit {
         this.form.get('contract').enable();
       }
     });
+  }
+
+  get transactionLabel() {
+    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason ? 'Asta fantamercato' : 'Mercato libero';
   }
 
   selectFantasyTeam(fantasyTeam: FantasyTeam) {

@@ -78,7 +78,7 @@ export class ListComponent implements OnInit {
         this.mostraPopupModifica = false;
         this.matches = undefined;
       }),
-      switchMap(() => this.leagueService.leagueInfoObservableChain),
+      switchMap(() => this.leagueService.refresh),
       switchMap(() => this.roundService.read()),
     ).subscribe((rounds: Round[]) => {
       this.rounds = rounds;

@@ -62,7 +62,7 @@ export class ParametersComponent implements OnInit {
         this.leagueService.setSelectedLeague(league);
       }),
       switchMap(() => this.authService.refresh()),
-      switchMap(() => this.leagueService.leagueInfoObservableChain)
+      switchMap(() => this.leagueService.refresh)
     ).subscribe(() => {
       const title = 'Modifica parametri';
       const message = 'I parametri della lega sono stati modificati con successo';

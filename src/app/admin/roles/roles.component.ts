@@ -60,7 +60,7 @@ export class RolesComponent implements OnInit {
         this.leagueService.setSelectedLeague(league);
       }),
       switchMap(() => this.authService.refresh()),
-      switchMap(() => this.leagueService.leagueInfoObservableChain)
+      switchMap(() => this.leagueService.refresh)
     ).subscribe(() => {
       const title = 'Modifica ruoli';
       const message = 'I ruoli della lega sono stati modificati con successo';

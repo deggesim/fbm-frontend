@@ -48,7 +48,7 @@ export class LeagueService {
     this.$leagueInfo.next(leagueInfo);
   }
 
-  public get leagueInfoObservableChain() {
+  public get refresh() {
     return forkJoin([this.isPreseason(), this.isOffseason(), this.isPostSeason(), this.nextRealFixture()]).pipe(
       tap((values: any[]) => {
         let nextFixture = '';
