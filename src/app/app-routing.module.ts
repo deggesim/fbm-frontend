@@ -8,9 +8,6 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent,
-    data: {
-      breadcrumb: 'Home'
-    }
   },
   {
     path: 'teams',

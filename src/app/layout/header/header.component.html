@@ -96,14 +96,6 @@
 
 <nav aria-label="breadcrumb" class="d-none d-sm-block fixed-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active" *ngFor="let b of breadcrumbs; let i = index">
-      <span *ngIf="i != breadcrumbs.length - 1; else elseLink">
-        <a [routerLink]="[b.url, b.params]" routerLinkActive="selezionato" [routerLinkActiveOptions]="{ exact: true }">{{b.label}}</a>
-      </span>
-      <ng-template #elseLink>
-        <span>{{b.label}}</span>
-      </ng-template>
-    </li>
-    <li class="ml-auto" *ngIf="getSelectedLeague()">{{leagueInfo}}</li>
+    <li class="breadcrumb-item active" *ngIf="getSelectedLeague()">{{leagueInfo}}</li>
   </ol>
 </nav>

@@ -23,9 +23,6 @@ import { ListComponent as UserListComponent } from './users/list/list.component'
 const routes: Routes = [
   {
     path: 'new-season',
-    data: {
-      breadcrumb: 'Nuova stagione'
-    },
     canActivate: [AdminGuard],
     children: [
       {
@@ -35,16 +32,10 @@ const routes: Routes = [
       {
         path: 'step-one',
         component: NewSeasonComponent,
-        data: {
-          breadcrumb: 'Dati lega'
-        },
       },
       {
         path: 'step-two',
         component: NewSeasonStepTwoComponent,
-        data: {
-          breadcrumb: 'Fantasquadre'
-        },
         resolve: {
           users: UsersResolverService
         },
@@ -53,17 +44,11 @@ const routes: Routes = [
   },
   {
     path: 'preseason',
-    data: {
-      breadcrumb: 'Preseason'
-    },
     canActivate: [AdminGuard],
     children: [
       {
         path: 'edit-league',
         component: EditLeagueComponent,
-        data: {
-          breadcrumb: 'Impostazioni'
-        },
         resolve: {
           league: LeagueResolverService,
         },
@@ -71,16 +56,10 @@ const routes: Routes = [
       {
         path: 'parameters',
         component: ParametersComponent,
-        data: {
-          breadcrumb: 'Parametri'
-        },
       },
       {
         path: 'teams',
         component: TeamListComponent,
-        data: {
-          breadcrumb: 'Squadre'
-        },
         resolve: {
           teams: TeamResolverService
         },
@@ -88,16 +67,10 @@ const routes: Routes = [
       {
         path: 'roles',
         component: RolesComponent,
-        data: {
-          breadcrumb: 'Ruoli'
-        },
       },
       {
         path: 'players',
         component: PlayerListComponent,
-        data: {
-          breadcrumb: 'Giocatori'
-        },
         resolve: {
           rosters: RosterResolverService
         },
@@ -106,17 +79,11 @@ const routes: Routes = [
   },
   {
     path: 'league-management',
-    data: {
-      breadcrumb: 'Gestione lega'
-    },
     canActivate: [AdminGuard],
     children: [
       {
         path: 'teams',
         component: TeamListComponent,
-        data: {
-          breadcrumb: 'Squadre'
-        },
         resolve: {
           teams: TeamResolverService
         },
@@ -124,9 +91,6 @@ const routes: Routes = [
       {
         path: 'players',
         component: PlayerListComponent,
-        data: {
-          breadcrumb: 'Giocatori'
-        },
         resolve: {
           rosters: RosterResolverService
         },
@@ -134,9 +98,6 @@ const routes: Routes = [
       {
         path: 'fantasy-teams',
         component: FantasyTeamListComponent,
-        data: {
-          breadcrumb: 'Fantasquadre'
-        },
         resolve: {
           fantasyTeams: FantasyTeamResolverService
         },
@@ -144,9 +105,6 @@ const routes: Routes = [
       {
         path: 'rounds',
         component: RoundsComponent,
-        data: {
-          breadcrumb: 'Gestione turni'
-        },
         resolve: {
           rounds: RoundResolverService,
           fantasyTeams: FantasyTeamResolverService
@@ -155,9 +113,6 @@ const routes: Routes = [
       {
         path: 'real-fixtures',
         component: RealFixtureListComponent,
-        data: {
-          breadcrumb: 'Gestione giornate'
-        },
         resolve: {
           realFixtures: RealFixtureResolverService,
         },
@@ -167,9 +122,6 @@ const routes: Routes = [
   {
     path: 'users',
     component: UserListComponent,
-    data: {
-      breadcrumb: 'Gestione utenti'
-    },
     resolve: {
       users: UsersResolverService
     },

@@ -10,9 +10,6 @@ const routes: Routes = [
   {
     path: 'transactions',
     component: TransactionComponent,
-    data: {
-      breadcrumb: 'Mercato libero'
-    },
     resolve: {
       fantasyTeams: FantasyTeamResolverService,
       rosters: FreePlayersResolverService,
@@ -22,9 +19,6 @@ const routes: Routes = [
   {
     path: 'trades',
     component: TradeComponent,
-    data: {
-      breadcrumb: 'Scambi'
-    },
     canActivate: [AuthGuard],
   }
 ];

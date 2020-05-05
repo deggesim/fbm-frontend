@@ -14,9 +14,6 @@ const routes: Routes = [
   {
     path: 'calendar',
     component: CalendarListComponent,
-    data: {
-      breadcrumb: 'Calendario'
-    },
     resolve: {
       rounds: RoundResolverService,
     },
@@ -25,9 +22,6 @@ const routes: Routes = [
   {
     path: 'standings',
     component: StandingsComponent,
-    data: {
-      breadcrumb: 'Classifiche'
-    },
     resolve: {
       rounds: RoundResolverService,
     },
@@ -36,9 +30,6 @@ const routes: Routes = [
   {
     path: 'lineups',
     component: LineupsComponent,
-    data: {
-      breadcrumb: 'Formazioni'
-    },
     resolve: {
       rounds: RoundResolverService,
     },
@@ -47,9 +38,6 @@ const routes: Routes = [
   {
     path: 'performances',
     component: PerformancesComponent,
-    data: {
-      breadcrumb: 'Valutazioni'
-    },
     resolve: {
       teams: TeamResolverService,
       realFixtures: RealFixtureResolverService
@@ -59,9 +47,6 @@ const routes: Routes = [
   {
     path: 'results',
     component: ResultsComponent,
-    data: {
-      breadcrumb: 'Risultati'
-    },
     resolve: {
       rounds: RoundResolverService,
     },
