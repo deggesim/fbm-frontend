@@ -1,37 +1,42 @@
-<div class="table-responsive" *ngIf="fantasyTeams && fantasyTeams.length > 0; else empty">
-  <table class="table table-hover">
-    <thead class="thead-dark">
-      <tr>
-        <th>Nome</th>
-        <th>Bilancio</th>
-        <th>Crediti spesi</th>
-        <th># Contratti</th>
-        <th># Giocatori</th>
-        <th>Visti spesi</th>
-        <th>Punti di penalità</th>
-        <th>Malus crediti</th>
-        <!-- <th>Azioni</th> -->
-      </tr>
-    </thead>
+<fieldset class="fieldset">
+  <legend class="legend">
+    <fa-icon icon="user-shield" class="icon-padding"></fa-icon>Fantasquadre
+  </legend>
+  <div class="table-responsive" *ngIf="fantasyTeams && fantasyTeams.length > 0; else empty">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Nome</th>
+          <th>Bilancio</th>
+          <th>Crediti spesi</th>
+          <th># Contratti</th>
+          <th># Giocatori</th>
+          <th>Visti spesi</th>
+          <th>Punti di penalità</th>
+          <th>Malus crediti</th>
+          <!-- <th>Azioni</th> -->
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr *ngFor="let fantasyTeam of fantasyTeams" class="manina table-secondary" (click)="modifica(fantasyTeam)">
-        <td>{{fantasyTeam.name}}</td>
-        <td>{{fantasyTeam.initialBalance}}</td>
-        <td>{{fantasyTeam.outgo}}</td>
-        <td>{{fantasyTeam.totalContracts}}</td>
-        <td>{{fantasyTeam.playersInRoster}}</td>
-        <td>{{fantasyTeam.extraPlayers}}</td>
-        <td>{{fantasyTeam.pointsPenalty}}</td>
-        <td>{{fantasyTeam.balancePenalty}}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+      <tbody>
+        <tr *ngFor="let fantasyTeam of fantasyTeams" class="manina table-secondary" (click)="modifica(fantasyTeam)">
+          <td>{{fantasyTeam.name}}</td>
+          <td>{{fantasyTeam.initialBalance}}</td>
+          <td>{{fantasyTeam.outgo}}</td>
+          <td>{{fantasyTeam.totalContracts}}</td>
+          <td>{{fantasyTeam.playersInRoster}}</td>
+          <td>{{fantasyTeam.extraPlayers}}</td>
+          <td>{{fantasyTeam.pointsPenalty}}</td>
+          <td>{{fantasyTeam.balancePenalty}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-<ng-template #empty>
-  <h4>Nessuna fantasquadra presente</h4>
-</ng-template>
+  <ng-template #empty>
+    <h4 class="padding">Nessuna fantasquadra presente</h4>
+  </ng-template>
+</fieldset>
 
 <!-- popup modifica fantasquadra -->
 <div *ngIf="mostraPopupModifica" class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: true}" tabindex="-1" role="dialog" aria-hidden="true">

@@ -2,7 +2,7 @@
 
   <fieldset class="fieldset">
     <legend class="legend">
-      <fa-icon icon="tools" class="icon-padding"></fa-icon>Dati lega
+      <fa-icon icon="tools" class="icon-padding"></fa-icon>Impostazioni lega
     </legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
 
@@ -30,8 +30,7 @@
       <div fxFlex="69" fxFlex.xs="49">
         <div class="form-group" [ngClass]="{'is-invalid': form.get('regularSeasonFormat').invalid && form.get('regularSeasonFormat').dirty}">
           <label for="regularSeasonFormat" class="control-label">Stagione regolare *</label>
-          <ng-select id="regularSeasonFormat" name="regularSeasonFormat" [items]="regularSeasonFormatList" bindLabel="value.label" formControlName="regularSeasonFormat"
-            clearAllText="Elimina">
+          <ng-select id="regularSeasonFormat" name="regularSeasonFormat" [items]="regularSeasonFormatList" bindLabel="value.label" formControlName="regularSeasonFormat" clearAllText="Elimina">
           </ng-select>
           <div *ngIf="form.get('regularSeasonFormat').hasError('required') && form.get('regularSeasonFormat').dirty" class="ng-select-invalid-feedback">
             Il campo Stagione regolare è obbligatorio

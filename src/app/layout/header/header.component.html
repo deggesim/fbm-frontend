@@ -12,39 +12,63 @@
       <!-- SQUADRE -->
       <li class="nav-item dropdown" dropdown *ngIf="leagueSelected()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="shield-alt" class="icon-padding"></fa-icon>Squadre
+          <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true;">{{transactionLabel}}</a>
-          <a class="dropdown-item" routerLink="/teams/trades" routerLinkActive="active" (click)="isCollapsed = true;">Scambi</a>
+          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>{{transactionLabel}}
+          </a>
+          <a class="dropdown-item" routerLink="/teams/trades" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="exchange-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Scambi
+          </a>
         </ul>
       </li>
 
       <!-- COMPETIZIONI -->
       <li class="nav-item dropdown" dropdown *ngIf="leagueSelected() && !isPreseason()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="calendar-alt" class="icon-padding"></fa-icon>Competizioni
+          <fa-icon icon="calendar-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Competizioni
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/competitions/calendar" routerLinkActive="active" (click)="isCollapsed = true;">Calendario</a>
-          <a class="dropdown-item" routerLink="/competitions/standings" routerLinkActive="active" (click)="isCollapsed = true;">Classifiche</a>
-          <a class="dropdown-item" routerLink="/competitions/lineups" routerLinkActive="active" (click)="isCollapsed = true;">Formazioni</a>
-          <a class="dropdown-item" routerLink="/competitions/performances" routerLinkActive="active" (click)="isCollapsed = true;">Valutazioni e pagelle</a>
-          <a class="dropdown-item" routerLink="/competitions/results" routerLinkActive="active" (click)="isCollapsed = true;">Risultati</a>
+          <a class="dropdown-item" routerLink="/competitions/calendar" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="list-ul" [fixedWidth]="true" class="icon-padding"></fa-icon>Calendario
+          </a>
+          <a class="dropdown-item" routerLink="/competitions/standings" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="list-ol" [fixedWidth]="true" class="icon-padding"></fa-icon>Classifiche
+          </a>
+          <a class="dropdown-item" routerLink="/competitions/lineups" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="address-card" [fixedWidth]="true" class="icon-padding"></fa-icon>Formazioni
+          </a>
+          <a class="dropdown-item" routerLink="/competitions/performances" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="pencil-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Valutazioni e pagelle
+          </a>
+          <a class="dropdown-item" routerLink="/competitions/results" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="poll-h" [fixedWidth]="true" class="icon-padding"></fa-icon>Risultati
+          </a>
         </ul>
       </li>
 
       <!-- GESTIONE LEGA -->
       <li class="nav-item dropdown" dropdown *ngIf="isAdmin() && leagueSelected()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="cogs" class="icon-padding"></fa-icon>Gestione lega
+          <fa-icon icon="cogs" [fixedWidth]="true" class="icon-padding"></fa-icon>Gestione lega
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/admin/league-management/teams" routerLinkActive="active" (click)="isCollapsed = true;" *ngIf="!isPreseason()">Squadre</a>
-          <a class="dropdown-item" routerLink="/admin/league-management/players" routerLinkActive="active" (click)="isCollapsed = true;" *ngIf="!isPreseason()">Giocatori</a>
-          <a class="dropdown-item" routerLink="/admin/league-management/fantasy-teams" routerLinkActive="active" (click)="isCollapsed = true;">Fantasquadre</a>
-          <a class="dropdown-item" routerLink="/admin/league-management/rounds" routerLinkActive="active" (click)="isCollapsed = true;">Gestione turni</a>
-          <a class="dropdown-item" routerLink="/admin/league-management/real-fixtures" routerLinkActive="active" (click)="isCollapsed = true;">Gestione giornate</a>
+          <a class="dropdown-item" routerLink="/admin/league-management/teams" routerLinkActive="active" (click)="isCollapsed = true;" *ngIf="!isPreseason()">
+            <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
+          </a>
+          <a class="dropdown-item" routerLink="/admin/league-management/players" routerLinkActive="active" (click)="isCollapsed = true;" *ngIf="!isPreseason()">
+            <fa-icon icon="id-badge" [fixedWidth]="true" class="icon-padding"></fa-icon>Giocatori
+          </a>
+          <a class="dropdown-item" routerLink="/admin/league-management/fantasy-teams" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="user-shield" [fixedWidth]="true" class="icon-padding"></fa-icon>Fantasquadre
+          </a>
+          <a class="dropdown-item" routerLink="/admin/league-management/rounds" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="clipboard-list" [fixedWidth]="true" class="icon-padding"></fa-icon>Gestione turni
+          </a>
+          <a class="dropdown-item" routerLink="/admin/league-management/real-fixtures" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="list" [fixedWidth]="true" class="icon-padding"></fa-icon>Gestione giornate
+          </a>
           <!-- <a class="dropdown-item" (click)="isCollapsed = true;">Gestione giornate</a> -->
         </ul>
       </li>
@@ -52,17 +76,29 @@
       <!-- PRESEASON -->
       <li class="nav-item dropdown" dropdown *ngIf="isAdmin() && leagueSelected() && isPreseason()">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
-          <fa-icon icon="tools" class="icon-padding"></fa-icon>Preseason
+          <fa-icon icon="tools" [fixedWidth]="true" class="icon-padding"></fa-icon>Preseason
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/admin/preseason/edit-league" routerLinkActive="active" (click)="isCollapsed = true;">Impostazioni</a>
-          <a class="dropdown-item" routerLink="/admin/preseason/parameters" routerLinkActive="active" (click)="isCollapsed = true;">Parametri</a>
+          <a class="dropdown-item" routerLink="/admin/preseason/edit-league" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="tools" [fixedWidth]="true" class="icon-padding"></fa-icon>Impostazioni lega
+          </a>
+          <a class="dropdown-item" routerLink="/admin/preseason/parameters" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="screwdriver" [fixedWidth]="true" class="icon-padding"></fa-icon>Parametri
+          </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" routerLink="/admin/preseason/teams" routerLinkActive="active" (click)="isCollapsed = true;">Squadre</a>
-          <a class="dropdown-item" routerLink="/admin/preseason/roles" (click)="isCollapsed = true;">Ruoli</a>
-          <a class="dropdown-item" routerLink="/admin/preseason/players" routerLinkActive="active" (click)="isCollapsed = true;">Giocatori</a>
+          <a class="dropdown-item" routerLink="/admin/preseason/teams" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
+          </a>
+          <a class="dropdown-item" routerLink="/admin/preseason/roles" (click)="isCollapsed = true;">
+            <fa-icon icon="map-marked" [fixedWidth]="true" class="icon-padding"></fa-icon>Ruoli
+          </a>
+          <a class="dropdown-item" routerLink="/admin/preseason/players" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="id-badge" [fixedWidth]="true" class="icon-padding"></fa-icon>Giocatori
+          </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item manina" (click)="isCollapsed = true;completePreseason.emit()">Completa preseason</a>
+          <a class="dropdown-item manina" (click)="isCollapsed = true;completePreseason.emit()">
+            <fa-icon icon="exclamation-triangle" [fixedWidth]="true" class="icon-padding"></fa-icon>Completa preseason
+          </a>
         </ul>
       </li>
 
@@ -72,9 +108,13 @@
           <fa-icon icon="user-cog" class="icon-padding"></fa-icon>Admin
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/admin/new-season" routerLinkActive="active" (click)="isCollapsed = true;">Nuova Stagione</a>
+          <a class="dropdown-item" routerLink="/admin/new-season" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="info-circle" [fixedWidth]="true" class="icon-padding"></fa-icon>Nuova stagione
+          </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" routerLink="/admin/users" routerLinkActive="active" (click)="isCollapsed = true;">Gestione utenti</a>
+          <a class="dropdown-item" routerLink="/admin/users" routerLinkActive="active" (click)="isCollapsed = true;">
+            <fa-icon icon="users" [fixedWidth]="true" class="icon-padding"></fa-icon>Gestione utenti
+          </a>
         </ul>
       </li>
     </ul>

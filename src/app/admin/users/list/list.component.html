@@ -5,41 +5,47 @@
   <fa-icon icon="upload" class="my-float"></fa-icon>
 </div>
 
-<div class="table-responsive" *ngIf="users && users.length > 0; else empty">
-  <table class="table table-hover">
-    <thead class="thead-dark">
-      <tr>
-        <th>Nome</th>
-        <th>Email</th>
-        <th>Ruolo</th>
-        <th>Azioni</th>
-      </tr>
-    </thead>
+<fieldset class="fieldset">
+  <legend class="legend">
+    <fa-icon icon="users" class="icon-padding"></fa-icon>Gestione utenti
+  </legend>
 
-    <tbody>
-      <tr *ngFor="let user of users" class="table-secondary">
-        <td>{{user.name}}</td>
-        <td>{{user.email}}</td>
-        <td>
-          <app-user-role-icon [role]="user.role"></app-user-role-icon>
-        </td>
+  <div class="table-responsive" *ngIf="users && users.length > 0; else empty">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Ruolo</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
 
-        <td class="text-nowrap">
-          <button type="button" class="btn btn-warning" (click)="modifica(user)" tooltip="Modifica" placement="top">
-            <fa-icon icon="pencil-alt"></fa-icon>
-          </button>&nbsp;
-          <button type="button" class="btn btn-danger" (click)="apriPopupElimina(user)" tooltip="Elimina" placement="top">
-            <fa-icon icon="trash"></fa-icon>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+      <tbody>
+        <tr *ngFor="let user of users" class="table-secondary">
+          <td>{{user.name}}</td>
+          <td>{{user.email}}</td>
+          <td>
+            <app-user-role-icon [role]="user.role"></app-user-role-icon>
+          </td>
 
-<ng-template #empty>
-  <h4>Nessun utente presente</h4>
-</ng-template>
+          <td class="text-nowrap">
+            <button type="button" class="btn btn-warning" (click)="modifica(user)" tooltip="Modifica" placement="top">
+              <fa-icon icon="pencil-alt"></fa-icon>
+            </button>&nbsp;
+            <button type="button" class="btn btn-danger" (click)="apriPopupElimina(user)" tooltip="Elimina" placement="top">
+              <fa-icon icon="trash"></fa-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #empty>
+    <h4 class="padding">Nessun utente presente</h4>
+  </ng-template>
+</fieldset>
+
 
 <!-- popup elimina -->
 <app-popup-conferma #popupConfermaElimina titolo="Elimina utente" btnConferma="Elimina" btnAnnulla="Annulla" (conferma)="confermaElimina()" (annulla)="popupConfermaElimina.chiudiModale()">

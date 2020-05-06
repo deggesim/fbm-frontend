@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend">
-      <fa-icon icon="list-ol" class="icon-padding"></fa-icon>Calendario
+      <fa-icon icon="list-ul" class="icon-padding"></fa-icon>Calendario
     </legend>
 
     <div class="form-group">
@@ -14,7 +14,7 @@
         <div accordion-heading>
           <span>{{fixture.name}}</span>
           <span class="fa-pull-right">
-            <button type="button" class="btn btn-warning" (click)="modifica(fixture, $event)" tooltip="Modifica" placement="top" *ngIf="fixture.matches && fixture.matches.length > 0">
+            <button type="button" class="btn btn-warning" (click)="modifica(fixture, $event)" tooltip="Modifica" placement="top" *ngIf="fixture.matches && fixture.matches.length > 0 && isAdmin()">
               <fa-icon icon="pencil-alt"></fa-icon>
             </button>
           </span>
