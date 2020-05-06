@@ -10,6 +10,8 @@ import { RoundService } from '@app/services/round.service';
 import { toastType } from '@app/shared/globals';
 import { SharedService } from '@app/shared/shared.service';
 import { switchMap, tap } from 'rxjs/operators';
+import { AuthService } from '@app/services/auth.service';
+import { User } from '@app/models/user';
 
 @Component({
   selector: 'app-calendar-list',
@@ -19,6 +21,7 @@ import { switchMap, tap } from 'rxjs/operators';
 export class ListComponent implements OnInit {
 
   form: FormGroup;
+  user: User;
   rounds: Round[];
   selectedRound: Round;
   selectedFixture: Fixture;
@@ -28,12 +31,18 @@ export class ListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private authService: AuthService,
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private roundService: RoundService,
     private matchService: MatchService,
   ) {
     this.createForm();
+    this.authService.userObservable.subscribe(
+      (user: User) => {
+        this.user = user;
+      }
+    );
   }
 
   ngOnInit() {
@@ -45,15 +54,19 @@ export class ListComponent implements OnInit {
     );
   }
 
+  createForm() {
+    this.form = this.fb.group({
+      round: [undefined, Validators.required],
+    });
+  }
+
   onChange(round: Round) {
     this.selectedRound = round;
     this.selectedFixture = null;
   }
 
-  createForm() {
-    this.form = this.fb.group({
-      round: [undefined, Validators.required],
-    });
+  public isAdmin() {
+    return (this.user != null) && this.authService.isAdmin();
   }
 
   reset() {
