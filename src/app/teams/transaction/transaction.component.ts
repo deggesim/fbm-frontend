@@ -68,7 +68,7 @@ export class TransactionComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       fantasyTeam: [undefined, Validators.required],
-      roster: [undefined, Validators.required],
+      roster: [undefined],
       status: [undefined, Validators.required],
       draft: [false, Validators.required],
       contract: [1, Validators.required],
@@ -78,8 +78,11 @@ export class TransactionComponent implements OnInit {
     this.form.get('draft').valueChanges.subscribe((draft: boolean) => {
       if (draft) {
         this.form.get('contract').disable();
+        this.form.get('yearContract').disable();
+        this.form.get('yearContract').setValue(1);
       } else {
         this.form.get('contract').enable();
+        this.form.get('yearContract').enable();
       }
     });
   }
@@ -119,7 +122,11 @@ export class TransactionComponent implements OnInit {
       const fantasyRoster: FantasyRoster = {
         _id: this.fantasyRosterSelected._id,
         roster: this.fantasyRosterSelected.roster,
-        ...this.form.value,
+        fantasyTeam: this.fantasyRosterSelected.fantasyTeam,
+        status: this.form.value.status,
+        draft: this.form.value.draft,
+        contract: this.form.value.contract,
+        yearContract: this.form.value.yearContract,
         realFixture: this.fantasyRosterSelected.realFixture
       };
       this.fantasyRosterService.update(fantasyRoster).pipe(
@@ -143,7 +150,6 @@ export class TransactionComponent implements OnInit {
       });
     } else {
       const fantasyRoster: FantasyRoster = {
-        roster: this.rosterSelected,
         ...this.form.value,
       };
       this.fantasyRosterService.create(fantasyRoster).pipe(
