@@ -19,6 +19,9 @@ const routes: Routes = [
   {
     path: 'trades',
     component: TradeComponent,
+    resolve: {
+      fantasyTeams: FantasyTeamResolverService,
+    },
     canActivate: [AuthGuard],
   }
 ];
