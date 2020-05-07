@@ -21,8 +21,7 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="outgo" class="control-label">Crediti spesi</label>
-        <input type="number" class="form-control" id="outgo" name="outgo" formControlName="outgo"
-          [ngClass]="{'is-invalid': form.get('outgo').invalid && form.get('outgo').dirty}">
+        <input type="number" class="form-control" id="outgo" name="outgo" formControlName="outgo" [ngClass]="{'is-invalid': form.get('outgo').invalid && form.get('outgo').dirty}">
         <app-error-message [form-control]="form.get('outgo')" name="Crediti spesi"></app-error-message>
       </div>
     </div>
@@ -75,8 +74,7 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="owners" class="control-label">Proprietari</label>
-        <ng-select id="owners" [items]="users" [multiple]="true" [trackByFn]="trackUserByFn"
-          [loading]="usersLoading" typeToSearchText="Inserisci almeno due caratteri" bindLabel="email"
+        <ng-select id="owners" [items]="users" [multiple]="true" [trackByFn]="trackUserByFn" [loading]="usersLoading" typeToSearchText="Inserisci almeno due caratteri" bindLabel="email"
           formControlName="owners" clearAllText="Elimina">
         </ng-select>
       </div>
@@ -85,7 +83,7 @@
   </div>
 
   <div class="text-center">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>&nbsp;
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
     <button type="button" class="btn btn-primary" (click)="annulla.emit()">Annulla</button>
   </div>
 

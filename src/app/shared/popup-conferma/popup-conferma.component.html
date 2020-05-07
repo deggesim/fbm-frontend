@@ -1,11 +1,10 @@
-<div class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false}" tabindex="-1" role="dialog"
-  aria-hidden="true">
+<div class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false}" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-body">
         <h4 class="text-justify titolo">{{titolo}}</h4>
         <div class="text-center">
-          <button class="btn btn-success" (click)="conferma.emit()">{{btnConferma}}</button>&nbsp;
+          <button class="btn btn-success" (click)="conferma.emit()">{{btnConferma}}</button>
           <button class="btn btn-danger" (click)="annulla.emit()">{{btnAnnulla}}</button>
         </div>
       </div>

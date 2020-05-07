@@ -92,7 +92,7 @@
             <app-error-message [form-control]="form.get('lineup')" name="Formazione"></app-error-message>
           </div>
           <div class="padding text-center">
-            <button type="button" class="btn btn-primary" [disabled]="form.invalid || disableUpdate" (click)="openModalBenchOrder()">Ordine panchina</button>&nbsp;
+            <button type="button" class="btn btn-primary" [disabled]="form.invalid || disableUpdate" (click)="openModalBenchOrder()">Ordine panchina</button>
           </div>
         </div>
 
@@ -106,11 +106,11 @@
   </fieldset>
 
   <div class="text-center padding">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || disableUpdate">Salva</button>&nbsp;
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="ripristina()">Ripristina</button>&nbsp;
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="svuota()">Svuota</button>&nbsp;
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="importa()">Importa</button>&nbsp;
-    <button type="button" class="btn btn-primary" (click)="inviaEmail()">Invia mail</button>&nbsp;
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || disableUpdate">Salva</button>
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="ripristina()">Ripristina</button>
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="svuota()">Svuota</button>
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="importa()">Importa</button>
+    <button type="button" class="btn btn-primary" (click)="inviaEmail()">Invia mail</button>
   </div>
 
 </form>
@@ -134,7 +134,7 @@
               placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper"></bs-sortable>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Conferma</button>&nbsp;
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Conferma</button>
             <button type="button" class="btn btn-primary" (click)="annulla()">Annulla</button>
           </div>
         </form>
