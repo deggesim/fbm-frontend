@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { User } from '@app/models/user';
 import { UserService } from '@app/services/user.service';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class UsersResolverService implements Resolve<User[]> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): User[] | Observable<User[]> | Promise<User[]> {
-    return this.userService.read();
+    return this.userService.read().pipe(
+      tap((users: User[]) => users.sort((a, b) => a.name.localeCompare(b.name)))
+    );
   }
 
 }

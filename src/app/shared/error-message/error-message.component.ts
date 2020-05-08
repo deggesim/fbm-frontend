@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-error-message',
@@ -8,6 +8,8 @@ import { FormControl } from '@angular/forms';
 })
 export class ErrorMessageComponent implements OnInit {
 
+  // tslint:disable-next-line: no-input-rename
+  @Input('form-group') fg: FormGroup;
   // tslint:disable-next-line: no-input-rename
   @Input('form-control') formControl: FormControl;
   // tslint:disable-next-line: no-input-rename

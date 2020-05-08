@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FantasyRoster } from '@app/models/fantasy-roster';
+import { FantasyRoster, sort } from '@app/models/fantasy-roster';
+import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,7 +16,10 @@ export class FantasyRosterService {
   ) { }
 
   public read(fantasyTeamId: string, realFixtureId: string) {
-    return this.http.get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}/real-fixture/${realFixtureId}`);
+    return this.http.get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}/real-fixture/${realFixtureId}`)
+      .pipe(
+        tap((fantasyRosters: FantasyRoster[]) => fantasyRosters.sort(sort))
+      );
   }
 
   public create(fantasyRoster: FantasyRoster) {

@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { User } from '@app/models/user';
 import { UserService } from '@app/services/user.service';
+import { atLeastOne } from '@app/util/validations';
 
 @Component({
   selector: 'app-fantasy-team-edit',
@@ -74,17 +75,8 @@ export class EditComponent implements OnInit, OnChanges {
       extraPlayers: [undefined, [Validators.required, Validators.min(0)]],
       pointsPenalty: [undefined, [Validators.required, Validators.min(0)]],
       balancePenalty: [undefined, [Validators.required, Validators.min(0)]],
-      owners: [undefined, this.checkLength()],
+      owners: [undefined, atLeastOne],
     });
-  }
-
-  checkLength(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      if (this.form && this.form.value.owners) {
-        const wrongValue = control.value.length < 1;
-        return wrongValue ? { wrongLength: { value: control.value.length } } : null;
-      }
-    };
   }
 
   salvaEvent(): void {

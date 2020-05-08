@@ -7,6 +7,11 @@ import { RealFixture } from '@app/models/real-fixture';
 import { FantasyRosterService } from '@app/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/services/fantasy-team.service';
 import { LeagueService } from '@app/services/league.service';
+import { toastType } from '@app/shared/globals';
+import { SharedService } from '@app/shared/shared.service';
+import { fantasyTeamMustBeDifferent } from '@app/util/validations';
+import { forkJoin, Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-trade',
@@ -22,9 +27,9 @@ export class TradeComponent implements OnInit {
   fantasyTeam1Selected: FantasyTeam;
   fantasyTeam2Selected: FantasyTeam;
   fantasyRosters1: FantasyRoster[];
-  fantasyRoster1Selected: FantasyRoster;
+  fantasyRosters1Selected: FantasyRoster[] = [];
   fantasyRosters2: FantasyRoster[];
-  fantasyRoster2Selected: FantasyRoster;
+  fantasyRosters2Selected: FantasyRoster[] = [];
 
   mostraPopupTradeBlock: boolean;
 
@@ -32,6 +37,7 @@ export class TradeComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private leagueService: LeagueService,
+    private sharedService: SharedService,
     private fantasyRosterService: FantasyRosterService,
     private fantasyTeamService: FantasyTeamService,
   ) {
@@ -53,11 +59,11 @@ export class TradeComponent implements OnInit {
   createForm() {
     this.form = this.fb.group({
       fantasyTeam1: [undefined, Validators.required],
-      fantasyTeam2: [undefined, Validators.required],
+      fantasyTeam2: [undefined, [Validators.required]],
       outPlayers: [[], Validators.required],
       inPlayers: [[], Validators.required],
-      buyout: [undefined, Validators.required],
-    });
+      buyout: [undefined],
+    }, { validator: fantasyTeamMustBeDifferent });
   }
 
   selectFantasyTeam1(fantasyTeam: FantasyTeam) {
@@ -67,6 +73,8 @@ export class TradeComponent implements OnInit {
         this.fantasyRosters1 = fantasyRosters;
       });
     }
+    console.log(this.form.controls.fantasyTeam1);
+
   }
 
   selectFantasyTeam2(fantasyTeam: FantasyTeam) {
@@ -79,8 +87,7 @@ export class TradeComponent implements OnInit {
   }
 
   player1Choosen(fantasyRoster: FantasyRoster): boolean {
-    const fantasyRosters: FantasyRoster[] = this.form.get('outPlayers').value;
-    const found = fantasyRosters.find((fr: FantasyRoster) => fr._id === fantasyRoster._id);
+    const found = this.fantasyRosters1Selected.find((fr: FantasyRoster) => fr._id === fantasyRoster._id);
     return found != null;
   }
 
@@ -90,20 +97,28 @@ export class TradeComponent implements OnInit {
     return found != null;
   }
 
-  addOutPlayerToTradeBlock(fantasyRoster: FantasyRoster) {
-    const fantasyRosters: FantasyRoster[] = this.form.get('outPlayers').value;
-    fantasyRosters.push(fantasyRoster);
+  switchOutPlayerToTradeBlock(fantasyRoster: FantasyRoster) {
+    if (this.player1Choosen(fantasyRoster)) {
+      const indexToRemove = this.fantasyRosters1Selected.findIndex((fr) => fr._id === fantasyRoster._id);
+      this.fantasyRosters1Selected.splice(indexToRemove, 1);
+    } else {
+      this.fantasyRosters1Selected.push(fantasyRoster);
+    }
+    this.form.get('outPlayers').setValue(this.fantasyRosters1Selected);
   }
 
-  addInPlayerToTradeBlock(fantasyRoster: FantasyRoster) {
-    const fantasyRosters: FantasyRoster[] = this.form.get('inPlayers').value;
-    fantasyRosters.push(fantasyRoster);
+  switchInPlayerToTradeBlock(fantasyRoster: FantasyRoster) {
+    if (this.player2Choosen(fantasyRoster)) {
+      const indexToRemove = this.fantasyRosters2Selected.findIndex((fr) => fr._id === fantasyRoster._id);
+      this.fantasyRosters2Selected.splice(indexToRemove, 1);
+    } else {
+      this.fantasyRosters2Selected.push(fantasyRoster);
+    }
+    this.form.get('inPlayers').setValue(this.fantasyRosters2Selected);
   }
 
   abilitaRiepilogo() {
-    const outPlayers: FantasyRoster[] = this.form.get('outPlayers').value;
-    const inPlayers: FantasyRoster[] = this.form.get('inPlayers').value;
-    return outPlayers.concat(inPlayers).length > 0;
+    return this.fantasyRosters1Selected.length > 0;
   }
 
   riepilogo() {
@@ -112,17 +127,44 @@ export class TradeComponent implements OnInit {
 
   salva() {
     console.log('salva');
-    const outPlayers: FantasyRoster[] = this.form.get('outPlayers').value;
-    const inPlayers: FantasyRoster[] = this.form.get('inPlayers').value;
-    // for (const fr of outPlayers) {
+    for (const fr of this.fantasyRosters1Selected) {
+      fr.fantasyTeam = this.fantasyTeam2Selected;
+    }
+    for (const fr of this.fantasyRosters2Selected) {
+      fr.fantasyTeam = this.fantasyTeam1Selected;
+    }
+    this.fantasyTeam1Selected.outgo -= this.form.value.buyout;
+    this.fantasyTeam2Selected.outgo += this.form.value.buyout;
 
-    // }
+    const allTradedPlayers = this.fantasyRosters1Selected.concat(this.fantasyRosters2Selected);
+    const allTradedPlayers$ = allTradedPlayers.map((fr: FantasyRoster) => this.fantasyRosterService.update(fr));
+    const all$: Observable<any>[] = []
+      .concat(allTradedPlayers$)
+      .concat(this.fantasyTeamService.update(this.fantasyTeam1Selected), this.fantasyTeamService.update(this.fantasyTeam2Selected));
+
+    forkJoin(all$).pipe(
+      switchMap(() => this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
+      tap((fantasyRosters: FantasyRoster[]) => {
+        this.fantasyRosters1 = fantasyRosters;
+      }),
+      switchMap(() => this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
+      tap((fantasyRosters: FantasyRoster[]) => {
+        this.fantasyRosters2 = fantasyRosters;
+      }),
+    ).subscribe(() => {
+      const title = 'Scambio completato';
+      const message = 'I giocatori sono stati scambiati con successo';
+      this.sharedService.notifica(toastType.success, title, message);
+    });
+
     this.mostraPopupTradeBlock = false;
     this.form.patchValue({
       outPlayers: [],
       inPlayers: [],
       buyout: undefined
     });
+    this.fantasyRosters1Selected = [];
+    this.fantasyRosters2Selected = [];
     this.form.markAsPristine();
   }
 
@@ -137,6 +179,8 @@ export class TradeComponent implements OnInit {
       inPlayers: [],
       buyout: undefined
     });
+    this.fantasyRosters1Selected = [];
+    this.fantasyRosters2Selected = [];
     this.form.markAsPristine();
   }
 }
