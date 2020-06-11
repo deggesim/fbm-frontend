@@ -4,6 +4,9 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~bootswatch/dist/darkly/bootswatch';
 
+// Fix for fonts
+@import 'styles/fonts';
+
 html {
   font-size: 14px;
 }
