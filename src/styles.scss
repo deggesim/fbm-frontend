@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import 'styles/variables';
-@import '../node_modules/bootstrap/scss/bootstrap';
-@import 'styles/bootswatch';
+@import '~bootswatch/dist/darkly/variables';
+@import '~bootstrap/scss/bootstrap';
+@import '~bootswatch/dist/darkly/bootswatch';
 
 html {
   font-size: 14px;
