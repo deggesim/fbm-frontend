@@ -6,7 +6,7 @@ describe('RealFixtureService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: RealFixtureService = TestBed.get(RealFixtureService);
+    const service: RealFixtureService = TestBed.inject(RealFixtureService);
     expect(service).toBeTruthy();
   });
 });

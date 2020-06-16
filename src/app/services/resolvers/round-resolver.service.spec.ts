@@ -6,7 +6,7 @@ describe('RoundResolverService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: RoundResolverService = TestBed.get(RoundResolverService);
+    const service: RoundResolverService = TestBed.inject(RoundResolverService);
     expect(service).toBeTruthy();
   });
 });

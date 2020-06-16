@@ -6,7 +6,7 @@ describe('NewSeasonService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: NewSeasonService = TestBed.get(NewSeasonService);
+    const service: NewSeasonService = TestBed.inject(NewSeasonService);
     expect(service).toBeTruthy();
   });
 });
