@@ -30,12 +30,12 @@
       <label class="form-check-label" for="lineup">Solo giocatori schierati</label>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="74" fxFlex.xs="49" class="form-group">
+    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+      <div fxFlex="74" fxFlex.xs="49">
         <input type="text" class="form-control" id="url" formControlName="url" placeholder="Url valutazioni">
       </div>
 
-      <div fxFlex="26" fxFlex.xs="49" class="form-group">
+      <div fxFlex="26" fxFlex.xs="49">
         <button type="button" class="btn btn-primary" [disabled]="form.get('url').pristine || form.get('url').invalid || selectedTeam == null || selectedRealFixture == null"
           (click)="retrievePerformances()">Recupero valutazioni</button>
       </div>
