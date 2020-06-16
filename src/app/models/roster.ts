@@ -4,9 +4,9 @@ import { RealFixture } from './real-fixture';
 import { Team } from './team';
 
 export interface Roster {
-    _id?: string;
-    player: Player;
-    team: Team;
-    realFixture?: RealFixture;
-    fantasyRoster?: FantasyRoster;
+  _id?: string;
+  player: Player;
+  team: Team;
+  realFixture?: RealFixture;
+  fantasyRoster?: FantasyRoster;
 }

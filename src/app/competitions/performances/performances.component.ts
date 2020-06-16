@@ -53,7 +53,16 @@ export class PerformancesComponent implements OnInit {
     });
 
     this.form.get('filter').valueChanges.subscribe((value: number) => {
-      console.log(value);
+      switch (value) {
+        case 1:
+          // call backend to filter
+          break;
+        case 2:
+          // call backend to filter
+          break;
+        default:
+          break;
+      }
     });
 
   }
