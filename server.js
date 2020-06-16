@@ -11,6 +11,5 @@ app.use(serve('dist/fbm-frontend'));
 app.use(async (ctx) => {
   await send(ctx, 'dist/fbm-frontend/index.html');
 });
-console.log('process.env.PORT', process.env.PORT);
 
 app.listen(process.env.PORT || 5000);
