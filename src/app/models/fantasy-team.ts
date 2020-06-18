@@ -12,7 +12,6 @@ export interface FantasyTeam {
   extraPlayers?: number;
   pointsPenalty?: number;
   balancePenalty?: number;
-  fantasyRosters?: FantasyRoster[];
-  lineups?: Lineup[];
   owners: User[];
+  fantasyRosters?: FantasyRoster[];
 }

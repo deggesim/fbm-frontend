@@ -8,6 +8,7 @@ export interface Player {
   height: number;
   weight: number;
   role: string;
+  performances?: Performance[];
 }
 
 export enum Role {
