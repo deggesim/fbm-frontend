@@ -53,16 +53,7 @@ export class PerformancesComponent implements OnInit {
     });
 
     this.form.get('filter').valueChanges.subscribe((value: number) => {
-      switch (value) {
-        case 1:
-          // call backend to filter
-          break;
-        case 2:
-          // call backend to filter
-          break;
-        default:
-          break;
-      }
+      this.callService(value);
     });
 
   }
@@ -92,18 +83,7 @@ export class PerformancesComponent implements OnInit {
   loadPerformances() {
     this.form.get('performanceArray').reset();
     this.performanceArray.clear();
-    this.performanceService.getByRealFixture(this.selectedTeam._id, this.selectedRealFixture._id)
-      .subscribe((performances: Performance[]) => {
-        this.performances = performances;
-        for (const performance of performances) {
-          this.performanceArray.push(this.fb.group({
-            _id: performance._id,
-            ranking: [performance.ranking],
-            minutes: [performance.minutes],
-            grade: [performance.grade],
-          }));
-        }
-      });
+    this.callService();
   }
 
   retrievePerformances() {
@@ -137,6 +117,21 @@ export class PerformancesComponent implements OnInit {
       const message = 'Le valutazioni sono state salvate correttamente';
       this.sharedService.notifica(toastType.success, title, message);
     });
+  }
+
+  private callService(filter?: number) {
+    this.performanceService.getByRealFixture(this.selectedTeam._id, this.selectedRealFixture._id, filter)
+      .subscribe((performances: Performance[]) => {
+        this.performances = performances;
+        for (const performance of performances) {
+          this.performanceArray.push(this.fb.group({
+            _id: performance._id,
+            ranking: [performance.ranking],
+            minutes: [performance.minutes],
+            grade: [performance.grade],
+          }));
+        }
+      });
   }
 
 }

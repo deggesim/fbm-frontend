@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Performance } from '@app/models/performance';
 import { environment } from 'src/environments/environment';
@@ -18,8 +18,13 @@ export class PerformanceService {
     return this.http.get<Performance[]>(`${this.endpoint}/performances`);
   }
 
-  public getByRealFixture(teamId: string, realFixtureId: string) {
-    return this.http.get<Performance[]>(`${this.endpoint}/performances/team/${teamId}/real-fixture/${realFixtureId}`);
+  public getByRealFixture(teamId: string, realFixtureId: string, filter?: number) {
+    if (filter != null) {
+      const params = new HttpParams().set('filter', String(filter));
+      return this.http.get<Performance[]>(`${this.endpoint}/performances/team/${teamId}/real-fixture/${realFixtureId}`, { params });
+    } else {
+      return this.http.get<Performance[]>(`${this.endpoint}/performances/team/${teamId}/real-fixture/${realFixtureId}`);
+    }
   }
 
   public save(performances: Performance[]) {
