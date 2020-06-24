@@ -53,7 +53,7 @@ export class PerformancesComponent implements OnInit {
     });
 
     this.form.get('filter').valueChanges.subscribe((value: number) => {
-      this.callService(value);
+      this.getPerformances(value);
     });
 
   }
@@ -83,7 +83,7 @@ export class PerformancesComponent implements OnInit {
   loadPerformances() {
     this.form.get('performanceArray').reset();
     this.performanceArray.clear();
-    this.callService();
+    this.getPerformances();
   }
 
   retrievePerformances() {
@@ -119,7 +119,7 @@ export class PerformancesComponent implements OnInit {
     });
   }
 
-  private callService(filter?: number) {
+  private getPerformances(filter?: number) {
     this.performanceService.getByRealFixture(this.selectedTeam._id, this.selectedRealFixture._id, filter)
       .subscribe((performances: Performance[]) => {
         this.performances = performances;
