@@ -33,6 +33,6 @@ export class PlayerService {
   public upload(file: File) {
     const formData = new FormData();
     formData.append('players', file);
-    return this.http.post<Player[]>(`${this.endpoint}/players/upload`, formData);
+    return this.http.post<number>(`${this.endpoint}/players/upload`, formData);
   }
 }
