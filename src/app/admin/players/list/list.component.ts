@@ -247,7 +247,6 @@ export class ListComponent implements OnInit {
       this.rosters = rosters;
       this.size = this.rosters.length;
       this.listaPaginata = this.buildPage();
-      this.popupUpload.chiudiModale();
     });
 
   }
