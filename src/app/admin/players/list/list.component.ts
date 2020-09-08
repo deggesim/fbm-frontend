@@ -9,8 +9,9 @@ import { RosterService } from '@app/services/roster.service';
 import { isEmpty, toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
-import { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { SpinnerService } from '@app/shared/spinner.service';
+import { interval, Observable } from 'rxjs';
+import { startWith, switchMap, takeWhile, tap, finalize, concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player-list',
@@ -43,6 +44,7 @@ export class ListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private spinnerService: SpinnerService,
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private rosterService: RosterService,
@@ -226,19 +228,28 @@ export class ListComponent implements OnInit {
   }
 
   confermaUpload(file: File) {
-    this.playerService.upload(file).pipe(
-      tap(() => {
-        this.popupUpload.chiudiModale();
+    let players = 0;
+    this.playerService.upload(file).subscribe((size: number) => {
+      this.popupUpload.chiudiModale();
+      players = size;
+    });
+
+    this.spinnerService.start();
+    interval(5000).pipe(
+      startWith(0),
+      concatMap(() => this.rosterService.read()),
+      takeWhile((rosters: Roster[]) => {
+        const size = rosters.length;
+        return size < players;
       }),
-      switchMap(() => {
-        return this.rosterService.read();
-      }),
+      finalize(() => this.spinnerService.end())
     ).subscribe((rosters: Roster[]) => {
       this.rosters = rosters;
       this.size = this.rosters.length;
       this.listaPaginata = this.buildPage();
       this.popupUpload.chiudiModale();
     });
+
   }
 
 }
