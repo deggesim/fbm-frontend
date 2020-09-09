@@ -17,17 +17,22 @@ export class GlobalInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.spinnerService.start();
+    if (req.headers.get('hideSpinner') !== 'true') {
+      this.spinnerService.start();
+    }
     return next.handle(req).pipe(
       catchError((err: HttpErrorResponse) => {
-        this.spinnerService.end();
         this.sharedService.notifyError(err);
         if (401 === err.status) {
           this.router.navigate(['home']);
         }
         return throwError(err);
       }),
-      finalize(() => this.spinnerService.end()));
+      finalize(() => {
+        if (req.headers.get('hideSpinner') !== 'true') {
+          this.spinnerService.end();
+        }
+      }));
   }
 
 }
