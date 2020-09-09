@@ -9,8 +9,8 @@ import { RosterService } from '@app/services/roster.service';
 import { isEmpty, toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
-import { iif, interval, Observable, of } from 'rxjs';
-import { startWith, switchMap, takeWhile, tap } from 'rxjs/operators';
+import { Observable, timer } from 'rxjs';
+import { switchMap, takeWhile, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player-list',
@@ -236,12 +236,10 @@ export class ListComponent implements OnInit {
   }
 
   uploadPercentage() {
-    interval(1000).pipe(
-      startWith(0),
+    timer(0, 1000).pipe(
       switchMap(() => this.playerService.uploadPercentage()),
       tap((percentage: number) => {
         this.percentage = percentage;
-        console.log(percentage);
         this.progressbarType = percentage >= 100 ? 'success' : 'warning';
       }),
       takeWhile((percentage: number) => percentage < 100),
