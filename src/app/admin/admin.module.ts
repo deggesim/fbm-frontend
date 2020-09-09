@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AdminRoutingModule } from './admin-routing.module';
@@ -59,6 +60,7 @@ import { ListComponent as UserListComponent } from './users/list/list.component'
     SortableModule,
     AccordionModule,
     ModalModule,
+    ProgressbarModule,
     // fine ngx-bootstrap
     FontAwesomeModule,
     SharedModule,

@@ -17,6 +17,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { PopoverModule } from 'ngx-bootstrap/popover';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DeviceDetectorModule } from 'ngx-device-detector';
@@ -65,6 +66,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     PopoverModule.forRoot(),
     AlertModule.forRoot(),
     SortableModule.forRoot(),
+    ProgressbarModule.forRoot(),
     // fine ngx-bootstrap
     DeviceDetectorModule.forRoot(),
     NgxChartsModule,

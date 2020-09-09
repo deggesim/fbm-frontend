@@ -35,4 +35,8 @@ export class PlayerService {
     formData.append('players', file);
     return this.http.post<number>(`${this.endpoint}/players/upload`, formData);
   }
+
+  public uploadPercentage() {
+    return this.http.get<number>(`${this.endpoint}/players/upload-percentage`, { headers: { hideSpinner: 'true' } });
+  }
 }
