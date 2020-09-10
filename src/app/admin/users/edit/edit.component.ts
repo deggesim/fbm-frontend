@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/models/user';
+import { AuthService } from '@app/services/auth.service';
 
 
 @Component({
@@ -15,16 +16,18 @@ export class EditComponent implements OnInit, OnChanges {
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
-  roleList = ['User', 'Admin', 'SuperAdmin'];
+  roleList = [];
 
   constructor(
     private fb: FormBuilder,
+    private authService: AuthService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
     console.log('EditComponent');
+    this.roleList = this.authService.isSuperAdmin() ? ['User', 'Admin'] : ['User'];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
