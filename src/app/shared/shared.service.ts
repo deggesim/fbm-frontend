@@ -38,6 +38,10 @@ export class SharedService {
 
     if (response != null) {
       switch (response.status) {
+        case 400:
+          titolo = 'Errore nella richiesta';
+          descrizione = response.error || response.message || 'I dati inseriti sono errati';
+          break;
         case 401:
           titolo = 'Utente non loggato';
           descrizione = 'L\'utente non è loggato o la sessione è scaduta';
@@ -47,7 +51,7 @@ export class SharedService {
           descrizione = 'L\'utente non è autorizzato ad eseguire l\'operazione richiesta';
           break;
         case 422:
-          titolo = 'Errori nella validazione';
+          titolo = 'Errore nella richiesta';
           descrizione = response.error || response.message;
           break;
         case 500:
