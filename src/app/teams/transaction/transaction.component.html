@@ -18,7 +18,7 @@
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">
           <label for="roster" class="control-label">Giocatore</label>
-          <ng-select id="roster" [items]="rosters" bindLabel="player.name" formControlName="roster" clearAllText="Elimina" (change)="selectRoster($event)">
+          <ng-select id="roster" [items]="rosters" bindLabel="player.name" formControlName="roster" clearAllText="Elimina" [typeahead]="typeahead$" [minTermLength]="3" (scrollToEnd)="loadMore()" (change)="selectRoster($event)">
             <ng-template ng-option-tmp let-item="item">
               {{item.player.name}} - {{item.player.nationality}} - {{item.player.role}} - {{item.team.fullName}}
             </ng-template>

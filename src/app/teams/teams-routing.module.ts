@@ -12,7 +12,7 @@ const routes: Routes = [
     component: TransactionComponent,
     resolve: {
       fantasyTeams: FantasyTeamResolverService,
-      rosters: FreePlayersResolverService,
+      rosterList: FreePlayersResolverService,
     },
     canActivate: [AuthGuard],
   },

@@ -1,6 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Roster } from '@app/models/roster';
+import { Roster, RosterList } from '@app/models/roster';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -14,12 +16,35 @@ export class RosterService {
     private http: HttpClient
   ) { }
 
-  public read() {
-    return this.http.get<Roster[]>(`${this.endpoint}/rosters`);
+  public read(page: number, limit: number, filter?: string): Observable<RosterList> {
+    const endpoint = filter == null
+      ? `${this.endpoint}/rosters?page=${page}&limit=${limit}`
+      : `${this.endpoint}/rosters?page=${page}&limit=${limit}&filter=${filter}`;
+    return this.http.get<Roster[]>(endpoint, { observe: 'response' }).pipe(
+      map((response: HttpResponse<Roster[]>) => {
+        console.log(response);
+        const rosterList: RosterList = {
+          totalElements: +response.headers.get('X-Total-Count'),
+          content: response.body
+        };
+        return rosterList;
+      })
+    );
   }
 
-  public freePlayers() {
-    return this.http.get<Roster[]>(`${this.endpoint}/rosters/free`);
+  public freePlayers(page: number, limit: number, filter?: string): Observable<RosterList> {
+    const endpoint = filter == null
+      ? `${this.endpoint}/rosters/free?page=${page}&limit=${limit}`
+      : `${this.endpoint}/rosters/free?page=${page}&limit=${limit}&filter=${filter}`;
+    return this.http.get<Roster[]>(endpoint, { observe: 'response' }).pipe(
+      map((response: HttpResponse<Roster[]>) => {
+        const rosterList: RosterList = {
+          totalElements: +response.headers.get('X-Total-Count'),
+          content: response.body
+        };
+        return rosterList;
+      })
+    );
   }
 
   public create(roster: Roster) {

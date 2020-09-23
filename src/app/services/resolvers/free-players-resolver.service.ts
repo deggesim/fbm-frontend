@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Roster } from '@app/models/roster';
+import { Roster, RosterList } from '@app/models/roster';
 import { RosterService } from '@app/services/roster.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -8,15 +8,15 @@ import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class FreePlayersResolverService implements Resolve<Roster[]> {
+export class FreePlayersResolverService implements Resolve<RosterList> {
 
   constructor(
     private rosterService: RosterService
   ) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Roster[] | Observable<Roster[]> | Promise<Roster[]> {
-    return this.rosterService.freePlayers().pipe(
-      tap((roster: Roster[]) => roster.sort((a, b) => a.player.name.localeCompare(b.player.name)))
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): RosterList | Observable<RosterList> | Promise<RosterList> {
+    return this.rosterService.freePlayers(1, 10).pipe(
+      tap((rosterList: RosterList) => rosterList.content.sort((a, b) => a.player.name.localeCompare(b.player.name)))
     );
   }
 }

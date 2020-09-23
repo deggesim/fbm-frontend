@@ -10,3 +10,8 @@ export interface Roster {
   realFixture?: RealFixture;
   fantasyRoster?: FantasyRoster;
 }
+
+export interface RosterList {
+  totalElements: number;
+  content: Roster[];
+}
