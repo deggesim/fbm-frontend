@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
+import { Status } from '@app/models/league';
 import { RealFixture } from '@app/models/real-fixture';
 import { Roster, RosterList } from '@app/models/roster';
 import { FantasyRosterService } from '@app/services/fantasy-roster.service';
@@ -13,8 +14,8 @@ import { toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { switchMap, tap } from 'rxjs/operators';
-import { Status } from '@app/models/league';
+import { iif, of, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction',
@@ -33,6 +34,9 @@ export class TransactionComponent implements OnInit {
   fantasyRosterSelected: FantasyRoster;
   statusList = ['EXT', 'COM', 'ITA'];
   leagueStatus: Status;
+
+  limit = 10;
+  typeahead$ = new Subject();
 
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
   @ViewChild('popupRilascia', { static: false }) public popupRilascia: PopupConfermaComponent;
@@ -60,9 +64,22 @@ export class TransactionComponent implements OnInit {
     this.route.data.subscribe(
       (data) => {
         this.fantasyTeams = data.fantasyTeams;
-        this.rosters = data.rosters;
+        this.rosters = data.rosterList.content;
       }
     );
+
+    this.typeahead$.pipe(
+      distinctUntilChanged(),
+      debounceTime(750),
+      switchMap((value: string) =>
+        iif(
+          () => this.modal.isShown,
+          of(this.rosters),
+          this.rosterService.freePlayers(1, this.limit, value)
+        )),
+    ).subscribe((rosterList: RosterList) => {
+      this.rosters = rosterList.content;
+    });
   }
 
   createForm() {
@@ -108,6 +125,20 @@ export class TransactionComponent implements OnInit {
     }
   }
 
+  clear() {
+    this.limit = 10;
+    this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
+      this.rosters = rosterList.content;
+    });
+  }
+
+  loadMore() {
+    this.limit += 10;
+    this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
+      this.rosters = rosterList.content;
+    });
+  }
+
   selectRoster(roster: Roster) {
     this.rosterSelected = roster;
     if (this.fantasyTeamSelected != null) {
@@ -117,7 +148,7 @@ export class TransactionComponent implements OnInit {
   }
 
   salva() {
-    console.log(this.form.value);
+    this.limit = 10;
     if (this.fantasyRosterSelected) {
       const fantasyRoster: FantasyRoster = {
         _id: this.fantasyRosterSelected._id,
@@ -134,7 +165,8 @@ export class TransactionComponent implements OnInit {
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
         }),
-        // switchMap(() => this.rosterService.freePlayers()),
+        switchMap(() => this.rosterService.freePlayers(1, this.limit)),
+        tap((rosterList: RosterList) => { this.rosters = rosterList.content; }),
         switchMap(() => this.leagueService.nextRealFixture()),
         switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
       ).subscribe((fr: FantasyRoster[]) => {
@@ -156,7 +188,8 @@ export class TransactionComponent implements OnInit {
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
         }),
-        // switchMap(() => this.rosterService.freePlayers()),
+        switchMap(() => this.rosterService.freePlayers(1, this.limit)),
+        tap((rosterList: RosterList) => { this.rosters = rosterList.content; }),
         switchMap(() => this.leagueService.nextRealFixture()),
         switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
       ).subscribe((fr: FantasyRoster[]) => {
@@ -172,6 +205,10 @@ export class TransactionComponent implements OnInit {
   }
 
   annulla() {
+    this.limit = 10;
+    this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
+      this.rosters = rosterList.content;
+    });
     this.resetForm();
     this.rosterSelected = null;
     this.form.get('roster').reset();

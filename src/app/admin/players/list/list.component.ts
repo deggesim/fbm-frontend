@@ -108,7 +108,6 @@ export class ListComponent implements OnInit {
   }
 
   modifica(roster: Roster): void {
-    // tslint:disable-next-line: variable-name
     this.rosterSelected = roster;
     this.mostraPopupModifica = true;
     this.titoloModale = 'Modifica giocatore';
