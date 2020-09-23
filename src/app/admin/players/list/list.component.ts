@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Status } from '@app/models/league';
 import { Player } from '@app/models/player';
-import { Roster } from '@app/models/roster';
+import { Roster, RosterList } from '@app/models/roster';
 import { LeagueService } from '@app/services/league.service';
 import { PlayerService } from '@app/services/player.service';
 import { RosterService } from '@app/services/roster.service';
@@ -10,7 +10,7 @@ import { isEmpty, toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
 import { Observable, timer } from 'rxjs';
-import { switchMap, takeWhile, tap } from 'rxjs/operators';
+import { debounceTime, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player-list',
@@ -21,9 +21,7 @@ export class ListComponent implements OnInit {
 
   leagueInfo: string;
   leagueStatus: Status;
-  rosters: Roster[];
-  listaPaginata: Roster[];
-  listaFiltrata: Roster[];
+  rosterList: RosterList;
   filter: string;
 
   rosterSelected: Roster;
@@ -34,12 +32,10 @@ export class ListComponent implements OnInit {
   @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfermaComponent;
 
   // paginazione
-  size: number;
   page = 1;
-  pageSize = 10;
+  limit = 10;
   maxSize = 5;
   boundaryLinks = true;
-  searchExecute = false;
 
   percentage = 0;
   progressbarType = 'warning';
@@ -68,9 +64,7 @@ export class ListComponent implements OnInit {
     console.log('init ListComponent');
     this.route.data.subscribe(
       (data) => {
-        this.rosters = data.rosters;
-        this.size = this.rosters.length;
-        this.listaPaginata = this.buildPage();
+        this.rosterList = data.rosterList;
       }
     );
   }
@@ -81,41 +75,30 @@ export class ListComponent implements OnInit {
 
   applicaFiltro(filtro: string) {
     if (filtro != null && filtro.length > 2) {
-      this.listaFiltrata = this.rosters.filter((roster: Roster) => {
-        return roster.player.name.toLowerCase().indexOf(filtro.toLowerCase()) >= 0;
+      this.rosterService.read(this.page, this.limit, filtro).pipe(
+        debounceTime(750),
+      ).subscribe((rosterList: RosterList) => {
+        this.rosterList = rosterList;
       });
-    } else {
-      this.listaFiltrata = this.rosters;
     }
-    this.size = this.listaFiltrata.length;
-    this.listaPaginata = this.buildPage();
   }
 
   pulisciFiltro(): void {
     this.filter = null;
-    this.size = this.rosters.length;
-    this.listaPaginata = this.buildPage();
+    this.rosterService.read(this.page, this.limit).subscribe((rosterList: RosterList) => {
+      this.rosterList = rosterList;
+    });
   }
 
   abilitaPaginazione() {
-    return !isEmpty(this.rosters) && this.rosters.length > this.pageSize;
+    return !isEmpty(this.rosterList?.content) && this.rosterList?.totalElements > this.limit;
   }
 
   pageChange(event) {
     this.page = event.page;
-    this.listaPaginata = this.buildPage();
-  }
-
-  buildPage() {
-    let rosters: Roster[] = [];
-    if (this.filter != null && this.filter.length > 2) {
-      rosters = this.listaFiltrata;
-    } else {
-      rosters = this.rosters;
-    }
-    const first = this.pageSize * (this.page - 1);
-    const last = first + this.pageSize;
-    return rosters.slice(first, last);
+    this.rosterService.read(this.page, this.limit, this.filter).subscribe((rosterList: RosterList) => {
+      this.rosterList = rosterList;
+    });
   }
 
   nuova() {
@@ -152,7 +135,7 @@ export class ListComponent implements OnInit {
   }
 
   salva(roster: Roster) {
-    let $rostersObservable: Observable<Roster[]>;
+    let $rostersObservable: Observable<RosterList>;
     if (roster._id == null) {
       $rostersObservable = this.playerService.create(roster.player).pipe(
         tap((player: Player) => {
@@ -165,7 +148,7 @@ export class ListComponent implements OnInit {
           const message = 'Nuovo giocatore inserito correttamente';
           this.sharedService.notifica(toastType.success, title, message);
         }),
-        switchMap(() => this.rosterService.read()),
+        switchMap(() => this.rosterService.read(this.page, this.limit)),
         tap(() => {
           this.rosterSelected = undefined;
         })
@@ -182,16 +165,15 @@ export class ListComponent implements OnInit {
           const message = 'Giocatore modificato correttamente';
           this.sharedService.notifica(toastType.success, title, message);
         }),
-        switchMap(() => this.rosterService.read()),
+        switchMap(() => this.rosterService.read(this.page, this.limit)),
         tap(() => {
           this.rosterSelected = undefined;
         })
       );
     }
 
-    $rostersObservable.subscribe((rosters: Roster[]) => {
-      this.rosters = rosters;
-      this.size = this.rosters.length;
+    $rostersObservable.subscribe((rosterList: RosterList) => {
+      this.rosterList = rosterList;
       this.applicaFiltro(this.filter);
     });
   }
@@ -215,10 +197,9 @@ export class ListComponent implements OnInit {
           this.sharedService.notifica(toastType.success, title, message);
           this.rosterSelected = undefined;
         }),
-        switchMap(() => this.rosterService.read()),
-      ).subscribe((rosters: Roster[]) => {
-        this.rosters = rosters;
-        this.size = this.rosters.length;
+        switchMap(() => this.rosterService.read(this.page, this.limit)),
+      ).subscribe((rosterList: RosterList) => {
+        this.rosterList = rosterList;
         this.applicaFiltro(this.filter);
       });
     }
@@ -247,11 +228,9 @@ export class ListComponent implements OnInit {
   }
 
   reloadPage() {
-    this.rosterService.read().subscribe((rosters: Roster[]) => {
+    this.rosterService.read(this.page, this.limit).subscribe((rosterList: RosterList) => {
       this.percentage = 0;
-      this.rosters = rosters;
-      this.size = this.rosters.length;
-      this.listaPaginata = this.buildPage();
+      this.rosterList = rosterList;
     });
   }
 

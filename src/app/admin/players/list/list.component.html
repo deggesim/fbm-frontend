@@ -13,7 +13,7 @@
   <legend class="legend">
     <fa-icon icon="id-badge" class="icon-padding"></fa-icon>Giocatori
   </legend>
-  <ng-container *ngIf="rosters && rosters.length > 0; else empty">
+  <ng-container *ngIf="rosterList?.content && rosterList?.totalElements > 0; else empty">
     <form #form="ngForm" class="form-inline pb-1">
       <div class="input-group">
         <input
@@ -49,7 +49,7 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let roster of listaPaginata" class="table-secondary">
+          <tr *ngFor="let roster of rosterList.content" class="table-secondary">
             <td>{{ roster.player.name }}</td>
             <td>{{ roster.player.nationality }}</td>
             <td>{{ roster.player.number }}</td>
@@ -96,9 +96,9 @@
     <div fxLayout="row" fxLayoutAlign="center" *ngIf="abilitaPaginazione()">
       <div fxFlex="nogrow">
         <pagination
-          [totalItems]="size"
+          [totalItems]="rosterList.totalElements"
           [(ngModel)]="page"
-          [itemsPerPage]="pageSize"
+          [itemsPerPage]="limit"
           (pageChanged)="pageChange($event)"
           [maxSize]="maxSize"
           [boundaryLinks]="boundaryLinks"

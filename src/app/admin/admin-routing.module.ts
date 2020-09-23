@@ -72,7 +72,7 @@ const routes: Routes = [
         path: 'players',
         component: PlayerListComponent,
         resolve: {
-          rosters: RosterResolverService
+          rosterList: RosterResolverService
         },
       },
     ],
@@ -92,7 +92,7 @@ const routes: Routes = [
         path: 'players',
         component: PlayerListComponent,
         resolve: {
-          rosters: RosterResolverService
+          rosterList: RosterResolverService
         },
       },
       {
