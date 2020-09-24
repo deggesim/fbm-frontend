@@ -22,7 +22,6 @@ export class RosterService {
       : `${this.endpoint}/rosters?page=${page}&limit=${limit}&filter=${filter}`;
     return this.http.get<Roster[]>(endpoint, { observe: 'response' }).pipe(
       map((response: HttpResponse<Roster[]>) => {
-        console.log(response);
         const rosterList: RosterList = {
           totalElements: +response.headers.get('X-Total-Count'),
           content: response.body
