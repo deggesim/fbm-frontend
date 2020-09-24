@@ -69,8 +69,8 @@ export class TransactionComponent implements OnInit {
     );
 
     this.typeahead$.pipe(
-      distinctUntilChanged(),
       debounceTime(750),
+      distinctUntilChanged(),
       switchMap((value: string) =>
         iif(
           () => this.modal.isShown,
