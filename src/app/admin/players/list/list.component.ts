@@ -9,7 +9,7 @@ import { RosterService } from '@app/services/roster.service';
 import { isEmpty, toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
-import { Observable, Subject, timer } from 'rxjs';
+import { iif, Observable, of, Subject, timer } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 @Component({
@@ -72,7 +72,14 @@ export class ListComponent implements OnInit {
     this.filter$.pipe(
       debounceTime(750),
       distinctUntilChanged(),
-      switchMap(() => this.rosterService.read(this.page, this.limit, this.filter))
+      switchMap(() =>
+        iif(
+          () => this.filter != null && this.filter !== '',
+          this.filter?.length > 2
+            ? this.rosterService.read(this.page, this.limit, this.filter)
+            : of(this.rosterList),
+          this.rosterService.read(this.page, this.limit)
+        )),
     ).subscribe((rosterList: RosterList) => {
       this.rosterList = rosterList;
     });
@@ -84,9 +91,7 @@ export class ListComponent implements OnInit {
 
   pulisciFiltro(): void {
     this.filter = null;
-    this.rosterService.read(this.page, this.limit).subscribe((rosterList: RosterList) => {
-      this.rosterList = rosterList;
-    });
+    this.filter$.next();
   }
 
   abilitaPaginazione() {
@@ -146,7 +151,14 @@ export class ListComponent implements OnInit {
           const message = 'Nuovo giocatore inserito correttamente';
           this.sharedService.notifica(toastType.success, title, message);
         }),
-        switchMap(() => this.rosterService.read(this.page, this.limit)),
+        switchMap(() =>
+          iif(
+            () => this.filter != null && this.filter !== '',
+            this.filter?.length > 2
+              ? this.rosterService.read(this.page, this.limit, this.filter)
+              : of(this.rosterList),
+            this.rosterService.read(this.page, this.limit)
+          )),
         tap(() => {
           this.rosterSelected = undefined;
         })
@@ -163,7 +175,14 @@ export class ListComponent implements OnInit {
           const message = 'Giocatore modificato correttamente';
           this.sharedService.notifica(toastType.success, title, message);
         }),
-        switchMap(() => this.rosterService.read(this.page, this.limit)),
+        switchMap(() =>
+          iif(
+            () => this.filter != null && this.filter !== '',
+            this.filter?.length > 2
+              ? this.rosterService.read(this.page, this.limit, this.filter)
+              : of(this.rosterList),
+            this.rosterService.read(this.page, this.limit)
+          )),
         tap(() => {
           this.rosterSelected = undefined;
         })
@@ -172,7 +191,6 @@ export class ListComponent implements OnInit {
 
     $rostersObservable.subscribe((rosterList: RosterList) => {
       this.rosterList = rosterList;
-      this.applicaFiltro(this.filter);
     });
   }
 
@@ -198,7 +216,6 @@ export class ListComponent implements OnInit {
         switchMap(() => this.rosterService.read(this.page, this.limit)),
       ).subscribe((rosterList: RosterList) => {
         this.rosterList = rosterList;
-        this.applicaFiltro(this.filter);
       });
     }
   }

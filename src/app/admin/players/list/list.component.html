@@ -13,7 +13,7 @@
   <legend class="legend">
     <fa-icon icon="id-badge" class="icon-padding"></fa-icon>Giocatori
   </legend>
-  <ng-container *ngIf="rosterList?.content && rosterList?.totalElements > 0; else empty">
+  <ng-container *ngIf="(rosterList?.content && rosterList?.totalElements > 0) || filter != null; else empty">
     <form #form="ngForm" class="form-inline pb-1">
       <div class="input-group">
         <input
