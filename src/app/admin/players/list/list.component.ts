@@ -9,8 +9,8 @@ import { RosterService } from '@app/services/roster.service';
 import { isEmpty, toastType } from '@app/shared/globals';
 import { PopupConfermaComponent } from '@app/shared/popup-conferma/popup-conferma.component';
 import { SharedService } from '@app/shared/shared.service';
-import { Observable, timer } from 'rxjs';
-import { debounceTime, switchMap, takeWhile, tap } from 'rxjs/operators';
+import { Observable, Subject, timer } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player-list',
@@ -23,6 +23,7 @@ export class ListComponent implements OnInit {
   leagueStatus: Status;
   rosterList: RosterList;
   filter: string;
+  filter$ = new Subject<string>();
 
   rosterSelected: Roster;
   mostraPopupModifica: boolean;
@@ -67,20 +68,18 @@ export class ListComponent implements OnInit {
         this.rosterList = data.rosterList;
       }
     );
+
+    this.filter$.pipe(
+      debounceTime(750),
+      distinctUntilChanged(),
+      switchMap(() => this.rosterService.read(this.page, this.limit, this.filter))
+    ).subscribe((rosterList: RosterList) => {
+      this.rosterList = rosterList;
+    });
   }
 
   public isPreseason() {
     return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
-  }
-
-  applicaFiltro(filtro: string) {
-    if (filtro != null && filtro.length > 2) {
-      this.rosterService.read(this.page, this.limit, filtro).pipe(
-        debounceTime(750),
-      ).subscribe((rosterList: RosterList) => {
-        this.rosterList = rosterList;
-      });
-    }
   }
 
   pulisciFiltro(): void {
