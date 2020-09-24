@@ -161,9 +161,14 @@ export class TransactionComponent implements OnInit {
         realFixture: this.fantasyRosterSelected.realFixture
       };
       this.fantasyRosterService.update(fantasyRoster).pipe(
-        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-        tap((fantasyTeam: FantasyTeam) => {
-          this.fantasyTeamSelected = fantasyTeam;
+        // switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        // tap((fantasyTeam: FantasyTeam) => {
+        //   this.fantasyTeamSelected = fantasyTeam;
+        // }),
+        switchMap(() => this.fantasyTeamService.read()),
+        tap((fantasyTeams: FantasyTeam[]) => {
+          this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
+          this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
         }),
         switchMap(() => this.rosterService.freePlayers(1, this.limit)),
         tap((rosterList: RosterList) => { this.rosters = rosterList.content; }),
@@ -184,9 +189,14 @@ export class TransactionComponent implements OnInit {
         ...this.form.value,
       };
       this.fantasyRosterService.create(fantasyRoster).pipe(
-        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-        tap((fantasyTeam: FantasyTeam) => {
-          this.fantasyTeamSelected = fantasyTeam;
+        // switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        // tap((fantasyTeam: FantasyTeam) => {
+        //   this.fantasyTeamSelected = fantasyTeam;
+        // }),
+        switchMap(() => this.fantasyTeamService.read()),
+        tap((fantasyTeams: FantasyTeam[]) => {
+          this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
+          this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
         }),
         switchMap(() => this.rosterService.freePlayers(1, this.limit)),
         tap((rosterList: RosterList) => { this.rosters = rosterList.content; }),
