@@ -4,6 +4,16 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from '@app/app-routing.module';
+import { AppComponent } from '@app/app.component';
+import { MainModule } from '@app/modules/main/main.module';
+import { AuthInterceptor } from '@app/shared/http-interceptors/auth-interceptor.service';
+import { GlobalInterceptor } from '@app/shared/http-interceptors/global-interceptor.service';
+import { TenantInterceptor } from '@app/shared/http-interceptors/tenant-interceptor.service';
+import { AuthService } from '@app/shared/services/auth.service';
+import { SharedService } from '@app/shared/services/shared.service';
+import { SpinnerService } from '@app/shared/services/spinner.service';
+import { SharedModule } from '@app/shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -22,29 +32,10 @@ import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { AuthInterceptor } from './http-interceptors/auth-interceptor.service';
-import { GlobalInterceptor } from './http-interceptors/global-interceptor.service';
-import { TenantInterceptor } from './http-interceptors/tenant-interceptor.service';
-import { HeaderComponent } from './layout/header/header.component';
-import { LoginComponent } from './login/login.component';
-import { AuthService } from './services/auth.service';
-import { ErrorPageComponent } from './shared/error-page.component';
-import { SharedModule } from './shared/shared.module';
-import { SharedService } from './shared/shared.service';
-import { SpinnerService } from './shared/spinner.service';
-import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
-    ErrorPageComponent,
-    HomeComponent,
-    LoginComponent,
-    UserProfileComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +65,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     ToastContainerModule,
     FontAwesomeModule,
     SharedModule,
+    MainModule,
     AppRoutingModule,
   ],
   providers: [

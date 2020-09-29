@@ -1,13 +1,13 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { toastType } from '@app/shared/constants/globals';
+import { User } from '@app/shared/models/user';
+import { AuthService } from '@app/shared/services/auth.service';
+import { LeagueService } from '@app/shared/services/league.service';
+import { NewSeasonService } from '@app/shared/services/new-season.service';
+import { SharedService } from '@app/shared/services/shared.service';
+import { SpinnerService } from '@app/shared/services/spinner.service';
 import { switchMap, tap } from 'rxjs/operators';
-import { User } from './models/user';
-import { AuthService } from './services/auth.service';
-import { LeagueService } from './services/league.service';
-import { NewSeasonService } from './services/new-season.service';
-import { toastType } from './shared/globals';
-import { SharedService } from './shared/shared.service';
-import { SpinnerService } from './shared/spinner.service';
 
 @Component({
   selector: 'app-root',
