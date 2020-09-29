@@ -286,6 +286,10 @@ export class TransactionComponent implements OnInit {
     });
   }
 
+  public isPreseason() {
+    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
+  }
+
   private resetForm() {
     this.form.patchValue({
       status: undefined,
