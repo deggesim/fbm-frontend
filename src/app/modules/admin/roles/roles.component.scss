@@ -1,6 +1,6 @@
 @import 'common';
 
 ng-select.is-invalid {
-  border-color: #dc3545;
+  border-color: $danger;
   padding-right: calc(1.5em + 0.75rem);
 }

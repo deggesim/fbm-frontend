@@ -50,12 +50,12 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let fantasyRoster of fantasyRosters" class="table-secondary lineup-height" [ngClass]="{'greyed-out': playerChoosen(fantasyRoster), 'manina': !disableUpdate}"
+                <tr *ngFor="let fantasyRoster of fantasyRosters" class="table-secondary lineup-height" [ngClass]="{'chosen': playerChoosen(fantasyRoster), 'manina': !disableUpdate}"
                   (click)="addPlayer(fantasyRoster)">
-                  <td>{{fantasyRoster.roster.player.name}}</td>
-                  <td>{{fantasyRoster.roster.player.nationality}}</td>
-                  <td>{{fantasyRoster.roster.player.role | roleShort}}</td>
-                  <td fxHide.md fxHide.xs>{{fantasyRoster.roster.team.fullName}}</td>
+                  <td [appPlayerStatus]="fantasyRoster">{{fantasyRoster.roster.player.name}}</td>
+                  <td [appPlayerStatus]="fantasyRoster">{{fantasyRoster.roster.player.nationality}}</td>
+                  <td [appPlayerStatus]="fantasyRoster">{{fantasyRoster.roster.player.role | roleShort}}</td>
+                  <td [appPlayerStatus]="fantasyRoster" fxHide.md fxHide.xs>{{fantasyRoster.roster.team.fullName}}</td>
                 </tr>
               </tbody>
             </table>
@@ -79,11 +79,11 @@
 
               <tbody>
                 <tr *ngFor="let player of lineup; let i=index" class="table-secondary lineup-height" [ngClass]="{'manina': !disableUpdate}" (click)="removePlayer(i)">
-                  <td>{{player?.spot}}</td>
-                  <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
-                  <td>{{player?.fantasyRoster.roster.player.nationality}}</td>
-                  <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
-                  <td>{{player?.benchOrder}}</td>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">{{player?.spot}}</td>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null" nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">{{player?.fantasyRoster.roster.player.nationality}}</td>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">{{player?.benchOrder}}</td>
                 </tr>
               </tbody>
             </table>

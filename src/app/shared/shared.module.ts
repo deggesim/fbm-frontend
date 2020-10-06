@@ -10,6 +10,7 @@ import { ToStringPipe } from '@app/shared/pipes/to-string.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { PlayerStatusDirective } from './directives/player-status.directive';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     UserRoleIconComponent,
     RoleShortPipe,
     ToStringPipe,
+    PlayerStatusDirective,
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     UserRoleIconComponent,
     RoleShortPipe,
     ToStringPipe,
+    PlayerStatusDirective,
   ]
 })
 export class SharedModule { }

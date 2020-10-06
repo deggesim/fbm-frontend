@@ -66,12 +66,12 @@
 
           <tbody>
             <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
-              <td>{{fr.roster.player.name}}</td>
-              <td>{{fr.status}}</td>
-              <td>{{fr.contract != null ? fr.contract : 'D'}}</td>
-              <td>{{fr.yearContract}}</td>
-              <td>{{fr.roster.player.role}}</td>
-              <td>{{fr.roster.team.fullName}}</td>
+              <td [appPlayerStatus]="fr">{{fr.roster.player.name}}</td>
+              <td [appPlayerStatus]="fr">{{fr.status}}</td>
+              <td [appPlayerStatus]="fr">{{fr.contract != null ? fr.contract : 'D'}}</td>
+              <td [appPlayerStatus]="fr">{{fr.yearContract}}</td>
+              <td [appPlayerStatus]="fr">{{fr.roster.player.role}}</td>
+              <td [appPlayerStatus]="fr">{{fr.roster.team.fullName}}</td>
 
               <td class="text-nowrap">
                 <button type="button" class="btn btn-success" (click)="modifica(fr)" tooltip="Modifica" placement="top">
