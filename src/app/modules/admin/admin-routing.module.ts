@@ -47,6 +47,10 @@ const routes: Routes = [
     canActivate: [AdminGuard],
     children: [
       {
+        path: '',
+        redirectTo: 'edit-league'
+      },
+      {
         path: 'edit-league',
         component: EditLeagueComponent,
         resolve: {
@@ -81,6 +85,10 @@ const routes: Routes = [
     path: 'league-management',
     canActivate: [AdminGuard],
     children: [
+      {
+        path: '',
+        redirectTo: 'teams'
+      },
       {
         path: 'teams',
         component: TeamListComponent,
@@ -126,6 +134,7 @@ const routes: Routes = [
       users: UsersResolverService
     },
   },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];
 
 @NgModule({

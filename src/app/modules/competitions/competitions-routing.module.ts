@@ -12,6 +12,10 @@ import { StandingsComponent } from './standings/standings.component';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'calendar'
+  },
+  {
     path: 'calendar',
     component: CalendarListComponent,
     resolve: {

@@ -8,6 +8,10 @@ import { TransactionComponent } from './transaction/transaction.component';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'transactions'
+  },
+  {
     path: 'transactions',
     component: TransactionComponent,
     resolve: {

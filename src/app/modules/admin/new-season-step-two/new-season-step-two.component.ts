@@ -34,11 +34,14 @@ export class NewSeasonStepTwoComponent implements OnInit {
     private newSeasonService: NewSeasonService,
     private fantastyTeamsService: FantasyTeamService,
   ) {
-    this.league = this.router.getCurrentNavigation().extras.state.data;
+    this.league = this.router.getCurrentNavigation().extras.state?.data;
     this.createForm();
   }
 
   ngOnInit() {
+    if (this.league == null) {
+      this.router.navigate(['/home']);
+    }
     this.addItem();
 
     this.usersLoading = true;
