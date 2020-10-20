@@ -15,19 +15,32 @@
           placeholder="Giornata">
         </ng-select>
       </div>
-    </div>
+      
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="tutti" [value]="0" formControlName="filter">
+          <label class="form-check-label" for="tutti">Tutti</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="signed" [value]="1" formControlName="filter">
+          <label class="form-check-label" for="signed">Solo giocatori tesserati</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="lineup" [value]="2" formControlName="filter">
+          <label class="form-check-label" for="lineup">Solo giocatori schierati</label>
+        </div>
+      </div>
 
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" id="tutti" [value]="0" formControlName="filter">
-      <label class="form-check-label" for="tutti">Tutti</label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" id="signed" [value]="1" formControlName="filter">
-      <label class="form-check-label" for="signed">Solo giocatori tesserati</label>
-    </div>
-    <div class="form-check form-check-inline">
-      <input class="form-check-input" type="radio" id="lineup" [value]="2" formControlName="filter">
-      <label class="form-check-label" for="lineup">Solo giocatori schierati</label>
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="vittoria" [value]="true" formControlName="bonus">
+          <label class="form-check-label" for="vittoria">Vittoria</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" id="sconfitta" [value]="false" formControlName="bonus">
+          <label class="form-check-label" for="sconfitta">Sconfitta</label>
+        </div>
+      </div>
     </div>
 
     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
@@ -50,22 +63,19 @@
 
         <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
-            <label for="ranking-{{i}}" class="control-label">Valutazione</label>
-            <input type="number" class="form-control" id="ranking-{{i}}" formControlName="ranking">
+            <input type="number" class="form-control" id="ranking-{{i}}" formControlName="ranking" placeholder="Valutazione">
           </div>
         </div>
 
         <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
-            <label for="minutes-{{i}}" class="control-label">Minuti</label>
-            <input type="number" class="form-control" id="minutes-{{i}}" formControlName="minutes">
+            <input type="number" class="form-control" id="minutes-{{i}}" formControlName="minutes" placeholder="Minuti" min="0">
           </div>
         </div>
 
         <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
-            <label for="grade-{{i}}" class="control-label">Voto</label>
-            <input type="number" class="form-control" id="grade-{{i}}" formControlName="grade">
+            <input type="number" class="form-control" id="grade-{{i}}" formControlName="grade" placeholder="Buonus/malus">
           </div>
         </div>
       </div>
@@ -75,6 +85,7 @@
 
   <div class="text-center">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
+    <button type="button" class="btn btn-primary" (click)="reset()">Reset</button>
   </div>
 
 </form>

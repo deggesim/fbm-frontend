@@ -14,4 +14,6 @@ export enum AppConfig {
   'NecessaryGrades' = 10,
   'FirstBenchPlayerIndex' = 5,
   'LastBenchPlayerIndex' = 9,
+  'WinBonus' = 6,
+  'DefeatMalus' = 5
 }
