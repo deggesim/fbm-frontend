@@ -91,12 +91,15 @@ export class ResultsComponent implements OnInit {
     }
   }
 
-  salva() {
-    console.log('salva');
+  calcolaRisultato() {
     const { round, fixture, match } = this.form.value;
     this.matchService.compute(round._id, fixture._id, match._id).pipe(
       tap((matchComputed) => {
         this.selectedMatch = matchComputed;
+      }),
+      switchMap(() => this.matchService.read(fixture._id)),
+      tap((matches: Match[]) => {
+        this.matches = matches;
       }),
       switchMap(() => this.leagueService.refresh),
       switchMap(() => this.loadLineups(this.selectedMatch))

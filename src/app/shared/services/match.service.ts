@@ -14,8 +14,8 @@ export class MatchService {
     private http: HttpClient
   ) { }
 
-  public read() {
-    return this.http.get<Match[]>(`${this.endpoint}/matches`);
+  public read(fixtureId: string) {
+    return this.http.get<Match[]>(`${this.endpoint}/matches/fixture/${fixtureId}`);
   }
 
   public create(match: Match) {
