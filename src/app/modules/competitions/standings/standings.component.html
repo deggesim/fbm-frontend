@@ -42,16 +42,16 @@
             <td>{{tableItem.lost}}</td>
             <td>{{tableItem.rankingMade}}</td>
             <td>{{tableItem.rankingAgainst}}</td>
-            <td>{{tableItem.avarageRankingMade}}</td>
-            <td>{{tableItem.avarageRankingAgainst}}</td>
+            <td>{{tableItem.avarageRankingMade | number:'1.1-1'}}</td>
+            <td>{{tableItem.avarageRankingAgainst | number:'1.1-1'}}</td>
             <td>{{tableItem.pointsMade}}</td>
             <td>{{tableItem.pointsAgainst}}</td>
-            <td>{{tableItem.avaragePointsMade}}</td>
-            <td>{{tableItem.avaragePointsAgainst}}</td>
+            <td>{{tableItem.avaragePointsMade | number:'1.1-1'}}</td>
+            <td>{{tableItem.avaragePointsAgainst | number:'1.1-1'}}</td>
             <td>{{tableItem.difference}}</td>
             <td>{{tableItem.trend}}</td>
-            <td>{{tableItem.trendAvaragePointsMade}}</td>
-            <td>{{tableItem.trendAvaragePointsAgainst}}</td>
+            <td>{{tableItem.trendAvaragePointsMade | number:'1.1-1'}}</td>
+            <td>{{tableItem.trendAvaragePointsAgainst | number:'1.1-1'}}</td>
           </tr>
         </tbody>
       </table>

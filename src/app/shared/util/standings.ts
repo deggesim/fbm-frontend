@@ -17,7 +17,6 @@ export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], trend: nu
   const pointsMadeArray: number[] = [];
   const pointsAgainstArray: number[] = [];
 
-  let i = 0;
   for (const match of matches) {
     const homeScore = match.homeScore;
     const awayScore = match.awayScore;
@@ -46,8 +45,8 @@ export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], trend: nu
         pointsMade += homeScore;
         pointsAgainst += awayScore;
         difference += homeScore - awayScore;
-        pointsMadeArray[i] = homeScore;
-        pointsAgainstArray[i] = awayScore;
+        pointsMadeArray.push(homeScore);
+        pointsAgainstArray.push(awayScore);
       } else if (match.awayTeam._id === fantasyTeam._id) {
         // stiamo analizzando la squadra in trasferta
         games++;
@@ -70,11 +69,10 @@ export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], trend: nu
         pointsMade += awayScore;
         pointsAgainst += homeScore;
         difference += awayScore - homeScore;
-        pointsMadeArray[i] = awayScore;
-        pointsAgainstArray[i] = homeScore;
+        pointsMadeArray.push(awayScore);
+        pointsAgainstArray.push(homeScore);
       }
     }
-    i++;
   }
 
   let tableItem: TableItem;
