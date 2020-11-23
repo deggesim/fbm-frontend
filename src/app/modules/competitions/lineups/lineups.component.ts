@@ -6,6 +6,8 @@ import { FantasyRoster, PlayerStatus } from '@app/shared/models/fantasy-roster';
 import { FantasyTeam } from '@app/shared/models/fantasy-team';
 import { Fixture } from '@app/shared/models/fixture';
 import { Lineup } from '@app/shared/models/lineup';
+import { Performance } from '@app/shared/models/performance';
+import { PlayerStats } from '@app/shared/models/player-stats';
 import { RealFixture } from '@app/shared/models/real-fixture';
 import { Round } from '@app/shared/models/round';
 import { User } from '@app/shared/models/user';
@@ -13,11 +15,14 @@ import { AuthService } from '@app/shared/services/auth.service';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { LeagueService } from '@app/shared/services/league.service';
 import { LineupService } from '@app/shared/services/lineup.service';
+import { PerformanceService } from '@app/shared/services/performance.service';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
 import { count, lineUpValid } from '@app/shared/util/lineup';
-import { switchMap, tap } from 'rxjs/operators';
+import { statistics } from '@app/shared/util/statistics';
+import { forkJoin, Observable } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lineups',
@@ -39,6 +44,7 @@ export class LineupsComponent implements OnInit {
   allFieldsSelected = false;
   lineup: Lineup[];
   disableUpdate = true;
+  tooltip = new Map<string, PlayerStats>();
 
   constructor(
     private fb: FormBuilder,
@@ -49,6 +55,7 @@ export class LineupsComponent implements OnInit {
     private realFixtureService: RealFixtureService,
     private fantasyRosterService: FantasyRosterService,
     private lineupService: LineupService,
+    private performanceService: PerformanceService,
   ) {
     this.createForm();
     this.createBenchForm();
@@ -170,6 +177,7 @@ export class LineupsComponent implements OnInit {
             this.lineup = this.initLineup();
           }
         }),
+        switchMap((fantasyRosters: FantasyRoster[]) => this.buildStatistics(fantasyRosters)),
         switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id)),
       ).subscribe((lineup: Lineup[]) => {
         this.form.get('lineup').reset();
@@ -214,6 +222,32 @@ export class LineupsComponent implements OnInit {
       this.lineup[index] = null;
       this.form.get('lineup').setValue(this.lineup);
     }
+  }
+
+  buildStatistics(fantasyRosters: FantasyRoster[]): Observable<PlayerStats[]> {
+    const obs: Observable<PlayerStats>[] = [];
+    for (const fr of fantasyRosters) {
+      obs.push(
+        this.performanceService.getPerformances(fr.roster.player._id).pipe(
+          map((performances: Performance[]) => statistics(fr.roster.player, performances)),
+          tap((playerStats: PlayerStats) => {
+            this.tooltip.set(fr.roster.player._id, playerStats);
+            console.log(fr.roster.player._id, playerStats);
+          })
+        )
+      );
+    }
+    return forkJoin(obs);
+  }
+
+  loadStatistics(fantasyRoster: FantasyRoster) {
+    this.performanceService.getPerformances(fantasyRoster.roster.player._id).pipe(
+      map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances)),
+    ).subscribe((playerStats: PlayerStats) => {
+      this.tooltip.set(fantasyRoster.roster.player._id, playerStats);
+      console.log(this.tooltip);
+
+    });
   }
 
   playerChoosen(fantasyRoster: FantasyRoster): boolean {

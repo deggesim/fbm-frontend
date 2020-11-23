@@ -27,6 +27,10 @@ export class PerformanceService {
     }
   }
 
+  public getPerformances(playerId: string) {
+      return this.http.get<Performance[]>(`${this.endpoint}/performances/player/${playerId}`);
+  }
+
   public save(performances: Performance[]) {
     return this.http.post<Performance>(`${this.endpoint}/performances`, performances);
   }

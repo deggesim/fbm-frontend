@@ -1,15 +1,26 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
-
+<form
+  [formGroup]="form"
+  (ngSubmit)="salva()"
+  class="needs-validation"
+  novalidate
+>
   <fieldset class="fieldset">
     <legend class="legend">
       <fa-icon icon="address-card" class="icon-padding"></fa-icon>Formazioni
     </legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
-
       <div fxFlex="33" fxFlex.xs="100">
         <div class="form-group">
           <label for="round" class="control-label">Round</label>
-          <ng-select id="round" name="round" [items]="rounds" bindLabel="name" formControlName="round" clearAllText="Elimina" (change)="onChangeRound($event)">
+          <ng-select
+            id="round"
+            name="round"
+            [items]="rounds"
+            bindLabel="name"
+            formControlName="round"
+            clearAllText="Elimina"
+            (change)="onChangeRound($event)"
+          >
           </ng-select>
         </div>
       </div>
@@ -17,7 +28,15 @@
       <div fxFlex="33" fxFlex.xs="100">
         <div class="form-group">
           <label for="fixture" class="control-label">Giornata</label>
-          <ng-select id="fixture" name="fixture" [items]="fixtures" bindLabel="name" formControlName="fixture" clearAllText="Elimina" (change)="onChangeFixture($event)">
+          <ng-select
+            id="fixture"
+            name="fixture"
+            [items]="fixtures"
+            bindLabel="name"
+            formControlName="fixture"
+            clearAllText="Elimina"
+            (change)="onChangeFixture($event)"
+          >
           </ng-select>
         </div>
       </div>
@@ -25,14 +44,22 @@
       <div fxFlex="33" fxFlex.xs="100">
         <div class="form-group">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
-          <ng-select id="fantasyTeam" name="fantasyTeam" [items]="fantasyTeams" bindLabel="name" formControlName="fantasyTeam" clearAllText="Elimina" (change)="onChangeFantasyTeam($event)">
+          <ng-select
+            id="fantasyTeam"
+            name="fantasyTeam"
+            [items]="fantasyTeams"
+            bindLabel="name"
+            formControlName="fantasyTeam"
+            clearAllText="Elimina"
+            (change)="onChangeFantasyTeam($event)"
+          >
           </ng-select>
         </div>
       </div>
 
       <ng-container *ngIf="fantasyRostersPresent && allFieldsSelected">
         <div fxFlex="100">
-          <hr>
+          <hr />
         </div>
 
         <!-- PLAYERS-->
@@ -50,17 +77,60 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let fantasyRoster of fantasyRosters" class="table-secondary lineup-height" [ngClass]="{'chosen': playerChoosen(fantasyRoster), 'manina': !disableUpdate}"
-                  (click)="addPlayer(fantasyRoster)">
-                  <td [appPlayerStatus]="fantasyRoster">{{fantasyRoster.roster.player.name}}</td>
-                  <td [appPlayerStatus]="fantasyRoster">{{fantasyRoster.roster.player.nationality}}</td>
-                  <td [appPlayerStatus]="fantasyRoster">{{fantasyRoster.roster.player.role | roleShort}}</td>
-                  <td [appPlayerStatus]="fantasyRoster" fxHide.md fxHide.xs>{{fantasyRoster.roster.team.fullName}}</td>
+                <tr
+                  *ngFor="let fantasyRoster of fantasyRosters"
+                  class="table-secondary lineup-height"
+                  [ngClass]="{
+                    chosen: playerChoosen(fantasyRoster),
+                    manina: !disableUpdate
+                  }"
+                  (click)="addPlayer(fantasyRoster)"
+                  [popover]="statsTooltip"
+                  [popoverContext]="{
+                    stats: tooltip.get(fantasyRoster.roster.player._id)
+                  }"
+                  triggers="mouseenter:mouseleave"
+                  container="body"
+                >
+                  <td [appPlayerStatus]="fantasyRoster">
+                    {{ fantasyRoster.roster.player.name }}
+                  </td>
+                  <td [appPlayerStatus]="fantasyRoster">
+                    {{ fantasyRoster.roster.player.nationality }}
+                  </td>
+                  <td [appPlayerStatus]="fantasyRoster">
+                    {{ fantasyRoster.roster.player.role | roleShort }}
+                  </td>
+                  <td [appPlayerStatus]="fantasyRoster" fxHide.md fxHide.xs>
+                    {{ fantasyRoster.roster.team.fullName }}
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
+
+        <ng-template #statsTooltip let-stats="stats">
+          <h5>Valutazione media: {{ stats.performanceAvg | number: "1.1-1" }}</h5>
+          <p>Ultime performance:</p>
+          <table width="100%">
+            <thead>
+              <tr>
+                <th width="50%">Val.</th>
+                <th width="50%">Min.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="tooltip-height"
+                *ngFor="let performance of stats.trend"
+              >
+                <td>{{ performance.ranking }}</td>
+                <td>{{ performance.minutes }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-template>
 
         <!-- LINEUP-->
         <div fxFlex="49" fxFlex.lt-md="100">
@@ -78,69 +148,153 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let player of lineup; let i=index" class="table-secondary lineup-height" [ngClass]="{'manina': !disableUpdate}" (click)="removePlayer(i)">
-                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">{{player?.spot}}</td>
-                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null" nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
-                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">{{player?.fantasyRoster.roster.player.nationality}}</td>
-                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
-                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">{{player?.benchOrder}}</td>
+                <tr
+                  *ngFor="let player of lineup; let i = index"
+                  class="table-secondary lineup-height"
+                  [ngClass]="{ manina: !disableUpdate }"
+                  (click)="removePlayer(i)"
+                >
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">
+                    {{ player?.spot }}
+                  </td>
+                  <td
+                    [appPlayerStatus]="player ? player?.fantasyRoster : null"
+                    nowrap
+                  >
+                    {{ player?.fantasyRoster.roster.player.name }}
+                  </td>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">
+                    {{ player?.fantasyRoster.roster.player.nationality }}
+                  </td>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">
+                    {{ player?.fantasyRoster.roster.player.role | roleShort }}
+                  </td>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null">
+                    {{ player?.benchOrder }}
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
           <div class="padding text-center">
-            <app-error-message [form-control]="form.get('lineup')" name="Formazione"></app-error-message>
+            <app-error-message
+              [form-control]="form.get('lineup')"
+              name="Formazione"
+            ></app-error-message>
           </div>
           <div class="padding text-center">
-            <button type="button" class="btn btn-primary" [disabled]="form.invalid || disableUpdate" (click)="openModalBenchOrder()">Ordine panchina</button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              [disabled]="form.invalid || disableUpdate"
+              (click)="openModalBenchOrder()"
+            >
+              Ordine panchina
+            </button>
           </div>
         </div>
-
       </ng-container>
 
       <ng-container *ngIf="!fantasyRostersPresent && allFieldsSelected">
         <h4>Roster assente per il round e la giornata selezionati</h4>
       </ng-container>
-
     </div>
   </fieldset>
 
   <div class="text-center padding">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || disableUpdate">Salva</button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="ripristina()">Ripristina</button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="svuota()">Svuota</button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="importa()">Importa</button>
-    <button type="button" class="btn btn-primary" (click)="inviaEmail()">Invia mail</button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="form.invalid || disableUpdate"
+    >
+      Salva
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="disableUpdate"
+      (click)="ripristina()"
+    >
+      Ripristina
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="disableUpdate"
+      (click)="svuota()"
+    >
+      Svuota
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="disableUpdate"
+      (click)="importa()"
+    >
+      Importa
+    </button>
+    <button type="button" class="btn btn-primary" (click)="inviaEmail()">
+      Invia mail
+    </button>
   </div>
-
 </form>
 
 <!-- popup modifica panchina -->
-<div *ngIf="mostraPopupPanchina" class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: true}" tabindex="-1" role="dialog" aria-hidden="true">
-
+<div
+  *ngIf="mostraPopupPanchina"
+  class="modal fade"
+  bsModal
+  #modal="bs-modal"
+  [config]="{ backdrop: 'static', keyboard: false, show: true }"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-
       <div class="modal-header titolo">
         <h4 class="modal-title">Ordine panchinari</h4>
       </div>
 
       <div class="modal-body">
-        <form [formGroup]="benchForm" (ngSubmit)="salvaPanchina()" class="needs-validation" novalidate>
-          <ng-template #sortedListTemplate let-item="item" let-index="index"><span>{{index + 1}}: {{item.value.fantasyRoster.roster.player.name}}</span></ng-template>
+        <form
+          [formGroup]="benchForm"
+          (ngSubmit)="salvaPanchina()"
+          class="needs-validation"
+          novalidate
+        >
+          <ng-template #sortedListTemplate let-item="item" let-index="index"
+            ><span
+              >{{ index + 1 }}:
+              {{ item.value.fantasyRoster.roster.player.name }}</span
+            ></ng-template
+          >
 
           <div class="form-group">
-            <bs-sortable formControlName="sortedList" items="benchPlayers" [itemTemplate]="sortedListTemplate" itemClass="sortable-item" itemActiveClass="sortable-item-active"
-              placeholderClass="placeholderStyle" wrapperClass="sortable-wrapper"></bs-sortable>
+            <bs-sortable
+              formControlName="sortedList"
+              items="benchPlayers"
+              [itemTemplate]="sortedListTemplate"
+              itemClass="sortable-item"
+              itemActiveClass="sortable-item-active"
+              placeholderClass="placeholderStyle"
+              wrapperClass="sortable-wrapper"
+            ></bs-sortable>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Conferma</button>
-            <button type="button" class="btn btn-primary" (click)="annulla()">Annulla</button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="form.invalid"
+            >
+              Conferma
+            </button>
+            <button type="button" class="btn btn-primary" (click)="annulla()">
+              Annulla
+            </button>
           </div>
         </form>
       </div>
-
     </div>
-
   </div>
 </div>
