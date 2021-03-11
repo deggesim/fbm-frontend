@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UserRoleIconComponent } from './user-role-icon.component';
 
@@ -6,7 +6,7 @@ describe('UserRoleIconComponent', () => {
   let component: UserRoleIconComponent;
   let fixture: ComponentFixture<UserRoleIconComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UserRoleIconComponent ]
     })

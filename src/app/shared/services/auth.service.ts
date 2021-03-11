@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Login } from '@app/shared/models/login';
 import { Role, User } from '@app/shared/models/user';
 import { environment } from '@env/environment';
-import * as jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';

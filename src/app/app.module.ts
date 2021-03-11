@@ -30,7 +30,6 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { DeviceDetectorModule } from 'ngx-device-detector';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 
 @NgModule({
@@ -59,7 +58,6 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
     SortableModule.forRoot(),
     ProgressbarModule.forRoot(),
     // fine ngx-bootstrap
-    DeviceDetectorModule.forRoot(),
     NgxChartsModule,
     ToastrModule.forRoot(), // ToastrModule added
     ToastContainerModule,

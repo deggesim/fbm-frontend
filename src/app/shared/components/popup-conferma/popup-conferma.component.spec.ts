@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PopupConfermaComponent } from './popup-conferma.component';
 
@@ -6,7 +6,7 @@ describe('PopupConfermaComponent', () => {
   let component: PopupConfermaComponent;
   let fixture: ComponentFixture<PopupConfermaComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PopupConfermaComponent ]
     })

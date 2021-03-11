@@ -1,4 +1,4 @@
-import { mean } from 'lodash';
+import { mean } from 'lodash-es';
 import { Performance } from '../models/performance';
 import { Player } from '../models/player';
 import { PlayerStats } from '../models/player-stats';
