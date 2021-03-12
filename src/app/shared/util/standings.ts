@@ -40,8 +40,8 @@ export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], trend: nu
           points += 1;
           trendString += 'N';
         }
-        rankingMade += (homeRanking != null ? homeRanking : 0);
-        rankingAgainst += (awayRanking != null ? awayRanking : 0);
+        rankingMade += homeRanking != null ? homeRanking : 0;
+        rankingAgainst += awayRanking != null ? awayRanking : 0;
         pointsMade += homeScore;
         pointsAgainst += awayScore;
         difference += homeScore - awayScore;
@@ -64,8 +64,8 @@ export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], trend: nu
           points += 1;
           trendString += 'N';
         }
-        rankingMade += (awayRanking != null ? awayRanking : 0);
-        rankingAgainst += (homeRanking != null ? homeRanking : 0);
+        rankingMade += awayRanking != null ? awayRanking : 0;
+        rankingAgainst += homeRanking != null ? homeRanking : 0;
         pointsMade += awayScore;
         pointsAgainst += homeScore;
         difference += awayScore - homeScore;

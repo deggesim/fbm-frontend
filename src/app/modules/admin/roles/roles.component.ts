@@ -11,10 +11,9 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-roles',
   templateUrl: './roles.component.html',
-  styleUrls: ['./roles.component.scss']
+  styleUrls: ['./roles.component.scss'],
 })
 export class RolesComponent implements OnInit {
-
   form: FormGroup;
 
   spots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -24,7 +23,7 @@ export class RolesComponent implements OnInit {
     private authService: AuthService,
     private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
-    private sharedService: SharedService,
+    private sharedService: SharedService
   ) {
     this.createForm();
   }
@@ -51,21 +50,23 @@ export class RolesComponent implements OnInit {
 
   salva() {
     const roles = [];
-    Object.keys(this.form.controls).forEach(key => {
+    Object.keys(this.form.controls).forEach((key) => {
       roles.push({ role: key, spots: this.form.controls[key].value });
     });
 
-    this.newSeasonService.setRoles(this.leagueService.getSelectedLeague()._id, roles).pipe(
-      tap((league: League) => {
-        this.leagueService.setSelectedLeague(league);
-      }),
-      switchMap(() => this.authService.refresh()),
-      switchMap(() => this.leagueService.refresh)
-    ).subscribe(() => {
-      const title = 'Modifica ruoli';
-      const message = 'I ruoli della lega sono stati modificati con successo';
-      this.sharedService.notifica(toastType.success, title, message);
-    });
+    this.newSeasonService
+      .setRoles(this.leagueService.getSelectedLeague()._id, roles)
+      .pipe(
+        tap((league: League) => {
+          this.leagueService.setSelectedLeague(league);
+        }),
+        switchMap(() => this.authService.refresh()),
+        switchMap(() => this.leagueService.refresh)
+      )
+      .subscribe(() => {
+        const title = 'Modifica ruoli';
+        const message = 'I ruoli della lega sono stati modificati con successo';
+        this.sharedService.notifica(toastType.success, title, message);
+      });
   }
-
 }

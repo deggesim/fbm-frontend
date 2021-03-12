@@ -9,7 +9,7 @@ import { TransactionComponent } from './transaction/transaction.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'transactions'
+    redirectTo: 'transactions',
   },
   {
     path: 'transactions',
@@ -27,11 +27,11 @@ const routes: Routes = [
       fantasyTeams: FantasyTeamResolverService,
     },
     canActivate: [AuthGuard],
-  }
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class TeamsRoutingModule { }
+export class TeamsRoutingModule {}

@@ -23,10 +23,7 @@ export class RegularSeasonFormat {
   });
 
   // private to disallow creating other instances of this type
-  private constructor(
-    private readonly key: string,
-    public readonly value: RoundRobinType,
-  ) { }
+  private constructor(private readonly key: string, public readonly value: RoundRobinType) {}
 
   public toString() {
     return this.key;

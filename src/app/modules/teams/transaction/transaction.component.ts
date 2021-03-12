@@ -20,10 +20,9 @@ import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operato
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.scss']
+  styleUrls: ['./transaction.component.scss'],
 })
 export class TransactionComponent implements OnInit {
-
   form: FormGroup;
 
   fantasyTeams: FantasyTeam[];
@@ -49,37 +48,30 @@ export class TransactionComponent implements OnInit {
     private sharedService: SharedService,
     private rosterService: RosterService,
     private fantasyRosterService: FantasyRosterService,
-    private fantasyTeamService: FantasyTeamService,
+    private fantasyTeamService: FantasyTeamService
   ) {
     this.createForm();
-    this.leagueService.leagueStatusObservable.subscribe(
-      (leagueStatus: Status) => {
-        this.leagueStatus = leagueStatus;
-      }
-    );
+    this.leagueService.leagueStatusObservable.subscribe((leagueStatus: Status) => {
+      this.leagueStatus = leagueStatus;
+    });
   }
 
   ngOnInit() {
     console.log('init TransactionComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.fantasyTeams = data.fantasyTeams;
-        this.rosters = data.rosterList.content;
-      }
-    );
-
-    this.typeahead$.pipe(
-      debounceTime(750),
-      distinctUntilChanged(),
-      switchMap((value: string) =>
-        iif(
-          () => this.modal.isShown,
-          of(this.rosters),
-          this.rosterService.freePlayers(1, this.limit, value)
-        )),
-    ).subscribe((rosterList: RosterList) => {
-      this.rosters = rosterList.content;
+    this.route.data.subscribe((data) => {
+      this.fantasyTeams = data.fantasyTeams;
+      this.rosters = data.rosterList.content;
     });
+
+    this.typeahead$
+      .pipe(
+        debounceTime(750),
+        distinctUntilChanged(),
+        switchMap((value: string) => iif(() => this.modal.isShown, of(this.rosters), this.rosterService.freePlayers(1, this.limit, value)))
+      )
+      .subscribe((rosterList: RosterList) => {
+        this.rosters = rosterList.content;
+      });
   }
 
   createForm() {
@@ -105,17 +97,18 @@ export class TransactionComponent implements OnInit {
   }
 
   get transactionLabel() {
-    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason ? 'Asta fantamercato' : 'Mercato libero';
+    return this.leagueStatus != null && this.leagueStatus === Status.Preseason ? 'Asta fantamercato' : 'Mercato libero';
   }
 
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
     this.fantasyTeamSelected = fantasyTeam;
     if (fantasyTeam != null) {
-      this.leagueService.nextRealFixture().pipe(
-        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, nextRealFixture._id))
-      ).subscribe((fantasyRosters: FantasyRoster[]) => {
-        this.fantasyRosters = fantasyRosters;
-      });
+      this.leagueService
+        .nextRealFixture()
+        .pipe(switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, nextRealFixture._id)))
+        .subscribe((fantasyRosters: FantasyRoster[]) => {
+          this.fantasyRosters = fantasyRosters;
+        });
       if (this.rosterSelected != null) {
         this.resetForm();
         this.modal.show();
@@ -158,59 +151,69 @@ export class TransactionComponent implements OnInit {
         draft: this.form.value.draft,
         contract: this.form.value.contract,
         yearContract: this.form.value.yearContract,
-        realFixture: this.fantasyRosterSelected.realFixture
+        realFixture: this.fantasyRosterSelected.realFixture,
       };
-      this.fantasyRosterService.update(fantasyRoster).pipe(
-        // switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-        // tap((fantasyTeam: FantasyTeam) => {
-        //   this.fantasyTeamSelected = fantasyTeam;
-        // }),
-        switchMap(() => this.fantasyTeamService.read()),
-        tap((fantasyTeams: FantasyTeam[]) => {
-          this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
-          this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
-        }),
-        switchMap(() => this.rosterService.freePlayers(1, this.limit)),
-        tap((rosterList: RosterList) => { this.rosters = rosterList.content; }),
-        switchMap(() => this.leagueService.nextRealFixture()),
-        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
-      ).subscribe((fr: FantasyRoster[]) => {
-        this.fantasyRosters = fr;
-        const title = 'Modifica tesseramento';
-        const message = 'Tesseramento modificato correttamente';
-        this.sharedService.notifica(toastType.success, title, message);
-        this.rosterSelected = null;
-        this.form.get('roster').reset();
-        this.modal.hide();
-        this.fantasyRosterSelected = null;
-      });
+      this.fantasyRosterService
+        .update(fantasyRoster)
+        .pipe(
+          // switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+          // tap((fantasyTeam: FantasyTeam) => {
+          //   this.fantasyTeamSelected = fantasyTeam;
+          // }),
+          switchMap(() => this.fantasyTeamService.read()),
+          tap((fantasyTeams: FantasyTeam[]) => {
+            this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
+            this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
+          }),
+          switchMap(() => this.rosterService.freePlayers(1, this.limit)),
+          tap((rosterList: RosterList) => {
+            this.rosters = rosterList.content;
+          }),
+          switchMap(() => this.leagueService.nextRealFixture()),
+          switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id))
+        )
+        .subscribe((fr: FantasyRoster[]) => {
+          this.fantasyRosters = fr;
+          const title = 'Modifica tesseramento';
+          const message = 'Tesseramento modificato correttamente';
+          this.sharedService.notifica(toastType.success, title, message);
+          this.rosterSelected = null;
+          this.form.get('roster').reset();
+          this.modal.hide();
+          this.fantasyRosterSelected = null;
+        });
     } else {
       const fantasyRoster: FantasyRoster = {
         ...this.form.value,
       };
-      this.fantasyRosterService.create(fantasyRoster).pipe(
-        // switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-        // tap((fantasyTeam: FantasyTeam) => {
-        //   this.fantasyTeamSelected = fantasyTeam;
-        // }),
-        switchMap(() => this.fantasyTeamService.read()),
-        tap((fantasyTeams: FantasyTeam[]) => {
-          this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
-          this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
-        }),
-        switchMap(() => this.rosterService.freePlayers(1, this.limit)),
-        tap((rosterList: RosterList) => { this.rosters = rosterList.content; }),
-        switchMap(() => this.leagueService.nextRealFixture()),
-        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
-      ).subscribe((fr: FantasyRoster[]) => {
-        this.fantasyRosters = fr;
-        const title = 'Nuovo tesseramento';
-        const message = 'Giocatore tesserato correttamente';
-        this.sharedService.notifica(toastType.success, title, message);
-        this.rosterSelected = null;
-        this.form.get('roster').reset();
-        this.modal.hide();
-      });
+      this.fantasyRosterService
+        .create(fantasyRoster)
+        .pipe(
+          // switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+          // tap((fantasyTeam: FantasyTeam) => {
+          //   this.fantasyTeamSelected = fantasyTeam;
+          // }),
+          switchMap(() => this.fantasyTeamService.read()),
+          tap((fantasyTeams: FantasyTeam[]) => {
+            this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
+            this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
+          }),
+          switchMap(() => this.rosterService.freePlayers(1, this.limit)),
+          tap((rosterList: RosterList) => {
+            this.rosters = rosterList.content;
+          }),
+          switchMap(() => this.leagueService.nextRealFixture()),
+          switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id))
+        )
+        .subscribe((fr: FantasyRoster[]) => {
+          this.fantasyRosters = fr;
+          const title = 'Nuovo tesseramento';
+          const message = 'Giocatore tesserato correttamente';
+          this.sharedService.notifica(toastType.success, title, message);
+          this.rosterSelected = null;
+          this.form.get('roster').reset();
+          this.modal.hide();
+        });
     }
   }
 
@@ -249,45 +252,51 @@ export class TransactionComponent implements OnInit {
   }
 
   rimuovi() {
-    this.fantasyRosterService.remove(this.fantasyRosterSelected._id).pipe(
-      switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-      tap((fantasyTeam: FantasyTeam) => {
-        this.fantasyTeamSelected = fantasyTeam;
-      }),
-      // switchMap(() => this.rosterService.freePlayers()),
-      switchMap(() => this.leagueService.nextRealFixture()),
-      switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
-    ).subscribe((fantasyRosters: FantasyRoster[]) => {
-      this.fantasyRosters = fantasyRosters;
-      const title = 'Giocatore rimosso';
-      const message = 'Il giocatore è stato rimosso correttamente.';
-      this.sharedService.notifica(toastType.success, title, message);
-      this.popupRimuovi.chiudiModale();
-      this.fantasyRosterSelected = null;
-    });
+    this.fantasyRosterService
+      .remove(this.fantasyRosterSelected._id)
+      .pipe(
+        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        tap((fantasyTeam: FantasyTeam) => {
+          this.fantasyTeamSelected = fantasyTeam;
+        }),
+        // switchMap(() => this.rosterService.freePlayers()),
+        switchMap(() => this.leagueService.nextRealFixture()),
+        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id))
+      )
+      .subscribe((fantasyRosters: FantasyRoster[]) => {
+        this.fantasyRosters = fantasyRosters;
+        const title = 'Giocatore rimosso';
+        const message = 'Il giocatore è stato rimosso correttamente.';
+        this.sharedService.notifica(toastType.success, title, message);
+        this.popupRimuovi.chiudiModale();
+        this.fantasyRosterSelected = null;
+      });
   }
 
   rilascia() {
-    this.fantasyRosterService.release(this.fantasyRosterSelected._id).pipe(
-      switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-      tap((fantasyTeam: FantasyTeam) => {
-        this.fantasyTeamSelected = fantasyTeam;
-      }),
-      // switchMap(() => this.rosterService.freePlayers()),
-      switchMap(() => this.leagueService.nextRealFixture()),
-      switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id)),
-    ).subscribe((fantasyRosters: FantasyRoster[]) => {
-      this.fantasyRosters = fantasyRosters;
-      const title = 'Giocatore rilasciato';
-      const message = 'Il giocatore è stato rilasciato correttamente.';
-      this.sharedService.notifica(toastType.success, title, message);
-      this.popupRilascia.chiudiModale();
-      this.fantasyRosterSelected = null;
-    });
+    this.fantasyRosterService
+      .release(this.fantasyRosterSelected._id)
+      .pipe(
+        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        tap((fantasyTeam: FantasyTeam) => {
+          this.fantasyTeamSelected = fantasyTeam;
+        }),
+        // switchMap(() => this.rosterService.freePlayers()),
+        switchMap(() => this.leagueService.nextRealFixture()),
+        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id))
+      )
+      .subscribe((fantasyRosters: FantasyRoster[]) => {
+        this.fantasyRosters = fantasyRosters;
+        const title = 'Giocatore rilasciato';
+        const message = 'Il giocatore è stato rilasciato correttamente.';
+        this.sharedService.notifica(toastType.success, title, message);
+        this.popupRilascia.chiudiModale();
+        this.fantasyRosterSelected = null;
+      });
   }
 
   public isPreseason() {
-    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
+    return this.leagueStatus != null && this.leagueStatus === Status.Preseason;
   }
 
   private resetForm() {

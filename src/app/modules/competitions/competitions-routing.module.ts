@@ -13,7 +13,7 @@ import { StandingsComponent } from './standings/standings.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'calendar'
+    redirectTo: 'calendar',
   },
   {
     path: 'calendar',
@@ -44,7 +44,7 @@ const routes: Routes = [
     component: PerformancesComponent,
     resolve: {
       teams: TeamResolverService,
-      realFixtures: RealFixtureResolverService
+      realFixtures: RealFixtureResolverService,
     },
     canActivate: [AuthGuard],
   },
@@ -60,6 +60,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class CompetitionsRoutingModule { }
+export class CompetitionsRoutingModule {}

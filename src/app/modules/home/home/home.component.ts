@@ -13,10 +13,9 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
   listaLeghe: League[] = [];
   leagueStatus: Status;
 
@@ -24,13 +23,11 @@ export class HomeComponent implements OnInit {
     private sharedService: SharedService,
     private authService: AuthService,
     private leagueService: LeagueService,
-    private router: Router,
+    private router: Router
   ) {
-    this.leagueService.leagueStatusObservable.subscribe(
-      (leagueStatus: Status) => {
-        this.leagueStatus = leagueStatus;
-      }
-    );
+    this.leagueService.leagueStatusObservable.subscribe((leagueStatus: Status) => {
+      this.leagueStatus = leagueStatus;
+    });
   }
 
   ngOnInit() {
@@ -54,18 +51,21 @@ export class HomeComponent implements OnInit {
   }
 
   public login(user: Login) {
-    this.authService.login(user).pipe(
-      tap((loginObj: { user: User, token: string }) => {
-        this.listaLeghe = loginObj.user.leagues;
-        if (this.listaLeghe != null && !isEmpty(this.listaLeghe)) {
-          this.leagueService.setSelectedLeague(this.listaLeghe[0]);
-        }
-        const title = 'Login';
-        const message = 'Login effettuato correttamente';
-        this.sharedService.notifica(toastType.success, title, message);
-      }),
-      switchMap(() => this.leagueService.refresh)
-    ).subscribe();
+    this.authService
+      .login(user)
+      .pipe(
+        tap((loginObj: { user: User; token: string }) => {
+          this.listaLeghe = loginObj.user.leagues;
+          if (this.listaLeghe != null && !isEmpty(this.listaLeghe)) {
+            this.leagueService.setSelectedLeague(this.listaLeghe[0]);
+          }
+          const title = 'Login';
+          const message = 'Login effettuato correttamente';
+          this.sharedService.notifica(toastType.success, title, message);
+        }),
+        switchMap(() => this.leagueService.refresh)
+      )
+      .subscribe();
   }
 
   public selectLeague(league: League) {
@@ -96,5 +96,4 @@ export class HomeComponent implements OnInit {
       }
     });
   }
-
 }

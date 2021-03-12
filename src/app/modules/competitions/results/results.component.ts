@@ -17,10 +17,9 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.scss']
+  styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
-
   form: FormGroup;
 
   rounds: Round[];
@@ -36,18 +35,16 @@ export class ResultsComponent implements OnInit {
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private lineupService: LineupService,
-    private matchService: MatchService,
+    private matchService: MatchService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
     console.log('init ResultsComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.rounds = data.rounds;
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.rounds = data.rounds;
+    });
   }
 
   createForm() {
@@ -93,23 +90,26 @@ export class ResultsComponent implements OnInit {
 
   calcolaRisultato() {
     const { round, fixture, match } = this.form.value;
-    this.matchService.compute(round._id, fixture._id, match._id).pipe(
-      tap((matchComputed) => {
-        this.selectedMatch = matchComputed;
-      }),
-      switchMap(() => this.matchService.read(fixture._id)),
-      tap((matches: Match[]) => {
-        this.matches = matches;
-      }),
-      switchMap(() => this.leagueService.refresh),
-      switchMap(() => this.loadLineups(this.selectedMatch))
-    ).subscribe((lineups) => {
-      this.homeTeamLineup = lineups[0];
-      this.awayTeamLineup = lineups[1];
-      const title = 'Risultato calcolato';
-      const message = 'Il risultato è stato calcolato correttamente';
-      this.sharedService.notifica(toastType.success, title, message);
-    });
+    this.matchService
+      .compute(round._id, fixture._id, match._id)
+      .pipe(
+        tap((matchComputed) => {
+          this.selectedMatch = matchComputed;
+        }),
+        switchMap(() => this.matchService.read(fixture._id)),
+        tap((matches: Match[]) => {
+          this.matches = matches;
+        }),
+        switchMap(() => this.leagueService.refresh),
+        switchMap(() => this.loadLineups(this.selectedMatch))
+      )
+      .subscribe((lineups) => {
+        this.homeTeamLineup = lineups[0];
+        this.awayTeamLineup = lineups[1];
+        const title = 'Risultato calcolato';
+        const message = 'Il risultato è stato calcolato correttamente';
+        this.sharedService.notifica(toastType.success, title, message);
+      });
   }
 
   private loadLineups(match: Match): Observable<[Lineup[], Lineup[]]> {
@@ -119,5 +119,4 @@ export class ResultsComponent implements OnInit {
     const $awayTeamLineup = this.lineupService.lineupByTeam(awayTeam._id, this.form.value.fixture._id);
     return forkJoin([$homeTeamLineup, $awayTeamLineup]);
   }
-
 }

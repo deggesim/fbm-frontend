@@ -83,10 +83,7 @@ export class PlayoffFormat {
   });
 
   // private to disallow creating other instances of this type
-  private constructor(
-    private readonly key: string,
-    public readonly value: PlayoffType,
-  ) { }
+  private constructor(private readonly key: string, public readonly value: PlayoffType) {}
 
   public toString() {
     return this.key;

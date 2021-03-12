@@ -6,12 +6,13 @@ describe('PopupConfermaComponent', () => {
   let component: PopupConfermaComponent;
   let fixture: ComponentFixture<PopupConfermaComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ PopupConfermaComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [PopupConfermaComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PopupConfermaComponent);

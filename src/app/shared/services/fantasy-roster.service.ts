@@ -5,21 +5,17 @@ import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FantasyRosterService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read(fantasyTeamId: string, realFixtureId: string) {
-    return this.http.get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}/real-fixture/${realFixtureId}`)
-      .pipe(
-        tap((fantasyRosters: FantasyRoster[]) => fantasyRosters.sort(sort))
-      );
+    return this.http
+      .get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}/real-fixture/${realFixtureId}`)
+      .pipe(tap((fantasyRosters: FantasyRoster[]) => fantasyRosters.sort(sort)));
   }
 
   public create(fantasyRoster: FantasyRoster) {

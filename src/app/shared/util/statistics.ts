@@ -17,7 +17,7 @@ export const statistics = (player: Player, performances: Performance[]): PlayerS
   ps = {
     player,
     performanceAvg,
-    trend: performancesTrend
+    trend: performancesTrend,
   };
   return ps;
 };
@@ -25,7 +25,7 @@ export const statistics = (player: Player, performances: Performance[]): PlayerS
 export const statsTooltip = (stats: PlayerStats): string => {
   let trend = '<ul>';
   for (const ranking of stats.trend) {
-    trend += `<li>${ranking}</li>`
+    trend += `<li>${ranking}</li>`;
   }
   trend += '</ul>';
   return `

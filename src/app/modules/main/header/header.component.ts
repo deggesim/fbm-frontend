@@ -15,10 +15,9 @@ interface IBreadcrumb {
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-
   @Output() openLogin: EventEmitter<any> = new EventEmitter(true);
   @Output() logout: EventEmitter<any> = new EventEmitter(true);
   @Output() profile: EventEmitter<any> = new EventEmitter(true);
@@ -34,45 +33,36 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
-    private leagueService: LeagueService,
+    private leagueService: LeagueService
   ) {
-    this.authService.userObservable.subscribe(
-      (user: User) => {
-        this.user = user;
-      }
-    );
+    this.authService.userObservable.subscribe((user: User) => {
+      this.user = user;
+    });
 
-    this.leagueService.leagueInfoObservable.subscribe(
-      (leagueInfo: string) => {
-        this.leagueInfo = leagueInfo;
-      }
-    );
+    this.leagueService.leagueInfoObservable.subscribe((leagueInfo: string) => {
+      this.leagueInfo = leagueInfo;
+    });
 
-    this.leagueService.leagueStatusObservable.subscribe(
-      (leagueStatus: Status) => {
-        this.leagueStatus = leagueStatus;
-      }
-    );
+    this.leagueService.leagueStatusObservable.subscribe((leagueStatus: Status) => {
+      this.leagueStatus = leagueStatus;
+    });
   }
 
   ngOnInit() {
     // subscribe to the NavigationEnd event
-    this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd)
-      ).subscribe((event: NavigationEnd) => {
-        // set breadcrumbs
-        const root: ActivatedRoute = this.activatedRoute.root;
-      });
+    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
+      // set breadcrumbs
+      const root: ActivatedRoute = this.activatedRoute.root;
+    });
     this.admin = this.authService.isAdmin();
   }
 
   public isLoggedIn() {
-    return (this.user != null) && this.authService.isLoggedIn();
+    return this.user != null && this.authService.isLoggedIn();
   }
 
   public isAdmin() {
-    return (this.user != null) && this.authService.isAdmin();
+    return this.user != null && this.authService.isAdmin();
   }
 
   public getSelectedLeague() {
@@ -86,11 +76,10 @@ export class HeaderComponent implements OnInit {
   }
 
   public isPreseason() {
-    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
+    return this.leagueStatus != null && this.leagueStatus === Status.Preseason;
   }
 
   get transactionLabel() {
     return this.isPreseason() ? 'Asta fantamercato' : 'Mercato libero';
   }
-
 }

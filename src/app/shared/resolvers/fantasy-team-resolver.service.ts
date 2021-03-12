@@ -6,17 +6,14 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FantasyTeamResolverService implements Resolve<FantasyTeam[]> {
-
-  constructor(
-    private fantasyTeamService: FantasyTeamService
-  ) { }
+  constructor(private fantasyTeamService: FantasyTeamService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): FantasyTeam[] | Observable<FantasyTeam[]> | Promise<FantasyTeam[]> {
-    return this.fantasyTeamService.read().pipe(
-      tap((fantasyTeams: FantasyTeam[]) => fantasyTeams.sort((a, b) => a.name.localeCompare(b.name)))
-    );
+    return this.fantasyTeamService
+      .read()
+      .pipe(tap((fantasyTeams: FantasyTeam[]) => fantasyTeams.sort((a, b) => a.name.localeCompare(b.name))));
   }
 }

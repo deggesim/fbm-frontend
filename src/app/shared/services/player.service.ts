@@ -4,15 +4,12 @@ import { Player } from '@app/shared/models/player';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlayerService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read() {
     return this.http.get<Player[]>(`${this.endpoint}/players`);

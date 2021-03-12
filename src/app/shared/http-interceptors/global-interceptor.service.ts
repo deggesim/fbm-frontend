@@ -1,4 +1,3 @@
-
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
@@ -9,12 +8,7 @@ import { catchError, finalize } from 'rxjs/operators';
 
 @Injectable()
 export class GlobalInterceptor implements HttpInterceptor {
-
-  constructor(
-    private sharedService: SharedService,
-    private spinnerService: SpinnerService,
-    private router: Router
-  ) { }
+  constructor(private sharedService: SharedService, private spinnerService: SpinnerService, private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.headers.get('hideSpinner') !== 'true') {
@@ -32,7 +26,7 @@ export class GlobalInterceptor implements HttpInterceptor {
         if (req.headers.get('hideSpinner') !== 'true') {
           this.spinnerService.end();
         }
-      }));
+      })
+    );
   }
-
 }

@@ -10,10 +10,9 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-user-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-
   users: User[];
 
   userSelected: User;
@@ -23,19 +22,13 @@ export class ListComponent implements OnInit {
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfermaComponent;
   @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfermaComponent;
 
-  constructor(
-    private route: ActivatedRoute,
-    private sharedService: SharedService,
-    private userService: UserService,
-  ) { }
+  constructor(private route: ActivatedRoute, private sharedService: SharedService, private userService: UserService) {}
 
   ngOnInit() {
     console.log('init ListComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.users = data.users;
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.users = data.users;
+    });
   }
 
   nuovo() {
@@ -53,31 +46,37 @@ export class ListComponent implements OnInit {
 
   salva(user: User) {
     if (user._id == null) {
-      this.userService.create(user).pipe(
-        tap(() => {
-          this.mostraPopupModifica = false;
-          const title = 'Nuovo utente';
-          const message = 'Nuovo utente inserito correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
-          this.userSelected = undefined;
-        }),
-        switchMap(() => this.userService.read())
-      ).subscribe((users: User[]) => {
-        this.users = users;
-      });
+      this.userService
+        .create(user)
+        .pipe(
+          tap(() => {
+            this.mostraPopupModifica = false;
+            const title = 'Nuovo utente';
+            const message = 'Nuovo utente inserito correttamente';
+            this.sharedService.notifica(toastType.success, title, message);
+            this.userSelected = undefined;
+          }),
+          switchMap(() => this.userService.read())
+        )
+        .subscribe((users: User[]) => {
+          this.users = users;
+        });
     } else {
-      this.userService.update(user).pipe(
-        tap(() => {
-          this.mostraPopupModifica = false;
-          const title = 'Modifica utente';
-          const message = 'Utente modificato correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
-          this.userSelected = undefined;
-        }),
-        switchMap(() => this.userService.read())
-      ).subscribe((users: User[]) => {
-        this.users = users;
-      });
+      this.userService
+        .update(user)
+        .pipe(
+          tap(() => {
+            this.mostraPopupModifica = false;
+            const title = 'Modifica utente';
+            const message = 'Utente modificato correttamente';
+            this.sharedService.notifica(toastType.success, title, message);
+            this.userSelected = undefined;
+          }),
+          switchMap(() => this.userService.read())
+        )
+        .subscribe((users: User[]) => {
+          this.users = users;
+        });
     }
   }
 
@@ -92,18 +91,21 @@ export class ListComponent implements OnInit {
 
   confermaElimina() {
     if (this.userSelected) {
-      this.userService.delete(this.userSelected._id).pipe(
-        tap(() => {
-          this.popupConfermaElimina.chiudiModale();
-          const title = 'Utente eliminato';
-          const message = 'L\'utente è stato eliminato correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
-          this.userSelected = undefined;
-        }),
-        switchMap(() => this.userService.read()),
-      ).subscribe((users: User[]) => {
-        this.users = users;
-      });
+      this.userService
+        .delete(this.userSelected._id)
+        .pipe(
+          tap(() => {
+            this.popupConfermaElimina.chiudiModale();
+            const title = 'Utente eliminato';
+            const message = "L'utente è stato eliminato correttamente";
+            this.sharedService.notifica(toastType.success, title, message);
+            this.userSelected = undefined;
+          }),
+          switchMap(() => this.userService.read())
+        )
+        .subscribe((users: User[]) => {
+          this.users = users;
+        });
     }
   }
 
@@ -112,15 +114,16 @@ export class ListComponent implements OnInit {
   }
 
   confermaUpload(file: File) {
-    this.userService.upload(file).pipe(
-      switchMap(() => {
-        return this.userService.read();
-      }),
-    ).subscribe((users: User[]) => {
-      this.users = users;
-      this.popupUpload.chiudiModale();
-    });
+    this.userService
+      .upload(file)
+      .pipe(
+        switchMap(() => {
+          return this.userService.read();
+        })
+      )
+      .subscribe((users: User[]) => {
+        this.users = users;
+        this.popupUpload.chiudiModale();
+      });
   }
-
-
 }

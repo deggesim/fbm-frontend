@@ -16,10 +16,9 @@ import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'r
 @Component({
   selector: 'app-player-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-
   leagueInfo: string;
   leagueStatus: Status;
   rosterList: RosterList;
@@ -47,47 +46,42 @@ export class ListComponent implements OnInit {
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private rosterService: RosterService,
-    private playerService: PlayerService,
+    private playerService: PlayerService
   ) {
-    this.leagueService.leagueInfoObservable.subscribe(
-      (leagueInfo: string) => {
-        this.leagueInfo = leagueInfo;
-      }
-    );
+    this.leagueService.leagueInfoObservable.subscribe((leagueInfo: string) => {
+      this.leagueInfo = leagueInfo;
+    });
 
-    this.leagueService.leagueStatusObservable.subscribe(
-      (leagueStatus: Status) => {
-        this.leagueStatus = leagueStatus;
-      }
-    );
+    this.leagueService.leagueStatusObservable.subscribe((leagueStatus: Status) => {
+      this.leagueStatus = leagueStatus;
+    });
   }
 
   ngOnInit() {
     console.log('init ListComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.rosterList = data.rosterList;
-      }
-    );
-
-    this.filter$.pipe(
-      debounceTime(750),
-      distinctUntilChanged(),
-      switchMap(() =>
-        iif(
-          () => this.filter != null && this.filter !== '',
-          this.filter?.length > 2
-            ? this.rosterService.read(this.page, this.limit, this.filter)
-            : of(this.rosterList),
-          this.rosterService.read(this.page, this.limit)
-        )),
-    ).subscribe((rosterList: RosterList) => {
-      this.rosterList = rosterList;
+    this.route.data.subscribe((data) => {
+      this.rosterList = data.rosterList;
     });
+
+    this.filter$
+      .pipe(
+        debounceTime(750),
+        distinctUntilChanged(),
+        switchMap(() =>
+          iif(
+            () => this.filter != null && this.filter !== '',
+            this.filter?.length > 2 ? this.rosterService.read(this.page, this.limit, this.filter) : of(this.rosterList),
+            this.rosterService.read(this.page, this.limit)
+          )
+        )
+      )
+      .subscribe((rosterList: RosterList) => {
+        this.rosterList = rosterList;
+      });
   }
 
   public isPreseason() {
-    return (this.leagueStatus != null) && this.leagueStatus === Status.Preseason;
+    return this.leagueStatus != null && this.leagueStatus === Status.Preseason;
   }
 
   pulisciFiltro(): void {
@@ -129,7 +123,7 @@ export class ListComponent implements OnInit {
         yearBirth,
         height,
         weight,
-        role
+        role,
       },
       team: roster.team,
       realFixture: roster.realFixture,
@@ -155,11 +149,10 @@ export class ListComponent implements OnInit {
         switchMap(() =>
           iif(
             () => this.filter != null && this.filter !== '',
-            this.filter?.length > 2
-              ? this.rosterService.read(this.page, this.limit, this.filter)
-              : of(this.rosterList),
+            this.filter?.length > 2 ? this.rosterService.read(this.page, this.limit, this.filter) : of(this.rosterList),
             this.rosterService.read(this.page, this.limit)
-          )),
+          )
+        ),
         tap(() => {
           this.rosterSelected = undefined;
         })
@@ -179,11 +172,10 @@ export class ListComponent implements OnInit {
         switchMap(() =>
           iif(
             () => this.filter != null && this.filter !== '',
-            this.filter?.length > 2
-              ? this.rosterService.read(this.page, this.limit, this.filter)
-              : of(this.rosterList),
+            this.filter?.length > 2 ? this.rosterService.read(this.page, this.limit, this.filter) : of(this.rosterList),
             this.rosterService.read(this.page, this.limit)
-          )),
+          )
+        ),
         tap(() => {
           this.rosterSelected = undefined;
         })
@@ -206,18 +198,21 @@ export class ListComponent implements OnInit {
 
   confermaElimina() {
     if (this.rosterSelected) {
-      this.rosterService.delete(this.rosterSelected._id).pipe(
-        tap(() => {
-          this.popupConfermaElimina.chiudiModale();
-          const title = 'Giocatore eliminata';
-          const message = 'Il giocatore è stato eliminato correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
-          this.rosterSelected = undefined;
-        }),
-        switchMap(() => this.rosterService.read(this.page, this.limit)),
-      ).subscribe((rosterList: RosterList) => {
-        this.rosterList = rosterList;
-      });
+      this.rosterService
+        .delete(this.rosterSelected._id)
+        .pipe(
+          tap(() => {
+            this.popupConfermaElimina.chiudiModale();
+            const title = 'Giocatore eliminata';
+            const message = 'Il giocatore è stato eliminato correttamente';
+            this.sharedService.notifica(toastType.success, title, message);
+            this.rosterSelected = undefined;
+          }),
+          switchMap(() => this.rosterService.read(this.page, this.limit))
+        )
+        .subscribe((rosterList: RosterList) => {
+          this.rosterList = rosterList;
+        });
     }
   }
 
@@ -233,14 +228,16 @@ export class ListComponent implements OnInit {
   }
 
   uploadPercentage() {
-    timer(0, 1000).pipe(
-      switchMap(() => this.playerService.uploadPercentage()),
-      tap((percentage: number) => {
-        this.percentage = percentage;
-        this.progressbarType = percentage >= 100 ? 'success' : 'warning';
-      }),
-      takeWhile((percentage: number) => percentage < 100),
-    ).subscribe();
+    timer(0, 1000)
+      .pipe(
+        switchMap(() => this.playerService.uploadPercentage()),
+        tap((percentage: number) => {
+          this.percentage = percentage;
+          this.progressbarType = percentage >= 100 ? 'success' : 'warning';
+        }),
+        takeWhile((percentage: number) => percentage < 100)
+      )
+      .subscribe();
   }
 
   reloadPage() {
@@ -249,5 +246,4 @@ export class ListComponent implements OnInit {
       this.rosterList = rosterList;
     });
   }
-
 }

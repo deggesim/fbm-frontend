@@ -8,10 +8,9 @@ import { BehaviorSubject, EMPTY, forkJoin, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LeagueService {
-
   private endpoint = environment.endpoint;
 
   private $leagueInfo = new BehaviorSubject<string>(null);
@@ -20,9 +19,7 @@ export class LeagueService {
   private $leagueStatus = new BehaviorSubject<Status>(null);
   private $leagueStatusObservable = this.$leagueStatus.asObservable();
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public getSelectedLeague(): League {
     return JSON.parse(localStorage.getItem('league'));
@@ -98,5 +95,4 @@ export class LeagueService {
     const selectedLeague = this.getSelectedLeague();
     return selectedLeague != null ? this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-postseason`) : EMPTY;
   }
-
 }

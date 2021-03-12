@@ -13,10 +13,9 @@ import { SharedService } from '@app/shared/services/shared.service';
 @Component({
   selector: 'app-edit-league',
   templateUrl: './edit-league.component.html',
-  styleUrls: ['./edit-league.component.scss']
+  styleUrls: ['./edit-league.component.scss'],
 })
 export class EditLeagueComponent implements OnInit {
-
   form: FormGroup;
 
   league: League;
@@ -25,7 +24,7 @@ export class EditLeagueComponent implements OnInit {
     RegularSeasonFormat.SINGLE,
     RegularSeasonFormat.DOUBLE,
     RegularSeasonFormat.DOUBLE_PLUS,
-    RegularSeasonFormat.TWO_DOUBLE
+    RegularSeasonFormat.TWO_DOUBLE,
   ];
 
   playoffFormatList: PlayoffFormat[] = [
@@ -53,53 +52,46 @@ export class EditLeagueComponent implements OnInit {
     PlayoutFormat.SF5_F7,
   ];
 
-  cupFormatList: CupFormat[] = [
-    CupFormat.F8,
-    CupFormat.QF2_F4,
-    CupFormat.QF2_SF2_F,
-    CupFormat.QF2_SF2_F2,
-  ];
+  cupFormatList: CupFormat[] = [CupFormat.F8, CupFormat.QF2_F4, CupFormat.QF2_SF2_F, CupFormat.QF2_SF2_F2];
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private newSeasonService: NewSeasonService,
-    private sharedService: SharedService,
+    private sharedService: SharedService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
-    this.route.data.subscribe(
-      (data) => {
-        this.league = data.league;
-        const {
-          name,
-          realGames,
-          regularSeasonFormat,
-          playoffFormat,
-          playoutFormat,
-          cupFormat,
-          roundRobinFirstRealFixture,
-          playoffFirstRealFixture,
-          playoutFirstRealFixture,
-          cupFirstRealFixture
-        } = this.league;
-        this.form.setValue({
-          name,
-          realGames,
-          regularSeasonFormat,
-          playoffFormat,
-          playoutFormat,
-          cupFormat,
-          roundRobinFirstRealFixture,
-          playoffFirstRealFixture,
-          playoutFirstRealFixture,
-          cupFirstRealFixture
-        });
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.league = data.league;
+      const {
+        name,
+        realGames,
+        regularSeasonFormat,
+        playoffFormat,
+        playoutFormat,
+        cupFormat,
+        roundRobinFirstRealFixture,
+        playoffFirstRealFixture,
+        playoutFirstRealFixture,
+        cupFirstRealFixture,
+      } = this.league;
+      this.form.setValue({
+        name,
+        realGames,
+        regularSeasonFormat,
+        playoffFormat,
+        playoutFormat,
+        cupFormat,
+        roundRobinFirstRealFixture,
+        playoffFirstRealFixture,
+        playoutFirstRealFixture,
+        cupFirstRealFixture,
+      });
+    });
   }
 
   createForm() {
@@ -136,7 +128,5 @@ export class EditLeagueComponent implements OnInit {
       const message = 'Lega modificata con successo';
       this.sharedService.notifica(toastType.success, title, message);
     });
-
   }
-
 }

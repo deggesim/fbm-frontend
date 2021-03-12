@@ -3,14 +3,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@app/shared/models/user';
 import { AuthService } from '@app/shared/services/auth.service';
 
-
 @Component({
   selector: 'app-user-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, OnChanges {
-
   @Input() user: User;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
@@ -18,10 +16,7 @@ export class EditComponent implements OnInit, OnChanges {
   form: FormGroup;
   roleList = [];
 
-  constructor(
-    private fb: FormBuilder,
-    private authService: AuthService
-  ) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.createForm();
   }
 
@@ -52,5 +47,4 @@ export class EditComponent implements OnInit, OnChanges {
     const user: User = { _id: this.user ? this.user._id : null, name, email, password, role };
     this.salva.emit(user);
   }
-
 }

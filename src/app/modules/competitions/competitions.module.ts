@@ -25,7 +25,7 @@ import { StandingsComponent } from './standings/standings.component';
     StandingsComponent,
     PerformancesComponent,
     LineupsComponent,
-    ResultsComponent
+    ResultsComponent,
   ],
   imports: [
     ReactiveFormsModule,
@@ -41,7 +41,7 @@ import { StandingsComponent } from './standings/standings.component';
     // fine ngx-bootstrap
     FontAwesomeModule,
     SharedModule,
-    CompetitionsRoutingModule
-  ]
+    CompetitionsRoutingModule,
+  ],
 })
-export class CompetitionsModule { }
+export class CompetitionsModule {}

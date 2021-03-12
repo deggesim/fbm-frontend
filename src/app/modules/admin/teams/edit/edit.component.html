@@ -1,48 +1,53 @@
 <form [formGroup]="form" (ngSubmit)="salvaEvent()" class="needs-validation" novalidate>
-
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
-
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="fullName" class="control-label">Nome completo *</label>
-        <input type="text" class="form-control" id="fullName" name="fullName" formControlName="fullName" [ngClass]="{'is-invalid': form.get('fullName').invalid && form.get('fullName').dirty}">
-        <div *ngIf="form.get('fullName').hasError('required') && form.get('fullName').dirty" class="invalid-feedback">Il campo Nome completo è obbligatorio</div>
+        <input
+          type="text"
+          class="form-control"
+          id="fullName"
+          name="fullName"
+          formControlName="fullName"
+          [ngClass]="{ 'is-invalid': form.get('fullName').invalid && form.get('fullName').dirty }"
+        />
+        <div *ngIf="form.get('fullName').hasError('required') && form.get('fullName').dirty" class="invalid-feedback">
+          Il campo Nome completo è obbligatorio
+        </div>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="sponsor" class="control-label">Sponsor</label>
-        <input type="text" class="form-control" id="sponsor" name="sponsor" formControlName="sponsor">
+        <input type="text" class="form-control" id="sponsor" name="sponsor" formControlName="sponsor" />
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="city" class="control-label">Città</label>
-        <input type="text" class="form-control" id="city" name="city" formControlName="city">
+        <input type="text" class="form-control" id="city" name="city" formControlName="city" />
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="abbreviation" class="control-label">Sigla</label>
-        <input type="text" class="form-control" id="abbreviation" name="abbreviation" formControlName="abbreviation">
+        <input type="text" class="form-control" id="abbreviation" name="abbreviation" formControlName="abbreviation" />
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="name" class="control-label">Nome</label>
-        <input type="text" class="form-control" id="name" name="name" formControlName="name">
+        <input type="text" class="form-control" id="name" name="name" formControlName="name" />
       </div>
     </div>
-
   </div>
 
   <div class="text-center">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
     <button type="button" class="btn btn-primary" (click)="annulla.emit()">Annulla</button>
   </div>
-
 </form>

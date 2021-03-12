@@ -5,13 +5,10 @@ import { RoundService } from '@app/shared/services/round.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoundResolverService implements Resolve<Round[]> {
-
-  constructor(
-    private roundService: RoundService
-  ) { }
+  constructor(private roundService: RoundService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Round[] | Observable<Round[]> | Promise<Round[]> {
     return this.roundService.read();

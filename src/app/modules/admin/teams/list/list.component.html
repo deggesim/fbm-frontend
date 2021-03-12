@@ -6,9 +6,7 @@
 </div>
 
 <fieldset class="fieldset">
-  <legend class="legend">
-    <fa-icon icon="shield-alt" class="icon-padding"></fa-icon>Squadre
-  </legend>
+  <legend class="legend"><fa-icon icon="shield-alt" class="icon-padding"></fa-icon>Squadre</legend>
   <div class="table-responsive" *ngIf="teams && teams.length > 0; else empty">
     <table class="table table-hover">
       <thead class="thead-dark">
@@ -24,11 +22,11 @@
 
       <tbody>
         <tr *ngFor="let team of teams" class="table-secondary">
-          <td>{{team.fullName}}</td>
-          <td>{{team.sponsor}}</td>
-          <td>{{team.name}}</td>
-          <td>{{team.city}}</td>
-          <td>{{team.abbreviation}}</td>
+          <td>{{ team.fullName }}</td>
+          <td>{{ team.sponsor }}</td>
+          <td>{{ team.name }}</td>
+          <td>{{ team.city }}</td>
+          <td>{{ team.abbreviation }}</td>
 
           <td class="text-nowrap">
             <button type="button" class="btn btn-warning" (click)="modifica(team)" tooltip="Modifica" placement="top">
@@ -50,26 +48,38 @@
   </ng-template>
 </fieldset>
 
-
 <!-- popup elimina -->
-<app-popup-conferma #popupConfermaElimina titolo="Elimina squadra" btnConferma="Elimina" btnAnnulla="Annulla" (conferma)="confermaElimina()" (annulla)="popupConfermaElimina.chiudiModale()">
+<app-popup-conferma
+  #popupConfermaElimina
+  titolo="Elimina squadra"
+  btnConferma="Elimina"
+  btnAnnulla="Annulla"
+  (conferma)="confermaElimina()"
+  (annulla)="popupConfermaElimina.chiudiModale()"
+>
 </app-popup-conferma>
 
 <!-- popup inserimento/modifica squadra -->
-<div *ngIf="mostraPopupModifica" class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: true}" tabindex="-1" role="dialog" aria-hidden="true">
-
+<div
+  *ngIf="mostraPopupModifica"
+  class="modal fade"
+  bsModal
+  #modal="bs-modal"
+  [config]="{ backdrop: 'static', keyboard: false, show: true }"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-
       <div class="modal-header titolo">
-        <h4 class="modal-title">{{titoloModale}}</h4>
+        <h4 class="modal-title">{{ titoloModale }}</h4>
       </div>
 
       <div class="modal-body">
         <app-team-edit [team]="teamSelected" (salva)="salva($event)" (annulla)="annulla()"></app-team-edit>
       </div>
     </div>
-
   </div>
 </div>
 

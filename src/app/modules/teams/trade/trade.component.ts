@@ -16,10 +16,9 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-trade',
   templateUrl: './trade.component.html',
-  styleUrls: ['./trade.component.scss']
+  styleUrls: ['./trade.component.scss'],
 })
 export class TradeComponent implements OnInit {
-
   form: FormGroup;
   nextRealFixture: RealFixture;
   fantasyTeams1: FantasyTeam[];
@@ -39,7 +38,7 @@ export class TradeComponent implements OnInit {
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private fantasyRosterService: FantasyRosterService,
-    private fantasyTeamService: FantasyTeamService,
+    private fantasyTeamService: FantasyTeamService
   ) {
     this.createForm();
     this.leagueService.nextRealFixture().subscribe((realFixture: RealFixture) => {
@@ -48,22 +47,23 @@ export class TradeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe(
-      (data) => {
-        this.fantasyTeams1 = data.fantasyTeams;
-        this.fantasyTeams2 = data.fantasyTeams;
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.fantasyTeams1 = data.fantasyTeams;
+      this.fantasyTeams2 = data.fantasyTeams;
+    });
   }
 
   createForm() {
-    this.form = this.fb.group({
-      fantasyTeam1: [undefined, Validators.required],
-      fantasyTeam2: [undefined, [Validators.required]],
-      outPlayers: [[], Validators.required],
-      inPlayers: [[], Validators.required],
-      buyout: [undefined],
-    }, { validator: fantasyTeamMustBeDifferent });
+    this.form = this.fb.group(
+      {
+        fantasyTeam1: [undefined, Validators.required],
+        fantasyTeam2: [undefined, [Validators.required]],
+        outPlayers: [[], Validators.required],
+        inPlayers: [[], Validators.required],
+        buyout: [undefined],
+      },
+      { validator: fantasyTeamMustBeDifferent }
+    );
   }
 
   selectFantasyTeam1(fantasyTeam: FantasyTeam) {
@@ -74,7 +74,6 @@ export class TradeComponent implements OnInit {
       });
     }
     console.log(this.form.controls.fantasyTeam1);
-
   }
 
   selectFantasyTeam2(fantasyTeam: FantasyTeam) {
@@ -142,26 +141,28 @@ export class TradeComponent implements OnInit {
       .concat(allTradedPlayers$)
       .concat(this.fantasyTeamService.update(this.fantasyTeam1Selected), this.fantasyTeamService.update(this.fantasyTeam2Selected));
 
-    forkJoin(all$).pipe(
-      switchMap(() => this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
-      tap((fantasyRosters: FantasyRoster[]) => {
-        this.fantasyRosters1 = fantasyRosters;
-      }),
-      switchMap(() => this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
-      tap((fantasyRosters: FantasyRoster[]) => {
-        this.fantasyRosters2 = fantasyRosters;
-      }),
-    ).subscribe(() => {
-      const title = 'Scambio completato';
-      const message = 'I giocatori sono stati scambiati con successo';
-      this.sharedService.notifica(toastType.success, title, message);
-    });
+    forkJoin(all$)
+      .pipe(
+        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
+        tap((fantasyRosters: FantasyRoster[]) => {
+          this.fantasyRosters1 = fantasyRosters;
+        }),
+        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
+        tap((fantasyRosters: FantasyRoster[]) => {
+          this.fantasyRosters2 = fantasyRosters;
+        })
+      )
+      .subscribe(() => {
+        const title = 'Scambio completato';
+        const message = 'I giocatori sono stati scambiati con successo';
+        this.sharedService.notifica(toastType.success, title, message);
+      });
 
     this.mostraPopupTradeBlock = false;
     this.form.patchValue({
       outPlayers: [],
       inPlayers: [],
-      buyout: undefined
+      buyout: undefined,
     });
     this.fantasyRosters1Selected = [];
     this.fantasyRosters2Selected = [];
@@ -177,7 +178,7 @@ export class TradeComponent implements OnInit {
     this.form.patchValue({
       outPlayers: [],
       inPlayers: [],
-      buyout: undefined
+      buyout: undefined,
     });
     this.fantasyRosters1Selected = [];
     this.fantasyRosters2Selected = [];

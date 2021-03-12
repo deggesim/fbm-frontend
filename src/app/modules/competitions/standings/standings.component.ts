@@ -12,10 +12,9 @@ import { calculator } from '@app/shared/util/standings';
 @Component({
   selector: 'app-standings',
   templateUrl: './standings.component.html',
-  styleUrls: ['./standings.component.scss']
+  styleUrls: ['./standings.component.scss'],
 })
 export class StandingsComponent implements OnInit {
-
   form: FormGroup;
   rounds: Round[];
   selectedRound: Round;
@@ -23,24 +22,18 @@ export class StandingsComponent implements OnInit {
   nextFixture: Fixture;
   trend: Parameter;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private leagueService: LeagueService,
-  ) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private leagueService: LeagueService) {
     this.createForm();
   }
 
   ngOnInit() {
     console.log('init StandingsComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.rounds = data.rounds.filter((round: Round) => round.roundRobin);
-        this.leagueService.nextFixture().subscribe((nextFixture: Fixture) => {
-          this.nextFixture = nextFixture;
-        });
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.rounds = data.rounds.filter((round: Round) => round.roundRobin);
+      this.leagueService.nextFixture().subscribe((nextFixture: Fixture) => {
+        this.nextFixture = nextFixture;
+      });
+    });
   }
 
   onChange(round: Round) {
@@ -82,5 +75,4 @@ export class StandingsComponent implements OnInit {
       });
     }
   }
-
 }

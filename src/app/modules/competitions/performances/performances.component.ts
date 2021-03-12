@@ -11,10 +11,9 @@ import { SharedService } from '@app/shared/services/shared.service';
 @Component({
   selector: 'app-performances',
   templateUrl: './performances.component.html',
-  styleUrls: ['./performances.component.scss']
+  styleUrls: ['./performances.component.scss'],
 })
 export class PerformancesComponent implements OnInit {
-
   form: FormGroup;
   teams: Team[];
   realFixtures: RealFixture[];
@@ -27,19 +26,17 @@ export class PerformancesComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private sharedService: SharedService,
-    private performanceService: PerformanceService,
+    private performanceService: PerformanceService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
     console.log('init PerformancesComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.teams = data.teams;
-        this.realFixtures = data.realFixtures;
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.teams = data.teams;
+      this.realFixtures = data.realFixtures;
+    });
   }
 
   createForm() {
@@ -50,7 +47,7 @@ export class PerformancesComponent implements OnInit {
       url: [undefined, [Validators.pattern(urlRegex)]],
       filter: [0],
       bonus: [undefined],
-      performanceArray: this.fb.array([])
+      performanceArray: this.fb.array([]),
     });
 
     this.form.get('filter').valueChanges.subscribe((value: number) => {
@@ -60,7 +57,6 @@ export class PerformancesComponent implements OnInit {
     this.form.get('bonus').valueChanges.subscribe((value: boolean) => {
       this.applyBonusMalus();
     });
-
   }
 
   get performanceArray(): FormArray {
@@ -90,18 +86,21 @@ export class PerformancesComponent implements OnInit {
   }
 
   retrievePerformances() {
-    this.performanceService.boxScore(this.selectedTeam._id, this.selectedRealFixture._id, this.form.value.url)
+    this.performanceService
+      .boxScore(this.selectedTeam._id, this.selectedRealFixture._id, this.form.value.url)
       .subscribe((performances: Performance[]) => {
         this.performanceArray.reset();
         this.performanceArray.clear();
         this.performances = performances;
         for (const performance of performances) {
-          this.performanceArray.push(this.fb.group({
-            _id: performance._id,
-            ranking: [performance.ranking],
-            minutes: [performance.minutes],
-            grade: [performance.grade],
-          }));
+          this.performanceArray.push(
+            this.fb.group({
+              _id: performance._id,
+              ranking: [performance.ranking],
+              minutes: [performance.minutes],
+              grade: [performance.grade],
+            })
+          );
         }
         const title = 'Valutazioni recuperate';
         const message = 'Le valutazioni sono state recuperate correttamente';
@@ -130,7 +129,8 @@ export class PerformancesComponent implements OnInit {
   }
 
   private getPerformances(filter?: number) {
-    this.performanceService.getByRealFixture(this.selectedTeam._id, this.selectedRealFixture._id, filter)
+    this.performanceService
+      .getByRealFixture(this.selectedTeam._id, this.selectedRealFixture._id, filter)
       .subscribe((performances: Performance[]) => {
         this.performances = performances;
         for (const performance of performances) {
@@ -174,5 +174,4 @@ export class PerformancesComponent implements OnInit {
       formControl.get('grade').setValue(bonus ? AppConfig.WinBonus : AppConfig.DefeatMalus);
     });
   }
-
 }

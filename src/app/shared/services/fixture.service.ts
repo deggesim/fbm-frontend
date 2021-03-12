@@ -4,15 +4,12 @@ import { Fixture } from '@app/shared/models/fixture';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FixtureService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read() {
     return this.http.get<Fixture[]>(`${this.endpoint}/fixtures`);

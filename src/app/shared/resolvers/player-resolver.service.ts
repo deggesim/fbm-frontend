@@ -6,17 +6,12 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlayerResolverService implements Resolve<Player[]> {
-
-  constructor(
-    private playerService: PlayerService
-  ) { }
+  constructor(private playerService: PlayerService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Player[] | Observable<Player[]> | Promise<Player[]> {
-    return this.playerService.read().pipe(
-      tap((players: Player[]) => players.sort((a, b) => a.name.localeCompare(b.name)))
-    );
+    return this.playerService.read().pipe(tap((players: Player[]) => players.sort((a, b) => a.name.localeCompare(b.name))));
   }
 }

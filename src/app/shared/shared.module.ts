@@ -22,13 +22,7 @@ import { PlayerStatusDirective } from './directives/player-status.directive';
     ToStringPipe,
     PlayerStatusDirective,
   ],
-  imports: [
-    CommonModule,
-    FontAwesomeModule,
-    ModalModule,
-    TooltipModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule],
   exports: [
     CommonModule,
     FormsModule,
@@ -39,6 +33,6 @@ import { PlayerStatusDirective } from './directives/player-status.directive';
     RoleShortPipe,
     ToStringPipe,
     PlayerStatusDirective,
-  ]
+  ],
 })
-export class SharedModule { }
+export class SharedModule {}

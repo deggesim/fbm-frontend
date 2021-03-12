@@ -2,10 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { isEmpty } from '@app/shared/util/is-empty';
 
 @Pipe({
-  name: 'toString'
+  name: 'toString',
 })
 export class ToStringPipe implements PipeTransform {
-
   transform(value: any, ...args: any[]): any {
     let ret = '';
     let endOfRet = '';
@@ -20,5 +19,4 @@ export class ToStringPipe implements PipeTransform {
     }
     return ret + endOfRet;
   }
-
 }

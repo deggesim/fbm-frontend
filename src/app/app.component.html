@@ -10,12 +10,18 @@
 </div>
 
 <!-- popup profilo utente -->
-<div *ngIf="mostraPopupUserProfile" class="modal fade" bsModal #userProfilePage="bs-modal"
-  [config]="{backdrop: 'static', keyboard: false, show: true}" tabindex="-1" role="dialog" aria-hidden="true">
-
+<div
+  *ngIf="mostraPopupUserProfile"
+  class="modal fade"
+  bsModal
+  #userProfilePage="bs-modal"
+  [config]="{ backdrop: 'static', keyboard: false, show: true }"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-md">
     <div class="modal-content">
-
       <div class="modal-header titolo">
         <h4 class="modal-title">Profilo utente</h4>
       </div>
@@ -24,6 +30,5 @@
         <app-user-profile (salva)="salva($event)" (annulla)="annulla()"></app-user-profile>
       </div>
     </div>
-
   </div>
 </div>

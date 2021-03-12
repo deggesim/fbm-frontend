@@ -1,15 +1,19 @@
 <form [formGroup]="form" (ngSubmit)="calcolaRisultato()" class="needs-validation" novalidate>
-
   <fieldset class="fieldset">
-    <legend class="legend">
-      <fa-icon icon="poll-h" class="icon-padding"></fa-icon>Risultati
-    </legend>
+    <legend class="legend"><fa-icon icon="poll-h" class="icon-padding"></fa-icon>Risultati</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
-
       <div fxFlex="33" fxFlex.xs="100">
         <div class="form-group">
           <label for="round" class="control-label">Round</label>
-          <ng-select id="round" name="round" [items]="rounds" bindLabel="name" formControlName="round" clearAllText="Elimina" (change)="onChangeRound($event)">
+          <ng-select
+            id="round"
+            name="round"
+            [items]="rounds"
+            bindLabel="name"
+            formControlName="round"
+            clearAllText="Elimina"
+            (change)="onChangeRound($event)"
+          >
           </ng-select>
         </div>
       </div>
@@ -17,7 +21,15 @@
       <div fxFlex="33" fxFlex.xs="100">
         <div class="form-group">
           <label for="fixture" class="control-label">Giornata</label>
-          <ng-select id="fixture" name="fixture" [items]="fixtures" bindLabel="name" formControlName="fixture" clearAllText="Elimina" (change)="onChangeFixture($event)">
+          <ng-select
+            id="fixture"
+            name="fixture"
+            [items]="fixtures"
+            bindLabel="name"
+            formControlName="fixture"
+            clearAllText="Elimina"
+            (change)="onChangeFixture($event)"
+          >
           </ng-select>
         </div>
       </div>
@@ -25,30 +37,37 @@
       <div fxFlex="33" fxFlex.xs="100">
         <div class="form-group">
           <label for="match" class="control-label">Incontro</label>
-          <ng-select id="match" name="match" [items]="matches" formControlName="match" clearAllText="Elimina" (change)="onChangeMatch($event)">
-            <ng-template ng-label-tmp let-item="item" let-index="index">
-              {{item.homeTeam.name}} - {{item.awayTeam.name}}
-            </ng-template>
-            <ng-template ng-option-tmp let-item="item" let-index="index">
-              {{item.homeTeam.name}} - {{item.awayTeam.name}}
-            </ng-template>
+          <ng-select
+            id="match"
+            name="match"
+            [items]="matches"
+            formControlName="match"
+            clearAllText="Elimina"
+            (change)="onChangeMatch($event)"
+          >
+            <ng-template ng-label-tmp let-item="item" let-index="index"> {{ item.homeTeam.name }} - {{ item.awayTeam.name }} </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index"> {{ item.homeTeam.name }} - {{ item.awayTeam.name }} </ng-template>
           </ng-select>
         </div>
       </div>
 
       <ng-container *ngIf="matches">
         <div fxFlex="100">
-          <hr>
+          <hr />
         </div>
 
         <!-- SQUADRA 1 -->
         <ng-container *ngIf="selectedMatch">
           <div fxFlex="49" fxFlex.lt-md="100">
             <div>
-              <h4>{{selectedMatch.homeTeam.name}} {{selectedMatch.homeScore}}</h4>
+              <h4>{{ selectedMatch.homeTeam.name }} {{ selectedMatch.homeScore }}</h4>
             </div>
-            <div><label>Fattore campo: {{selectedMatch.homeFactor}}</label></div>
-            <div><label>Valutazione: {{selectedMatch.homeRanking}} - Pagelle: {{selectedMatch.homeGrade}}</label></div>
+            <div>
+              <label>Fattore campo: {{ selectedMatch.homeFactor }}</label>
+            </div>
+            <div>
+              <label>Valutazione: {{ selectedMatch.homeRanking }} - Pagelle: {{ selectedMatch.homeGrade }}</label>
+            </div>
             <div class="table-responsive">
               <table class="table table-hover">
                 <thead class="thead-dark">
@@ -66,16 +85,16 @@
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let player of homeTeamLineup; let i=index" class="table-secondary lineup-height">
-                    <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
-                    <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
-                    <td>{{player?.benchOrder}}</td>
-                    <td>{{player?.performance.ranking}}</td>
-                    <td>{{player?.performance.minutes}}</td>
-                    <td>{{player?.performance.grade}}</td>
-                    <td>{{player?.matchReport?.realRanking40Min}}</td>
-                    <td>{{player?.matchReport?.realRanking}}</td>
-                    <td>{{player?.matchReport?.minutesUsed}}</td>
+                  <tr *ngFor="let player of homeTeamLineup; let i = index" class="table-secondary lineup-height">
+                    <td nowrap>{{ player?.fantasyRoster.roster.player.name }}</td>
+                    <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
+                    <td>{{ player?.benchOrder }}</td>
+                    <td>{{ player?.performance.ranking }}</td>
+                    <td>{{ player?.performance.minutes }}</td>
+                    <td>{{ player?.performance.grade }}</td>
+                    <td>{{ player?.matchReport?.realRanking40Min }}</td>
+                    <td>{{ player?.matchReport?.realRanking }}</td>
+                    <td>{{ player?.matchReport?.minutesUsed }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -87,10 +106,12 @@
         <ng-container *ngIf="selectedMatch">
           <div fxFlex="49" fxFlex.lt-md="100">
             <div>
-              <h4>{{selectedMatch.awayTeam.name}} {{selectedMatch.awayScore}}</h4>
+              <h4>{{ selectedMatch.awayTeam.name }} {{ selectedMatch.awayScore }}</h4>
             </div>
             <div><label>&nbsp;</label></div>
-            <div><label>Valutazione: {{selectedMatch.awayRanking}} - Pagelle: {{selectedMatch.awayGrade}}</label></div>
+            <div>
+              <label>Valutazione: {{ selectedMatch.awayRanking }} - Pagelle: {{ selectedMatch.awayGrade }}</label>
+            </div>
             <div class="table-responsive">
               <table class="table table-hover">
                 <thead class="thead-dark">
@@ -108,30 +129,27 @@
                 </thead>
 
                 <tbody>
-                  <tr *ngFor="let player of awayTeamLineup; let i=index" class="table-secondary lineup-height">
-                    <td nowrap>{{player?.fantasyRoster.roster.player.name}}</td>
-                    <td>{{player?.fantasyRoster.roster.player.role | roleShort}}</td>
-                    <td>{{player?.benchOrder}}</td>
-                    <td>{{player?.performance.ranking}}</td>
-                    <td>{{player?.performance.minutes}}</td>
-                    <td>{{player?.performance.grade}}</td>
-                    <td>{{player?.matchReport?.realRanking40Min}}</td>
-                    <td>{{player?.matchReport?.realRanking}}</td>
-                    <td>{{player?.matchReport?.minutesUsed}}</td>
+                  <tr *ngFor="let player of awayTeamLineup; let i = index" class="table-secondary lineup-height">
+                    <td nowrap>{{ player?.fantasyRoster.roster.player.name }}</td>
+                    <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
+                    <td>{{ player?.benchOrder }}</td>
+                    <td>{{ player?.performance.ranking }}</td>
+                    <td>{{ player?.performance.minutes }}</td>
+                    <td>{{ player?.performance.grade }}</td>
+                    <td>{{ player?.matchReport?.realRanking40Min }}</td>
+                    <td>{{ player?.matchReport?.realRanking }}</td>
+                    <td>{{ player?.matchReport?.minutesUsed }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
         </ng-container>
-
       </ng-container>
-
     </div>
   </fieldset>
 
   <div class="text-center padding">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Calcola risultato</button>
   </div>
-
 </form>

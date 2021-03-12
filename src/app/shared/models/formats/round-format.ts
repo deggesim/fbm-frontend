@@ -5,7 +5,7 @@ type RoundFormatType = {
 
 export class RoundFormat {
   public static readonly ROUND_ROBIN = new RoundFormat('ROUND_ROBIN', {
-    label: 'Girone all\'Italiana',
+    label: "Girone all'Italiana",
   });
   public static readonly PLAYOFF = new RoundFormat('PLAYOFF', {
     label: 'playoff',
@@ -18,10 +18,7 @@ export class RoundFormat {
   });
 
   // private to disallow creating other instances of this type
-  private constructor(
-    private readonly key: string,
-    public readonly value: RoundFormatType,
-  ) { }
+  private constructor(private readonly key: string, public readonly value: RoundFormatType) {}
 
   public toString() {
     return this.key;

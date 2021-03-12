@@ -6,12 +6,13 @@ describe('EditLeagueComponent', () => {
   let component: EditLeagueComponent;
   let fixture: ComponentFixture<EditLeagueComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ EditLeagueComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [EditLeagueComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EditLeagueComponent);

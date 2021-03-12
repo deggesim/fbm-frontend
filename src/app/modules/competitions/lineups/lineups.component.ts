@@ -27,10 +27,9 @@ import { map, switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-lineups',
   templateUrl: './lineups.component.html',
-  styleUrls: ['./lineups.component.scss']
+  styleUrls: ['./lineups.component.scss'],
 })
 export class LineupsComponent implements OnInit {
-
   form: FormGroup;
   benchForm: FormGroup;
   benchPlayers: Lineup[];
@@ -55,7 +54,7 @@ export class LineupsComponent implements OnInit {
     private realFixtureService: RealFixtureService,
     private fantasyRosterService: FantasyRosterService,
     private lineupService: LineupService,
-    private performanceService: PerformanceService,
+    private performanceService: PerformanceService
   ) {
     this.createForm();
     this.createBenchForm();
@@ -64,11 +63,9 @@ export class LineupsComponent implements OnInit {
 
   ngOnInit() {
     console.log('init LineupsComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.rounds = data.rounds;
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.rounds = data.rounds;
+    });
   }
 
   createForm() {
@@ -96,13 +93,14 @@ export class LineupsComponent implements OnInit {
     }
 
     // count EXT, COM, STR, ITA
-    const MAX_EXT_OPT_345 = this.leagueService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_EXT_OPT_345');
+    const MAX_EXT_OPT_345 = this.leagueService.getSelectedLeague().parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
     if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
       return { lineupInvalid: true };
     }
-    const MAX_STRANGERS_OPT_55 =
-      this.leagueService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_STRANGERS_OPT_55');
-    if ((count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com)) > MAX_STRANGERS_OPT_55.value) {
+    const MAX_STRANGERS_OPT_55 = this.leagueService
+      .getSelectedLeague()
+      .parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
+    if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
       return { lineupInvalid: true };
     }
     // TODO
@@ -110,12 +108,12 @@ export class LineupsComponent implements OnInit {
     // if (count(lineup, PlayerStatus.Str) > MAX_STR.value) {
     //   return { lineupInvalid: true };
     // }
-    const MIN_NAT_PLAYERS = this.leagueService.getSelectedLeague().parameters.find(param => param.parameter === 'MIN_NAT_PLAYERS');
+    const MIN_NAT_PLAYERS = this.leagueService.getSelectedLeague().parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
     if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
       return { lineupInvalid: true };
     }
     return null;
-  }
+  };
 
   onChangeRound(round: Round) {
     this.form.get('fixture').reset();
@@ -167,27 +165,30 @@ export class LineupsComponent implements OnInit {
       if (this.authService.isAdmin() || teamManagedByLoggedUser) {
         this.disableUpdate = false;
       }
-      this.realFixtureService.getByFixture(this.form.value.fixture._id).pipe(
-        switchMap((realFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, realFixture._id)),
-        tap((fantasyRosters: FantasyRoster[]) => {
-          this.fantasyRostersPresent = fantasyRosters != null && !isEmpty(fantasyRosters);
-          this.allFieldsSelected = true;
-          if (this.fantasyRostersPresent) {
-            this.fantasyRosters = fantasyRosters;
-            this.lineup = this.initLineup();
+      this.realFixtureService
+        .getByFixture(this.form.value.fixture._id)
+        .pipe(
+          switchMap((realFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, realFixture._id)),
+          tap((fantasyRosters: FantasyRoster[]) => {
+            this.fantasyRostersPresent = fantasyRosters != null && !isEmpty(fantasyRosters);
+            this.allFieldsSelected = true;
+            if (this.fantasyRostersPresent) {
+              this.fantasyRosters = fantasyRosters;
+              this.lineup = this.initLineup();
+            }
+          }),
+          switchMap((fantasyRosters: FantasyRoster[]) => this.buildStatistics(fantasyRosters)),
+          switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id))
+        )
+        .subscribe((lineup: Lineup[]) => {
+          this.form.get('lineup').reset();
+          this.lineup = this.initLineup();
+          if (lineup != null && !isEmpty(lineup)) {
+            this.lineup = lineup;
+            this.form.get('lineup').setValue(this.lineup);
+            this.form.get('lineup').markAsDirty();
           }
-        }),
-        switchMap((fantasyRosters: FantasyRoster[]) => this.buildStatistics(fantasyRosters)),
-        switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id)),
-      ).subscribe((lineup: Lineup[]) => {
-        this.form.get('lineup').reset();
-        this.lineup = this.initLineup();
-        if (lineup != null && !isEmpty(lineup)) {
-          this.lineup = lineup;
-          this.form.get('lineup').setValue(this.lineup);
-          this.form.get('lineup').markAsDirty();
-        }
-      });
+        });
     }
   }
 
@@ -203,12 +204,12 @@ export class LineupsComponent implements OnInit {
         // find first hole
         let index = this.lineup.indexOf(null);
         index = index === -1 ? this.lineup.length : index;
-        const benchOrder = (index > AppConfig.Starters - 1 && index < AppConfig.MinPlayersInLineup) ? index + 1 - AppConfig.Starters : null;
+        const benchOrder = index > AppConfig.Starters - 1 && index < AppConfig.MinPlayersInLineup ? index + 1 - AppConfig.Starters : null;
         const newPlayer: Lineup = {
           fantasyRoster,
           spot: index + 1,
           benchOrder,
-          fixture: this.form.value.fixture
+          fixture: this.form.value.fixture,
         };
         this.lineup[index] = newPlayer;
       }
@@ -241,13 +242,13 @@ export class LineupsComponent implements OnInit {
   }
 
   loadStatistics(fantasyRoster: FantasyRoster) {
-    this.performanceService.getPerformances(fantasyRoster.roster.player._id).pipe(
-      map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances)),
-    ).subscribe((playerStats: PlayerStats) => {
-      this.tooltip.set(fantasyRoster.roster.player._id, playerStats);
-      console.log(this.tooltip);
-
-    });
+    this.performanceService
+      .getPerformances(fantasyRoster.roster.player._id)
+      .pipe(map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances)))
+      .subscribe((playerStats: PlayerStats) => {
+        this.tooltip.set(fantasyRoster.roster.player._id, playerStats);
+        console.log(this.tooltip);
+      });
   }
 
   playerChoosen(fantasyRoster: FantasyRoster): boolean {
@@ -260,7 +261,7 @@ export class LineupsComponent implements OnInit {
   }
 
   openModalBenchOrder() {
-    this.benchPlayers = this.lineup.filter(player => player != null && player.benchOrder != null);
+    this.benchPlayers = this.lineup.filter((player) => player != null && player.benchOrder != null);
     this.benchForm.get('sortedList').setValue(this.benchPlayers);
     this.mostraPopupPanchina = true;
   }
@@ -290,7 +291,7 @@ export class LineupsComponent implements OnInit {
   }
 
   salva() {
-    const filteredLineup = this.lineup.filter(lineup => lineup != null);
+    const filteredLineup = this.lineup.filter((lineup) => lineup != null);
     this.lineupService.save(this.form.value.fantasyTeam._id, this.form.value.fixture._id, filteredLineup).subscribe(() => {
       const title = 'Formazione salvata';
       const message = 'La formazione è stata salvata correttamente';
@@ -306,7 +307,7 @@ export class LineupsComponent implements OnInit {
             fantasyRoster: player.fantasyRoster,
             spot: player.spot,
             benchOrder: player.benchOrder,
-            fixture: player.fixture
+            fixture: player.fixture,
           };
         });
         this.form.get('lineup').markAsPristine();

@@ -4,15 +4,12 @@ import { RealFixture } from '@app/shared/models/real-fixture';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RealFixtureService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read(prepared?: boolean) {
     let endpoint = `${this.endpoint}/real-fixtures`;

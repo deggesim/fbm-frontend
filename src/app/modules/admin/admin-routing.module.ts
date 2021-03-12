@@ -27,7 +27,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'step-one'
+        redirectTo: 'step-one',
       },
       {
         path: 'step-one',
@@ -37,7 +37,7 @@ const routes: Routes = [
         path: 'step-two',
         component: NewSeasonStepTwoComponent,
         resolve: {
-          users: UsersResolverService
+          users: UsersResolverService,
         },
       },
     ],
@@ -48,7 +48,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'edit-league'
+        redirectTo: 'edit-league',
       },
       {
         path: 'edit-league',
@@ -65,7 +65,7 @@ const routes: Routes = [
         path: 'teams',
         component: TeamListComponent,
         resolve: {
-          teams: TeamResolverService
+          teams: TeamResolverService,
         },
       },
       {
@@ -76,7 +76,7 @@ const routes: Routes = [
         path: 'players',
         component: PlayerListComponent,
         resolve: {
-          rosterList: RosterResolverService
+          rosterList: RosterResolverService,
         },
       },
     ],
@@ -87,27 +87,27 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'teams'
+        redirectTo: 'teams',
       },
       {
         path: 'teams',
         component: TeamListComponent,
         resolve: {
-          teams: TeamResolverService
+          teams: TeamResolverService,
         },
       },
       {
         path: 'players',
         component: PlayerListComponent,
         resolve: {
-          rosterList: RosterResolverService
+          rosterList: RosterResolverService,
         },
       },
       {
         path: 'fantasy-teams',
         component: FantasyTeamListComponent,
         resolve: {
-          fantasyTeams: FantasyTeamResolverService
+          fantasyTeams: FantasyTeamResolverService,
         },
       },
       {
@@ -115,7 +115,7 @@ const routes: Routes = [
         component: RoundsComponent,
         resolve: {
           rounds: RoundResolverService,
-          fantasyTeams: FantasyTeamResolverService
+          fantasyTeams: FantasyTeamResolverService,
         },
       },
       {
@@ -131,7 +131,7 @@ const routes: Routes = [
     path: 'users',
     component: UserListComponent,
     resolve: {
-      users: UsersResolverService
+      users: UsersResolverService,
     },
   },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -139,6 +139,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

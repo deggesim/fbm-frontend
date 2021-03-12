@@ -10,10 +10,7 @@ import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @NgModule({
-  declarations: [
-    HeaderComponent,
-    UserProfileComponent,
-  ],
+  declarations: [HeaderComponent, UserProfileComponent],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -24,9 +21,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
     SharedModule,
     RouterModule,
   ],
-  exports: [
-    HeaderComponent,
-    UserProfileComponent,
-  ]
+  exports: [HeaderComponent, UserProfileComponent],
 })
-export class MainModule { }
+export class MainModule {}

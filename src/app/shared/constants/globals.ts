@@ -2,7 +2,7 @@ export const toastType = {
   success: 'success',
   error: 'error',
   info: 'info',
-  warning: 'warning'
+  warning: 'warning',
 };
 
 export enum AppConfig {
@@ -15,5 +15,5 @@ export enum AppConfig {
   'FirstBenchPlayerIndex' = 5,
   'LastBenchPlayerIndex' = 9,
   'WinBonus' = 6,
-  'DefeatMalus' = 5
+  'DefeatMalus' = 5,
 }

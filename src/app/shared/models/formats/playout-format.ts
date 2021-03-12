@@ -75,10 +75,7 @@ export class PlayoutFormat {
   });
 
   // private to disallow creating other instances of this type
-  private constructor(
-    private readonly key: string,
-    public readonly value: PlayoutType,
-  ) { }
+  private constructor(private readonly key: string, public readonly value: PlayoutType) {}
 
   public toString() {
     return this.key;

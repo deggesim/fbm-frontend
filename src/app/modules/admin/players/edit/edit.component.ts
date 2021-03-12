@@ -11,10 +11,9 @@ import { TeamService } from '@app/shared/services/team.service';
 @Component({
   selector: 'app-player-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, OnChanges {
-
   @Input() roster: Roster;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
@@ -29,7 +28,7 @@ export class EditComponent implements OnInit, OnChanges {
     private fb: FormBuilder,
     private teamService: TeamService,
     private leagueService: LeagueService,
-    private realFixtureService: RealFixtureService,
+    private realFixtureService: RealFixtureService
   ) {
     this.createForm();
   }
@@ -85,5 +84,4 @@ export class EditComponent implements OnInit, OnChanges {
     }
     this.salva.emit(roster);
   }
-
 }

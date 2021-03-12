@@ -1,11 +1,18 @@
 <form [formGroup]="form" class="needs-validation" novalidate>
   <fieldset class="fieldset">
-    <legend class="legend">
-      <fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifiche
-    </legend>
+    <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifiche</legend>
 
     <div class="form-group">
-      <ng-select id="round" name="round" [items]="rounds" bindLabel="name" formControlName="round" clearAllText="Elimina" (change)="onChange($event)" placeholder="Round">
+      <ng-select
+        id="round"
+        name="round"
+        [items]="rounds"
+        bindLabel="name"
+        formControlName="round"
+        clearAllText="Elimina"
+        (change)="onChange($event)"
+        placeholder="Round"
+      >
       </ng-select>
     </div>
 
@@ -28,30 +35,30 @@
             <th tooltip="Media punti subiti">Media s.</th>
             <th tooltip="Differenza canestri">Diff.</th>
             <th>Trend</th>
-            <th tooltip="Media punti fatti nelle ultime {{trend.value}} partite" placement="left">Tr. media f.</th>
-            <th tooltip="Media punti subiti nelle ultime {{trend.value}} partite" placement="left">Tr. media s.</th>
+            <th tooltip="Media punti fatti nelle ultime {{ trend.value }} partite" placement="left">Tr. media f.</th>
+            <th tooltip="Media punti subiti nelle ultime {{ trend.value }} partite" placement="left">Tr. media s.</th>
           </tr>
         </thead>
 
         <tbody>
           <tr *ngFor="let tableItem of table" class="table-secondary">
-            <td>{{tableItem.fantasyTeam.name}}</td>
-            <td>{{tableItem.points}}</td>
-            <td>{{tableItem.games}}</td>
-            <td>{{tableItem.won}}</td>
-            <td>{{tableItem.lost}}</td>
-            <td>{{tableItem.rankingMade}}</td>
-            <td>{{tableItem.rankingAgainst}}</td>
-            <td>{{tableItem.avarageRankingMade | number:'1.1-1'}}</td>
-            <td>{{tableItem.avarageRankingAgainst | number:'1.1-1'}}</td>
-            <td>{{tableItem.pointsMade}}</td>
-            <td>{{tableItem.pointsAgainst}}</td>
-            <td>{{tableItem.avaragePointsMade | number:'1.1-1'}}</td>
-            <td>{{tableItem.avaragePointsAgainst | number:'1.1-1'}}</td>
-            <td>{{tableItem.difference}}</td>
-            <td>{{tableItem.trend}}</td>
-            <td>{{tableItem.trendAvaragePointsMade | number:'1.1-1'}}</td>
-            <td>{{tableItem.trendAvaragePointsAgainst | number:'1.1-1'}}</td>
+            <td>{{ tableItem.fantasyTeam.name }}</td>
+            <td>{{ tableItem.points }}</td>
+            <td>{{ tableItem.games }}</td>
+            <td>{{ tableItem.won }}</td>
+            <td>{{ tableItem.lost }}</td>
+            <td>{{ tableItem.rankingMade }}</td>
+            <td>{{ tableItem.rankingAgainst }}</td>
+            <td>{{ tableItem.avarageRankingMade | number: '1.1-1' }}</td>
+            <td>{{ tableItem.avarageRankingAgainst | number: '1.1-1' }}</td>
+            <td>{{ tableItem.pointsMade }}</td>
+            <td>{{ tableItem.pointsAgainst }}</td>
+            <td>{{ tableItem.avaragePointsMade | number: '1.1-1' }}</td>
+            <td>{{ tableItem.avaragePointsAgainst | number: '1.1-1' }}</td>
+            <td>{{ tableItem.difference }}</td>
+            <td>{{ tableItem.trend }}</td>
+            <td>{{ tableItem.trendAvaragePointsMade | number: '1.1-1' }}</td>
+            <td>{{ tableItem.trendAvaragePointsAgainst | number: '1.1-1' }}</td>
           </tr>
         </tbody>
       </table>
@@ -60,7 +67,5 @@
     <ng-template #empty>
       <h4 class="padding">Nessun turno selezionato</h4>
     </ng-template>
-
   </fieldset>
-
 </form>

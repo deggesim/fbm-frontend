@@ -4,15 +4,12 @@ import { Lineup } from '@app/shared/models/lineup';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LineupService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read() {
     return this.http.get<Lineup[]>(`${this.endpoint}/lineups`);

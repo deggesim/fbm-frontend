@@ -2,19 +2,14 @@ import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 import { FantasyRoster, PlayerStatus } from '../models/fantasy-roster';
 
 @Directive({
-  selector: '[appPlayerStatus]'
+  selector: '[appPlayerStatus]',
 })
 export class PlayerStatusDirective implements OnInit {
-
   @Input('appPlayerStatus') player: FantasyRoster;
 
   domElement: any;
-  constructor(
-    private renderer: Renderer2,
-    private elementRef: ElementRef
-  ) {
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {
     this.domElement = this.elementRef.nativeElement;
-
   }
   ngOnInit(): void {
     if (this.player) {

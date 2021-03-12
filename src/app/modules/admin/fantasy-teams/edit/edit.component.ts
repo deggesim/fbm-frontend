@@ -8,10 +8,9 @@ import { atLeastOne } from '@app/shared/util/validations';
 @Component({
   selector: 'app-fantasy-team-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, OnChanges {
-
   @Input() fantasyTeam: FantasyTeam;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
@@ -21,10 +20,7 @@ export class EditComponent implements OnInit, OnChanges {
   users: User[];
   usersLoading = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
-  ) {
+  constructor(private fb: FormBuilder, private userService: UserService) {
     this.createForm();
   }
 
@@ -49,7 +45,7 @@ export class EditComponent implements OnInit, OnChanges {
         extraPlayers,
         pointsPenalty,
         balancePenalty,
-        owners
+        owners,
       } = fantasyTeam;
       this.form.patchValue({
         name,
@@ -60,7 +56,7 @@ export class EditComponent implements OnInit, OnChanges {
         extraPlayers,
         pointsPenalty,
         balancePenalty,
-        owners
+        owners,
       });
     }
   }
@@ -89,7 +85,7 @@ export class EditComponent implements OnInit, OnChanges {
       extraPlayers,
       pointsPenalty,
       balancePenalty,
-      owners
+      owners,
     } = this.form.value;
     const fantasyTeam: FantasyTeam = {
       _id: this.fantasyTeam ? this.fantasyTeam._id : null,
@@ -101,7 +97,7 @@ export class EditComponent implements OnInit, OnChanges {
       extraPlayers,
       pointsPenalty,
       balancePenalty,
-      owners
+      owners,
     };
     this.salva.emit(fantasyTeam);
   }
@@ -109,5 +105,4 @@ export class EditComponent implements OnInit, OnChanges {
   trackUserByFn(user: User) {
     return user._id;
   }
-
 }

@@ -4,15 +4,12 @@ import { Round } from '@app/shared/models/round';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RoundService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read() {
     return this.http.get<Round[]>(`${this.endpoint}/rounds`);
@@ -33,5 +30,4 @@ export class RoundService {
   public matches(round: Round) {
     return this.http.post<Round>(`${this.endpoint}/rounds/${round._id}/matches`, round);
   }
-
 }

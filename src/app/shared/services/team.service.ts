@@ -4,15 +4,12 @@ import { Team } from '@app/shared/models/team';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TeamService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read() {
     return this.http.get<Team[]>(`${this.endpoint}/teams`);

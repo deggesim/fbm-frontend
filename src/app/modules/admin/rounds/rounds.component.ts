@@ -11,10 +11,9 @@ import { isEmpty } from '@app/shared/util/is-empty';
 @Component({
   selector: 'app-rounds',
   templateUrl: './rounds.component.html',
-  styleUrls: ['./rounds.component.scss']
+  styleUrls: ['./rounds.component.scss'],
 })
 export class RoundsComponent implements OnInit {
-
   form: FormGroup;
 
   rounds: Round[];
@@ -25,20 +24,18 @@ export class RoundsComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private sharedService: SharedService,
-    private roundService: RoundService,
+    private roundService: RoundService
   ) {
     this.createForm();
   }
 
   ngOnInit() {
     console.log('init RoundsComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.rounds = data.rounds;
-        this.fantasyTeams = data.fantasyTeams;
-        this.form.get('unsortedList').setValue(this.fantasyTeams);
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.rounds = data.rounds;
+      this.fantasyTeams = data.fantasyTeams;
+      this.form.get('unsortedList').setValue(this.fantasyTeams);
+    });
   }
 
   createForm() {
@@ -84,5 +81,4 @@ export class RoundsComponent implements OnInit {
       this.selectedRound = round;
     });
   }
-
 }

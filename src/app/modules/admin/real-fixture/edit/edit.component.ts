@@ -9,10 +9,9 @@ import { TeamService } from '@app/shared/services/team.service';
 @Component({
   selector: 'app-real-fixture-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, OnChanges {
-
   @Input() realFixture: RealFixture;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
@@ -24,11 +23,7 @@ export class EditComponent implements OnInit, OnChanges {
   teamsWithNoGame: Team[];
   teamsWithNoGameLoading = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private teamService: TeamService,
-    private fixtureService: FixtureService,
-  ) {
+  constructor(private fb: FormBuilder, private teamService: TeamService, private fixtureService: FixtureService) {
     this.createForm();
   }
 
@@ -48,12 +43,7 @@ export class EditComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const realFixture: RealFixture = changes.realFixture.currentValue;
     if (realFixture != null) {
-      const {
-        name,
-        prepared,
-        fixtures,
-        teamsWithNoGame,
-      } = realFixture;
+      const { name, prepared, fixtures, teamsWithNoGame } = realFixture;
       this.form.patchValue({
         name,
         prepared,
@@ -75,12 +65,7 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   salvaEvent(): void {
-    const {
-      name,
-      prepared,
-      fixtures,
-      teamsWithNoGame,
-    } = this.form.value;
+    const { name, prepared, fixtures, teamsWithNoGame } = this.form.value;
     const realFixture: RealFixture = {
       _id: this.realFixture ? this.realFixture._id : null,
       name,
@@ -98,5 +83,4 @@ export class EditComponent implements OnInit, OnChanges {
   trackTeamByFn(team: Team) {
     return team._id;
   }
-
 }

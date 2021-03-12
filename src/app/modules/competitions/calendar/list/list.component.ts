@@ -16,10 +16,9 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-calendar-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
-
   form: FormGroup;
   user: User;
   rounds: Round[];
@@ -35,23 +34,19 @@ export class ListComponent implements OnInit {
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private roundService: RoundService,
-    private matchService: MatchService,
+    private matchService: MatchService
   ) {
     this.createForm();
-    this.authService.userObservable.subscribe(
-      (user: User) => {
-        this.user = user;
-      }
-    );
+    this.authService.userObservable.subscribe((user: User) => {
+      this.user = user;
+    });
   }
 
   ngOnInit() {
     console.log('init RoundsComponent');
-    this.route.data.subscribe(
-      (data) => {
-        this.rounds = data.rounds;
-      }
-    );
+    this.route.data.subscribe((data) => {
+      this.rounds = data.rounds;
+    });
   }
 
   createForm() {
@@ -66,7 +61,7 @@ export class ListComponent implements OnInit {
   }
 
   public isAdmin() {
-    return (this.user != null) && this.authService.isAdmin();
+    return this.user != null && this.authService.isAdmin();
   }
 
   reset() {
@@ -86,23 +81,26 @@ export class ListComponent implements OnInit {
   }
 
   salva(matches: Match[]) {
-    this.matchService.updateFixture(matches, this.selectedFixture._id).pipe(
-      tap(() => {
-        this.mostraPopupModifica = false;
-        this.matches = undefined;
-      }),
-      switchMap(() => this.leagueService.refresh),
-      switchMap(() => this.roundService.read()),
-    ).subscribe((rounds: Round[]) => {
-      this.rounds = rounds;
-      this.selectedRound = rounds.find((round: Round) => {
-        return this.selectedRound._id === round._id;
+    this.matchService
+      .updateFixture(matches, this.selectedFixture._id)
+      .pipe(
+        tap(() => {
+          this.mostraPopupModifica = false;
+          this.matches = undefined;
+        }),
+        switchMap(() => this.leagueService.refresh),
+        switchMap(() => this.roundService.read())
+      )
+      .subscribe((rounds: Round[]) => {
+        this.rounds = rounds;
+        this.selectedRound = rounds.find((round: Round) => {
+          return this.selectedRound._id === round._id;
+        });
+        this.selectedFixture = null;
+        const title = 'Modifica risultati';
+        const message = 'Risultati modificati correttamente';
+        this.sharedService.notifica(toastType.success, title, message);
       });
-      this.selectedFixture = null;
-      const title = 'Modifica risultati';
-      const message = 'Risultati modificati correttamente';
-      this.sharedService.notifica(toastType.success, title, message);
-    });
   }
 
   annulla(): void {

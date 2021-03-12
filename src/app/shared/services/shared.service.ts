@@ -8,17 +8,13 @@ import { toastType } from '@app/shared/constants/globals';
 
 @Injectable()
 export class SharedService {
-
   private bsConfig: Partial<BsDatepickerConfig> = {
     containerClass: 'theme-dark-blue',
     showWeekNumbers: false,
-    dateInputFormat: 'DD/MM/YYYY'
+    dateInputFormat: 'DD/MM/YYYY',
   };
 
-  constructor(
-    private localeService: BsLocaleService,
-    private toastr: ToastrService,
-  ) {
+  constructor(private localeService: BsLocaleService, private toastr: ToastrService) {
     defineLocale('it', itLocale);
     this.localeService.use('it');
   }
@@ -44,11 +40,11 @@ export class SharedService {
           break;
         case 401:
           titolo = 'Utente non loggato';
-          descrizione = 'L\'utente non è loggato o la sessione è scaduta';
+          descrizione = "L'utente non è loggato o la sessione è scaduta";
           break;
         case 403:
           titolo = 'Utente non autorizzato';
-          descrizione = 'L\'utente non è autorizzato ad eseguire l\'operazione richiesta';
+          descrizione = "L'utente non è autorizzato ad eseguire l'operazione richiesta";
           break;
         case 422:
           titolo = 'Errore nella richiesta';

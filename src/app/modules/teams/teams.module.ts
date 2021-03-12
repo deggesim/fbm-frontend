@@ -12,10 +12,7 @@ import { TradeComponent } from './trade/trade.component';
 import { TransactionComponent } from './transaction/transaction.component';
 
 @NgModule({
-  declarations: [
-    TransactionComponent,
-    TradeComponent
-  ],
+  declarations: [TransactionComponent, TradeComponent],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -29,6 +26,6 @@ import { TransactionComponent } from './transaction/transaction.component';
     SharedModule,
     TeamsRoutingModule,
   ],
-  providers: []
+  providers: [],
 })
-export class TeamsModule { }
+export class TeamsModule {}

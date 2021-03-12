@@ -6,12 +6,13 @@ describe('ErrorMessageComponent', () => {
   let component: ErrorMessageComponent;
   let fixture: ComponentFixture<ErrorMessageComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ ErrorMessageComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [ErrorMessageComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ErrorMessageComponent);

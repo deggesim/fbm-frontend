@@ -1,16 +1,20 @@
 <form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
-
   <fieldset class="fieldset">
-    <legend class="legend">
-      <fa-icon icon="exchange-alt" class="icon-padding"></fa-icon>Scambi
-    </legend>
+    <legend class="legend"><fa-icon icon="exchange-alt" class="icon-padding"></fa-icon>Scambi</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
-
       <!-- FANTASYTEAM #1-->
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">
           <label for="fantasyTeam" class="control-label">Fantasquadra #1</label>
-          <ng-select id="fantasyTeam1" name="fantasyTeam1" [items]="fantasyTeams1" bindLabel="name" formControlName="fantasyTeam1" clearAllText="Elimina" (change)="selectFantasyTeam1($event)">
+          <ng-select
+            id="fantasyTeam1"
+            name="fantasyTeam1"
+            [items]="fantasyTeams1"
+            bindLabel="name"
+            formControlName="fantasyTeam1"
+            clearAllText="Elimina"
+            (change)="selectFantasyTeam1($event)"
+          >
           </ng-select>
           <app-error-message [form-control]="form.get('fantasyTeam1')"></app-error-message>
         </div>
@@ -29,13 +33,18 @@
             </thead>
 
             <tbody>
-              <tr *ngFor="let fr of fantasyRosters1" class="table-secondary manina" (click)="switchOutPlayerToTradeBlock(fr)" [ngClass]="{'chosen': player1Choosen(fr)}">
-                <td [appPlayerStatus]="fr">{{fr.roster.player.name}}</td>
-                <td [appPlayerStatus]="fr">{{fr.status}}</td>
-                <td [appPlayerStatus]="fr">{{fr.contract != null ? fr.contract : 'D'}}</td>
-                <td [appPlayerStatus]="fr">{{fr.yearContract}}</td>
-                <td [appPlayerStatus]="fr">{{fr.roster.player.role}}</td>
-                <td [appPlayerStatus]="fr">{{fr.roster.team.fullName}}</td>
+              <tr
+                *ngFor="let fr of fantasyRosters1"
+                class="table-secondary manina"
+                (click)="switchOutPlayerToTradeBlock(fr)"
+                [ngClass]="{ chosen: player1Choosen(fr) }"
+              >
+                <td [appPlayerStatus]="fr">{{ fr.roster.player.name }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.status }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
               </tr>
             </tbody>
           </table>
@@ -46,7 +55,15 @@
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-group">
           <label for="fantasyTeam" class="control-label">Fantasquadra #2</label>
-          <ng-select id="fantasyTeam2" name="fantasyTeam2" [items]="fantasyTeams2" bindLabel="name" formControlName="fantasyTeam2" clearAllText="Elimina" (change)="selectFantasyTeam2($event)">
+          <ng-select
+            id="fantasyTeam2"
+            name="fantasyTeam2"
+            [items]="fantasyTeams2"
+            bindLabel="name"
+            formControlName="fantasyTeam2"
+            clearAllText="Elimina"
+            (change)="selectFantasyTeam2($event)"
+          >
           </ng-select>
           <app-error-message [form-group]="form" name="Fantasquadra #2"></app-error-message>
         </div>
@@ -65,21 +82,24 @@
             </thead>
 
             <tbody>
-              <tr *ngFor="let fr of fantasyRosters2" class="table-secondary manina" (click)="switchInPlayerToTradeBlock(fr)" [ngClass]="{'greyed-out': player2Choosen(fr)}">
-                <td [appPlayerStatus]="fr">{{fr.roster.player.name}}</td>
-                <td [appPlayerStatus]="fr">{{fr.status}}</td>
-                <td [appPlayerStatus]="fr">{{fr.contract != null ? fr.contract : 'D'}}</td>
-                <td [appPlayerStatus]="fr">{{fr.yearContract}}</td>
-                <td [appPlayerStatus]="fr">{{fr.roster.player.role}}</td>
-                <td [appPlayerStatus]="fr">{{fr.roster.team.fullName}}</td>
+              <tr
+                *ngFor="let fr of fantasyRosters2"
+                class="table-secondary manina"
+                (click)="switchInPlayerToTradeBlock(fr)"
+                [ngClass]="{ 'greyed-out': player2Choosen(fr) }"
+              >
+                <td [appPlayerStatus]="fr">{{ fr.roster.player.name }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.status }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
+                <td [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
     </div>
-
   </fieldset>
 
   <div class="text-center padding">
@@ -88,30 +108,37 @@
   </div>
 
   <!-- popup completa scambio -->
-  <div *ngIf="mostraPopupTradeBlock" class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: true}" tabindex="-1" role="dialog" aria-hidden="true">
-
+  <div
+    *ngIf="mostraPopupTradeBlock"
+    class="modal fade"
+    bsModal
+    #modal="bs-modal"
+    [config]="{ backdrop: 'static', keyboard: false, show: true }"
+    tabindex="-1"
+    role="dialog"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-
         <div class="modal-header titolo">
           <h4 class="modal-title">Completa scambio</h4>
         </div>
 
         <div class="modal-body">
-          <p>La squadra {{fantasyTeam1Selected.name}} acquista i giocatori</p>
+          <p>La squadra {{ fantasyTeam1Selected.name }} acquista i giocatori</p>
           <ul>
-            <li *ngFor="let fr of form.value.inPlayers">{{fr.roster.player.name}}</li>
+            <li *ngFor="let fr of form.value.inPlayers">{{ fr.roster.player.name }}</li>
           </ul>
-          <p>e cede alla squadra {{fantasyTeam2Selected.name}} i seguenti giocatori</p>
+          <p>e cede alla squadra {{ fantasyTeam2Selected.name }} i seguenti giocatori</p>
           <ul>
-            <li *ngFor="let fr of form.value.outPlayers">{{fr.roster.player.name}}</li>
+            <li *ngFor="let fr of form.value.outPlayers">{{ fr.roster.player.name }}</li>
           </ul>
           <div class="form-row">
             <div class="col-auto">
-              <label class="col-form-label">La squadra {{fantasyTeam1Selected.name}} inoltre riconosce un conguaglio pari a</label>
+              <label class="col-form-label">La squadra {{ fantasyTeam1Selected.name }} inoltre riconosce un conguaglio pari a</label>
             </div>
             <div class="col-1">
-              <input type="number" class="form-control" id="buyout" name="buyout" min="0" formControlName="buyout">
+              <input type="number" class="form-control" id="buyout" name="buyout" min="0" formControlName="buyout" />
             </div>
             <div class="col-auto">
               <label class="col-form-label">crediti</label>
@@ -122,10 +149,7 @@
             <button type="button" class="btn btn-primary" (click)="annulla()">Annulla</button>
           </div>
         </div>
-
       </div>
-
     </div>
   </div>
-
 </form>

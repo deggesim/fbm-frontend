@@ -33,9 +33,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -74,15 +72,12 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
     // altri servizi
     SpinnerService,
     SharedService,
-    AuthService
+    AuthService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-
 export class AppModule {
-  constructor(
-    library: FaIconLibrary
-  ) {
+  constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
   }
 }

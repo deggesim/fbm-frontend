@@ -5,10 +5,9 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss']
+  styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent implements OnInit {
-
   @Input() titolo: string;
   @Output() upload: EventEmitter<any> = new EventEmitter();
   @Output() annulla: EventEmitter<any> = new EventEmitter();
@@ -19,10 +18,7 @@ export class UploadComponent implements OnInit {
   form: FormGroup;
   fileName = 'Scelta file';
 
-  constructor(
-    private cd: ChangeDetectorRef,
-    private fb: FormBuilder,
-  ) {
+  constructor(private cd: ChangeDetectorRef, private fb: FormBuilder) {
     this.createForm();
   }
 
@@ -56,7 +52,7 @@ export class UploadComponent implements OnInit {
 
       reader.onload = () => {
         this.form.patchValue({
-          file: reader.result
+          file: reader.result,
         });
 
         // need to run CD since file load runs outside of zone
@@ -70,5 +66,4 @@ export class UploadComponent implements OnInit {
       this.upload.emit(this.form.value.file);
     }
   }
-
 }

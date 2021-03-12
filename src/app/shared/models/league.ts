@@ -33,5 +33,5 @@ export enum Status {
   'Preseason' = 'Preseason',
   'RegularSeason' = 'Stagione Regolare',
   'Postseason' = 'Playoff/Playout',
-  'Offseason' = 'Offseason'
+  'Offseason' = 'Offseason',
 }

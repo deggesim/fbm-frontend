@@ -4,10 +4,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-error-message',
   templateUrl: './error-message.component.html',
-  styleUrls: ['./error-message.component.scss']
+  styleUrls: ['./error-message.component.scss'],
 })
 export class ErrorMessageComponent implements OnInit {
-
   // tslint:disable-next-line: no-input-rename
   @Input('form-group') fg: FormGroup;
   // tslint:disable-next-line: no-input-rename
@@ -15,7 +14,7 @@ export class ErrorMessageComponent implements OnInit {
   // tslint:disable-next-line: no-input-rename
   @Input('name') formControlName: string;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     // const obs = this.formControl.valueChanges;
@@ -24,5 +23,4 @@ export class ErrorMessageComponent implements OnInit {
     //   console.log('this.formControl.hasError(\'required\')', this.formControl.hasError('required'));
     // });
   }
-
 }

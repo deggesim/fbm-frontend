@@ -2,10 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Role } from '@app/shared/models/player';
 
 @Pipe({
-  name: 'roleShort'
+  name: 'roleShort',
 })
 export class RoleShortPipe implements PipeTransform {
-
   transform(value: any, ...args: any[]): any {
     let ret = '';
     switch (value) {
@@ -35,5 +34,4 @@ export class RoleShortPipe implements PipeTransform {
     }
     return ret;
   }
-
 }

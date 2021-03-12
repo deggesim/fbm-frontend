@@ -1,11 +1,16 @@
 <form [formGroup]="form" (ngSubmit)="salvaGiocatore()" class="needs-validation" novalidate>
-
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
-
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="name" class="control-label">Nome *</label>
-        <input type="text" class="form-control" id="name" name="name" formControlName="name" [ngClass]="{'is-invalid': form.get('name').invalid && form.get('name').dirty}">
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          name="name"
+          formControlName="name"
+          [ngClass]="{ 'is-invalid': form.get('name').invalid && form.get('name').dirty }"
+        />
         <app-error-message [form-control]="form.get('name')" name="Nome"></app-error-message>
       </div>
     </div>
@@ -13,8 +18,14 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="nationality" class="control-label">Nazionalità *</label>
-        <input type="text" class="form-control" id="nationality" name="nationality" formControlName="nationality"
-          [ngClass]="{'is-invalid': form.get('nationality').invalid && form.get('nationality').dirty}">
+        <input
+          type="text"
+          class="form-control"
+          id="nationality"
+          name="nationality"
+          formControlName="nationality"
+          [ngClass]="{ 'is-invalid': form.get('nationality').invalid && form.get('nationality').dirty }"
+        />
         <app-error-message [form-control]="form.get('nationality')" name="Nazionalità"></app-error-message>
       </div>
     </div>
@@ -22,7 +33,15 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="number" class="control-label">Numero</label>
-        <input type="text" class="form-control" id="number" name="number" formControlName="number" maxlength="2" [ngClass]="{'is-invalid': form.get('number').invalid && form.get('number').dirty}">
+        <input
+          type="text"
+          class="form-control"
+          id="number"
+          name="number"
+          formControlName="number"
+          maxlength="2"
+          [ngClass]="{ 'is-invalid': form.get('number').invalid && form.get('number').dirty }"
+        />
         <app-error-message [form-control]="form.get('number')" name="Numero"></app-error-message>
       </div>
     </div>
@@ -30,8 +49,16 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="yearBirth" class="control-label">Anno di nascita</label>
-        <input type="number" class="form-control" id="yearBirth" name="yearBirth" formControlName="yearBirth" min="1900" max="2999"
-          [ngClass]="{'is-invalid': form.get('yearBirth').invalid && form.get('yearBirth').dirty}">
+        <input
+          type="number"
+          class="form-control"
+          id="yearBirth"
+          name="yearBirth"
+          formControlName="yearBirth"
+          min="1900"
+          max="2999"
+          [ngClass]="{ 'is-invalid': form.get('yearBirth').invalid && form.get('yearBirth').dirty }"
+        />
         <app-error-message [form-control]="form.get('yearBirth')" name="Anno di nascita"></app-error-message>
       </div>
     </div>
@@ -39,8 +66,16 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="height" class="control-label">Altezza</label>
-        <input type="number" class="form-control" id="height" name="height" formControlName="height" min="150" max="2999"
-          [ngClass]="{'is-invalid': form.get('height').invalid && form.get('height').dirty}">
+        <input
+          type="number"
+          class="form-control"
+          id="height"
+          name="height"
+          formControlName="height"
+          min="150"
+          max="2999"
+          [ngClass]="{ 'is-invalid': form.get('height').invalid && form.get('height').dirty }"
+        />
         <app-error-message [form-control]="form.get('height')" name="Altezza"></app-error-message>
       </div>
     </div>
@@ -48,8 +83,16 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="weight" class="control-label">Peso</label>
-        <input type="number" class="form-control" id="weight" name="weight" formControlName="weight" min="50" max="199"
-          [ngClass]="{'is-invalid': form.get('weight').invalid && form.get('weight').dirty}">
+        <input
+          type="number"
+          class="form-control"
+          id="weight"
+          name="weight"
+          formControlName="weight"
+          min="50"
+          max="199"
+          [ngClass]="{ 'is-invalid': form.get('weight').invalid && form.get('weight').dirty }"
+        />
         <app-error-message [form-control]="form.get('weight')" name="Peso"></app-error-message>
       </div>
     </div>
@@ -57,8 +100,15 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="role" class="control-label">Ruolo *</label>
-        <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina"
-          [ngClass]="{'is-invalid': form.get('role').invalid && form.get('role').dirty}">
+        <ng-select
+          id="role"
+          name="role"
+          [items]="roles"
+          bindLabel="roles[role]"
+          formControlName="role"
+          clearAllText="Elimina"
+          [ngClass]="{ 'is-invalid': form.get('role').invalid && form.get('role').dirty }"
+        >
         </ng-select>
         <app-error-message [form-control]="form.get('role')" name="Ruolo"></app-error-message>
       </div>
@@ -67,8 +117,15 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group">
         <label for="team" class="control-label">Squadra *</label>
-        <ng-select id="team" name="team" [items]="teams" bindLabel="fullName" formControlName="team" clearAllText="Elimina"
-          [ngClass]="{'is-invalid': form.get('team').invalid && form.get('team').dirty}">
+        <ng-select
+          id="team"
+          name="team"
+          [items]="teams"
+          bindLabel="fullName"
+          formControlName="team"
+          clearAllText="Elimina"
+          [ngClass]="{ 'is-invalid': form.get('team').invalid && form.get('team').dirty }"
+        >
           <app-error-message [form-control]="form.get('team')" name="Squadra"></app-error-message>
         </ng-select>
       </div>
@@ -77,18 +134,23 @@
     <div fxFlex="49" fxFlex.xs="100" *ngIf="roster == null">
       <div class="form-group">
         <label for="realFixture" class="control-label">Giornata *</label>
-        <ng-select id="realFixture" name="realFixture" [items]="preparedRealFixtures" bindLabel="name" formControlName="realFixture" clearAllText="Elimina"
-          [ngClass]="{'is-invalid': form.get('realFixture').invalid && form.get('realFixture').dirty}">
+        <ng-select
+          id="realFixture"
+          name="realFixture"
+          [items]="preparedRealFixtures"
+          bindLabel="name"
+          formControlName="realFixture"
+          clearAllText="Elimina"
+          [ngClass]="{ 'is-invalid': form.get('realFixture').invalid && form.get('realFixture').dirty }"
+        >
           <app-error-message [form-control]="form.get('team')" name="Squadra"></app-error-message>
         </ng-select>
       </div>
     </div>
-
   </div>
 
   <div class="text-center">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
     <button type="button" class="btn btn-primary" (click)="annulla.emit()">Annulla</button>
   </div>
-
 </form>

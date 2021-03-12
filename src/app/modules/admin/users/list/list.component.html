@@ -6,9 +6,7 @@
 </div>
 
 <fieldset class="fieldset">
-  <legend class="legend">
-    <fa-icon icon="users" class="icon-padding"></fa-icon>Gestione utenti
-  </legend>
+  <legend class="legend"><fa-icon icon="users" class="icon-padding"></fa-icon>Gestione utenti</legend>
 
   <div class="table-responsive" *ngIf="users && users.length > 0; else empty">
     <table class="table table-hover">
@@ -23,8 +21,8 @@
 
       <tbody>
         <tr *ngFor="let user of users" class="table-secondary">
-          <td>{{user.name}}</td>
-          <td>{{user.email}}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
           <td>
             <app-user-role-icon [role]="user.role"></app-user-role-icon>
           </td>
@@ -46,26 +44,38 @@
   </ng-template>
 </fieldset>
 
-
 <!-- popup elimina -->
-<app-popup-conferma #popupConfermaElimina titolo="Elimina utente" btnConferma="Elimina" btnAnnulla="Annulla" (conferma)="confermaElimina()" (annulla)="popupConfermaElimina.chiudiModale()">
+<app-popup-conferma
+  #popupConfermaElimina
+  titolo="Elimina utente"
+  btnConferma="Elimina"
+  btnAnnulla="Annulla"
+  (conferma)="confermaElimina()"
+  (annulla)="popupConfermaElimina.chiudiModale()"
+>
 </app-popup-conferma>
 
 <!-- popup inserimento/modifica utente -->
-<div *ngIf="mostraPopupModifica" class="modal fade" bsModal #modal="bs-modal" [config]="{backdrop: 'static', keyboard: false, show: true}" tabindex="-1" role="dialog" aria-hidden="true">
-
+<div
+  *ngIf="mostraPopupModifica"
+  class="modal fade"
+  bsModal
+  #modal="bs-modal"
+  [config]="{ backdrop: 'static', keyboard: false, show: true }"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-
       <div class="modal-header titolo">
-        <h4 class="modal-title">{{titoloModale}}</h4>
+        <h4 class="modal-title">{{ titoloModale }}</h4>
       </div>
 
       <div class="modal-body">
         <app-user-edit [user]="userSelected" (salva)="salva($event)" (annulla)="annulla()"></app-user-edit>
       </div>
     </div>
-
   </div>
 </div>
 

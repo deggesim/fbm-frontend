@@ -4,15 +4,12 @@ import { User } from '@app/shared/models/user';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read() {
     return this.http.get<User[]>(`${this.endpoint}/users`);
@@ -35,5 +32,4 @@ export class UserService {
     formData.append('users', file);
     return this.http.post<User[]>(`${this.endpoint}/users/upload`, formData);
   }
-
 }

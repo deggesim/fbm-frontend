@@ -4,15 +4,12 @@ import { League } from '@app/shared/models/league';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NewSeasonService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public create(league: League) {
     return this.http.post<League>(`${this.endpoint}/leagues`, league);
@@ -30,16 +27,15 @@ export class NewSeasonService {
     return this.http.post<League>(`${this.endpoint}/leagues/${league._id}/populate`, null);
   }
 
-  public setParameters(leagueId: string, parameters: Array<{ parameter: string, value: string }>) {
+  public setParameters(leagueId: string, parameters: Array<{ parameter: string; value: string }>) {
     return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/parameters`, parameters);
   }
 
-  public setRoles(leagueId: string, roles: Array<{ role: string, spots: number[] }>) {
+  public setRoles(leagueId: string, roles: Array<{ role: string; spots: number[] }>) {
     return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/roles`, roles);
   }
 
   public completePreseason(leagueId: string) {
     return this.http.post<League>(`${this.endpoint}/leagues/${leagueId}/complete-preseason`, null);
   }
-
 }

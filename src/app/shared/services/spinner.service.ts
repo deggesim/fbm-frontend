@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class SpinnerService {
-
   // contatore di richieste in attesa di completamento
   private loading = 0;
 
-  constructor() { }
+  constructor() {}
 
   public start() {
     this.loading++;
@@ -22,5 +21,4 @@ export class SpinnerService {
     // console.log(`isLoading -> loading = ${this.loading}`);
     return this.loading > 0;
   }
-
 }

@@ -38,10 +38,7 @@ export class CupFormat {
   });
 
   // private to disallow creating other instances of this type
-  private constructor(
-    private readonly key: string,
-    public readonly value: CupType,
-  ) { }
+  private constructor(private readonly key: string, public readonly value: CupType) {}
 
   public toString() {
     return this.key;

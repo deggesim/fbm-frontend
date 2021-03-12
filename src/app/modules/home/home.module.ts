@@ -20,10 +20,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    LoginComponent,
-  ],
+  declarations: [HomeComponent, LoginComponent],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -35,7 +32,7 @@ const routes: Routes = [
     // fine ngx-bootstrap
     FontAwesomeModule,
     SharedModule,
-    RouterModule.forChild(routes)
-  ]
+    RouterModule.forChild(routes),
+  ],
 })
-export class HomeModule { }
+export class HomeModule {}

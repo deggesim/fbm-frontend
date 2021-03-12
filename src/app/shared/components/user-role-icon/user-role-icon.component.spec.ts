@@ -6,12 +6,13 @@ describe('UserRoleIconComponent', () => {
   let component: UserRoleIconComponent;
   let fixture: ComponentFixture<UserRoleIconComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ UserRoleIconComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UserRoleIconComponent],
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UserRoleIconComponent);

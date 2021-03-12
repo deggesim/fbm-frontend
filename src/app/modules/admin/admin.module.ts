@@ -64,14 +64,12 @@ import { ListComponent as UserListComponent } from './users/list/list.component'
     // fine ngx-bootstrap
     FontAwesomeModule,
     SharedModule,
-    AdminRoutingModule
+    AdminRoutingModule,
   ],
-  providers: []
+  providers: [],
 })
 export class AdminModule {
-  constructor(
-    library: FaIconLibrary
-  ) {
+  constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
   }
 }

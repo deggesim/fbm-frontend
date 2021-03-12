@@ -10,17 +10,16 @@ import { League } from '@app/shared/models/league';
 @Component({
   selector: 'app-new-season',
   templateUrl: './new-season.component.html',
-  styleUrls: ['./new-season.component.scss']
+  styleUrls: ['./new-season.component.scss'],
 })
 export class NewSeasonComponent implements OnInit {
-
   form: FormGroup;
 
   regularSeasonFormatList: RegularSeasonFormat[] = [
     RegularSeasonFormat.SINGLE,
     RegularSeasonFormat.DOUBLE,
     RegularSeasonFormat.DOUBLE_PLUS,
-    RegularSeasonFormat.TWO_DOUBLE
+    RegularSeasonFormat.TWO_DOUBLE,
   ];
 
   playoffFormatList: PlayoffFormat[] = [
@@ -48,23 +47,13 @@ export class NewSeasonComponent implements OnInit {
     PlayoutFormat.SF5_F7,
   ];
 
-  cupFormatList: CupFormat[] = [
-    CupFormat.F8,
-    CupFormat.QF2_F4,
-    CupFormat.QF2_SF2_F,
-    CupFormat.QF2_SF2_F2,
-  ];
+  cupFormatList: CupFormat[] = [CupFormat.F8, CupFormat.QF2_F4, CupFormat.QF2_SF2_F, CupFormat.QF2_SF2_F2];
 
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
     this.createForm();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   createForm() {
     this.form = this.fb.group({
@@ -97,9 +86,8 @@ export class NewSeasonComponent implements OnInit {
     this.router.navigate(['../step-two'], {
       relativeTo: this.route,
       state: {
-        data: league
-      }
+        data: league,
+      },
     });
   }
-
 }

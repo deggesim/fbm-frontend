@@ -5,13 +5,10 @@ import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RealFixtureResolverService implements Resolve<RealFixture[]> {
-
-  constructor(
-    private realFixtureService: RealFixtureService
-  ) { }
+  constructor(private realFixtureService: RealFixtureService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): RealFixture[] | Observable<RealFixture[]> | Promise<RealFixture[]> {
     return this.realFixtureService.read();

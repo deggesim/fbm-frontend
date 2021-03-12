@@ -5,19 +5,16 @@ import { Team } from '@app/shared/models/team';
 @Component({
   selector: 'app-team-edit',
   templateUrl: './edit.component.html',
-  styleUrls: ['./edit.component.scss']
+  styleUrls: ['./edit.component.scss'],
 })
 export class EditComponent implements OnInit, OnChanges {
-
   @Input() team: Team;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-  ) {
+  constructor(private fb: FormBuilder) {
     this.createForm();
   }
 
@@ -48,5 +45,4 @@ export class EditComponent implements OnInit, OnChanges {
     const team: Team = { _id: this.team ? this.team._id : null, fullName, sponsor, name, city, abbreviation, real: true };
     this.salva.emit(team);
   }
-
 }

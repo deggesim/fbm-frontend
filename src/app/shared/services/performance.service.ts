@@ -4,15 +4,12 @@ import { Performance } from '@app/shared/models/performance';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PerformanceService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read() {
     return this.http.get<Performance[]>(`${this.endpoint}/performances`);
@@ -28,7 +25,7 @@ export class PerformanceService {
   }
 
   public getPerformances(playerId: string) {
-      return this.http.get<Performance[]>(`${this.endpoint}/performances/player/${playerId}`);
+    return this.http.get<Performance[]>(`${this.endpoint}/performances/player/${playerId}`);
   }
 
   public save(performances: Performance[]) {

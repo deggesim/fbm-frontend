@@ -5,7 +5,7 @@ import { GlobalInterceptor } from './global-interceptor.service';
 describe('GlobalInterceptor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GlobalInterceptor]
+      providers: [GlobalInterceptor],
     });
   });
 

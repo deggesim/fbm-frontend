@@ -11,10 +11,9 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-parameters',
   templateUrl: './parameters.component.html',
-  styleUrls: ['./parameters.component.scss']
+  styleUrls: ['./parameters.component.scss'],
 })
 export class ParametersComponent implements OnInit {
-
   form: FormGroup;
 
   constructor(
@@ -22,7 +21,7 @@ export class ParametersComponent implements OnInit {
     private authService: AuthService,
     private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
-    private sharedService: SharedService,
+    private sharedService: SharedService
   ) {
     this.createForm();
   }
@@ -53,21 +52,23 @@ export class ParametersComponent implements OnInit {
 
   salva() {
     const parameters = [];
-    Object.keys(this.form.controls).forEach(key => {
+    Object.keys(this.form.controls).forEach((key) => {
       parameters.push({ parameter: key, value: this.form.controls[key].value });
     });
 
-    this.newSeasonService.setParameters(this.leagueService.getSelectedLeague()._id, parameters).pipe(
-      tap((league: League) => {
-        this.leagueService.setSelectedLeague(league);
-      }),
-      switchMap(() => this.authService.refresh()),
-      switchMap(() => this.leagueService.refresh)
-    ).subscribe(() => {
-      const title = 'Modifica parametri';
-      const message = 'I parametri della lega sono stati modificati con successo';
-      this.sharedService.notifica(toastType.success, title, message);
-    });
+    this.newSeasonService
+      .setParameters(this.leagueService.getSelectedLeague()._id, parameters)
+      .pipe(
+        tap((league: League) => {
+          this.leagueService.setSelectedLeague(league);
+        }),
+        switchMap(() => this.authService.refresh()),
+        switchMap(() => this.leagueService.refresh)
+      )
+      .subscribe(() => {
+        const title = 'Modifica parametri';
+        const message = 'I parametri della lega sono stati modificati con successo';
+        this.sharedService.notifica(toastType.success, title, message);
+      });
   }
-
 }

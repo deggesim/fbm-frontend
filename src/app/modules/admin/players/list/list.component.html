@@ -1,18 +1,12 @@
 <div class="float manina" (click)="nuova()">
   <fa-icon icon="plus" class="my-float"></fa-icon>
 </div>
-<div
-  class="float-2 indent manina"
-  (click)="apriPopupUpload()"
-  *ngIf="isPreseason()"
->
+<div class="float-2 indent manina" (click)="apriPopupUpload()" *ngIf="isPreseason()">
   <fa-icon icon="upload" class="my-float"></fa-icon>
 </div>
 
 <fieldset class="fieldset" *ngIf="percentage === 0; else uploadInProgress">
-  <legend class="legend">
-    <fa-icon icon="id-badge" class="icon-padding"></fa-icon>Giocatori
-  </legend>
+  <legend class="legend"><fa-icon icon="id-badge" class="icon-padding"></fa-icon>Giocatori</legend>
   <ng-container *ngIf="(rosterList?.content && rosterList?.totalElements > 0) || filter != null; else empty">
     <form #form="ngForm" class="form-inline pb-1">
       <div class="input-group">
@@ -59,31 +53,13 @@
             <td>{{ roster.team.fullName }}</td>
 
             <td class="text-nowrap">
-              <button
-                type="button"
-                class="btn btn-warning"
-                (click)="modifica(roster)"
-                tooltip="Modifica"
-                placement="top"
-              >
+              <button type="button" class="btn btn-warning" (click)="modifica(roster)" tooltip="Modifica" placement="top">
                 <fa-icon icon="pencil-alt"></fa-icon>
               </button>
-              <button
-                type="button"
-                class="btn btn-success"
-                (click)="clona(roster)"
-                tooltip="Clona"
-                placement="top"
-              >
+              <button type="button" class="btn btn-success" (click)="clona(roster)" tooltip="Clona" placement="top">
                 <fa-icon icon="clone"></fa-icon>
               </button>
-              <button
-                type="button"
-                class="btn btn-danger"
-                (click)="apriPopupElimina(roster)"
-                tooltip="Elimina"
-                placement="top"
-              >
+              <button type="button" class="btn btn-danger" (click)="apriPopupElimina(roster)" tooltip="Elimina" placement="top">
                 <fa-icon icon="trash"></fa-icon>
               </button>
             </td>
@@ -119,21 +95,10 @@
 <ng-template #uploadInProgress>
   <div class="text-center padding">
     <h4>Percentuale di avanzamento del processo di upload</h4>
-    <progressbar
-      [value]="percentage"
-      [type]="progressbarType"
-      [striped]="true"
-      style="height: 50px"
-      >{{ percentage | number: "1.0-0" }}%</progressbar
+    <progressbar [value]="percentage" [type]="progressbarType" [striped]="true" style="height: 50px"
+      >{{ percentage | number: '1.0-0' }}%</progressbar
     >
-    <button
-      type="button"
-      class="btn btn-primary"
-      (click)="reloadPage()"
-      *ngIf="percentage === 100"
-    >
-      Ricarica lista
-    </button>
+    <button type="button" class="btn btn-primary" (click)="reloadPage()" *ngIf="percentage === 100">Ricarica lista</button>
   </div>
 </ng-template>
 
@@ -166,20 +131,11 @@
       </div>
 
       <div class="modal-body">
-        <app-player-edit
-          [roster]="rosterSelected"
-          (salva)="salva($event)"
-          (annulla)="annulla()"
-        ></app-player-edit>
+        <app-player-edit [roster]="rosterSelected" (salva)="salva($event)" (annulla)="annulla()"></app-player-edit>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<app-upload
-  #popupUpload
-  titolo="Upload giocatori"
-  (upload)="confermaUpload($event)"
-  (annulla)="popupUpload.chiudiModale()"
-></app-upload>
+<app-upload #popupUpload titolo="Upload giocatori" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></app-upload>

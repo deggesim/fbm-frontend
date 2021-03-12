@@ -18,7 +18,7 @@ export enum PlayerStatus {
   'Ext' = 'EXT',
   'Com' = 'COM',
   'Str' = 'STR',
-  'Ita' = 'ITA'
+  'Ita' = 'ITA',
 }
 
 export const sort = (a: FantasyRoster, b: FantasyRoster): number => {
@@ -65,4 +65,3 @@ function getRole(fantasyRoster: FantasyRoster): Role {
   }
   return role;
 }
-

@@ -4,15 +4,12 @@ import { Match } from '@app/shared/models/match';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MatchService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read(fixtureId: string) {
     return this.http.get<Match[]>(`${this.endpoint}/matches/fixture/${fixtureId}`);

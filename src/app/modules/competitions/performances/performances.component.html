@@ -1,43 +1,58 @@
 <form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
-    <legend class="legend">
-      <fa-icon icon="pencil-alt" class="icon-padding"></fa-icon>Valutazioni
-    </legend>
+    <legend class="legend"><fa-icon icon="pencil-alt" class="icon-padding"></fa-icon>Valutazioni</legend>
 
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="49" fxFlex.xs="100" class="form-group">
-        <ng-select id="team" name="team" [items]="teams" bindLabel="fullName" formControlName="team" clearAllText="Elimina" (change)="onChangeTeam($event)" placeholder="Sqaudra">
+        <ng-select
+          id="team"
+          name="team"
+          [items]="teams"
+          bindLabel="fullName"
+          formControlName="team"
+          clearAllText="Elimina"
+          (change)="onChangeTeam($event)"
+          placeholder="Sqaudra"
+        >
         </ng-select>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100" class="form-group">
-        <ng-select id="realFixture" name="realFixture" [items]="realFixtures" bindLabel="name" formControlName="realFixture" clearAllText="Elimina" (change)="onChangeRealFixture($event)"
-          placeholder="Giornata">
+        <ng-select
+          id="realFixture"
+          name="realFixture"
+          [items]="realFixtures"
+          bindLabel="name"
+          formControlName="realFixture"
+          clearAllText="Elimina"
+          (change)="onChangeRealFixture($event)"
+          placeholder="Giornata"
+        >
         </ng-select>
       </div>
-      
+
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="tutti" [value]="0" formControlName="filter">
+          <input class="form-check-input" type="radio" id="tutti" [value]="0" formControlName="filter" />
           <label class="form-check-label" for="tutti">Tutti</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="signed" [value]="1" formControlName="filter">
+          <input class="form-check-input" type="radio" id="signed" [value]="1" formControlName="filter" />
           <label class="form-check-label" for="signed">Solo giocatori tesserati</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="lineup" [value]="2" formControlName="filter">
+          <input class="form-check-input" type="radio" id="lineup" [value]="2" formControlName="filter" />
           <label class="form-check-label" for="lineup">Solo giocatori schierati</label>
         </div>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="vittoria" [value]="true" formControlName="bonus">
+          <input class="form-check-input" type="radio" id="vittoria" [value]="true" formControlName="bonus" />
           <label class="form-check-label" for="vittoria">Vittoria</label>
         </div>
         <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" id="sconfitta" [value]="false" formControlName="bonus">
+          <input class="form-check-input" type="radio" id="sconfitta" [value]="false" formControlName="bonus" />
           <label class="form-check-label" for="sconfitta">Sconfitta</label>
         </div>
       </div>
@@ -45,41 +60,45 @@
 
     <div fxLayout="row wrap" fxLayoutAlign="space-between center">
       <div fxFlex="74" fxFlex.xs="49">
-        <input type="text" class="form-control" id="url" formControlName="url" placeholder="Url valutazioni">
+        <input type="text" class="form-control" id="url" formControlName="url" placeholder="Url valutazioni" />
       </div>
 
       <div fxFlex="26" fxFlex.xs="49">
-        <button type="button" class="btn btn-primary" [disabled]="form.get('url').pristine || form.get('url').invalid || selectedTeam == null || selectedRealFixture == null"
-          (click)="retrievePerformances()">Recupero valutazioni</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="form.get('url').pristine || form.get('url').invalid || selectedTeam == null || selectedRealFixture == null"
+          (click)="retrievePerformances()"
+        >
+          Recupero valutazioni
+        </button>
       </div>
     </div>
 
-    <ng-container formArrayName="performanceArray" *ngFor="let performance of performances; let i=index">
+    <ng-container formArrayName="performanceArray" *ngFor="let performance of performances; let i = index">
       <div fxLayout="row wrap" fxLayoutAlign="space-between" [formGroupName]="i">
-
         <div fxFlex="69" fxFlex.xs="100">
-          {{getPlayer(performance)}}
+          {{ getPlayer(performance) }}
         </div>
 
         <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
-            <input type="number" class="form-control" id="ranking-{{i}}" formControlName="ranking" placeholder="Valutazione">
+            <input type="number" class="form-control" id="ranking-{{ i }}" formControlName="ranking" placeholder="Valutazione" />
           </div>
         </div>
 
         <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
-            <input type="number" class="form-control" id="minutes-{{i}}" formControlName="minutes" placeholder="Minuti" min="0">
+            <input type="number" class="form-control" id="minutes-{{ i }}" formControlName="minutes" placeholder="Minuti" min="0" />
           </div>
         </div>
 
         <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
-            <input type="number" class="form-control" id="grade-{{i}}" formControlName="grade" placeholder="Buonus/malus">
+            <input type="number" class="form-control" id="grade-{{ i }}" formControlName="grade" placeholder="Buonus/malus" />
           </div>
         </div>
       </div>
-
     </ng-container>
   </fieldset>
 
@@ -87,5 +106,4 @@
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
     <button type="button" class="btn btn-primary" (click)="reset()">Reset</button>
   </div>
-
 </form>

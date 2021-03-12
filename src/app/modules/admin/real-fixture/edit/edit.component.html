@@ -1,19 +1,26 @@
 <form [formGroup]="form" (ngSubmit)="salvaEvent()" class="needs-validation" novalidate>
-
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
-
     <div fxFlex="100">
       <div class="form-group">
         <label for="name" class="control-label">Nome</label>
-        <input type="text" class="form-control" id="name" name="name" formControlName="name">
+        <input type="text" class="form-control" id="name" name="name" formControlName="name" />
       </div>
     </div>
 
     <div fxFlex="100">
       <div class="form-group">
         <label for="fixtures" class="control-label">Turni</label>
-        <ng-select id="fixtures" [items]="fixtures" [multiple]="true" [trackByFn]="trackFixtureByFn" [loading]="fixturesLoading" typeToSearchText="Inserisci almeno due caratteri" bindLabel="name"
-          formControlName="fixtures" clearAllText="Elimina">
+        <ng-select
+          id="fixtures"
+          [items]="fixtures"
+          [multiple]="true"
+          [trackByFn]="trackFixtureByFn"
+          [loading]="fixturesLoading"
+          typeToSearchText="Inserisci almeno due caratteri"
+          bindLabel="name"
+          formControlName="fixtures"
+          clearAllText="Elimina"
+        >
         </ng-select>
       </div>
     </div>
@@ -21,17 +28,24 @@
     <div fxFlex="100">
       <div class="form-group">
         <label for="teamsWithNoGame" class="control-label">Squadre senza partite</label>
-        <ng-select id="teamsWithNoGame" [items]="teamsWithNoGame" [multiple]="true" [trackByFn]="trackTeamByFn" [loading]="teamsWithNoGameLoading" typeToSearchText="Inserisci almeno due caratteri"
-          bindLabel="fullName" formControlName="teamsWithNoGame" clearAllText="Elimina">
+        <ng-select
+          id="teamsWithNoGame"
+          [items]="teamsWithNoGame"
+          [multiple]="true"
+          [trackByFn]="trackTeamByFn"
+          [loading]="teamsWithNoGameLoading"
+          typeToSearchText="Inserisci almeno due caratteri"
+          bindLabel="fullName"
+          formControlName="teamsWithNoGame"
+          clearAllText="Elimina"
+        >
         </ng-select>
       </div>
     </div>
-
   </div>
 
   <div class="text-center">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
     <button type="button" class="btn btn-primary" (click)="annulla.emit()">Annulla</button>
   </div>
-
 </form>

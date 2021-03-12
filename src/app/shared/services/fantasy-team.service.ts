@@ -4,15 +4,12 @@ import { FantasyTeam } from '@app/shared/models/fantasy-team';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FantasyTeamService {
-
   private endpoint = environment.endpoint;
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   public read() {
     return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`);

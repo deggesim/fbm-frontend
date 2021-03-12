@@ -8,10 +8,9 @@ import { SharedService } from '@app/shared/services/shared.service';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit {
-
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
@@ -19,11 +18,7 @@ export class UserProfileComponent implements OnInit {
   user: User;
   superAdmin: boolean;
 
-  constructor(
-    private fb: FormBuilder,
-    private sharedService: SharedService,
-    private authService: AuthService,
-  ) {
+  constructor(private fb: FormBuilder, private sharedService: SharedService, private authService: AuthService) {
     this.user = this.authService.getLoggedUser();
     this.createForm();
   }
@@ -58,5 +53,4 @@ export class UserProfileComponent implements OnInit {
       this.sharedService.notifica(toastType.warning, title, message);
     }
   }
-
 }

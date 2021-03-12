@@ -5,7 +5,7 @@ import { SharedService } from './shared.service';
 describe('SharedService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [SharedService]
+      providers: [SharedService],
     });
   });
 

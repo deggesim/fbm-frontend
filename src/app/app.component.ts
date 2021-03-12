@@ -12,10 +12,9 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, AfterViewChecked {
-
   // Sets initial value to true to show loading spinner on first load
   loading = true;
 
@@ -29,7 +28,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     private authService: AuthService,
     private leagueService: LeagueService,
     private newSeasonService: NewSeasonService
-  ) { }
+  ) {}
 
   ngOnInit() {
     console.log('ngOnInit AppComponent');
@@ -49,15 +48,18 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   public logout() {
-    this.authService.logout().pipe(
-      tap((user: User) => {
-        const title = 'Logout';
-        const message = 'Logout effettuato correttamente';
-        this.sharedService.notifica(toastType.warning, title, message);
-        this.router.navigate(['/home']);
-      }),
-      switchMap(() => this.leagueService.refresh)
-    ).subscribe();
+    this.authService
+      .logout()
+      .pipe(
+        tap((user: User) => {
+          const title = 'Logout';
+          const message = 'Logout effettuato correttamente';
+          this.sharedService.notifica(toastType.warning, title, message);
+          this.router.navigate(['/home']);
+        }),
+        switchMap(() => this.leagueService.refresh)
+      )
+      .subscribe();
   }
 
   public annulla() {
@@ -74,14 +76,14 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   public completePreseason() {
-    this.newSeasonService.completePreseason(this.leagueService.getSelectedLeague()._id).pipe(
-      switchMap(() => this.leagueService.refresh)
-    ).subscribe(() => {
-      const title = 'Presason completata';
-      const message = 'Il torneo ora è nella fase "Stagione regolare"';
-      this.sharedService.notifica(toastType.success, title, message);
-      this.router.navigate(['/home']);
-    });
+    this.newSeasonService
+      .completePreseason(this.leagueService.getSelectedLeague()._id)
+      .pipe(switchMap(() => this.leagueService.refresh))
+      .subscribe(() => {
+        const title = 'Presason completata';
+        const message = 'Il torneo ora è nella fase "Stagione regolare"';
+        this.sharedService.notifica(toastType.success, title, message);
+        this.router.navigate(['/home']);
+      });
   }
-
 }
