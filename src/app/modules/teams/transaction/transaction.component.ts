@@ -13,6 +13,8 @@ import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { LeagueService } from '@app/shared/services/league.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { SharedService } from '@app/shared/services/shared.service';
+import { selectLeagueStatus } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
@@ -48,10 +50,11 @@ export class TransactionComponent implements OnInit {
     private sharedService: SharedService,
     private rosterService: RosterService,
     private fantasyRosterService: FantasyRosterService,
-    private fantasyTeamService: FantasyTeamService
+    private fantasyTeamService: FantasyTeamService,
+    private store: Store
   ) {
     this.createForm();
-    this.leagueService.leagueStatusObservable.subscribe((leagueStatus: Status) => {
+    this.store.pipe(select(selectLeagueStatus)).subscribe((leagueStatus: Status) => {
       this.leagueStatus = leagueStatus;
     });
   }

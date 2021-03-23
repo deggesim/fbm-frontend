@@ -17,6 +17,8 @@ import { SharedModule } from '@app/shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
@@ -31,6 +33,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
+import { reducers } from './store/reducers';
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +45,10 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
     HttpClientModule,
     FlexLayoutModule,
     NgSelectModule,
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+    }),
     // ngx-bootstrap
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),

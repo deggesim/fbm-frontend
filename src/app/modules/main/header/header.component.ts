@@ -4,6 +4,8 @@ import { Status } from '@app/shared/models/league';
 import { User } from '@app/shared/models/user';
 import { AuthService } from '@app/shared/services/auth.service';
 import { LeagueService } from '@app/shared/services/league.service';
+import { selectLeagueInfo, selectLeagueStatus } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 import { filter } from 'rxjs/operators';
 
 interface IBreadcrumb {
@@ -33,17 +35,18 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
-    private leagueService: LeagueService
+    private leagueService: LeagueService,
+    private store: Store
   ) {
     this.authService.userObservable.subscribe((user: User) => {
       this.user = user;
     });
 
-    this.leagueService.leagueInfoObservable.subscribe((leagueInfo: string) => {
+    this.store.pipe(select(selectLeagueInfo)).subscribe((leagueInfo: string) => {
       this.leagueInfo = leagueInfo;
     });
 
-    this.leagueService.leagueStatusObservable.subscribe((leagueStatus: Status) => {
+    this.store.pipe(select(selectLeagueStatus)).subscribe((leagueStatus: Status) => {
       this.leagueStatus = leagueStatus;
     });
   }

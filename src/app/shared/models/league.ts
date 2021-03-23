@@ -35,3 +35,8 @@ export enum Status {
   'Postseason' = 'Playoff/Playout',
   'Offseason' = 'Offseason',
 }
+
+export interface LeagueInfo {
+  info: string;
+  status: Status;
+}

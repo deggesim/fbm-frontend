@@ -8,6 +8,8 @@ import { AuthService } from '@app/shared/services/auth.service';
 import { LeagueService } from '@app/shared/services/league.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
+import { selectLeagueStatus } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -23,9 +25,10 @@ export class HomeComponent implements OnInit {
     private sharedService: SharedService,
     private authService: AuthService,
     private leagueService: LeagueService,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {
-    this.leagueService.leagueStatusObservable.subscribe((leagueStatus: Status) => {
+    this.store.pipe(select(selectLeagueStatus)).subscribe((leagueStatus: Status) => {
       this.leagueStatus = leagueStatus;
     });
   }

@@ -10,6 +10,8 @@ import { PlayerService } from '@app/shared/services/player.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
+import { selectLeagueInfo, selectLeagueStatus } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'rxjs/operators';
 
@@ -46,13 +48,14 @@ export class ListComponent implements OnInit {
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private rosterService: RosterService,
-    private playerService: PlayerService
+    private playerService: PlayerService,
+    private store: Store
   ) {
-    this.leagueService.leagueInfoObservable.subscribe((leagueInfo: string) => {
+    this.store.pipe(select(selectLeagueInfo)).subscribe((leagueInfo: string) => {
       this.leagueInfo = leagueInfo;
     });
 
-    this.leagueService.leagueStatusObservable.subscribe((leagueStatus: Status) => {
+    this.store.pipe(select(selectLeagueStatus)).subscribe((leagueStatus: Status) => {
       this.leagueStatus = leagueStatus;
     });
   }
