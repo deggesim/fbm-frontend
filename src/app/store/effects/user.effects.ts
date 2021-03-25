@@ -42,12 +42,12 @@ export class UserEffects {
   initUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(initUser),
-      switchMap(() => {
+      map(() => {
         if (this.authService.isLoggedIn()) {
           const user = JSON.parse(localStorage.getItem('user'));
-          return of(setUser({ user }));
+          return setUser({ user });
         } else {
-          return of(setUser(null));
+          return setUser(null);
         }
       })
     )

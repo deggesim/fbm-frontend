@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import { League, LeagueInfo, Status } from '@app/shared/models/league';
 import { Login } from '@app/shared/models/login';
 import { AuthService } from '@app/shared/services/auth.service';
-import { LeagueService } from '@app/shared/services/league.service';
-import { SharedService } from '@app/shared/services/shared.service';
 import { refresh } from '@app/store/actions/league-info.actions';
 import { setSelectedLeague } from '@app/store/actions/league.actions';
 import { login } from '@app/store/actions/user.actions';
 import { leagueInfo, leagueList } from '@app/store/selectors/league.selector';
+import { user } from '@app/store/selectors/user.selector';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -17,13 +16,12 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  user$ = this.store.pipe(select(user))
   leagueList$ = this.store.pipe(select(leagueList));
   leagueInfo$ = this.store.pipe(select(leagueInfo));
 
   constructor(
-    private sharedService: SharedService,
     private authService: AuthService,
-    private leagueService: LeagueService,
     private router: Router,
     private store: Store
   ) {}

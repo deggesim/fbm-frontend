@@ -17,6 +17,7 @@ import { SharedModule } from '@app/shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -33,6 +34,9 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
+import { LeagueInfoEffects } from './store/effects/league-info.effects';
+import { LeagueEffects } from './store/effects/league.effects';
+import { UserEffects } from './store/effects/user.effects';
 import { reducers } from './store/reducers';
 
 @NgModule({
@@ -49,6 +53,7 @@ import { reducers } from './store/reducers';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
     }),
+    EffectsModule.forRoot([LeagueInfoEffects, LeagueEffects, UserEffects]),
     // ngx-bootstrap
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
