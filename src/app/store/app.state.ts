@@ -1,7 +1,9 @@
-import { LeagueInfo } from '@app/shared/models/league';
+import { League, LeagueInfo } from '@app/shared/models/league';
 import { User } from '@app/shared/models/user';
 
 export interface AppState {
+  leagueList: League[];
+  selectedLeague: League;
   leagueInfo: LeagueInfo;
   user: User;
 }

@@ -5,6 +5,7 @@ import { AppConfig, toastType } from '@app/shared/constants/globals';
 import { FantasyRoster, PlayerStatus } from '@app/shared/models/fantasy-roster';
 import { FantasyTeam } from '@app/shared/models/fantasy-team';
 import { Fixture } from '@app/shared/models/fixture';
+import { League } from '@app/shared/models/league';
 import { Lineup } from '@app/shared/models/lineup';
 import { Performance } from '@app/shared/models/performance';
 import { PlayerStats } from '@app/shared/models/player-stats';
@@ -21,6 +22,8 @@ import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
 import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
+import { selectedLeague } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -54,7 +57,8 @@ export class LineupsComponent implements OnInit {
     private realFixtureService: RealFixtureService,
     private fantasyRosterService: FantasyRosterService,
     private lineupService: LineupService,
-    private performanceService: PerformanceService
+    private performanceService: PerformanceService,
+    private store: Store
   ) {
     this.createForm();
     this.createBenchForm();
@@ -87,32 +91,36 @@ export class LineupsComponent implements OnInit {
 
   lineupValidator = (control: AbstractControl) => {
     const lineup: Lineup[] = control.value;
-    const lineupValid = lineUpValid(lineup, this.leagueService.getSelectedLeague());
-    if (!lineupValid) {
-      return { lineupInvalid: true };
-    }
 
-    // count EXT, COM, STR, ITA
-    const MAX_EXT_OPT_345 = this.leagueService.getSelectedLeague().parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
-    if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
-      return { lineupInvalid: true };
-    }
-    const MAX_STRANGERS_OPT_55 = this.leagueService
-      .getSelectedLeague()
-      .parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
-    if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
-      return { lineupInvalid: true };
-    }
-    // TODO
-    // const MAX_STR = this.authService.getSelectedLeague().parameters.find(param => param.parameter === 'MAX_STR');
-    // if (count(lineup, PlayerStatus.Str) > MAX_STR.value) {
-    //   return { lineupInvalid: true };
-    // }
-    const MIN_NAT_PLAYERS = this.leagueService.getSelectedLeague().parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
-    if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
-      return { lineupInvalid: true };
-    }
-    return null;
+    return this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+      const lineupValid = lineUpValid(lineup, league);
+      if (!lineupValid) {
+        return { lineupInvalid: true };
+      }
+
+      // count EXT, COM, STR, ITA
+      const MAX_EXT_OPT_345 = league.parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
+      if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
+        return { lineupInvalid: true };
+      }
+
+      const MAX_STRANGERS_OPT_55 = league.parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
+      if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
+        return { lineupInvalid: true };
+      }
+
+      const MAX_STR = league.parameters.find((param) => param.parameter === 'MAX_STR');
+      if (count(lineup, PlayerStatus.Str) > MAX_STR.value) {
+        return { lineupInvalid: true };
+      }
+
+      const MIN_NAT_PLAYERS = league.parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
+      if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
+        return { lineupInvalid: true };
+      }
+
+      return null;
+    });
   };
 
   onChangeRound(round: Round) {

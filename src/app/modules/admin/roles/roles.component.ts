@@ -6,7 +6,11 @@ import { AuthService } from '@app/shared/services/auth.service';
 import { LeagueService } from '@app/shared/services/league.service';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
 import { SharedService } from '@app/shared/services/shared.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { refresh } from '@app/store/actions/league-info.actions';
+import { setSelectedLeague } from '@app/store/actions/league.actions';
+import { selectedLeague } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
+import { concatMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-roles',
@@ -23,17 +27,18 @@ export class RolesComponent implements OnInit {
     private authService: AuthService,
     private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private store: Store
   ) {
     this.createForm();
   }
 
   ngOnInit() {
-    console.log('RolesComponent');
-    const league = this.leagueService.getSelectedLeague();
-    for (const role of league.roles) {
-      this.form.get(role.role).setValue(role.spots);
-    }
+    this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+      for (const role of league.roles) {
+        this.form.get(role.role).setValue(role.spots);
+      }
+    });
   }
 
   createForm() {
@@ -54,14 +59,14 @@ export class RolesComponent implements OnInit {
       roles.push({ role: key, spots: this.form.controls[key].value });
     });
 
-    this.newSeasonService
-      .setRoles(this.leagueService.getSelectedLeague()._id, roles)
+    this.store
       .pipe(
+        select(selectedLeague),
+        concatMap((league: League) => this.newSeasonService.setRoles(league._id, roles)),
         tap((league: League) => {
-          this.leagueService.setSelectedLeague(league);
-        }),
-        switchMap(() => this.authService.refresh()),
-        switchMap(() => this.leagueService.refresh)
+          this.store.dispatch(setSelectedLeague({ league }));
+          this.store.dispatch(refresh());
+        })
       )
       .subscribe(() => {
         const title = 'Modifica ruoli';

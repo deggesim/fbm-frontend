@@ -2,12 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Fixture } from '@app/shared/models/fixture';
-import { Parameter } from '@app/shared/models/league';
+import { League, Parameter } from '@app/shared/models/league';
 import { Match } from '@app/shared/models/match';
 import { Round } from '@app/shared/models/round';
 import { TableItem } from '@app/shared/models/table-item';
 import { LeagueService } from '@app/shared/services/league.service';
 import { calculator } from '@app/shared/util/standings';
+import { selectedLeague } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-standings',
@@ -22,7 +24,7 @@ export class StandingsComponent implements OnInit {
   nextFixture: Fixture;
   trend: Parameter;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private leagueService: LeagueService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private leagueService: LeagueService, private store: Store) {
     this.createForm();
   }
 
@@ -60,18 +62,20 @@ export class StandingsComponent implements OnInit {
         matches.push(...fixture.matches);
       }
 
-      for (const fantasyTeam of this.selectedRound.fantasyTeams) {
-        this.trend = this.leagueService.getSelectedLeague().parameters.find((parameter: Parameter) => parameter.parameter === 'TREND');
-        const tableItem = calculator(fantasyTeam, matches, this.trend.value);
-        this.table.push(tableItem);
-      }
-
-      this.table.sort((a: TableItem, b: TableItem): number => {
-        if (a.points === b.points) {
-          return b.difference - a.difference;
-        } else {
-          return b.points - a.points;
+      this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+        for (const fantasyTeam of this.selectedRound.fantasyTeams) {
+          this.trend = league.parameters.find((parameter: Parameter) => parameter.parameter === 'TREND');
+          const tableItem = calculator(fantasyTeam, matches, this.trend.value);
+          this.table.push(tableItem);
         }
+
+        this.table.sort((a: TableItem, b: TableItem): number => {
+          if (a.points === b.points) {
+            return b.difference - a.difference;
+          } else {
+            return b.points - a.points;
+          }
+        });
       });
     }
   }

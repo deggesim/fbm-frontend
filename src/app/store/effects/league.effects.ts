@@ -1,50 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Status } from '@app/shared/models/league';
-import { LeagueService } from '@app/shared/services/league.service';
+import { League } from '@app/shared/models/league';
+import { AuthService } from '@app/shared/services/auth.service';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { forkJoin, merge, of } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { refresh, refreshFailed, refreshSuccess } from '../actions/league.actions';
-import { AppState } from '../app.state';
+import { isEmpty } from 'lodash-es';
+import { of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
+import { refresh } from '../actions/league-info.actions';
+import { initLeague, setSelectedLeague } from '../actions/league.actions';
 
 @Injectable()
 export class LeagueEffects {
-  constructor(private actions$: Actions, private store: Store<AppState>, private leagueService: LeagueService) {}
+  constructor(private actions$: Actions, private authService: AuthService) {}
 
-  refresh$ = createEffect(() =>
+  initLeague$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(refresh),
-      switchMap(() =>
-        this.leagueService.refresh.pipe(
-          map((values: any[]) => {
-            let nextFixture = '';
-            for (const fixture of values[3].fixtures) {
-              nextFixture += ` - ${fixture.round.name} ${fixture.name}`;
-            }
-
-            let info: string;
-            let status: Status;
-            const league = this.leagueService.getSelectedLeague();
-            const leagueName = league != null ? league.name : '';
-            if (values[0]) {
-              info = `${leagueName} - ${Status.Preseason}`;
-              status = Status.Preseason;
-            } else if (values[1]) {
-              info = `${leagueName} - ${Status.Offseason}`;
-              status = Status.Offseason;
-            } else if (values[2]) {
-              info = `${leagueName} ${nextFixture}`;
-              status = Status.Postseason;
-            } else {
-              info = `${leagueName} ${nextFixture}`;
-              status = Status.RegularSeason;
-            }
-            return refreshSuccess({ leagueInfo: { info, status } });
-          }),
-          catchError(() => of(refreshFailed()))
-        )
-      )
+      ofType(initLeague),
+      switchMap(() => {
+        if (this.authService.isLoggedIn()) {
+          const selectedLeague = JSON.parse(localStorage.getItem('league'));
+          const userLogged = this.authService.getLoggedUser();
+          const leagueList = userLogged.leagues;
+          const leagueFound = leagueList.find((league: League) => league._id === selectedLeague._id);
+          if (leagueFound != null) {
+            return of(setSelectedLeague({ league: leagueFound }));
+          } else if (leagueList != null && !isEmpty(leagueList)) {
+            return of(setSelectedLeague({ league: leagueList[0] }));
+          }
+        }
+      }),
+      tap(() => refresh())
     )
   );
 }

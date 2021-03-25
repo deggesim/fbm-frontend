@@ -1,12 +1,13 @@
-import { LeagueInfo } from '@app/shared/models/league';
+import { League } from '@app/shared/models/league';
 import { createReducer, on } from '@ngrx/store';
-import { refreshSuccess } from '../actions/league.actions';
+import { setSelectedLeague } from '../actions/league.actions';
 
-const initialState: LeagueInfo = { info: '', status: null };
+const initialState: League = null;
 
 export const leageReducer = createReducer(
   initialState,
-  on(refreshSuccess, (state, action) => {
-    return { ...state, action };
+
+  on(setSelectedLeague, (state, action) => {
+    return { ...state, league: action.league };
   })
 );

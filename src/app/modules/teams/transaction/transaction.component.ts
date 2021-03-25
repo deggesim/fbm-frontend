@@ -5,7 +5,7 @@ import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/po
 import { toastType } from '@app/shared/constants/globals';
 import { FantasyRoster } from '@app/shared/models/fantasy-roster';
 import { FantasyTeam } from '@app/shared/models/fantasy-team';
-import { Status } from '@app/shared/models/league';
+import { LeagueInfo, Status } from '@app/shared/models/league';
 import { RealFixture } from '@app/shared/models/real-fixture';
 import { Roster, RosterList } from '@app/shared/models/roster';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
@@ -13,7 +13,7 @@ import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { LeagueService } from '@app/shared/services/league.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { SharedService } from '@app/shared/services/shared.service';
-import { selectLeagueStatus } from '@app/store/selectors/league.selector';
+import { leagueInfo } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, of, Subject } from 'rxjs';
@@ -54,8 +54,8 @@ export class TransactionComponent implements OnInit {
     private store: Store
   ) {
     this.createForm();
-    this.store.pipe(select(selectLeagueStatus)).subscribe((leagueStatus: Status) => {
-      this.leagueStatus = leagueStatus;
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.leagueStatus = leagueInfo.status;
     });
   }
 

@@ -8,6 +8,9 @@ import { AuthService } from '@app/shared/services/auth.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { LeagueService } from '@app/shared/services/league.service';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
+import { refresh } from '@app/store/actions/league-info.actions';
+import { setSelectedLeague } from '@app/store/actions/league.actions';
+import { Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -31,7 +34,8 @@ export class NewSeasonStepTwoComponent implements OnInit {
     private authService: AuthService,
     private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
-    private fantastyTeamsService: FantasyTeamService
+    private fantastyTeamsService: FantasyTeamService,
+    private store: Store
   ) {
     this.league = this.router.getCurrentNavigation().extras.state?.data;
     this.createForm();
@@ -63,15 +67,15 @@ export class NewSeasonStepTwoComponent implements OnInit {
     this.newSeasonService
       .create(this.league)
       .pipe(
-        tap((league) => (newLeague = league)),
         switchMap((league: League) => {
-          console.log(league);
-          this.leagueService.setSelectedLeague(league);
+          newLeague = league;
           return this.fantastyTeamsService.create(fantasyTeams);
         }),
         switchMap(() => this.newSeasonService.populate(newLeague)),
-        switchMap(() => this.authService.refresh()),
-        switchMap(() => this.leagueService.refresh)
+        tap((league: League) => {
+          this.store.dispatch(setSelectedLeague({ league }));
+          this.store.dispatch(refresh());
+        })
       )
       .subscribe(() => {
         this.router.navigate(['/home']);

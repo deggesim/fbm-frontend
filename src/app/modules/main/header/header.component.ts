@@ -1,10 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { Status } from '@app/shared/models/league';
-import { User } from '@app/shared/models/user';
+import { LeagueInfo, Status } from '@app/shared/models/league';
 import { AuthService } from '@app/shared/services/auth.service';
 import { LeagueService } from '@app/shared/services/league.service';
-import { selectLeagueInfo, selectLeagueStatus } from '@app/store/selectors/league.selector';
+import { leagueInfo, selectedLeague } from '@app/store/selectors/league.selector';
+import { user } from '@app/store/selectors/user.selector';
 import { select, Store } from '@ngrx/store';
 import { filter } from 'rxjs/operators';
 
@@ -27,9 +27,10 @@ export class HeaderComponent implements OnInit {
 
   isCollapsed = true;
   admin: boolean;
-  user: User;
+  user$ = this.store.pipe(select(user));
   leagueInfo: string;
   leagueStatus: Status;
+  selectedLeague$ = this.store.pipe(select(selectedLeague));
 
   constructor(
     private router: Router,
@@ -38,16 +39,12 @@ export class HeaderComponent implements OnInit {
     private leagueService: LeagueService,
     private store: Store
   ) {
-    this.authService.userObservable.subscribe((user: User) => {
-      this.user = user;
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.leagueInfo = leagueInfo.info;
     });
 
-    this.store.pipe(select(selectLeagueInfo)).subscribe((leagueInfo: string) => {
-      this.leagueInfo = leagueInfo;
-    });
-
-    this.store.pipe(select(selectLeagueStatus)).subscribe((leagueStatus: Status) => {
-      this.leagueStatus = leagueStatus;
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.leagueStatus = leagueInfo.status;
     });
   }
 
@@ -61,21 +58,11 @@ export class HeaderComponent implements OnInit {
   }
 
   public isLoggedIn() {
-    return this.user != null && this.authService.isLoggedIn();
+    return this.authService.isLoggedIn();
   }
 
   public isAdmin() {
-    return this.user != null && this.authService.isAdmin();
-  }
-
-  public getSelectedLeague() {
-    const league = this.leagueService.getSelectedLeague();
-    return league != null ? league.name : '';
-  }
-
-  public leagueSelected(): boolean {
-    const league = this.leagueService.getSelectedLeague();
-    return league != null;
+    return this.authService.isAdmin();
   }
 
   public isPreseason() {

@@ -12,51 +12,7 @@ import { shareReplay, tap } from 'rxjs/operators';
 export class AuthService {
   private endpoint = environment.endpoint;
 
-  private $user = new BehaviorSubject<User>(null);
-  private $userObservable = this.$user.asObservable();
-
   constructor(private http: HttpClient) {}
-
-  public get userObservable(): Observable<User> {
-    return this.$userObservable;
-  }
-
-  public set user(user: User) {
-    this.$user.next(user);
-  }
-
-  public login(user: Login) {
-    return this.http.post<{ user: Login; token: string }>(`${this.endpoint}/users/login`, user).pipe(
-      tap((res: { user: User; token: string }) => this.setSession(res)),
-      shareReplay()
-    );
-  }
-
-  public logout() {
-    return this.http.post<User>(`${this.endpoint}/users/logout`, {}).pipe(
-      tap(() => {
-        localStorage.removeItem('user');
-        localStorage.removeItem('token');
-        localStorage.removeItem('expires_at');
-        localStorage.removeItem('league');
-      }),
-      shareReplay()
-    );
-  }
-
-  public update(user: User) {
-    return this.http.patch<User>(`${this.endpoint}/users/me`, user).pipe(
-      tap((res: User) => localStorage.setItem('user', JSON.stringify(res))),
-      shareReplay()
-    );
-  }
-
-  public refresh() {
-    return this.http.get(`${this.endpoint}/users/me`).pipe(
-      tap((res: { user: User; token: string }) => this.setSession(res)),
-      shareReplay()
-    );
-  }
 
   // metodi d'utilità
   public isLoggedIn() {
@@ -90,18 +46,5 @@ export class AuthService {
     const expiration = localStorage.getItem('expires_at');
     const expiresAt = JSON.parse(expiration);
     return moment(expiresAt);
-  }
-
-  private setSession(authResult: { user: User; token: string }) {
-    const user = authResult.user;
-    const token = authResult.token;
-    const decoded: any = jwtDecode(token);
-    const exp = decoded.exp;
-    const expiresAt = moment().add(exp);
-
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
-    this.user = user;
   }
 }

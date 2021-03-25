@@ -7,10 +7,11 @@ import { Match } from '@app/shared/models/match';
 import { Round } from '@app/shared/models/round';
 import { User } from '@app/shared/models/user';
 import { AuthService } from '@app/shared/services/auth.service';
-import { LeagueService } from '@app/shared/services/league.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { RoundService } from '@app/shared/services/round.service';
 import { SharedService } from '@app/shared/services/shared.service';
+import { refresh } from '@app/store/actions/league-info.actions';
+import { Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -20,7 +21,6 @@ import { switchMap, tap } from 'rxjs/operators';
 })
 export class ListComponent implements OnInit {
   form: FormGroup;
-  user: User;
   rounds: Round[];
   selectedRound: Round;
   selectedFixture: Fixture;
@@ -31,19 +31,15 @@ export class ListComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private leagueService: LeagueService,
     private sharedService: SharedService,
     private roundService: RoundService,
-    private matchService: MatchService
+    private matchService: MatchService,
+    private store: Store
   ) {
     this.createForm();
-    this.authService.userObservable.subscribe((user: User) => {
-      this.user = user;
-    });
   }
 
   ngOnInit() {
-    console.log('init RoundsComponent');
     this.route.data.subscribe((data) => {
       this.rounds = data.rounds;
     });
@@ -61,7 +57,8 @@ export class ListComponent implements OnInit {
   }
 
   public isAdmin() {
-    return this.user != null && this.authService.isAdmin();
+    // TODO gestire
+    return /*this.user != null &&*/ this.authService.isAdmin();
   }
 
   reset() {
@@ -71,7 +68,6 @@ export class ListComponent implements OnInit {
   }
 
   modifica(fixture: Fixture, event: any) {
-    console.log('modifica');
     this.selectedFixture = fixture;
     this.matches = fixture.matches;
     this.mostraPopupModifica = true;
@@ -88,8 +84,10 @@ export class ListComponent implements OnInit {
           this.mostraPopupModifica = false;
           this.matches = undefined;
         }),
-        switchMap(() => this.leagueService.refresh),
-        switchMap(() => this.roundService.read())
+        switchMap(() => {
+          this.store.dispatch(refresh());
+          return this.roundService.read();
+        })
       )
       .subscribe((rounds: Round[]) => {
         this.rounds = rounds;

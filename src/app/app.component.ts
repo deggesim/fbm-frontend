@@ -2,12 +2,16 @@ import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular
 import { Router } from '@angular/router';
 import { toastType } from '@app/shared/constants/globals';
 import { User } from '@app/shared/models/user';
-import { AuthService } from '@app/shared/services/auth.service';
-import { LeagueService } from '@app/shared/services/league.service';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { SpinnerService } from '@app/shared/services/spinner.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { select, Store } from '@ngrx/store';
+import { concatMap, tap } from 'rxjs/operators';
+import { League } from './shared/models/league';
+import { refresh } from './store/actions/league-info.actions';
+import { initLeague } from './store/actions/league.actions';
+import { initUser, logout, saveUser } from './store/actions/user.actions';
+import { selectedLeague } from './store/selectors/league.selector';
 
 @Component({
   selector: 'app-root',
@@ -25,17 +29,13 @@ export class AppComponent implements OnInit, AfterViewChecked {
     private cdRef: ChangeDetectorRef,
     private spinnerService: SpinnerService,
     private sharedService: SharedService,
-    private authService: AuthService,
-    private leagueService: LeagueService,
-    private newSeasonService: NewSeasonService
+    private newSeasonService: NewSeasonService,
+    private store: Store
   ) {}
 
   ngOnInit() {
-    console.log('ngOnInit AppComponent');
-    if (this.authService.isLoggedIn()) {
-      this.authService.user = JSON.parse(localStorage.getItem('user'));
-      this.leagueService.refresh.subscribe();
-    }
+    this.store.dispatch(initUser());
+    this.store.dispatch(initLeague());
   }
 
   ngAfterViewChecked(): void {
@@ -48,18 +48,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   public logout() {
-    this.authService
-      .logout()
-      .pipe(
-        tap((user: User) => {
-          const title = 'Logout';
-          const message = 'Logout effettuato correttamente';
-          this.sharedService.notifica(toastType.warning, title, message);
-          this.router.navigate(['/home']);
-        }),
-        switchMap(() => this.leagueService.refresh)
-      )
-      .subscribe();
+    this.store.dispatch(logout());
+    this.router.navigate(['/home']);
   }
 
   public annulla() {
@@ -68,17 +58,16 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   public salva(user: User) {
     this.mostraPopupUserProfile = false;
-    this.authService.update(user).subscribe(() => {
-      const title = 'Modifica user';
-      const message = 'User modificato correttamente';
-      this.sharedService.notifica(toastType.success, title, message);
-    });
+    this.store.dispatch(saveUser({ user }));
   }
 
   public completePreseason() {
-    this.newSeasonService
-      .completePreseason(this.leagueService.getSelectedLeague()._id)
-      .pipe(switchMap(() => this.leagueService.refresh))
+    this.store
+      .pipe(
+        select(selectedLeague),
+        concatMap((league: League) => this.newSeasonService.completePreseason(league._id)),
+        tap((league: League) => this.store.dispatch(refresh()))
+      )
       .subscribe(() => {
         const title = 'Presason completata';
         const message = 'Il torneo ora è nella fase "Stagione regolare"';

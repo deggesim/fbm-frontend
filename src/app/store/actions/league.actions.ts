@@ -1,8 +1,8 @@
-import { LeagueInfo } from '@app/shared/models/league';
+import { League } from '@app/shared/models/league';
 import { createAction, props } from '@ngrx/store';
 
-export const refresh = createAction('[League] refresh');
+export const initLeague = createAction('[League] init');
 
-export const refreshSuccess = createAction('[League] refresh success', props<{ leagueInfo: LeagueInfo }>());
+export const setSelectedLeague = createAction('[League] set selected league', props<{ league: League }>());
 
-export const refreshFailed = createAction('[League] refresh failed');
+export const setLeagueList = createAction('[League List] set league list', props<{ leagueList: League[] }>())

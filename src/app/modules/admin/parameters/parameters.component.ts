@@ -6,7 +6,11 @@ import { AuthService } from '@app/shared/services/auth.service';
 import { LeagueService } from '@app/shared/services/league.service';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
 import { SharedService } from '@app/shared/services/shared.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { refresh } from '@app/store/actions/league-info.actions';
+import { setSelectedLeague } from '@app/store/actions/league.actions';
+import { selectedLeague } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
+import { concatMap, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-parameters',
@@ -21,17 +25,19 @@ export class ParametersComponent implements OnInit {
     private authService: AuthService,
     private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private store: Store
   ) {
     this.createForm();
   }
 
   ngOnInit() {
     console.log('ParametersComponent');
-    const league = this.leagueService.getSelectedLeague();
-    for (const param of league.parameters) {
-      this.form.get(param.parameter).setValue(param.value);
-    }
+    this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+      for (const param of league.parameters) {
+        this.form.get(param.parameter).setValue(param.value);
+      }
+    });
   }
 
   createForm() {
@@ -56,14 +62,16 @@ export class ParametersComponent implements OnInit {
       parameters.push({ parameter: key, value: this.form.controls[key].value });
     });
 
-    this.newSeasonService
-      .setParameters(this.leagueService.getSelectedLeague()._id, parameters)
+    this.store
       .pipe(
+        select(selectedLeague),
+        concatMap((league: League) => this.newSeasonService.setParameters(league._id, parameters)),
         tap((league: League) => {
-          this.leagueService.setSelectedLeague(league);
+          this.store.dispatch(setSelectedLeague({ league }));
         }),
-        switchMap(() => this.authService.refresh()),
-        switchMap(() => this.leagueService.refresh)
+        tap(() => {
+          this.store.dispatch(refresh());
+        })
       )
       .subscribe(() => {
         const title = 'Modifica parametri';

@@ -3,16 +3,21 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { League } from '@app/shared/models/league';
 import { LeagueService } from '@app/shared/services/league.service';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
+import { selectedLeague } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LeagueResolverService implements Resolve<League> {
-  constructor(private newSeasonService: NewSeasonService, private leagueService: LeagueService) {}
+  constructor(private newSeasonService: NewSeasonService, private leagueService: LeagueService, private store: Store) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): League | Observable<League> | Promise<League> {
-    const selectedLeague = this.leagueService.getSelectedLeague();
-    return this.newSeasonService.read(selectedLeague._id);
+    return this.store.pipe(
+      select(selectedLeague),
+      concatMap((league: League) => this.newSeasonService.read(league._id))
+    );
   }
 }

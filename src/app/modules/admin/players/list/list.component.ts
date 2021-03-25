@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
 import { toastType } from '@app/shared/constants/globals';
-import { Status } from '@app/shared/models/league';
+import { LeagueInfo, Status } from '@app/shared/models/league';
 import { Player } from '@app/shared/models/player';
 import { Roster, RosterList } from '@app/shared/models/roster';
 import { LeagueService } from '@app/shared/services/league.service';
@@ -10,7 +10,7 @@ import { PlayerService } from '@app/shared/services/player.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
-import { selectLeagueInfo, selectLeagueStatus } from '@app/store/selectors/league.selector';
+import { leagueInfo } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'rxjs/operators';
@@ -51,12 +51,12 @@ export class ListComponent implements OnInit {
     private playerService: PlayerService,
     private store: Store
   ) {
-    this.store.pipe(select(selectLeagueInfo)).subscribe((leagueInfo: string) => {
-      this.leagueInfo = leagueInfo;
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.leagueInfo = leagueInfo.info;
     });
 
-    this.store.pipe(select(selectLeagueStatus)).subscribe((leagueStatus: Status) => {
-      this.leagueStatus = leagueStatus;
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.leagueStatus = leagueInfo.status;
     });
   }
 

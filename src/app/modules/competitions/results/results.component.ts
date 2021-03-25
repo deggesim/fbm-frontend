@@ -11,6 +11,8 @@ import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
+import { refresh } from '@app/store/actions/league-info.actions';
+import { Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -35,7 +37,8 @@ export class ResultsComponent implements OnInit {
     private leagueService: LeagueService,
     private sharedService: SharedService,
     private lineupService: LineupService,
-    private matchService: MatchService
+    private matchService: MatchService,
+    private store: Store
   ) {
     this.createForm();
   }
@@ -100,8 +103,10 @@ export class ResultsComponent implements OnInit {
         tap((matches: Match[]) => {
           this.matches = matches;
         }),
-        switchMap(() => this.leagueService.refresh),
-        switchMap(() => this.loadLineups(this.selectedMatch))
+        switchMap(() => {
+          this.store.dispatch(refresh());
+          return this.loadLineups(this.selectedMatch);
+        })
       )
       .subscribe((lineups) => {
         this.homeTeamLineup = lineups[0];

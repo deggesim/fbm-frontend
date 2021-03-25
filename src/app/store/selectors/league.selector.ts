@@ -1,4 +1,5 @@
 import { AppState } from "../app.state";
 
-export const selectLeagueInfo = (state: AppState) => state.leagueInfo.info;
-export const selectLeagueStatus = (state: AppState) => state.leagueInfo.status;
+export const leagueList = (state: AppState) => state.leagueList;
+export const selectedLeague = (state: AppState) => state.selectedLeague;
+export const leagueInfo = (state: AppState) => state.leagueInfo;
