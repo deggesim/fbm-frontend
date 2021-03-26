@@ -25,7 +25,7 @@ import {
   saveUser,
   saveUserFailed,
   saveUserSuccess,
-  setUser
+  setUser,
 } from '../actions/user.actions';
 
 @Injectable()
@@ -42,12 +42,12 @@ export class UserEffects {
   initUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(initUser),
-      map(() => {
+      switchMap(() => {
         if (this.authService.isLoggedIn()) {
           const user = JSON.parse(localStorage.getItem('user'));
-          return setUser({ user });
+          return of(setUser({ user }));
         } else {
-          return setUser(null);
+          return of(setUser(null));
         }
       })
     )
@@ -70,7 +70,7 @@ export class UserEffects {
             return loginSuccess({ user: authResult.user });
           }),
           tap(() => {
-            initLeague()
+            initLeague();
             const title = 'Login';
             const message = 'Login effettuato correttamente';
             this.sharedService.notifica(toastType.success, title, message);

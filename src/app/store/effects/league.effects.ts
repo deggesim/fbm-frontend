@@ -26,6 +26,8 @@ export class LeagueEffects {
           } else if (leagueList != null && !isEmpty(leagueList)) {
             return of(setSelectedLeague({ league: leagueList[0] }));
           }
+        } else {
+          return of(setSelectedLeague(null));
         }
       }),
       tap(() => refresh())
