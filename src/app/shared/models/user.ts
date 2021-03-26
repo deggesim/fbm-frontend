@@ -1,3 +1,4 @@
+import { FantasyTeam } from './fantasy-team';
 import { League } from './league';
 
 export interface User {
@@ -6,8 +7,9 @@ export interface User {
   email: string;
   password: string;
   role: Role;
-  leagues?: League[];
   tokens?: string[];
+  fantasyTeams?: FantasyTeam[];
+  leagues?: League[];
 }
 
 export enum Role {
