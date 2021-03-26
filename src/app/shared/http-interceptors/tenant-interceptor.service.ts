@@ -1,22 +1,30 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { League } from '@app/shared/models/league';
+import { selectedLeague } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TenantInterceptor implements HttpInterceptor {
+  constructor(private store: Store) {}
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const leagueString = localStorage.getItem('league');
-    if (leagueString != null) {
-      const league: League = JSON.parse(localStorage.getItem('league'));
-      const cloned = req.clone({
-        headers: req.headers.set('league', league._id),
-      });
-      return next.handle(cloned);
-    } else {
-      return next.handle(req);
-    }
+    return this.store.pipe(
+      select(selectedLeague),
+      switchMap((league: League) => {
+        if (league) {
+          const cloned = req.clone({
+            headers: req.headers.set('league', league._id),
+          });
+          return next.handle(cloned);
+        } else {
+          return next.handle(req);
+        }
+      })
+    );
   }
 }
