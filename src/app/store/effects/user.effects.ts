@@ -69,8 +69,8 @@ export class UserEffects {
             localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
             return loginSuccess({ user: authResult.user });
           }),
-          tap(() => initLeague()),
           tap(() => {
+            initLeague()
             const title = 'Login';
             const message = 'Login effettuato correttamente';
             this.sharedService.notifica(toastType.success, title, message);
