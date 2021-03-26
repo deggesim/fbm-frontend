@@ -8,18 +8,18 @@ export const userReducer = createReducer(
   initialState,
 
   on(setUser, (state, action) => {
-    return { ...state, user: action.user };
+    return { ...action.user };
   }),
 
   on(loginSuccess, (state, action) => {
-    return { ...state, user: action.user };
+    return { ...action.user };
   }),
 
   on(loginFailed, (state, action) => {
-    return { ...state  };
+    return { ...state };
   }),
 
   on(logoutSuccess, (state, action) => {
-    return { ...state, user: null };
-  }),
+    return null;
+  })
 );

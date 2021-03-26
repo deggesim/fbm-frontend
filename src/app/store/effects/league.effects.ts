@@ -20,7 +20,7 @@ export class LeagueEffects {
           const selectedLeague = JSON.parse(localStorage.getItem('league'));
           const userLogged = this.authService.getLoggedUser();
           const leagueList = userLogged.leagues;
-          const leagueFound = leagueList.find((league: League) => league._id === selectedLeague._id);
+          const leagueFound = leagueList.find((league: League) => league._id === selectedLeague?._id);
           if (leagueFound != null) {
             return of(setSelectedLeague({ league: leagueFound }));
           } else if (leagueList != null && !isEmpty(leagueList)) {
