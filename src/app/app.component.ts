@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
 import { concatMap, tap } from 'rxjs/operators';
 import { League } from './shared/models/league';
 import { refresh } from './store/actions/league-info.actions';
-import { initLeague } from './store/actions/league.actions';
+import { initLeague, setSelectedLeague } from './store/actions/league.actions';
 import { initUser, logout, saveUser } from './store/actions/user.actions';
 import { selectedLeague } from './store/selectors/league.selector';
 
@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   public logout() {
     this.store.dispatch(logout());
+    this.store.dispatch(setSelectedLeague(null));
     this.router.navigate(['/home']);
   }
 

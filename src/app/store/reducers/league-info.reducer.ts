@@ -8,6 +8,6 @@ export const leageInfoReducer = createReducer(
   initialState,
   
   on(refreshSuccess, (state, action) => {
-    return { ...state, action };
+    return action.leagueInfo;
   })
 );

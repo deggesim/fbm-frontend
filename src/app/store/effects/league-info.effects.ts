@@ -32,7 +32,7 @@ export class LeagueInfoEffects {
         ]).pipe(
           map((values: any[]) => {
             let nextFixture = '';
-            for (const fixture of values[3].fixtures) {
+            for (const fixture of values[1].fixtures) {
               nextFixture += ` - ${fixture.round.name} ${fixture.name}`;
             }
 
@@ -54,7 +54,10 @@ export class LeagueInfoEffects {
             }
             return refreshSuccess({ leagueInfo: { info, status } });
           }),
-          catchError(() => of(refreshFailed()))
+          catchError((err) => {
+            console.log(err);
+            
+            return of(refreshFailed())})
         )
       )
     )
