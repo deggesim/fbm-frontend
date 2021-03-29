@@ -6,7 +6,7 @@ import { NewSeasonService } from '@app/shared/services/new-season.service';
 import { selectedLeague } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,8 @@ export class LeagueResolverService implements Resolve<League> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): League | Observable<League> | Promise<League> {
     return this.store.pipe(
       select(selectedLeague),
-      concatMap((league: League) => this.newSeasonService.read(league._id))
+      take(1),
+      switchMap((league: League) => this.newSeasonService.read(league._id))
     );
   }
 }
