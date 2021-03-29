@@ -25,14 +25,14 @@ export class LeagueInfoEffects {
       withLatestFrom(this.store.pipe(select(selectedLeague))),
       mergeMap(([action, selectedLeague]) =>
         forkJoin([
-          this.http.get<Fixture>(`${this.endpoint}/leagues/${selectedLeague._id}/next-fixture`),
-          this.http.get<RealFixture>(`${this.endpoint}/leagues/${selectedLeague._id}/next-realfixture`),
           this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-preseason`),
           this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-offseason`),
+          this.http.get<boolean>(`${this.endpoint}/leagues/${selectedLeague._id}/is-postseason`),
+          this.http.get<RealFixture>(`${this.endpoint}/leagues/${selectedLeague._id}/next-realfixture`),
         ]).pipe(
           map((values: any[]) => {
             let nextFixture = '';
-            for (const fixture of values[1].fixtures) {
+            for (const fixture of values[3].fixtures) {
               nextFixture += ` - ${fixture.round.name} ${fixture.name}`;
             }
 
