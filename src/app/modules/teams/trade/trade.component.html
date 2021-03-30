@@ -37,7 +37,7 @@
                 *ngFor="let fr of fantasyRosters1"
                 class="table-secondary manina"
                 (click)="switchOutPlayerToTradeBlock(fr)"
-                [ngClass]="{ 'chosen': player1Choosen(fr) }"
+                [ngClass]="{ chosen: player1Choosen(fr) }"
               >
                 <td [appPlayerStatus]="fr">{{ fr.roster.player.name }}</td>
                 <td [appPlayerStatus]="fr">{{ fr.status }}</td>
@@ -86,7 +86,7 @@
                 *ngFor="let fr of fantasyRosters2"
                 class="table-secondary manina"
                 (click)="switchInPlayerToTradeBlock(fr)"
-                [ngClass]="{ 'chosen': player2Choosen(fr) }"
+                [ngClass]="{ chosen: player2Choosen(fr) }"
               >
                 <td [appPlayerStatus]="fr">{{ fr.roster.player.name }}</td>
                 <td [appPlayerStatus]="fr">{{ fr.status }}</td>

@@ -56,8 +56,9 @@ export class LeagueInfoEffects {
           }),
           catchError((err) => {
             console.log(err);
-            
-            return of(refreshFailed())})
+
+            return of(refreshFailed());
+          })
         )
       )
     )

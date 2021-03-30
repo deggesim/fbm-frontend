@@ -13,6 +13,4 @@ export class ErrorMessageComponent {
   @Input('form-control') formControl: FormControl;
   // tslint:disable-next-line: no-input-rename
   @Input('name') formControlName: string;
-
-  }
 }

@@ -6,7 +6,7 @@ const initialState: LeagueInfo = { info: '', status: null };
 
 export const leageInfoReducer = createReducer(
   initialState,
-  
+
   on(refreshSuccess, (state, action) => {
     return action.leagueInfo;
   })
