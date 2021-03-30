@@ -15,7 +15,6 @@ import { concatMap, switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-parameters',
   templateUrl: './parameters.component.html',
-  styleUrls: ['./parameters.component.scss'],
 })
 export class ParametersComponent implements OnInit {
   form: FormGroup;
@@ -32,7 +31,6 @@ export class ParametersComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('ParametersComponent');
     this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
       for (const param of league.parameters) {
         this.form.get(param.parameter).setValue(param.value);

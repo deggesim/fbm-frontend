@@ -30,7 +30,6 @@ export class RoundsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init RoundsComponent');
     this.route.data.subscribe((data) => {
       this.rounds = data.rounds;
       this.fantasyTeams = data.fantasyTeams;

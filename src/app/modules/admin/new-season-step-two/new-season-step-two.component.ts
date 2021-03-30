@@ -16,7 +16,6 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-new-season-step-two',
   templateUrl: './new-season-step-two.component.html',
-  styleUrls: ['./new-season-step-two.component.scss'],
 })
 export class NewSeasonStepTwoComponent implements OnInit {
   league: League;

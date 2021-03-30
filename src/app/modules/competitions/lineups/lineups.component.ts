@@ -66,7 +66,6 @@ export class LineupsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init LineupsComponent');
     this.route.data.subscribe((data) => {
       this.rounds = data.rounds;
     });
@@ -241,7 +240,6 @@ export class LineupsComponent implements OnInit {
           map((performances: Performance[]) => statistics(fr.roster.player, performances)),
           tap((playerStats: PlayerStats) => {
             this.tooltip.set(fr.roster.player._id, playerStats);
-            console.log(fr.roster.player._id, playerStats);
           })
         )
       );
@@ -255,7 +253,6 @@ export class LineupsComponent implements OnInit {
       .pipe(map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances)))
       .subscribe((playerStats: PlayerStats) => {
         this.tooltip.set(fantasyRoster.roster.player._id, playerStats);
-        console.log(this.tooltip);
       });
   }
 
@@ -337,11 +334,11 @@ export class LineupsComponent implements OnInit {
   }
 
   importa() {
-    console.log('importa');
+    // console.log('importa');
   }
 
   inviaEmail() {
-    console.log('inviaEmail');
+    // console.log('inviaEmail');
   }
 
   private initLineup(): Lineup[] {

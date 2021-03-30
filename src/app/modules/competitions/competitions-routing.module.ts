@@ -4,7 +4,7 @@ import { AuthGuard } from '@app/shared/guards/auth.guard';
 import { RealFixtureResolverService } from '@app/shared/resolvers/real-fixture-resolver.service';
 import { RoundResolverService } from '@app/shared/resolvers/round-resolver.service';
 import { TeamResolverService } from '@app/shared/resolvers/team-resolver.service';
-import { ListComponent as CalendarListComponent } from './calendar/list/list.component';
+import { CalendarListComponent } from './calendar/calendar-list/calendar-list.component';
 import { LineupsComponent } from './lineups/lineups.component';
 import { PerformancesComponent } from './performances/performances.component';
 import { ResultsComponent } from './results/results.component';

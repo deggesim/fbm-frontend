@@ -1,18 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { toastType } from '@app/shared/constants/globals';
 import { CupFormat } from '@app/shared/models/formats/cup-format';
 import { PlayoffFormat } from '@app/shared/models/formats/playoff-format';
 import { PlayoutFormat } from '@app/shared/models/formats/playout-format';
 import { RegularSeasonFormat } from '@app/shared/models/formats/regular-season-format';
 import { League } from '@app/shared/models/league';
+import { NewSeasonService } from '@app/shared/services/new-season.service';
+import { SharedService } from '@app/shared/services/shared.service';
 
 @Component({
-  selector: 'app-new-season',
-  templateUrl: './new-season.component.html',
+  selector: 'app-league-edit',
+  templateUrl: './league-edit.component.html',
 })
-export class NewSeasonComponent implements OnInit {
+export class EditLeagueComponent implements OnInit {
   form: FormGroup;
+
+  league: League;
 
   regularSeasonFormatList: RegularSeasonFormat[] = [
     RegularSeasonFormat.SINGLE,
@@ -48,29 +53,64 @@ export class NewSeasonComponent implements OnInit {
 
   cupFormatList: CupFormat[] = [CupFormat.F8, CupFormat.QF2_F4, CupFormat.QF2_SF2_F, CupFormat.QF2_SF2_F2];
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private newSeasonService: NewSeasonService,
+    private sharedService: SharedService
+  ) {
     this.createForm();
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.route.data.subscribe((data) => {
+      this.league = data.league;
+      const {
+        name,
+        realGames,
+        regularSeasonFormat,
+        playoffFormat,
+        playoutFormat,
+        cupFormat,
+        roundRobinFirstRealFixture,
+        playoffFirstRealFixture,
+        playoutFirstRealFixture,
+        cupFirstRealFixture,
+      } = this.league;
+      this.form.setValue({
+        name,
+        realGames,
+        regularSeasonFormat,
+        playoffFormat,
+        playoutFormat,
+        cupFormat,
+        roundRobinFirstRealFixture,
+        playoffFirstRealFixture,
+        playoutFirstRealFixture,
+        cupFirstRealFixture,
+      });
+    });
+  }
 
   createForm() {
     this.form = this.fb.group({
       name: [undefined, Validators.required],
-      realGames: [34, Validators.required],
+      realGames: [undefined, Validators.required],
       regularSeasonFormat: [undefined, Validators.required],
       playoffFormat: [undefined, Validators.required],
       playoutFormat: [undefined, Validators.required],
       cupFormat: [undefined, Validators.required],
-      roundRobinFirstRealFixture: [1, Validators.required],
-      playoffFirstRealFixture: [19, Validators.required],
-      playoutFirstRealFixture: [19, Validators.required],
-      cupFirstRealFixture: [10, Validators.required],
+      roundRobinFirstRealFixture: [undefined, Validators.required],
+      playoffFirstRealFixture: [undefined, Validators.required],
+      playoutFirstRealFixture: [undefined, Validators.required],
+      cupFirstRealFixture: [undefined, Validators.required],
     });
   }
 
-  step2(): void {
+  confirm() {
     const league: League = {
+      _id: this.league._id,
       name: this.form.value.name,
       realGames: this.form.value.realGames,
       regularSeasonFormat: this.form.value.regularSeasonFormat,
@@ -82,11 +122,10 @@ export class NewSeasonComponent implements OnInit {
       playoutFirstRealFixture: this.form.value.playoutFirstRealFixture,
       cupFirstRealFixture: this.form.value.cupFirstRealFixture,
     };
-    this.router.navigate(['../step-two'], {
-      relativeTo: this.route,
-      state: {
-        data: league,
-      },
+    this.newSeasonService.update(league).subscribe(() => {
+      const title = 'Modifica lega';
+      const message = 'Lega modificata con successo';
+      this.sharedService.notifica(toastType.success, title, message);
     });
   }
 }

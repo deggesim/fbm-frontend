@@ -10,8 +10,8 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
-import { EditComponent as CalendarEditComponent } from './calendar/edit/edit.component';
-import { ListComponent as CalendarListComponent } from './calendar/list/list.component';
+import { CalendarFormComponent } from './calendar/calendar-form/calendar-form.component';
+import { CalendarListComponent } from './calendar/calendar-list/calendar-list.component';
 import { CompetitionsRoutingModule } from './competitions-routing.module';
 import { LineupsComponent } from './lineups/lineups.component';
 import { PerformancesComponent } from './performances/performances.component';
@@ -21,7 +21,7 @@ import { StandingsComponent } from './standings/standings.component';
 @NgModule({
   declarations: [
     CalendarListComponent,
-    CalendarEditComponent,
+    CalendarFormComponent,
     StandingsComponent,
     PerformancesComponent,
     LineupsComponent,

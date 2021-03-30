@@ -22,7 +22,6 @@ import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operato
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.scss'],
 })
 export class TransactionComponent implements OnInit {
   form: FormGroup;
@@ -60,7 +59,6 @@ export class TransactionComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init TransactionComponent');
     this.route.data.subscribe((data) => {
       this.fantasyTeams = data.fantasyTeams;
       this.rosters = data.rosterList.content;

@@ -19,7 +19,6 @@ import { switchMap, tap } from 'rxjs/operators';
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
-  styleUrls: ['./results.component.scss'],
 })
 export class ResultsComponent implements OnInit {
   form: FormGroup;
@@ -44,7 +43,6 @@ export class ResultsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init ResultsComponent');
     this.route.data.subscribe((data) => {
       this.rounds = data.rounds;
     });

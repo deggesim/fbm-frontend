@@ -8,17 +8,17 @@ import { RosterResolverService } from '@app/shared/resolvers/roster-resolver.ser
 import { RoundResolverService } from '@app/shared/resolvers/round-resolver.service';
 import { TeamResolverService } from '@app/shared/resolvers/team-resolver.service';
 import { UsersResolverService } from '@app/shared/resolvers/users-resolver.service';
-import { EditLeagueComponent } from './edit-league/edit-league.component';
-import { ListComponent as FantasyTeamListComponent } from './fantasy-teams/list/list.component';
+import { FantasyTeamListComponent } from './fantasy-teams/fantasy-team-list/fantasy-team-list.component';
+import { EditLeagueComponent } from './league-edit/league-edit.component';
 import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
 import { ParametersComponent } from './parameters/parameters.component';
-import { ListComponent as PlayerListComponent } from './players/list/list.component';
-import { ListComponent as RealFixtureListComponent } from './real-fixture/list/list.component';
+import { PlayerListComponent } from './players/player-list/player-list.component';
+import { RealFixtureListComponent } from './real-fixture/real-fixture-list/real-fixture-list.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
-import { ListComponent as TeamListComponent } from './teams/list/list.component';
-import { ListComponent as UserListComponent } from './users/list/list.component';
+import { TeamListComponent } from './teams/team-list/team-list.component';
+import { UserListComponent } from './users/user-list/user-list.component';
 
 const routes: Routes = [
   {

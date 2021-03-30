@@ -14,7 +14,6 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'app-standings',
   templateUrl: './standings.component.html',
-  styleUrls: ['./standings.component.scss'],
 })
 export class StandingsComponent implements OnInit {
   form: FormGroup;
@@ -29,7 +28,6 @@ export class StandingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init StandingsComponent');
     this.route.data.subscribe((data) => {
       this.rounds = data.rounds.filter((round: Round) => round.roundRobin);
       this.leagueService.nextFixture().subscribe((nextFixture: Fixture) => {

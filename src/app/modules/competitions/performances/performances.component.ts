@@ -11,7 +11,6 @@ import { SharedService } from '@app/shared/services/shared.service';
 @Component({
   selector: 'app-performances',
   templateUrl: './performances.component.html',
-  styleUrls: ['./performances.component.scss'],
 })
 export class PerformancesComponent implements OnInit {
   form: FormGroup;
@@ -32,7 +31,6 @@ export class PerformancesComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('init PerformancesComponent');
     this.route.data.subscribe((data) => {
       this.teams = data.teams;
       this.realFixtures = data.realFixtures;

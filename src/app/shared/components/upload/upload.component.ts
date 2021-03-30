@@ -1,13 +1,12 @@
-import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss'],
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent {
   @Input() titolo: string;
   @Output() upload: EventEmitter<any> = new EventEmitter();
   @Output() annulla: EventEmitter<any> = new EventEmitter();
@@ -20,10 +19,6 @@ export class UploadComponent implements OnInit {
 
   constructor(private cd: ChangeDetectorRef, private fb: FormBuilder) {
     this.createForm();
-  }
-
-  ngOnInit() {
-    console.log('UploadComponent');
   }
 
   apriModale() {

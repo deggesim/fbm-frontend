@@ -73,7 +73,6 @@ export class TradeComponent implements OnInit {
         this.fantasyRosters1 = fantasyRosters;
       });
     }
-    console.log(this.form.controls.fantasyTeam1);
   }
 
   selectFantasyTeam2(fantasyTeam: FantasyTeam) {
@@ -125,7 +124,6 @@ export class TradeComponent implements OnInit {
   }
 
   salva() {
-    console.log('salva');
     for (const fr of this.fantasyRosters1Selected) {
       fr.fantasyTeam = this.fantasyTeam2Selected;
     }
@@ -170,7 +168,6 @@ export class TradeComponent implements OnInit {
   }
 
   annulla() {
-    console.log('annulla');
     this.mostraPopupTradeBlock = false;
   }
 

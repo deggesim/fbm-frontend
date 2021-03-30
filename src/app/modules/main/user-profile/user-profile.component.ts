@@ -8,7 +8,6 @@ import { SharedService } from '@app/shared/services/shared.service';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit {
   @Output() salva: EventEmitter<any> = new EventEmitter(true);

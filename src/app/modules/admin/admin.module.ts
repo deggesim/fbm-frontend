@@ -13,41 +13,41 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AdminRoutingModule } from './admin-routing.module';
-import { EditLeagueComponent } from './edit-league/edit-league.component';
-import { EditComponent as FantasyTeamEditComponent } from './fantasy-teams/edit/edit.component';
-import { ListComponent as FantasyTeamListComponent } from './fantasy-teams/list/list.component';
+import { FantasyTeamFormComponent } from './fantasy-teams/fantasy-team-form/fantasy-team-form.component';
+import { FantasyTeamListComponent } from './fantasy-teams/fantasy-team-list/fantasy-team-list.component';
+import { EditLeagueComponent } from './league-edit/league-edit.component';
 import { NewSeasonStepTwoComponent } from './new-season-step-two/new-season-step-two.component';
 import { NewSeasonComponent } from './new-season/new-season.component';
 import { ParametersComponent } from './parameters/parameters.component';
-import { EditComponent as PlayerEditComponent } from './players/edit/edit.component';
-import { ListComponent as PlayerListComponent } from './players/list/list.component';
-import { EditComponent as RealFixtureEditComponent } from './real-fixture/edit/edit.component';
-import { ListComponent as RealFixtureListComponent } from './real-fixture/list/list.component';
+import { PlayerFormComponent } from './players/player-form/player-form.component';
+import { PlayerListComponent } from './players/player-list/player-list.component';
+import { RealFixtureFormComponent } from './real-fixture/real-fixture-form/real-fixture-form.component';
+import { RealFixtureListComponent } from './real-fixture/real-fixture-list/real-fixture-list.component';
 import { RolesComponent } from './roles/roles.component';
 import { RoundsComponent } from './rounds/rounds.component';
-import { EditComponent as TeamEditComponent } from './teams/edit/edit.component';
-import { ListComponent as TeamListComponent } from './teams/list/list.component';
-import { EditComponent as UserEditComponent } from './users/edit/edit.component';
-import { ListComponent as UserListComponent } from './users/list/list.component';
+import { TeamFormComponent } from './teams/team-form/team-form.component';
+import { TeamListComponent } from './teams/team-list/team-list.component';
+import { UserFormComponent } from './users/user-form/user-form.component';
+import { UserListComponent } from './users/user-list/user-list.component';
 
 @NgModule({
   declarations: [
     NewSeasonComponent,
     NewSeasonStepTwoComponent,
     EditLeagueComponent,
-    FantasyTeamEditComponent,
+    FantasyTeamFormComponent,
     FantasyTeamListComponent,
     PlayerListComponent,
-    PlayerEditComponent,
+    PlayerFormComponent,
     ParametersComponent,
     RolesComponent,
     RoundsComponent,
     TeamListComponent,
-    TeamEditComponent,
+    TeamFormComponent,
     UserListComponent,
-    UserEditComponent,
+    UserFormComponent,
     RealFixtureListComponent,
-    RealFixtureEditComponent,
+    RealFixtureFormComponent,
   ],
   imports: [
     ReactiveFormsModule,
