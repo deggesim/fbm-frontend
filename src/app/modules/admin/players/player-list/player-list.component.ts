@@ -51,11 +51,11 @@ export class PlayerListComponent implements OnInit {
     private store: Store
   ) {
     this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueInfo = leagueInfo.info;
+      this.leagueInfo = leagueInfo?.info;
     });
 
     this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueStatus = leagueInfo.status;
+      this.leagueStatus = leagueInfo?.status;
     });
   }
 

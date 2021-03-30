@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { LeagueInfo, Status } from '@app/shared/models/league';
 import { AuthService } from '@app/shared/services/auth.service';
-import { LeagueService } from '@app/shared/services/league.service';
 import { leagueInfo, selectedLeague } from '@app/store/selectors/league.selector';
 import { user } from '@app/store/selectors/user.selector';
 import { select, Store } from '@ngrx/store';
@@ -28,23 +27,13 @@ export class HeaderComponent implements OnInit {
   isCollapsed = true;
   admin: boolean;
   user$ = this.store.pipe(select(user));
-  leagueInfo: string;
-  leagueStatus: Status;
   selectedLeague$ = this.store.pipe(select(selectedLeague));
+  leagueInfo$ =  this.store.pipe(select(leagueInfo));
+  leagueStatus: Status;
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private authService: AuthService,
-    private leagueService: LeagueService,
-    private store: Store
-  ) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private store: Store) {
     this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueInfo = leagueInfo.info;
-    });
-
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueStatus = leagueInfo.status;
+      this.leagueStatus = leagueInfo?.status;
     });
   }
 

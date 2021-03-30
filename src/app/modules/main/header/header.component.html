@@ -155,6 +155,6 @@
 
 <nav aria-label="breadcrumb" class="d-none d-sm-block fixed-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active" *ngIf="selectedLeague$ | async">{{ leagueInfo }}</li>
+    <li class="breadcrumb-item active" *ngIf="leagueInfo$ | async">{{ (leagueInfo$ | async).info }}</li>
   </ol>
 </nav>

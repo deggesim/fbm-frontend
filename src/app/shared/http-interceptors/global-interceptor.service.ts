@@ -3,12 +3,15 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedService } from '@app/shared/services/shared.service';
 import { SpinnerService } from '@app/shared/services/spinner.service';
+import { setLeagueInfo } from '@app/store/actions/league-info.actions';
+import { setSelectedLeague } from '@app/store/actions/league.actions';
+import { Store } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 
 @Injectable()
 export class GlobalInterceptor implements HttpInterceptor {
-  constructor(private sharedService: SharedService, private spinnerService: SpinnerService, private router: Router) {}
+  constructor(private sharedService: SharedService, private spinnerService: SpinnerService, private store: Store, private router: Router) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.headers.get('hideSpinner') !== 'true') {
@@ -18,7 +21,13 @@ export class GlobalInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
         this.sharedService.notifyError(err);
         if (401 === err.status) {
-          window.location.reload();
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+          localStorage.removeItem('expires_at');
+          localStorage.removeItem('league');
+          this.store.dispatch(setLeagueInfo(null));
+          this.store.dispatch(setSelectedLeague(null));
+          this.router.navigate(['/home']);
         }
         return throwError(err);
       }),

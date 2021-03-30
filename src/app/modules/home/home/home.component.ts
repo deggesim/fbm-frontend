@@ -29,10 +29,11 @@ export class HomeComponent {
   }
 
   public selectLeague(league: League) {
+    localStorage.setItem('league', JSON.stringify(league));
     this.store.dispatch(setSelectedLeague({ league }));
     this.store.dispatch(refresh());
     this.leagueInfo$.subscribe((leagueInfo: LeagueInfo) => {
-      switch (leagueInfo.status) {
+      switch (leagueInfo?.status) {
         case Status.Preseason:
           if (this.authService.isAdmin()) {
             this.router.navigate(['/admin/preseason/edit-league']);

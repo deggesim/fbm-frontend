@@ -54,7 +54,7 @@ export class TransactionComponent implements OnInit {
   ) {
     this.createForm();
     this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueStatus = leagueInfo.status;
+      this.leagueStatus = leagueInfo?.status;
     });
   }
 
