@@ -1,7 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
-import { LeagueInfo, Status } from '@app/shared/models/league';
+import { League, LeagueInfo } from '@app/shared/models/league';
+import { User } from '@app/shared/models/user';
 import { AuthService } from '@app/shared/services/auth.service';
+import { AppState } from '@app/store/app.state';
 import { leagueInfo, selectedLeague } from '@app/store/selectors/league.selector';
 import { user } from '@app/store/selectors/user.selector';
 import { select, Store } from '@ngrx/store';
@@ -25,17 +27,18 @@ export class HeaderComponent implements OnInit {
   @Output() completePreseason: EventEmitter<any> = new EventEmitter(true);
 
   isCollapsed = true;
-  admin: boolean;
-  user$ = this.store.pipe(select(user));
-  selectedLeague$ = this.store.pipe(select(selectedLeague));
-  leagueInfo$ =  this.store.pipe(select(leagueInfo));
-  leagueStatus: Status;
+  isLoggedIn: boolean;
+  isAdmin: boolean;
+  user: User;
+  selectedLeague: League;
+  leagueInfo: LeagueInfo;
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private authService: AuthService, private store: Store) {
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueStatus = leagueInfo?.status;
-    });
-  }
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService,
+    private store: Store<AppState>
+  ) {}
 
   ngOnInit() {
     // subscribe to the NavigationEnd event
@@ -43,22 +46,22 @@ export class HeaderComponent implements OnInit {
       // set breadcrumbs
       const root: ActivatedRoute = this.activatedRoute.root;
     });
-    this.admin = this.authService.isAdmin();
-  }
-
-  public isLoggedIn() {
-    return this.authService.isLoggedIn();
-  }
-
-  public isAdmin() {
-    return this.authService.isAdmin();
-  }
-
-  public isPreseason() {
-    return this.leagueStatus != null && this.leagueStatus === Status.Preseason;
+    this.isLoggedIn = this.authService.isLoggedIn();
+    this.store.pipe(select(user)).subscribe((user: User) => {
+      this.user = user;
+    });
+    this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+      this.selectedLeague = league;
+    });
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.leagueInfo = leagueInfo;
+    });
+    this.authService.isAdmin$().subscribe((isAdmin: boolean) => {
+      this.isAdmin = isAdmin;
+    });
   }
 
   get transactionLabel() {
-    return this.isPreseason() ? 'Asta fantamercato' : 'Mercato libero';
+    return this.leagueInfo.preSeason ? 'Asta fantamercato' : 'Mercato libero';
   }
 }

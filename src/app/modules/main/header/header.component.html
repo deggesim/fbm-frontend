@@ -9,7 +9,7 @@
   <div class="collapse navbar-collapse" [collapse]="isCollapsed">
     <ul class="navbar-nav mr-auto">
       <!-- SQUADRE -->
-      <li class="nav-item dropdown" dropdown *ngIf="selectedLeague$ | async">
+      <li class="nav-item dropdown" dropdown *ngIf="selectedLeague">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
         </a>
@@ -24,7 +24,7 @@
       </li>
 
       <!-- COMPETIZIONI -->
-      <li class="nav-item dropdown" dropdown *ngIf="(selectedLeague$ | async) && !isPreseason()">
+      <li class="nav-item dropdown" dropdown *ngIf="selectedLeague && !leagueInfo?.preSeason">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="calendar-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Competizioni
         </a>
@@ -48,7 +48,7 @@
       </li>
 
       <!-- GESTIONE LEGA -->
-      <li class="nav-item dropdown" dropdown *ngIf="(user$ | async) && isAdmin() && (selectedLeague$ | async)">
+      <li class="nav-item dropdown" dropdown *ngIf="user && isAdmin && selectedLeague">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="cogs" [fixedWidth]="true" class="icon-padding"></fa-icon>Gestione lega
         </a>
@@ -58,7 +58,7 @@
             routerLink="/admin/league-management/teams"
             routerLinkActive="active"
             (click)="isCollapsed = true"
-            *ngIf="!isPreseason()"
+            *ngIf="!leagueInfo?.preSeason"
           >
             <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
           </a>
@@ -67,7 +67,7 @@
             routerLink="/admin/league-management/players"
             routerLinkActive="active"
             (click)="isCollapsed = true"
-            *ngIf="!isPreseason()"
+            *ngIf="!leagueInfo?.preSeason"
           >
             <fa-icon icon="id-badge" [fixedWidth]="true" class="icon-padding"></fa-icon>Giocatori
           </a>
@@ -95,7 +95,7 @@
       </li>
 
       <!-- PRESEASON -->
-      <li class="nav-item dropdown" dropdown *ngIf="(user$ | async) && isAdmin() && (selectedLeague$ | async) && isPreseason()">
+      <li class="nav-item dropdown" dropdown *ngIf="user && isAdmin && selectedLeague && leagueInfo?.preSeason">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="tools" [fixedWidth]="true" class="icon-padding"></fa-icon>Preseason
         </a>
@@ -124,7 +124,7 @@
       </li>
 
       <!-- ADMIN -->
-      <li class="nav-item dropdown" dropdown *ngIf="(user$ | async) && isAdmin()">
+      <li class="nav-item dropdown" dropdown *ngIf="user && isAdmin">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="user-cog" class="icon-padding"></fa-icon>Admin
         </a>
@@ -140,13 +140,13 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav" *ngIf="(user$ | async) && isLoggedIn()">
+    <ul class="navbar-nav" *ngIf="user && isLoggedIn">
       <li class="nav-item">
         <a class="nav-link manina nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
       </li>
       <li class="nav-item">
         <a class="nav-link manina nowrap" (click)="profile.emit()">
-          <app-user-role-icon [role]="(user$ | async).role"></app-user-role-icon>{{ (user$ | async).name }}
+          <app-user-role-icon [role]="user.role"></app-user-role-icon>{{ user.name }}
         </a>
       </li>
     </ul>
@@ -155,6 +155,6 @@
 
 <nav aria-label="breadcrumb" class="d-none d-sm-block fixed-breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active" *ngIf="leagueInfo$ | async">{{ (leagueInfo$ | async).info }}</li>
+    <li class="breadcrumb-item active" *ngIf="leagueInfo">{{ leagueInfo.info }}</li>
   </ol>
 </nav>

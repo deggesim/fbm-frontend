@@ -8,6 +8,7 @@ import { Round } from '@app/shared/models/round';
 import { TableItem } from '@app/shared/models/table-item';
 import { LeagueService } from '@app/shared/services/league.service';
 import { calculator } from '@app/shared/util/standings';
+import { AppState } from '@app/store/app.state';
 import { selectedLeague } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
 
@@ -23,7 +24,12 @@ export class StandingsComponent implements OnInit {
   nextFixture: Fixture;
   trend: Parameter;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private leagueService: LeagueService, private store: Store) {
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private leagueService: LeagueService,
+    private store: Store<AppState>
+  ) {
     this.createForm();
   }
 

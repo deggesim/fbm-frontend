@@ -6,12 +6,12 @@ import { Fixture } from '@app/shared/models/fixture';
 import { Lineup } from '@app/shared/models/lineup';
 import { Match } from '@app/shared/models/match';
 import { Round } from '@app/shared/models/round';
-import { LeagueService } from '@app/shared/services/league.service';
 import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
 import { refresh } from '@app/store/actions/league-info.actions';
+import { AppState } from '@app/store/app.state';
 import { Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
@@ -33,11 +33,10 @@ export class ResultsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private leagueService: LeagueService,
     private sharedService: SharedService,
     private lineupService: LineupService,
     private matchService: MatchService,
-    private store: Store
+    private store: Store<AppState>
   ) {
     this.createForm();
   }

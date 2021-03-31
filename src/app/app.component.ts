@@ -11,6 +11,7 @@ import { League } from './shared/models/league';
 import { refresh, setLeagueInfo } from './store/actions/league-info.actions';
 import { initLeague, setSelectedLeague } from './store/actions/league.actions';
 import { initUser, logout, saveUser } from './store/actions/user.actions';
+import { AppState } from './store/app.state';
 import { selectedLeague } from './store/selectors/league.selector';
 
 @Component({
@@ -30,12 +31,13 @@ export class AppComponent implements OnInit, AfterViewChecked {
     private spinnerService: SpinnerService,
     private sharedService: SharedService,
     private newSeasonService: NewSeasonService,
-    private store: Store
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
     this.store.dispatch(initUser());
     this.store.dispatch(initLeague());
+    this.store.dispatch(refresh());
   }
 
   ngAfterViewChecked(): void {

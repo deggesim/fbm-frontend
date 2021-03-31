@@ -14,7 +14,6 @@ import { Round } from '@app/shared/models/round';
 import { User } from '@app/shared/models/user';
 import { AuthService } from '@app/shared/services/auth.service';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
-import { LeagueService } from '@app/shared/services/league.service';
 import { LineupService } from '@app/shared/services/lineup.service';
 import { PerformanceService } from '@app/shared/services/performance.service';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
@@ -22,7 +21,9 @@ import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
 import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
+import { AppState } from '@app/store/app.state';
 import { selectedLeague } from '@app/store/selectors/league.selector';
+import { user } from '@app/store/selectors/user.selector';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -48,17 +49,20 @@ export class LineupsComponent implements OnInit {
   disableUpdate = true;
   tooltip = new Map<string, PlayerStats>();
 
+  isAdmin: boolean;
+  user: User;
+  selectedLeague: League;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private leagueService: LeagueService,
     private sharedService: SharedService,
     private realFixtureService: RealFixtureService,
     private fantasyRosterService: FantasyRosterService,
     private lineupService: LineupService,
     private performanceService: PerformanceService,
-    private store: Store
+    private store: Store<AppState>
   ) {
     this.createForm();
     this.createBenchForm();
@@ -68,6 +72,15 @@ export class LineupsComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.rounds = data.rounds;
+    });
+    this.authService.isAdmin$().subscribe((isAdmin: boolean) => {
+      this.isAdmin = isAdmin;
+    });
+    this.store.pipe(select(user)).subscribe((user: User) => {
+      this.user = user;
+    });
+    this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+      this.selectedLeague = league;
     });
   }
 
@@ -91,35 +104,33 @@ export class LineupsComponent implements OnInit {
   lineupValidator = (control: AbstractControl) => {
     const lineup: Lineup[] = control.value;
 
-    return this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
-      const lineupValid = lineUpValid(lineup, league);
-      if (!lineupValid) {
-        return { lineupInvalid: true };
-      }
+    const lineupValid = lineUpValid(lineup, this.selectedLeague);
+    if (!lineupValid) {
+      return { lineupInvalid: true };
+    }
 
-      // count EXT, COM, STR, ITA
-      const MAX_EXT_OPT_345 = league.parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
-      if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
-        return { lineupInvalid: true };
-      }
+    // count EXT, COM, STR, ITA
+    const MAX_EXT_OPT_345 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
+    if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
+      return { lineupInvalid: true };
+    }
 
-      const MAX_STRANGERS_OPT_55 = league.parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
-      if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
-        return { lineupInvalid: true };
-      }
+    const MAX_STRANGERS_OPT_55 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
+    if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
+      return { lineupInvalid: true };
+    }
 
-      const MAX_STR = league.parameters.find((param) => param.parameter === 'MAX_STR');
-      if (count(lineup, PlayerStatus.Str) > MAX_STR.value) {
-        return { lineupInvalid: true };
-      }
+    // const MAX_STR = league.parameters.find((param) => param.parameter === 'MAX_STR');
+    // if (count(lineup, PlayerStatus.Str) > MAX_STR.value) {
+    //   return { lineupInvalid: true };
+    // }
 
-      const MIN_NAT_PLAYERS = league.parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
-      if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
-        return { lineupInvalid: true };
-      }
+    const MIN_NAT_PLAYERS = this.selectedLeague.parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
+    if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
+      return { lineupInvalid: true };
+    }
 
-      return null;
-    });
+    return null;
   };
 
   onChangeRound(round: Round) {
@@ -166,10 +177,10 @@ export class LineupsComponent implements OnInit {
     if (fantasyTeam != null) {
       const teamManagedByLoggedUser =
         (fantasyTeam.owners as User[]).find((owner) => {
-          const ret = owner._id === this.authService.getLoggedUser()._id;
+          const ret = owner._id === this.user._id;
           return ret;
         }) != null;
-      if (this.authService.isAdmin() || teamManagedByLoggedUser) {
+      if (this.isAdmin || teamManagedByLoggedUser) {
         this.disableUpdate = false;
       }
       this.realFixtureService

@@ -10,6 +10,7 @@ import { MatchService } from '@app/shared/services/match.service';
 import { RoundService } from '@app/shared/services/round.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { refresh } from '@app/store/actions/league-info.actions';
+import { AppState } from '@app/store/app.state';
 import { Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -28,11 +29,11 @@ export class CalendarListComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private authService: AuthService,
+    public authService: AuthService,
     private sharedService: SharedService,
     private roundService: RoundService,
     private matchService: MatchService,
-    private store: Store
+    private store: Store<AppState>
   ) {
     this.createForm();
   }
@@ -52,11 +53,6 @@ export class CalendarListComponent implements OnInit {
   onChange(round: Round) {
     this.selectedRound = round;
     this.selectedFixture = null;
-  }
-
-  public isAdmin() {
-    // TODO gestire
-    return /*this.user != null &&*/ this.authService.isAdmin();
   }
 
   reset() {

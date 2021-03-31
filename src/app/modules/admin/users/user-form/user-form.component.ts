@@ -20,7 +20,9 @@ export class UserFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.roleList = this.authService.isSuperAdmin() ? ['User', 'Admin'] : ['User'];
+    this.authService.isSuperAdmin$().subscribe((isSuperAdmin: boolean) => {
+      this.roleList = isSuperAdmin ? ['User', 'Admin'] : ['User'];
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

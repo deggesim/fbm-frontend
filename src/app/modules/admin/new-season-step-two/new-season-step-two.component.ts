@@ -10,6 +10,7 @@ import { LeagueService } from '@app/shared/services/league.service';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
 import { refresh } from '@app/store/actions/league-info.actions';
 import { setSelectedLeague } from '@app/store/actions/league.actions';
+import { AppState } from '@app/store/app.state';
 import { Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -30,11 +31,9 @@ export class NewSeasonStepTwoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private authService: AuthService,
-    private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
     private fantastyTeamsService: FantasyTeamService,
-    private store: Store
+    private store: Store<AppState>
   ) {
     this.league = this.router.getCurrentNavigation().extras.state?.data;
     this.createForm();

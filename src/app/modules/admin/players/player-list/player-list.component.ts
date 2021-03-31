@@ -5,11 +5,11 @@ import { toastType } from '@app/shared/constants/globals';
 import { LeagueInfo, Status } from '@app/shared/models/league';
 import { Player } from '@app/shared/models/player';
 import { Roster, RosterList } from '@app/shared/models/roster';
-import { LeagueService } from '@app/shared/services/league.service';
 import { PlayerService } from '@app/shared/services/player.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
+import { AppState } from '@app/store/app.state';
 import { leagueInfo } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
@@ -20,8 +20,7 @@ import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'r
   templateUrl: './player-list.component.html',
 })
 export class PlayerListComponent implements OnInit {
-  leagueInfo: string;
-  leagueStatus: Status;
+  leagueInfo: LeagueInfo;
   rosterList: RosterList;
   filter: string;
   filter$ = new Subject<string>();
@@ -44,24 +43,20 @@ export class PlayerListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private leagueService: LeagueService,
     private sharedService: SharedService,
     private rosterService: RosterService,
     private playerService: PlayerService,
-    private store: Store
+    private store: Store<AppState>
   ) {
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueInfo = leagueInfo?.info;
-    });
-
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueStatus = leagueInfo?.status;
-    });
+    
   }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.rosterList = data.rosterList;
+    });
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.leagueInfo = leagueInfo;
     });
 
     this.filter$
@@ -79,10 +74,6 @@ export class PlayerListComponent implements OnInit {
       .subscribe((rosterList: RosterList) => {
         this.rosterList = rosterList;
       });
-  }
-
-  public isPreseason() {
-    return this.leagueStatus != null && this.leagueStatus === Status.Preseason;
   }
 
   pulisciFiltro(): void {

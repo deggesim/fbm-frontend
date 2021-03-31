@@ -13,6 +13,7 @@ import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { LeagueService } from '@app/shared/services/league.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { SharedService } from '@app/shared/services/shared.service';
+import { AppState } from '@app/store/app.state';
 import { leagueInfo } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
@@ -50,7 +51,7 @@ export class TransactionComponent implements OnInit {
     private rosterService: RosterService,
     private fantasyRosterService: FantasyRosterService,
     private fantasyTeamService: FantasyTeamService,
-    private store: Store
+    private store: Store<AppState>
   ) {
     this.createForm();
     this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {

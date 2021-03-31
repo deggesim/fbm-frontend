@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { toastType } from '@app/shared/constants/globals';
 import { League } from '@app/shared/models/league';
-import { AuthService } from '@app/shared/services/auth.service';
-import { LeagueService } from '@app/shared/services/league.service';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { refresh } from '@app/store/actions/league-info.actions';
 import { setSelectedLeague } from '@app/store/actions/league.actions';
+import { AppState } from '@app/store/app.state';
 import { selectedLeague } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
 import { concatMap, tap } from 'rxjs/operators';
@@ -23,11 +22,9 @@ export class RolesComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
-    private leagueService: LeagueService,
     private newSeasonService: NewSeasonService,
     private sharedService: SharedService,
-    private store: Store
+    private store: Store<AppState>
   ) {
     this.createForm();
   }

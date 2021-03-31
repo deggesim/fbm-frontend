@@ -1,7 +1,9 @@
+import { Fixture } from './fixture';
 import { CupFormat } from './formats/cup-format';
 import { PlayoffFormat } from './formats/playoff-format';
 import { PlayoutFormat } from './formats/playout-format';
 import { RegularSeasonFormat } from './formats/regular-season-format';
+import { RealFixture } from './real-fixture';
 
 export interface League {
   _id?: string;
@@ -39,4 +41,10 @@ export enum Status {
 export interface LeagueInfo {
   info: string;
   status: Status;
+  preSeason: boolean;
+  regularSeason: boolean;
+  postSeason: boolean;
+  offSeason: boolean;
+  nextRealFixture: RealFixture;
+  nextFixture: Fixture;
 }

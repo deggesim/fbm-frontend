@@ -2,8 +2,10 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { toastType } from '@app/shared/constants/globals';
 import { Role, User } from '@app/shared/models/user';
-import { AuthService } from '@app/shared/services/auth.service';
 import { SharedService } from '@app/shared/services/shared.service';
+import { AppState } from '@app/store/app.state';
+import { user } from '@app/store/selectors/user.selector';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,13 +19,14 @@ export class UserProfileComponent implements OnInit {
   user: User;
   superAdmin: boolean;
 
-  constructor(private fb: FormBuilder, private sharedService: SharedService, private authService: AuthService) {
-    this.user = this.authService.getLoggedUser();
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder, private sharedService: SharedService, private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.superAdmin = Role.SuperAdmin === this.user.role;
+    this.store.pipe(select(user)).subscribe((user: User) => {
+      this.user = user;
+      this.superAdmin = user && Role.SuperAdmin === user.role;
+      this.createForm();
+    });
   }
 
   createForm() {

@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { AuthService } from '@app/shared/services/auth.service';
 import { setLeagueInfo } from '@app/store/actions/league-info.actions';
 import { setSelectedLeague } from '@app/store/actions/league.actions';
-import { logout } from '@app/store/actions/user.actions';
+import { AppState } from '@app/store/app.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router, private store: Store) {}
+  constructor(private authService: AuthService, private router: Router, private store: Store<AppState>) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
