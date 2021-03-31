@@ -9,7 +9,7 @@ import * as LeagueActions from '@app/store/actions/league.actions';
 import { AppState } from '@app/store/app.state';
 import { selectedLeague } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
-import { concatMap, tap } from 'rxjs/operators';
+import { concatMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-parameters',
@@ -60,6 +60,7 @@ export class ParametersComponent implements OnInit {
     this.store
       .pipe(
         select(selectedLeague),
+        take(1),
         concatMap((league: League) => this.newSeasonService.setParameters(league._id, parameters)),
         tap((league: League) => {
           this.store.dispatch(LeagueActions.setSelectedLeague({ league }));

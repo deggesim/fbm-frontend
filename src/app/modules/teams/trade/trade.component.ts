@@ -44,15 +44,15 @@ export class TradeComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.createForm();
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.nextRealFixture = leagueInfo.nextRealFixture;
-    });
   }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.fantasyTeams1 = data.fantasyTeams;
       this.fantasyTeams2 = data.fantasyTeams;
+    });
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.nextRealFixture = leagueInfo.nextRealFixture;
     });
   }
 

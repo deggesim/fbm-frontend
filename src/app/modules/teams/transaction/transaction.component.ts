@@ -17,7 +17,7 @@ import { leagueInfo } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction',
@@ -53,15 +53,16 @@ export class TransactionComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.createForm();
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueStatus = leagueInfo?.status;
-    });
   }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.fantasyTeams = data.fantasyTeams;
       this.rosters = data.rosterList.content;
+    });
+
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.leagueStatus = leagueInfo?.status;
     });
 
     this.typeahead$
@@ -173,6 +174,7 @@ export class TransactionComponent implements OnInit {
             this.rosters = rosterList.content;
           }),
           switchMap(() => this.store.select(leagueInfo)),
+          take(1),
           switchMap((leagueInfo: LeagueInfo) =>
             this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id)
           )
@@ -208,6 +210,7 @@ export class TransactionComponent implements OnInit {
             this.rosters = rosterList.content;
           }),
           switchMap(() => this.store.select(leagueInfo)),
+          take(1),
           switchMap((leagueInfo: LeagueInfo) =>
             this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id)
           )
@@ -268,6 +271,7 @@ export class TransactionComponent implements OnInit {
         }),
         // switchMap(() => this.rosterService.freePlayers()),
         switchMap(() => this.store.select(leagueInfo)),
+        take(1),
         switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
