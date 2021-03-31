@@ -4,12 +4,15 @@ import { ActivatedRoute } from '@angular/router';
 import { toastType } from '@app/shared/constants/globals';
 import { FantasyRoster } from '@app/shared/models/fantasy-roster';
 import { FantasyTeam } from '@app/shared/models/fantasy-team';
+import { LeagueInfo } from '@app/shared/models/league';
 import { RealFixture } from '@app/shared/models/real-fixture';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
-import { LeagueService } from '@app/shared/services/league.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { fantasyTeamMustBeDifferent } from '@app/shared/util/validations';
+import { AppState } from '@app/store/app.state';
+import { leagueInfo } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -35,14 +38,14 @@ export class TradeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private leagueService: LeagueService,
     private sharedService: SharedService,
     private fantasyRosterService: FantasyRosterService,
-    private fantasyTeamService: FantasyTeamService
+    private fantasyTeamService: FantasyTeamService,
+    private store: Store<AppState>
   ) {
     this.createForm();
-    this.leagueService.nextRealFixture().subscribe((realFixture: RealFixture) => {
-      this.nextRealFixture = realFixture;
+    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+      this.nextRealFixture = leagueInfo.nextRealFixture;
     });
   }
 

@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
-import { refresh, refreshFailed, refreshSuccess } from '../actions/league-info.actions';
+import * as LeagueInfoActions from '../actions/league-info.actions';
 import { AppState } from '../app.state';
 import { selectedLeague } from '../selectors/league.selector';
 
@@ -15,12 +15,12 @@ export class LeagueInfoEffects {
 
   refresh$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(refresh),
+      ofType(LeagueInfoActions.refresh),
       withLatestFrom(this.store.pipe(select(selectedLeague))),
       switchMap(([action, selectedLeague]) =>
         this.leagueService.refresh$(selectedLeague).pipe(
-          map((leagueInfo: LeagueInfo) => refreshSuccess({ leagueInfo })),
-          catchError(() => of(refreshFailed()))
+          map((leagueInfo: LeagueInfo) => LeagueInfoActions.refreshSuccess({ leagueInfo })),
+          catchError(() => of(LeagueInfoActions.refreshFailed()))
         )
       )
     )

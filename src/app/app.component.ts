@@ -8,9 +8,9 @@ import { SpinnerService } from '@app/shared/services/spinner.service';
 import { select, Store } from '@ngrx/store';
 import { concatMap, tap } from 'rxjs/operators';
 import { League } from './shared/models/league';
-import { refresh, setLeagueInfo } from './store/actions/league-info.actions';
-import { initLeague, setSelectedLeague } from './store/actions/league.actions';
-import { initUser, logout, saveUser } from './store/actions/user.actions';
+import * as LeagueInfoActions from './store/actions/league-info.actions';
+import * as LeagueActions from './store/actions/league.actions';
+import * as UserActions from './store/actions/user.actions';
 import { AppState } from './store/app.state';
 import { selectedLeague } from './store/selectors/league.selector';
 
@@ -35,9 +35,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(initUser());
-    this.store.dispatch(initLeague());
-    this.store.dispatch(refresh());
+    this.store.dispatch(UserActions.initUser());
+    this.store.dispatch(LeagueActions.initLeague());
+    this.store.dispatch(LeagueInfoActions.refresh());
   }
 
   ngAfterViewChecked(): void {
@@ -50,9 +50,9 @@ export class AppComponent implements OnInit, AfterViewChecked {
   }
 
   public logout() {
-    this.store.dispatch(logout());
-    this.store.dispatch(setLeagueInfo(null));
-    this.store.dispatch(setSelectedLeague(null));
+    this.store.dispatch(UserActions.logout());
+    this.store.dispatch(LeagueInfoActions.setLeagueInfo(null));
+    this.store.dispatch(LeagueActions.setSelectedLeague(null));
     this.router.navigate(['/home']);
   }
 
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   public salva(user: User) {
     this.mostraPopupUserProfile = false;
-    this.store.dispatch(saveUser({ user }));
+    this.store.dispatch(UserActions.saveUser({ user }));
   }
 
   public completePreseason() {
@@ -70,7 +70,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
       .pipe(
         select(selectedLeague),
         concatMap((league: League) => this.newSeasonService.completePreseason(league._id)),
-        tap((league: League) => this.store.dispatch(refresh()))
+        tap((league: League) => this.store.dispatch(LeagueInfoActions.refresh()))
       )
       .subscribe(() => {
         const title = 'Presason completata';

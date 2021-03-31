@@ -4,12 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FantasyTeam } from '@app/shared/models/fantasy-team';
 import { League } from '@app/shared/models/league';
 import { User } from '@app/shared/models/user';
-import { AuthService } from '@app/shared/services/auth.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
-import { LeagueService } from '@app/shared/services/league.service';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
-import { refresh } from '@app/store/actions/league-info.actions';
-import { setSelectedLeague } from '@app/store/actions/league.actions';
+import * as LeagueInfoActions from '@app/store/actions/league-info.actions';
+import * as LeagueActions from '@app/store/actions/league.actions';
 import { AppState } from '@app/store/app.state';
 import { Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
@@ -71,8 +69,8 @@ export class NewSeasonStepTwoComponent implements OnInit {
         }),
         switchMap(() => this.newSeasonService.populate(newLeague)),
         tap((league: League) => {
-          this.store.dispatch(setSelectedLeague({ league }));
-          this.store.dispatch(refresh());
+          this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
+          this.store.dispatch(LeagueInfoActions.refresh());
         })
       )
       .subscribe(() => {

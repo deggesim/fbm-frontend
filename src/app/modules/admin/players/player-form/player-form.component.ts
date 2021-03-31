@@ -1,12 +1,15 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { LeagueInfo } from '@app/shared/models/league';
 import { Role } from '@app/shared/models/player';
 import { RealFixture } from '@app/shared/models/real-fixture';
 import { Roster } from '@app/shared/models/roster';
 import { Team } from '@app/shared/models/team';
-import { LeagueService } from '@app/shared/services/league.service';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { TeamService } from '@app/shared/services/team.service';
+import { AppState } from '@app/store/app.state';
+import { leagueInfo } from '@app/store/selectors/league.selector';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-player-form',
@@ -26,8 +29,8 @@ export class PlayerFormComponent implements OnInit, OnChanges {
   constructor(
     private fb: FormBuilder,
     private teamService: TeamService,
-    private leagueService: LeagueService,
-    private realFixtureService: RealFixtureService
+    private realFixtureService: RealFixtureService,
+    private store: Store<AppState>
   ) {
     this.createForm();
   }
@@ -49,8 +52,8 @@ export class PlayerFormComponent implements OnInit, OnChanges {
       const { name, nationality, number, yearBirth, height, weight, role } = roster.player;
       this.form.patchValue({ name, nationality, number, yearBirth, height, weight, role });
       this.form.get('team').setValue(roster.team);
-      this.leagueService.nextRealFixture().subscribe((realFixture: RealFixture) => {
-        this.form.get('realFixture').setValue(realFixture);
+      this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+        this.form.get('realFixture').setValue(leagueInfo.nextRealFixture);
       });
     }
   }

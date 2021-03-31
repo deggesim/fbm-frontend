@@ -9,7 +9,7 @@ import { AuthService } from '@app/shared/services/auth.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { RoundService } from '@app/shared/services/round.service';
 import { SharedService } from '@app/shared/services/shared.service';
-import { refresh } from '@app/store/actions/league-info.actions';
+import * as LeagueInfoActions from '@app/store/actions/league-info.actions';
 import { AppState } from '@app/store/app.state';
 import { Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
@@ -79,7 +79,7 @@ export class CalendarListComponent implements OnInit {
           this.matches = undefined;
         }),
         switchMap(() => {
-          this.store.dispatch(refresh());
+          this.store.dispatch(LeagueInfoActions.refresh());
           return this.roundService.read();
         })
       )

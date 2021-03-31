@@ -4,8 +4,8 @@ import { toastType } from '@app/shared/constants/globals';
 import { League } from '@app/shared/models/league';
 import { NewSeasonService } from '@app/shared/services/new-season.service';
 import { SharedService } from '@app/shared/services/shared.service';
-import { refresh } from '@app/store/actions/league-info.actions';
-import { setSelectedLeague } from '@app/store/actions/league.actions';
+import * as LeagueInfoActions from '@app/store/actions/league-info.actions';
+import * as LeagueActions from '@app/store/actions/league.actions';
 import { AppState } from '@app/store/app.state';
 import { selectedLeague } from '@app/store/selectors/league.selector';
 import { select, Store } from '@ngrx/store';
@@ -62,10 +62,10 @@ export class ParametersComponent implements OnInit {
         select(selectedLeague),
         concatMap((league: League) => this.newSeasonService.setParameters(league._id, parameters)),
         tap((league: League) => {
-          this.store.dispatch(setSelectedLeague({ league }));
+          this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
         }),
         tap(() => {
-          this.store.dispatch(refresh());
+          this.store.dispatch(LeagueInfoActions.refresh());
         })
       )
       .subscribe(() => {

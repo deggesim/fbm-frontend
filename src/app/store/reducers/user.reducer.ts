@@ -1,25 +1,25 @@
 import { User } from '@app/shared/models/user';
 import { createReducer, on } from '@ngrx/store';
-import { loginFailed, loginSuccess, logoutSuccess, setUser } from '../actions/user.actions';
+import * as UserActions from '../actions/user.actions';
 
 const initialState: User = null;
 
 export const userReducer = createReducer(
   initialState,
 
-  on(setUser, (state, action) => {
+  on(UserActions.setUser, (state, action) => {
     return { ...action.user };
   }),
 
-  on(loginSuccess, (state, action) => {
+  on(UserActions.loginSuccess, (state, action) => {
     return { ...action.user };
   }),
 
-  on(loginFailed, (state, action) => {
+  on(UserActions.loginFailed, (state, action) => {
     return { ...state };
   }),
 
-  on(logoutSuccess, (state, action) => {
+  on(UserActions.logoutSuccess, (state, action) => {
     return null;
   })
 );

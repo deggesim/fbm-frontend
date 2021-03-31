@@ -2,15 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Login } from '@app/shared/models/login';
 import { Role, User } from '@app/shared/models/user';
-import { getUser } from '@app/store/actions/user.actions';
 import { AppState } from '@app/store/app.state';
 import { user } from '@app/store/selectors/user.selector';
 import { environment } from '@env/environment';
 import { select, Store } from '@ngrx/store';
-import jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import jwtDecode from 'jwt-decode';
 
 @Injectable()
 export class AuthService {
@@ -56,6 +55,32 @@ export class AuthService {
       map((user: User) => user && this.isLoggedIn() && Role.SuperAdmin === user.role)
     );
   };
+
+  public setAuth(authResult: { user: User; token: string }) {
+    const user = authResult.user;
+    const token = authResult.token;
+    const decoded: any = jwtDecode(token);
+    const exp = decoded.exp;
+    const expiresAt = moment().add(exp);
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+  }
+
+  public clearStorage() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    localStorage.removeItem('expires_at');
+    localStorage.removeItem('league');
+  }
+
+  public getUser(): User {
+    return JSON.parse(localStorage.getItem('user')) as User;
+  }
+
+  public setUser(user: User) {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 
   // metodi privati
   private getExpiration() {

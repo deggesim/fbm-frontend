@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import { Fixture } from '@app/shared/models/fixture';
 import { League, LeagueInfo, Status } from '@app/shared/models/league';
 import { RealFixture } from '@app/shared/models/real-fixture';
-import { AppState } from '@app/store/app.state';
 import { environment } from '@env/environment';
-import { Store } from '@ngrx/store';
 import { EMPTY, forkJoin, Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -15,14 +13,22 @@ import { map } from 'rxjs/operators';
 export class LeagueService {
   private endpoint = environment.endpoint;
 
-  constructor(private http: HttpClient, private store: Store<AppState>) {}
+  constructor(private http: HttpClient) {}
 
   public refresh$ = (league: League): Observable<LeagueInfo> =>
-    forkJoin([this.isPreSeason(league), this.isOffSeason(league), this.isPostSeason(league), this.nextRealFixture(league), this.nextRealFixture(league)]).pipe(
+    forkJoin([
+      this.isPreSeason(league),
+      this.isOffSeason(league),
+      this.isPostSeason(league),
+      this.nextRealFixture(league),
+      this.nextFixture(league),
+    ]).pipe(
       map((values: any[]) => {
-        let nextFixture = '';
-        for (const fixture of values[3].fixtures) {
-          nextFixture += ` - ${fixture.round.name} ${fixture.name}`;
+        const nextRealFixture = values[3];
+        const nextFixture = values[4];
+        let nextFixtureName = '';
+        for (const fixture of nextRealFixture.fixtures) {
+          nextFixtureName += ` - ${fixture.round.name} ${fixture.name}`;
         }
 
         let info: string;
@@ -41,24 +47,32 @@ export class LeagueService {
           status = Status.Offseason;
           offSeason = true;
         } else if (values[2]) {
-          info = `${leagueName} ${nextFixture}`;
+          info = `${leagueName} ${nextFixtureName}`;
           status = Status.Postseason;
           postSeason = true;
         } else {
-          info = `${leagueName} ${nextFixture}`;
+          info = `${leagueName} ${nextFixtureName}`;
           status = Status.RegularSeason;
           regularSeason = true;
         }
-        const leagueInfo: LeagueInfo = { info, status, preSeason, regularSeason, postSeason, offSeason };
+        const leagueInfo: LeagueInfo = { info, status, preSeason, regularSeason, postSeason, offSeason, nextRealFixture, nextFixture };
         return leagueInfo;
       })
     );
 
-  public nextFixture(league: League): Observable<Fixture> {
+  public setSelectedLeague(league: League) {
+    localStorage.setItem('league', JSON.stringify(league));
+  }
+
+  public getSelectedLeague() {
+    return JSON.parse(localStorage.getItem('league'));
+  }
+
+  private nextFixture(league: League): Observable<Fixture> {
     return league ? this.http.get<Fixture>(`${this.endpoint}/leagues/${league._id}/next-fixture`) : EMPTY;
   }
 
-  public nextRealFixture(league: League): Observable<RealFixture> {
+  private nextRealFixture(league: League): Observable<RealFixture> {
     return league ? this.http.get<RealFixture>(`${this.endpoint}/leagues/${league._id}/next-realfixture`) : EMPTY;
   }
 

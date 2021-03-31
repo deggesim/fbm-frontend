@@ -10,7 +10,7 @@ import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { SharedService } from '@app/shared/services/shared.service';
 import { isEmpty } from '@app/shared/util/is-empty';
-import { refresh } from '@app/store/actions/league-info.actions';
+import * as LeagueInfoActions from '@app/store/actions/league-info.actions';
 import { AppState } from '@app/store/app.state';
 import { Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
@@ -101,7 +101,7 @@ export class ResultsComponent implements OnInit {
           this.matches = matches;
         }),
         switchMap(() => {
-          this.store.dispatch(refresh());
+          this.store.dispatch(LeagueInfoActions.refresh());
           return this.loadLineups(this.selectedMatch);
         })
       )

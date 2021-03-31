@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Fixture } from '@app/shared/models/fixture';
 import { League, Parameter } from '@app/shared/models/league';
 import { Match } from '@app/shared/models/match';
 import { Round } from '@app/shared/models/round';
 import { TableItem } from '@app/shared/models/table-item';
-import { LeagueService } from '@app/shared/services/league.service';
 import { calculator } from '@app/shared/util/standings';
 import { AppState } from '@app/store/app.state';
 import { selectedLeague } from '@app/store/selectors/league.selector';
@@ -21,24 +19,15 @@ export class StandingsComponent implements OnInit {
   rounds: Round[];
   selectedRound: Round;
   table: TableItem[] = [];
-  nextFixture: Fixture;
   trend: Parameter;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private leagueService: LeagueService,
-    private store: Store<AppState>
-  ) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {
     this.createForm();
   }
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
       this.rounds = data.rounds.filter((round: Round) => round.roundRobin);
-      this.leagueService.nextFixture().subscribe((nextFixture: Fixture) => {
-        this.nextFixture = nextFixture;
-      });
     });
   }
 

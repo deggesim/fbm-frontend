@@ -6,7 +6,6 @@ import { toastType } from '@app/shared/constants/globals';
 import { FantasyRoster } from '@app/shared/models/fantasy-roster';
 import { FantasyTeam } from '@app/shared/models/fantasy-team';
 import { LeagueInfo, Status } from '@app/shared/models/league';
-import { RealFixture } from '@app/shared/models/real-fixture';
 import { Roster, RosterList } from '@app/shared/models/roster';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
@@ -105,9 +104,11 @@ export class TransactionComponent implements OnInit {
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
     this.fantasyTeamSelected = fantasyTeam;
     if (fantasyTeam != null) {
-      this.leagueService
-        .nextRealFixture()
-        .pipe(switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, nextRealFixture._id)))
+      this.store
+        .pipe(
+          select(leagueInfo),
+          switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(fantasyTeam._id, leagueInfo.nextRealFixture._id))
+        )
         .subscribe((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters = fantasyRosters;
         });
@@ -171,8 +172,10 @@ export class TransactionComponent implements OnInit {
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
-          switchMap(() => this.leagueService.nextRealFixture()),
-          switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id))
+          switchMap(() => this.store.select(leagueInfo)),
+          switchMap((leagueInfo: LeagueInfo) =>
+            this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id)
+          )
         )
         .subscribe((fr: FantasyRoster[]) => {
           this.fantasyRosters = fr;
@@ -204,8 +207,10 @@ export class TransactionComponent implements OnInit {
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
-          switchMap(() => this.leagueService.nextRealFixture()),
-          switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id))
+          switchMap(() => this.store.select(leagueInfo)),
+          switchMap((leagueInfo: LeagueInfo) =>
+            this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id)
+          )
         )
         .subscribe((fr: FantasyRoster[]) => {
           this.fantasyRosters = fr;
@@ -262,8 +267,8 @@ export class TransactionComponent implements OnInit {
           this.fantasyTeamSelected = fantasyTeam;
         }),
         // switchMap(() => this.rosterService.freePlayers()),
-        switchMap(() => this.leagueService.nextRealFixture()),
-        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id))
+        switchMap(() => this.store.select(leagueInfo)),
+        switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;
@@ -284,8 +289,8 @@ export class TransactionComponent implements OnInit {
           this.fantasyTeamSelected = fantasyTeam;
         }),
         // switchMap(() => this.rosterService.freePlayers()),
-        switchMap(() => this.leagueService.nextRealFixture()),
-        switchMap((nextRealFixture: RealFixture) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, nextRealFixture._id))
+        switchMap(() => this.store.select(leagueInfo)),
+        switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;

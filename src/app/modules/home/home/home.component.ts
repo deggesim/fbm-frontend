@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { League, LeagueInfo, Status } from '@app/shared/models/league';
 import { Login } from '@app/shared/models/login';
 import { AuthService } from '@app/shared/services/auth.service';
-import { refresh } from '@app/store/actions/league-info.actions';
-import { initLeague, setSelectedLeague } from '@app/store/actions/league.actions';
-import { login } from '@app/store/actions/user.actions';
+import { LeagueService } from '@app/shared/services/league.service';
+import * as LeagueInfoActions from '@app/store/actions/league-info.actions';
+import * as LeagueActions from '@app/store/actions/league.actions';
+import * as UserActions from '@app/store/actions/user.actions';
 import { AppState } from '@app/store/app.state';
 import { leagueInfo } from '@app/store/selectors/league.selector';
 import { user } from '@app/store/selectors/user.selector';
@@ -21,7 +22,7 @@ export class HomeComponent implements OnInit {
 
   isAdmin: boolean;
 
-  constructor(private authService: AuthService, private router: Router, private store: Store<AppState>) {}
+  constructor(private authService: AuthService, private router: Router, private store: Store<AppState>, private leagueService: LeagueService) {}
 
   ngOnInit(): void {
     this.authService.isAdmin$().subscribe((isAdmin: boolean) => {
@@ -34,14 +35,14 @@ export class HomeComponent implements OnInit {
   }
 
   public login(user: Login) {
-    this.store.dispatch(login({ user }));
-    this.store.dispatch(initLeague());
+    this.store.dispatch(UserActions.login({ user }));
+    this.store.dispatch(LeagueActions.initLeague());
   }
 
   public selectLeague(league: League) {
-    localStorage.setItem('league', JSON.stringify(league));
-    this.store.dispatch(setSelectedLeague({ league }));
-    this.store.dispatch(refresh());
+    this.leagueService.setSelectedLeague(league);
+    this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
+    this.store.dispatch(LeagueInfoActions.refresh());
     this.leagueInfo$.subscribe((leagueInfo: LeagueInfo) => {
       switch (leagueInfo?.status) {
         case Status.Preseason:
