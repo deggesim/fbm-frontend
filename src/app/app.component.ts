@@ -1,23 +1,23 @@
 import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppState } from '@app/core/app.state';
+import { LeagueService } from '@app/core/league/services/league.service';
+import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
+import * as LeagueActions from '@app/core/league/store/league.actions';
+import { SpinnerService } from '@app/core/spinner.service';
+import * as UserActions from '@app/core/user/store/user.actions';
 import { toastType } from '@app/shared/constants/globals';
-import { User } from '@app/shared/models/user';
-import { NewSeasonService } from '@app/shared/services/new-season.service';
 import { SharedService } from '@app/shared/services/shared.service';
-import { SpinnerService } from '@app/shared/services/spinner.service';
 import { select, Store } from '@ngrx/store';
 import { concatMap, tap } from 'rxjs/operators';
-import { League } from './shared/models/league';
-import * as LeagueInfoActions from './store/actions/league-info.actions';
-import * as LeagueActions from './store/actions/league.actions';
-import * as UserActions from './store/actions/user.actions';
-import { AppState } from './store/app.state';
-import { selectedLeague } from './store/selectors/league.selector';
+import { selectedLeague } from './core/league/store/league.selector';
+import { AuthService } from './core/user/services/auth.service';
+import { League } from './models/league';
+import { User } from './models/user';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, AfterViewChecked {
   // Sets initial value to true to show loading spinner on first load
@@ -30,14 +30,17 @@ export class AppComponent implements OnInit, AfterViewChecked {
     private cdRef: ChangeDetectorRef,
     private spinnerService: SpinnerService,
     private sharedService: SharedService,
-    private newSeasonService: NewSeasonService,
+    private leagueService: LeagueService,
+    private authService: AuthService,
     private store: Store<AppState>
   ) {}
 
   ngOnInit() {
     this.store.dispatch(UserActions.initUser());
     this.store.dispatch(LeagueActions.initLeague());
-    this.store.dispatch(LeagueInfoActions.refresh());
+    if (this.authService.isLoggedIn()) {
+      this.store.dispatch(LeagueInfoActions.refresh());
+    }
   }
 
   ngAfterViewChecked(): void {
@@ -69,7 +72,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.store
       .pipe(
         select(selectedLeague),
-        concatMap((league: League) => this.newSeasonService.completePreseason(league._id)),
+        concatMap((league: League) => this.leagueService.completePreseason(league._id)),
         tap((league: League) => this.store.dispatch(LeagueInfoActions.refresh()))
       )
       .subscribe(() => {

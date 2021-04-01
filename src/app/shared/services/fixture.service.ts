@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Fixture } from '@app/shared/models/fixture';
+import { Fixture } from '@app/models/fixture';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

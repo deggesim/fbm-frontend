@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorMessageComponent } from '@app/shared/components/error-message/error-message.component';
 import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
@@ -35,4 +35,11 @@ import { PlayerStatusDirective } from './directives/player-status.directive';
     PlayerStatusDirective,
   ],
 })
-export class SharedModule {}
+export class SharedModule {
+  static forRoot(): ModuleWithProviders<SharedModule> {
+    return {
+      ngModule: SharedModule,
+      providers: []
+    };
+  }
+}

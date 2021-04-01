@@ -1,7 +1,7 @@
 import { mean } from 'lodash-es';
-import { Performance } from '../models/performance';
-import { Player } from '../models/player';
-import { PlayerStats } from '../models/player-stats';
+import { Performance } from '../../models/performance';
+import { Player } from '../../models/player';
+import { PlayerStats } from '../../models/player-stats';
 
 export const statistics = (player: Player, performances: Performance[]): PlayerStats => {
   let ps: PlayerStats;

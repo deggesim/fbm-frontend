@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FantasyRoster, sort } from '@app/shared/models/fantasy-roster';
+import { FantasyRoster, sort } from '@app/models/fantasy-roster';
 import { tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 

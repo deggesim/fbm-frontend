@@ -6,38 +6,17 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
-import { MainModule } from '@app/modules/main/main.module';
-import { AuthInterceptor } from '@app/shared/http-interceptors/auth-interceptor.service';
-import { GlobalInterceptor } from '@app/shared/http-interceptors/global-interceptor.service';
-import { TenantInterceptor } from '@app/shared/http-interceptors/tenant-interceptor.service';
-import { AuthService } from '@app/shared/services/auth.service';
-import { SharedService } from '@app/shared/services/shared.service';
-import { SpinnerService } from '@app/shared/services/spinner.service';
+import { AuthInterceptor } from '@app/core/user/services/auth-interceptor.service';
 import { SharedModule } from '@app/shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { CollapseModule } from 'ngx-bootstrap/collapse';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { PopoverModule } from 'ngx-bootstrap/popover';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
-import { SortableModule } from 'ngx-bootstrap/sortable';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
-import { LeagueInfoEffects } from './store/effects/league-info.effects';
-import { LeagueEffects } from './store/effects/league.effects';
-import { UserEffects } from './store/effects/user.effects';
-import { reducers } from './store/reducers';
+import { CoreModule } from './core/core.module';
+import { GlobalInterceptor } from './core/global-interceptor.service';
+import { TenantInterceptor } from './core/league/services/tenant-interceptor.service';
+import { NgxBootstrapModule } from './ngx-bootstrap.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,42 +28,19 @@ import { reducers } from './store/reducers';
     HttpClientModule,
     FlexLayoutModule,
     NgSelectModule,
-    StoreModule.forRoot(reducers),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-    }),
-    EffectsModule.forRoot([LeagueInfoEffects, LeagueEffects, UserEffects]),
-    // ngx-bootstrap
-    CollapseModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    PaginationModule.forRoot(),
-    TooltipModule.forRoot(),
-    ModalModule.forRoot(),
-    BsDatepickerModule.forRoot(),
-    ButtonsModule.forRoot(),
-    AccordionModule.forRoot(),
-    PopoverModule.forRoot(),
-    AlertModule.forRoot(),
-    SortableModule.forRoot(),
-    ProgressbarModule.forRoot(),
-    // fine ngx-bootstrap
+    NgxBootstrapModule,
     NgxChartsModule,
-    ToastrModule.forRoot(), // ToastrModule added
+    ToastrModule.forRoot(),
     ToastContainerModule,
     FontAwesomeModule,
-    SharedModule,
-    MainModule,
     AppRoutingModule,
+    CoreModule,
+    SharedModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TenantInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: GlobalInterceptor, multi: true },
-    // resolver
-    // altri servizi
-    SpinnerService,
-    SharedService,
-    AuthService,
   ],
   bootstrap: [AppComponent],
 })

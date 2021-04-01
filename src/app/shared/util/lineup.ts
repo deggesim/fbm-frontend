@@ -1,7 +1,7 @@
 import { AppConfig } from '@app/shared/constants/globals';
-import { PlayerStatus } from '@app/shared/models/fantasy-roster';
-import { League, Role } from '@app/shared/models/league';
-import { Lineup } from '@app/shared/models/lineup';
+import { PlayerStatus } from '@app/models/fantasy-roster';
+import { League, Role } from '@app/models/league';
+import { Lineup } from '@app/models/lineup';
 import { isEmpty } from '@app/shared/util/is-empty';
 
 export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {

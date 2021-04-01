@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FantasyTeam } from '@app/shared/models/fantasy-team';
+import { FantasyTeam } from '@app/models/fantasy-team';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Player } from '@app/shared/models/player';
+import { Player } from '@app/models/player';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
-import { FantasyRoster, PlayerStatus } from '../models/fantasy-roster';
+import { FantasyRoster, PlayerStatus } from '../../models/fantasy-roster';
 
 @Directive({
   selector: '[appPlayerStatus]',

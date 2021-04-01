@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { FantasyTeam } from '@app/shared/models/fantasy-team';
+import { FantasyTeam } from '@app/models/fantasy-team';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
