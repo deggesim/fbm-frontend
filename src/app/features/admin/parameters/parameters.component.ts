@@ -6,8 +6,7 @@ import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { selectedLeague } from '@app/core/league/store/league.selector';
 import { League } from '@app/models/league';
-import { toastType } from '@app/shared/constants/globals';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { concatMap, take, tap } from 'rxjs/operators';
 
@@ -21,7 +20,7 @@ export class ParametersComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private leagueService: LeagueService,
-    private sharedService: SharedService,
+    private toastService: ToastService,
     private store: Store<AppState>
   ) {
     this.createForm();
@@ -72,7 +71,7 @@ export class ParametersComponent implements OnInit {
       .subscribe(() => {
         const title = 'Modifica parametri';
         const message = 'I parametri della lega sono stati modificati con successo';
-        this.sharedService.notifica(toastType.success, title, message);
+        this.toastService.success(title, message);
       });
   }
 }

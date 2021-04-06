@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { toastType } from '@app/shared/constants/globals';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -16,7 +15,7 @@ export class FantasyTeamListComponent implements OnInit {
   fantasyTeamSelected: FantasyTeam;
   mostraPopupModifica: boolean;
 
-  constructor(private route: ActivatedRoute, private sharedService: SharedService, private fantasyTeamService: FantasyTeamService) {}
+  constructor(private route: ActivatedRoute, private toastService: ToastService, private fantasyTeamService: FantasyTeamService) {}
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
@@ -60,7 +59,7 @@ export class FantasyTeamListComponent implements OnInit {
           this.mostraPopupModifica = false;
           const title = 'Modifica squadra';
           const message = 'Squadra modificata correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
+          this.toastService.success(title, message);
           this.fantasyTeamSelected = undefined;
         }),
         switchMap(() => this.fantasyTeamService.read())

@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { itLocale } from 'ngx-bootstrap/locale';
-import { ToastrService } from 'ngx-toastr';
-import { toastType } from '@app/shared/constants/globals';
+import { ToastService } from './toast.service';
 
 @Injectable()
 export class SharedService {
@@ -14,17 +13,13 @@ export class SharedService {
     dateInputFormat: 'DD/MM/YYYY',
   };
 
-  constructor(private localeService: BsLocaleService, private toastr: ToastrService) {
+  constructor(private localeService: BsLocaleService, private toastService: ToastService) {
     defineLocale('it', itLocale);
     this.localeService.use('it');
   }
 
   public getBsConfig(): Partial<BsDatepickerConfig> {
     return this.bsConfig;
-  }
-
-  public notifica(type: string, title: string, message: string) {
-    this.toastr[type](message, title);
   }
 
   notifyError(response: HttpErrorResponse) {
@@ -60,7 +55,7 @@ export class SharedService {
           break;
       }
     }
-    this.notifica(toastType.error, titolo, descrizione);
+    this.toastService.error(titolo, descrizione);
   }
 
   notifyErrorDownload(response: Response) {
@@ -69,6 +64,6 @@ export class SharedService {
     const tipoOperazione = 'alert';
     titolo = 'Errore server';
     descrizione = 'Si è verificato un problema nel download del documento';
-    this.notifica(toastType.error, titolo, descrizione);
+    this.toastService.error(titolo, descrizione);
   }
 }

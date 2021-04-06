@@ -6,10 +6,9 @@ import { LeagueInfo } from '@app/models/league';
 import { Player } from '@app/models/player';
 import { Roster, RosterList } from '@app/models/roster';
 import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
-import { toastType } from '@app/shared/constants/globals';
 import { PlayerService } from '@app/shared/services/player.service';
 import { RosterService } from '@app/shared/services/roster.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { isEmpty } from '@app/shared/util/is-empty';
 import { select, Store } from '@ngrx/store';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
@@ -43,7 +42,7 @@ export class PlayerListComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private sharedService: SharedService,
+    private toastService: ToastService,
     private rosterService: RosterService,
     private playerService: PlayerService,
     private store: Store<AppState>
@@ -134,7 +133,7 @@ export class PlayerListComponent implements OnInit {
           this.mostraPopupModifica = false;
           const title = 'Nuovo giocatore';
           const message = 'Nuovo giocatore inserito correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
+          this.toastService.success(title, message);
         }),
         switchMap(() =>
           iif(
@@ -157,7 +156,7 @@ export class PlayerListComponent implements OnInit {
           this.mostraPopupModifica = false;
           const title = 'Modifica giocatore';
           const message = 'Giocatore modificato correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
+          this.toastService.success(title, message);
         }),
         switchMap(() =>
           iif(
@@ -195,7 +194,7 @@ export class PlayerListComponent implements OnInit {
             this.popupConfermaElimina.chiudiModale();
             const title = 'Giocatore eliminata';
             const message = 'Il giocatore è stato eliminato correttamente';
-            this.sharedService.notifica(toastType.success, title, message);
+            this.toastService.success(title, message);
             this.rosterSelected = undefined;
           }),
           switchMap(() => this.rosterService.read(this.page, this.limit))

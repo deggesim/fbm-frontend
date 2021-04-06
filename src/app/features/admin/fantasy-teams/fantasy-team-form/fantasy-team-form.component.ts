@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '@app/core/user/services/user.service';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { User } from '@app/models/user';
-import { UserService } from '@app/shared/services/user.service';
 import { atLeastOne } from '@app/shared/util/validations';
 
 @Component({

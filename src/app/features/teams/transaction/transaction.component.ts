@@ -2,18 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
-import { LeagueService } from '@app/core/league/services/league.service';
 import { leagueInfo } from '@app/core/league/store/league.selector';
 import { FantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { LeagueInfo, Status } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
 import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
-import { toastType } from '@app/shared/constants/globals';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { RosterService } from '@app/shared/services/roster.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, of, Subject } from 'rxjs';
@@ -45,8 +43,7 @@ export class TransactionComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private leagueService: LeagueService,
-    private sharedService: SharedService,
+    private toastService: ToastService,
     private rosterService: RosterService,
     private fantasyRosterService: FantasyRosterService,
     private fantasyTeamService: FantasyTeamService,
@@ -183,7 +180,7 @@ export class TransactionComponent implements OnInit {
           this.fantasyRosters = fr;
           const title = 'Modifica tesseramento';
           const message = 'Tesseramento modificato correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
+          this.toastService.success(title, message);
           this.rosterSelected = null;
           this.form.get('roster').reset();
           this.modal.hide();
@@ -219,7 +216,7 @@ export class TransactionComponent implements OnInit {
           this.fantasyRosters = fr;
           const title = 'Nuovo tesseramento';
           const message = 'Giocatore tesserato correttamente';
-          this.sharedService.notifica(toastType.success, title, message);
+          this.toastService.success(title, message);
           this.rosterSelected = null;
           this.form.get('roster').reset();
           this.modal.hide();
@@ -278,7 +275,7 @@ export class TransactionComponent implements OnInit {
         this.fantasyRosters = fantasyRosters;
         const title = 'Giocatore rimosso';
         const message = 'Il giocatore è stato rimosso correttamente.';
-        this.sharedService.notifica(toastType.success, title, message);
+        this.toastService.success(title, message);
         this.popupRimuovi.chiudiModale();
         this.fantasyRosterSelected = null;
       });
@@ -300,7 +297,7 @@ export class TransactionComponent implements OnInit {
         this.fantasyRosters = fantasyRosters;
         const title = 'Giocatore rilasciato';
         const message = 'Il giocatore è stato rilasciato correttamente.';
-        this.sharedService.notifica(toastType.success, title, message);
+        this.toastService.success(title, message);
         this.popupRilascia.chiudiModale();
         this.fantasyRosterSelected = null;
       });

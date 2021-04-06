@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
-import { toastType } from '@app/shared/constants/globals';
+import { UserService } from '@app/core/user/services/user.service';
 import { User } from '@app/models/user';
-import { SharedService } from '@app/shared/services/shared.service';
-import { UserService } from '@app/shared/services/user.service';
+import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
+import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -21,7 +20,7 @@ export class UserListComponent implements OnInit {
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfermaComponent;
   @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfermaComponent;
 
-  constructor(private route: ActivatedRoute, private sharedService: SharedService, private userService: UserService) {}
+  constructor(private route: ActivatedRoute, private toastService: ToastService, private userService: UserService) {}
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
@@ -51,7 +50,7 @@ export class UserListComponent implements OnInit {
             this.mostraPopupModifica = false;
             const title = 'Nuovo utente';
             const message = 'Nuovo utente inserito correttamente';
-            this.sharedService.notifica(toastType.success, title, message);
+            this.toastService.success(title, message);
             this.userSelected = undefined;
           }),
           switchMap(() => this.userService.read())
@@ -67,7 +66,7 @@ export class UserListComponent implements OnInit {
             this.mostraPopupModifica = false;
             const title = 'Modifica utente';
             const message = 'Utente modificato correttamente';
-            this.sharedService.notifica(toastType.success, title, message);
+            this.toastService.success(title, message);
             this.userSelected = undefined;
           }),
           switchMap(() => this.userService.read())
@@ -96,7 +95,7 @@ export class UserListComponent implements OnInit {
             this.popupConfermaElimina.chiudiModale();
             const title = 'Utente eliminato';
             const message = "L'utente è stato eliminato correttamente";
-            this.sharedService.notifica(toastType.success, title, message);
+            this.toastService.success(title, message);
             this.userSelected = undefined;
           }),
           switchMap(() => this.userService.read())

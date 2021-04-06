@@ -9,7 +9,8 @@ import { SpinnerService } from './spinner.service';
 import { Store } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { AuthService } from './user/services/auth.service';
+import { UserService } from './user/services/user.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable()
 export class GlobalInterceptor implements HttpInterceptor {
@@ -18,7 +19,7 @@ export class GlobalInterceptor implements HttpInterceptor {
     private spinnerService: SpinnerService,
     private store: Store<AppState>,
     private router: Router,
-    private authService: AuthService
+    private localStorateService: LocalStorageService
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -29,7 +30,7 @@ export class GlobalInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
         this.sharedService.notifyError(err);
         if (401 === err.status) {
-          this.authService.clearStorage();
+          this.localStorateService.clearStorage();
           this.store.dispatch(LeagueInfoActions.setLeagueInfo(null));
           this.store.dispatch(LeagueActions.setSelectedLeague(null));
           this.router.navigate(['/home']);

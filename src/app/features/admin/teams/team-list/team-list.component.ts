@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
-import { toastType } from '@app/shared/constants/globals';
 import { Team } from '@app/models/team';
-import { SharedService } from '@app/shared/services/shared.service';
+import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
 import { TeamService } from '@app/shared/services/team.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -21,7 +20,7 @@ export class TeamListComponent implements OnInit {
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfermaComponent;
   @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfermaComponent;
 
-  constructor(private route: ActivatedRoute, private sharedService: SharedService, private teamService: TeamService) {}
+  constructor(private route: ActivatedRoute, private toastService: ToastService, private teamService: TeamService) {}
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
@@ -58,7 +57,7 @@ export class TeamListComponent implements OnInit {
             this.mostraPopupModifica = false;
             const title = 'Nuova squadra';
             const message = 'Nuova squadra inserita correttamente';
-            this.sharedService.notifica(toastType.success, title, message);
+            this.toastService.success(title, message);
             this.teamSelected = undefined;
           }),
           switchMap(() => this.teamService.read())
@@ -74,7 +73,7 @@ export class TeamListComponent implements OnInit {
             this.mostraPopupModifica = false;
             const title = 'Modifica squadra';
             const message = 'Squadra modificata correttamente';
-            this.sharedService.notifica(toastType.success, title, message);
+            this.toastService.success(title, message);
             this.teamSelected = undefined;
           }),
           switchMap(() => this.teamService.read())
@@ -103,7 +102,7 @@ export class TeamListComponent implements OnInit {
             this.popupConfermaElimina.chiudiModale();
             const title = 'Squadra eliminata';
             const message = 'La squadra è stata eliminata correttamente';
-            this.sharedService.notifica(toastType.success, title, message);
+            this.toastService.success(title, message);
             this.teamSelected = undefined;
           }),
           switchMap(() => this.teamService.read())

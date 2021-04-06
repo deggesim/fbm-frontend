@@ -88,14 +88,6 @@ export class LeagueService {
       })
     );
 
-  public setSelectedLeague(league: League) {
-    localStorage.setItem('league', JSON.stringify(league));
-  }
-
-  public getSelectedLeague() {
-    return JSON.parse(localStorage.getItem('league'));
-  }
-
   private nextFixture(league: League): Observable<Fixture> {
     return league ? this.http.get<Fixture>(`${this.endpoint}/leagues/${league._id}/next-fixture`) : EMPTY;
   }

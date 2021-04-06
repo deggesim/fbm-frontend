@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { toastType } from '@app/shared/constants/globals';
 import { RealFixture } from '@app/models/real-fixture';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -15,7 +14,7 @@ export class RealFixtureListComponent implements OnInit {
   realFixtureSelected: RealFixture;
   mostraPopupModifica: boolean;
 
-  constructor(private route: ActivatedRoute, private sharedService: SharedService, private realFixtureService: RealFixtureService) {}
+  constructor(private route: ActivatedRoute, private toastService: ToastService, private realFixtureService: RealFixtureService) {}
 
   ngOnInit() {
     this.route.data.subscribe((data) => {
@@ -32,7 +31,7 @@ export class RealFixtureListComponent implements OnInit {
     if (realFixture._id == null) {
       const title = 'Giornata non trovata';
       const message = 'La giornata non esiste, provare a ricaricare la pagina.';
-      this.sharedService.notifica(toastType.success, title, message);
+      this.toastService.success(title, message);
     } else {
       this.realFixtureService
         .update(realFixture)
@@ -41,7 +40,7 @@ export class RealFixtureListComponent implements OnInit {
             this.mostraPopupModifica = false;
             const title = 'Modifica giornata';
             const message = 'Giornata modificata correttamente';
-            this.sharedService.notifica(toastType.success, title, message);
+            this.toastService.success(title, message);
             this.realFixtureSelected = undefined;
           }),
           switchMap(() => this.realFixtureService.read())

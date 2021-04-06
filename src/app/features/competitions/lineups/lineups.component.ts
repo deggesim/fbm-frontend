@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { selectedLeague } from '@app/core/league/store/league.selector';
-import { AuthService } from '@app/core/user/services/auth.service';
+import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
 import { FantasyRoster, PlayerStatus } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
@@ -15,12 +15,12 @@ import { PlayerStats } from '@app/models/player-stats';
 import { RealFixture } from '@app/models/real-fixture';
 import { Round } from '@app/models/round';
 import { User } from '@app/models/user';
-import { AppConfig, toastType } from '@app/shared/constants/globals';
+import { AppConfig } from '@app/shared/constants/globals';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { LineupService } from '@app/shared/services/lineup.service';
 import { PerformanceService } from '@app/shared/services/performance.service';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { isEmpty } from '@app/shared/util/is-empty';
 import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
@@ -56,8 +56,8 @@ export class LineupsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private authService: AuthService,
-    private sharedService: SharedService,
+    private toastService: ToastService,
+    private userService: UserService,
     private realFixtureService: RealFixtureService,
     private fantasyRosterService: FantasyRosterService,
     private lineupService: LineupService,
@@ -73,7 +73,7 @@ export class LineupsComponent implements OnInit {
     this.route.data.subscribe((data) => {
       this.rounds = data.rounds;
     });
-    this.authService.isAdmin$().subscribe((isAdmin: boolean) => {
+    this.userService.isAdmin$().subscribe((isAdmin: boolean) => {
       this.isAdmin = isAdmin;
     });
     this.store.pipe(select(user)).subscribe((user: User) => {
@@ -311,7 +311,7 @@ export class LineupsComponent implements OnInit {
     this.lineupService.save(this.form.value.fantasyTeam._id, this.form.value.fixture._id, filteredLineup).subscribe(() => {
       const title = 'Formazione salvata';
       const message = 'La formazione è stata salvata correttamente';
-      this.sharedService.notifica(toastType.success, title, message);
+      this.toastService.success(title, message);
     });
   }
 
@@ -329,7 +329,7 @@ export class LineupsComponent implements OnInit {
         this.form.get('lineup').markAsPristine();
         const title = 'Formazione ripristinata';
         const message = 'La formazione è stata ripristinata correttamente';
-        this.sharedService.notifica(toastType.success, title, message);
+        this.toastService.success(title, message);
       }
     });
   }
@@ -340,7 +340,7 @@ export class LineupsComponent implements OnInit {
       this.form.get('lineup').markAsPristine();
       const title = 'Formazione eliminata';
       const message = 'La formazione è stata eliminata correttamente';
-      this.sharedService.notifica(toastType.success, title, message);
+      this.toastService.success(title, message);
     });
   }
 

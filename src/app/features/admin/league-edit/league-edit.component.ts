@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { toastType } from '@app/shared/constants/globals';
+import { LeagueService } from '@app/core/league/services/league.service';
 import { CupFormat } from '@app/models/formats/cup-format';
 import { PlayoffFormat } from '@app/models/formats/playoff-format';
 import { PlayoutFormat } from '@app/models/formats/playout-format';
 import { RegularSeasonFormat } from '@app/models/formats/regular-season-format';
 import { League } from '@app/models/league';
-import { SharedService } from '@app/shared/services/shared.service';
-import { LeagueService } from '@app/core/league/services/league.service';
+import { ToastService } from '@app/shared/services/toast.service';
 
 @Component({
   selector: 'app-league-edit',
@@ -57,7 +56,7 @@ export class EditLeagueComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private leagueService: LeagueService,
-    private sharedService: SharedService
+    private toastService: ToastService
   ) {
     this.createForm();
   }
@@ -124,7 +123,7 @@ export class EditLeagueComponent implements OnInit {
     this.leagueService.update(league).subscribe(() => {
       const title = 'Modifica lega';
       const message = 'Lega modificata con successo';
-      this.sharedService.notifica(toastType.success, title, message);
+      this.toastService.success(title, message);
     });
   }
 }

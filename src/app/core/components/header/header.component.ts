@@ -1,8 +1,9 @@
-import { ChangeDetectorRef, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { AppState } from '@app/core/app.state';
-import { selectedLeague, leagueInfo } from '@app/core/league/store/league.selector';
-import { AuthService } from '@app/core/user/services/auth.service';
+import { AuthService } from '@app/core/auth/service/auth.service';
+import { leagueInfo, selectedLeague } from '@app/core/league/store/league.selector';
+import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
 import { League, LeagueInfo } from '@app/models/league';
 import { User } from '@app/models/user';
@@ -26,8 +27,8 @@ export class HeaderComponent implements OnInit {
   @Output() profile: EventEmitter<any> = new EventEmitter(true);
   @Output() completePreseason: EventEmitter<any> = new EventEmitter(true);
 
+  isLoggedIn$ = this.authService.isLoggedIn$();
   isCollapsed = true;
-  isLoggedIn: boolean;
   isAdmin: boolean;
   user: User;
   selectedLeague: League;
@@ -37,8 +38,8 @@ export class HeaderComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
-    private store: Store<AppState>,
-    private cdRef: ChangeDetectorRef
+    private userService: UserService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -47,9 +48,6 @@ export class HeaderComponent implements OnInit {
       // set breadcrumbs
       const root: ActivatedRoute = this.activatedRoute.root;
     });
-    this.isLoggedIn = this.authService.isLoggedIn();
-    console.log(this.isLoggedIn);
-    
     this.store.pipe(select(user)).subscribe((user: User) => {
       this.user = user;
     });
@@ -59,7 +57,7 @@ export class HeaderComponent implements OnInit {
     this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
       this.leagueInfo = leagueInfo;
     });
-    this.authService.isAdmin$().subscribe((isAdmin: boolean) => {
+    this.userService.isAdmin$().subscribe((isAdmin: boolean) => {
       this.isAdmin = isAdmin;
     });
   }

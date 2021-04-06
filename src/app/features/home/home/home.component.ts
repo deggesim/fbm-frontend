@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppState } from '@app/core/app.state';
-import { LeagueService } from '@app/core/league/services/league.service';
+import { AuthService } from '@app/core/auth/service/auth.service';
+import * as AuthActions from '@app/core/auth/store/auth.actions';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { leagueInfo } from '@app/core/league/store/league.selector';
-import { AuthService } from '@app/core/user/services/auth.service';
-import * as UserActions from '@app/core/user/store/user.actions';
+import { LocalStorageService } from '@app/core/local-storage.service';
+import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
 import { League, LeagueInfo, Status } from '@app/models/league';
 import { Login } from '@app/models/login';
@@ -20,32 +21,29 @@ export class HomeComponent implements OnInit {
   user$ = this.store.pipe(select(user));
   leagueInfo$ = this.store.pipe(select(leagueInfo));
 
+  isLoggedIn$ = this.authService.isLoggedIn$();
   isAdmin: boolean;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private store: Store<AppState>,
-    private leagueService: LeagueService
+    private localStorageService: LocalStorageService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.authService.isAdmin$().subscribe((isAdmin: boolean) => {
+    this.userService.isAdmin$().subscribe((isAdmin: boolean) => {
       this.isAdmin = isAdmin;
     });
   }
 
-  public isLoggedIn() {
-    return this.authService.isLoggedIn();
-  }
-
-  public login(user: Login) {
-    this.store.dispatch(UserActions.login({ user }));
-    this.store.dispatch(LeagueActions.initLeague());
+  public login(login: Login) {
+    this.store.dispatch(AuthActions.login({ login }));
   }
 
   public selectLeague(league: League) {
-    this.leagueService.setSelectedLeague(league);
+    this.localStorageService.setSelectedLeague(league);
     this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
     this.store.dispatch(LeagueInfoActions.refresh());
     this.leagueInfo$.subscribe((leagueInfo: LeagueInfo) => {

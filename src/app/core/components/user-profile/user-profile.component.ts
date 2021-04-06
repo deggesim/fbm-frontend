@@ -1,11 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { toastType } from '@app/shared/constants/globals';
-import { Role, User } from '@app/models/user';
-import { SharedService } from '@app/shared/services/shared.service';
-import { select, Store } from '@ngrx/store';
 import { AppState } from '@app/core/app.state';
 import { user } from '@app/core/user/store/user.selector';
+import { Role, User } from '@app/models/user';
+import { ToastService } from '@app/shared/services/toast.service';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-user-profile',
@@ -19,7 +18,7 @@ export class UserProfileComponent implements OnInit {
   user: User;
   superAdmin: boolean;
 
-  constructor(private fb: FormBuilder, private sharedService: SharedService, private store: Store<AppState>) {}
+  constructor(private fb: FormBuilder, private toastService: ToastService, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.store.pipe(select(user)).subscribe((user: User) => {
@@ -52,7 +51,7 @@ export class UserProfileComponent implements OnInit {
     } else {
       const title = 'Errore password';
       const message = 'Le password non coincidono';
-      this.sharedService.notifica(toastType.warning, title, message);
+      this.toastService.warning(title, message);
     }
   }
 }

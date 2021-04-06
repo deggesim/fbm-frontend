@@ -140,7 +140,7 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav" *ngIf="user && isLoggedIn">
+    <ul class="navbar-nav" *ngIf="user && isLoggedIn$ | async">
       <li class="nav-item">
         <a class="nav-link manina nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
       </li>

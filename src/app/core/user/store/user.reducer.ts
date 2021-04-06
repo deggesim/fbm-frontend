@@ -7,19 +7,8 @@ const initialState: User = null;
 export const userReducer = createReducer(
   initialState,
 
-  on(UserActions.setUser, (state, action) => {
-    return { ...action.user };
-  }),
-
-  on(UserActions.loginSuccess, (state, action) => {
-    return { ...action.user };
-  }),
-
-  on(UserActions.loginFailed, (state, action) => {
-    return { ...state };
-  }),
-
-  on(UserActions.logoutSuccess, (state, action) => {
-    return null;
-  })
+  on(UserActions.loadUserSuccess, (state, action) => ({ ...action.user })),
+  on(UserActions.loadUserFailed, (state, action) => ({ ...state })),
+  on(UserActions.saveUserSuccess, (state, action) => ({ ...action.user })),
+  on(UserActions.saveUserFailed, (state, action) => ({ ...state }))
 );

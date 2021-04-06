@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '@app/core/user/services/auth.service';
+import { UserService } from '@app/core/user/services/user.service';
 import { User } from '@app/models/user';
 
 @Component({
@@ -15,7 +15,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   form: FormGroup;
   roleList = [];
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: UserService) {
     this.createForm();
   }
 

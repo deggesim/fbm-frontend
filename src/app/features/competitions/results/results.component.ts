@@ -7,10 +7,9 @@ import { Fixture } from '@app/models/fixture';
 import { Lineup } from '@app/models/lineup';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
-import { toastType } from '@app/shared/constants/globals';
 import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { isEmpty } from '@app/shared/util/is-empty';
 import { Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
@@ -33,7 +32,7 @@ export class ResultsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private sharedService: SharedService,
+    private toastService: ToastService,
     private lineupService: LineupService,
     private matchService: MatchService,
     private store: Store<AppState>
@@ -110,7 +109,7 @@ export class ResultsComponent implements OnInit {
         this.awayTeamLineup = lineups[1];
         const title = 'Risultato calcolato';
         const message = 'Il risultato è stato calcolato correttamente';
-        this.sharedService.notifica(toastType.success, title, message);
+        this.toastService.success(title, message);
       });
   }
 

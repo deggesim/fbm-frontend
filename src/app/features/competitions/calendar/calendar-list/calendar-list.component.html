@@ -27,7 +27,7 @@
               (click)="modifica(fixture, $event)"
               tooltip="Modifica"
               placement="top"
-              *ngIf="fixture.matches && fixture.matches.length > 0 && (authService.isAdmin$() | async)"
+              *ngIf="fixture.matches && fixture.matches.length > 0 && (isAdmin$ | async)"
             >
               <fa-icon icon="pencil-alt"></fa-icon>
             </button>

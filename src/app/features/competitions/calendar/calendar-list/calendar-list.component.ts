@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
+import { AuthService } from '@app/core/auth/service/auth.service';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
-import { AuthService } from '@app/core/user/services/auth.service';
+import { UserService } from '@app/core/user/services/user.service';
 import { Fixture } from '@app/models/fixture';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
-import { toastType } from '@app/shared/constants/globals';
 import { MatchService } from '@app/shared/services/match.service';
 import { RoundService } from '@app/shared/services/round.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -25,12 +25,13 @@ export class CalendarListComponent implements OnInit {
   selectedFixture: Fixture;
   matches: Match[];
   mostraPopupModifica: boolean;
+  isAdmin$ = this.userService.isAdmin$();
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    public authService: AuthService,
-    private sharedService: SharedService,
+    private userService: UserService,
+    private toastService: ToastService,
     private roundService: RoundService,
     private matchService: MatchService,
     private store: Store<AppState>
@@ -91,7 +92,7 @@ export class CalendarListComponent implements OnInit {
         this.selectedFixture = null;
         const title = 'Modifica risultati';
         const message = 'Risultati modificati correttamente';
-        this.sharedService.notifica(toastType.success, title, message);
+        this.toastService.success(title, message);
       });
   }
 

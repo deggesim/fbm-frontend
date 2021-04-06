@@ -2,16 +2,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NgxBootstrapModule } from '@app/ngx-bootstrap.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
-import { ModalModule } from 'ngx-bootstrap/modal';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
-import { SortableModule } from 'ngx-bootstrap/sortable';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AdminRoutingModule } from './admin-routing.module';
 import { FantasyTeamFormComponent } from './fantasy-teams/fantasy-team-form/fantasy-team-form.component';
 import { FantasyTeamListComponent } from './fantasy-teams/fantasy-team-list/fantasy-team-list.component';
@@ -53,15 +48,8 @@ import { UserListComponent } from './users/user-list/user-list.component';
     ReactiveFormsModule,
     CommonModule,
     FlexLayoutModule,
-    // ngx-bootstrap
+    NgxBootstrapModule,
     NgSelectModule,
-    PaginationModule,
-    TooltipModule,
-    SortableModule,
-    AccordionModule,
-    ModalModule,
-    ProgressbarModule,
-    // fine ngx-bootstrap
     FontAwesomeModule,
     SharedModule,
     AdminRoutingModule,

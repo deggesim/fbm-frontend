@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@app/core/user/services/auth.guard';
+import { AuthGuard } from '@app/core/auth/service/auth.guard';
 import { FantasyTeamResolverService } from '@app/shared/resolvers/fantasy-team-resolver.service';
 import { FreePlayersResolverService } from '@app/shared/resolvers/free-players-resolver.service';
 import { TradeComponent } from './trade/trade.component';

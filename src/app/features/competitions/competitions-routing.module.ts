@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@app/core/user/services/auth.guard';
+import { AuthGuard } from '@app/core/auth/service/auth.guard';
 import { RealFixtureResolverService } from '@app/shared/resolvers/real-fixture-resolver.service';
 import { RoundResolverService } from '@app/shared/resolvers/round-resolver.service';
 import { TeamResolverService } from '@app/shared/resolvers/team-resolver.service';

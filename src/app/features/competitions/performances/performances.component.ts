@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AppConfig, toastType } from '@app/shared/constants/globals';
 import { Performance } from '@app/models/performance';
 import { RealFixture } from '@app/models/real-fixture';
 import { Team } from '@app/models/team';
+import { AppConfig } from '@app/shared/constants/globals';
 import { PerformanceService } from '@app/shared/services/performance.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 
 @Component({
   selector: 'app-performances',
@@ -24,7 +24,7 @@ export class PerformancesComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private sharedService: SharedService,
+    private toastService: ToastService,
     private performanceService: PerformanceService
   ) {
     this.createForm();
@@ -102,7 +102,7 @@ export class PerformancesComponent implements OnInit {
         }
         const title = 'Valutazioni recuperate';
         const message = 'Le valutazioni sono state recuperate correttamente';
-        this.sharedService.notifica(toastType.success, title, message);
+        this.toastService.success(title, message);
       });
   }
 
@@ -115,7 +115,7 @@ export class PerformancesComponent implements OnInit {
     this.performanceService.save(performances).subscribe(() => {
       const title = 'Valutazioni salvate';
       const message = 'Le valutazioni sono state salvate correttamente';
-      this.sharedService.notifica(toastType.success, title, message);
+      this.toastService.success(title, message);
     });
   }
 

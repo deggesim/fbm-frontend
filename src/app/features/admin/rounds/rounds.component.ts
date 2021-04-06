@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { toastType } from '@app/shared/constants/globals';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { Round } from '@app/models/round';
 import { RoundService } from '@app/shared/services/round.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { isEmpty } from '@app/shared/util/is-empty';
 
 @Component({
@@ -23,7 +22,7 @@ export class RoundsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private sharedService: SharedService,
+    private toastService: ToastService,
     private roundService: RoundService
   ) {
     this.createForm();
@@ -76,7 +75,7 @@ export class RoundsComponent implements OnInit {
     this.roundService.matches(this.selectedRound).subscribe((round: Round) => {
       const title = 'Generazione incontri';
       const message = 'Il calendario del round è stato generato correttamente';
-      this.sharedService.notifica(toastType.success, title, message);
+      this.toastService.success(title, message);
       this.selectedRound = round;
     });
   }

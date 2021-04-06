@@ -7,10 +7,9 @@ import { FantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { LeagueInfo } from '@app/models/league';
 import { RealFixture } from '@app/models/real-fixture';
-import { toastType } from '@app/shared/constants/globals';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
-import { SharedService } from '@app/shared/services/shared.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { fantasyTeamMustBeDifferent } from '@app/shared/util/validations';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
@@ -38,7 +37,7 @@ export class TradeComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private sharedService: SharedService,
+    private toastService: ToastService,
     private fantasyRosterService: FantasyRosterService,
     private fantasyTeamService: FantasyTeamService,
     private store: Store<AppState>
@@ -156,7 +155,7 @@ export class TradeComponent implements OnInit {
       .subscribe(() => {
         const title = 'Scambio completato';
         const message = 'I giocatori sono stati scambiati con successo';
-        this.sharedService.notifica(toastType.success, title, message);
+        this.toastService.success(title, message);
       });
 
     this.mostraPopupTradeBlock = false;
