@@ -8,7 +8,7 @@ import { selectedLeague } from '@app/core/league/store/league.selector';
 import { League } from '@app/models/league';
 import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
-import { concatMap, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-parameters',
@@ -60,12 +60,10 @@ export class ParametersComponent implements OnInit {
       .pipe(
         select(selectedLeague),
         take(1),
-        concatMap((league: League) => this.leagueService.setParameters(league._id, parameters)),
+        switchMap((league: League) => this.leagueService.setParameters(league._id, parameters)),
         tap((league: League) => {
           this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
-        }),
-        tap(() => {
-          this.store.dispatch(LeagueInfoActions.refresh());
+          this.store.dispatch(LeagueInfoActions.refresh({ league }));
         })
       )
       .subscribe(() => {

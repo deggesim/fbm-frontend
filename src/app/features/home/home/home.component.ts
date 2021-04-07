@@ -10,7 +10,7 @@ import { LocalStorageService } from '@app/core/local-storage.service';
 import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
 import { League, LeagueInfo, Status } from '@app/models/league';
-import { Login } from '@app/models/login';
+import { Login } from '@app/models/user';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit {
   public selectLeague(league: League) {
     this.localStorageService.setSelectedLeague(league);
     this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
-    this.store.dispatch(LeagueInfoActions.refresh());
+    this.store.dispatch(LeagueInfoActions.refresh({ league }));
     this.leagueInfo$.subscribe((leagueInfo: LeagueInfo) => {
       switch (leagueInfo?.status) {
         case Status.Preseason:

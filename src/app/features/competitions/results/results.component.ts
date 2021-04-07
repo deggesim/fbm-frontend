@@ -3,7 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
+import { selectedLeague } from '@app/core/league/store/league.selector';
 import { Fixture } from '@app/models/fixture';
+import { League } from '@app/models/league';
 import { Lineup } from '@app/models/lineup';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
@@ -11,9 +13,9 @@ import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { isEmpty } from '@app/shared/util/is-empty';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-results',
@@ -95,14 +97,15 @@ export class ResultsComponent implements OnInit {
         tap((matchComputed) => {
           this.selectedMatch = matchComputed;
         }),
-        switchMap(() => this.matchService.read(fixture._id)),
+        switchMapTo(this.matchService.read(fixture._id)),
         tap((matches: Match[]) => {
           this.matches = matches;
         }),
-        switchMap(() => {
-          this.store.dispatch(LeagueInfoActions.refresh());
-          return this.loadLineups(this.selectedMatch);
-        })
+        switchMapTo(this.store.select(selectedLeague)),
+        tap((league: League) => {
+          this.store.dispatch(LeagueInfoActions.refresh({ league }));
+        }),
+        switchMapTo(this.loadLineups(this.selectedMatch))
       )
       .subscribe((lineups) => {
         this.homeTeamLineup = lineups[0];

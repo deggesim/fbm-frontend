@@ -5,7 +5,7 @@ import { LocalStorageService } from '@app/core/local-storage.service';
 import { go } from '@app/core/router/store/router.actions';
 import { UserService } from '@app/core/user/services/user.service';
 import * as UserActions from '@app/core/user/store/user.actions';
-import { User } from '@app/models/user';
+import { Auth, User } from '@app/models/user';
 import { ToastService } from '@app/shared/services/toast.service';
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import jwtDecode from 'jwt-decode';
@@ -25,7 +25,7 @@ export class AuthEffects {
     private toastService: ToastService
   ) {}
 
-  initEffect$ = createEffect(() =>
+  init$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ROOT_EFFECTS_INIT),
       // get token
@@ -35,7 +35,6 @@ export class AuthEffects {
       switchMap((auth: [string, moment.Moment]) => [
         AuthActions.saveAuth({ auth: { token: auth[0], expiresAt: auth[1] } }),
         UserActions.loadUser(),
-        LeagueActions.initLeague(),
       ])
     )
   );
@@ -45,12 +44,13 @@ export class AuthEffects {
       ofType(AuthActions.login),
       switchMap((action) =>
         this.authService.login(action.login).pipe(
-          map((authResult: { user: User; token: string }) => {
-            const user = authResult.user;
+          map((authResult: Auth) => {
             const token = authResult.token;
             const decoded: any = jwtDecode(token);
             const exp = decoded.exp;
             const expiresAt = moment().add(exp);
+            this.localStorageService.setToken(token);
+            this.localStorageService.setExpiresAt(expiresAt);
             const title = 'Login';
             const message = 'Login effettuato correttamente';
             this.toastService.success(title, message);
@@ -66,7 +66,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
       switchMapTo(this.userService.loadProfile()),
-      map((user: User) => UserActions.saveUser({ user }))
+      map((auth: Auth) => UserActions.saveUser({ user: auth.user }))
     )
   );
 

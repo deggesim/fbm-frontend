@@ -4,6 +4,7 @@ import { AppState } from '@app/core/app.state';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { LocalStorageService } from '@app/core/local-storage.service';
+import * as RouterActions from '@app/core/router/store/router.actions';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -32,7 +33,7 @@ export class AuthGuard implements CanActivate {
           this.store.dispatch(AuthActions.saveAuth(null));
           this.store.dispatch(LeagueInfoActions.setLeagueInfo(null));
           this.store.dispatch(LeagueActions.setSelectedLeague(null));
-          this.router.navigate(['home']);
+          this.store.dispatch(RouterActions.go({ path: ['home'] }),)
         }
       })
     );

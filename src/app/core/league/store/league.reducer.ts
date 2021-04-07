@@ -7,7 +7,5 @@ const initialState: League = null;
 export const leageReducer = createReducer(
   initialState,
 
-  on(LeagueActions.setSelectedLeague, (state, action) => {
-    return { ...action.league };
-  })
+  on(LeagueActions.setSelectedLeague, (state, action) => ({ ...action.league }))
 );

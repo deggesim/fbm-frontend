@@ -8,7 +8,7 @@ import { selectedLeague } from '@app/core/league/store/league.selector';
 import { League } from '@app/models/league';
 import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
-import { concatMap, tap } from 'rxjs/operators';
+import { concatMap, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-roles',
@@ -57,10 +57,10 @@ export class RolesComponent implements OnInit {
     this.store
       .pipe(
         select(selectedLeague),
-        concatMap((league: League) => this.leagueService.setRoles(league._id, roles)),
+        switchMap((league: League) => this.leagueService.setRoles(league._id, roles)),
         tap((league: League) => {
           this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
-          this.store.dispatch(LeagueInfoActions.refresh());
+          this.store.dispatch(LeagueInfoActions.refresh({ league }));
         })
       )
       .subscribe(() => {

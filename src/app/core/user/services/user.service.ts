@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppState } from '@app/core/app.state';
 import { user } from '@app/core/user//store/user.selector';
-import { Role, User } from '@app/models/user';
+import { Auth, Role, User } from '@app/models/user';
 import { environment } from '@env/environment';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -31,7 +31,7 @@ export class UserService {
   }
 
   public loadProfile() {
-    return this.http.get(`${this.endpoint}/users/me`);
+    return this.http.get<Auth>(`${this.endpoint}/users/me`);
   }
 
   public updateProfile(user: User) {

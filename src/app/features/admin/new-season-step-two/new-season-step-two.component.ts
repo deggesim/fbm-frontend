@@ -70,7 +70,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
         switchMap(() => this.leagueService.populate(newLeague)),
         tap((league: League) => {
           this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
-          this.store.dispatch(LeagueInfoActions.refresh());
+          this.store.dispatch(LeagueInfoActions.refresh({ league }));
         })
       )
       .subscribe(() => {

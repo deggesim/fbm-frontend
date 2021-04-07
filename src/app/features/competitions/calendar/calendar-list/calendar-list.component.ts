@@ -4,15 +4,17 @@ import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { AuthService } from '@app/core/auth/service/auth.service';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
+import { selectedLeague } from '@app/core/league/store/league.selector';
 import { UserService } from '@app/core/user/services/user.service';
 import { Fixture } from '@app/models/fixture';
+import { League } from '@app/models/league';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
 import { MatchService } from '@app/shared/services/match.service';
 import { RoundService } from '@app/shared/services/round.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar-list',
@@ -79,10 +81,11 @@ export class CalendarListComponent implements OnInit {
           this.mostraPopupModifica = false;
           this.matches = undefined;
         }),
-        switchMap(() => {
-          this.store.dispatch(LeagueInfoActions.refresh());
-          return this.roundService.read();
-        })
+        switchMapTo(this.store.select(selectedLeague)),
+        tap((league: League) => {
+          this.store.dispatch(LeagueInfoActions.refresh({ league }));
+        }),
+        switchMapTo(this.roundService.read())
       )
       .subscribe((rounds: Round[]) => {
         this.rounds = rounds;
