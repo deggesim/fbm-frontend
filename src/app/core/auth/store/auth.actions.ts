@@ -9,4 +9,4 @@ export const loginFailed = createAction('[Auth] login failed');
 export const logout = createAction('[Auth] logout');
 export const logoutSuccess = createAction('[Auth] logout success');
 
-export const saveAuth = createAction('[Auth] save', props<{ auth: AuthState }>());
+export const setAuth = createAction('[Auth] save', props<{ auth: AuthState }>());

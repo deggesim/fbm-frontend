@@ -56,8 +56,6 @@ export class HomeComponent implements OnInit {
   }
 
   public selectLeague(league: League) {
-    this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
-    this.store.dispatch(LeagueInfoActions.refresh({ league }));
-    this.store.dispatch(redirectAfterSelectLeague());
+    this.store.dispatch(LeagueActions.selectLeague({ league }));
   }
 }

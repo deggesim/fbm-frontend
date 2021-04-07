@@ -9,6 +9,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 import { League } from '@app/models/league';
 import { User } from '@app/models/user';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
+import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -31,7 +32,8 @@ export class NewSeasonStepTwoComponent implements OnInit {
     private fb: FormBuilder,
     private leagueService: LeagueService,
     private fantastyTeamsService: FantasyTeamService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private toastService: ToastService
   ) {
     this.league = this.router.getCurrentNavigation().extras.state?.data;
     this.createForm();
@@ -73,7 +75,10 @@ export class NewSeasonStepTwoComponent implements OnInit {
           this.store.dispatch(LeagueInfoActions.refresh({ league }));
         })
       )
-      .subscribe(() => {
+      .subscribe((league: League) => {
+        const title = 'Nuova lega creata';
+        const message = `La lega ${league.name} è stata create con successo`;
+        this.toastService.success(title, message);
         this.router.navigate(['/home']);
       });
   }

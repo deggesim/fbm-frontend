@@ -51,7 +51,7 @@ export class RouterEffects {
         tap(([action, user, leagueInfo]) => {
           switch (leagueInfo.status) {
             case Status.Preseason:
-              if (user.role === Role.Admin) {
+              if (user.role === Role.Admin || user.role === Role.SuperAdmin) {
                 this.router.navigate(['admin', 'preseason', 'edit-league']);
               } else {
                 this.router.navigate(['teams', 'transactions']);

@@ -33,7 +33,7 @@ export class AuthEffects {
       // we want dispatch an action only when token and expiresAt are in localStorage
       filter((auth: [string, moment.Moment]) => !!auth[0] && !!auth[1]),
       switchMap((auth: [string, moment.Moment]) => [
-        AuthActions.saveAuth({ auth: { token: auth[0], expiresAt: auth[1] } }),
+        AuthActions.setAuth({ auth: { token: auth[0], expiresAt: auth[1] } }),
         UserActions.loadUser(),
       ])
     )
@@ -62,7 +62,7 @@ export class AuthEffects {
     )
   );
 
-  loginSuccessEffect$ = createEffect(() =>
+  loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
       switchMapTo(this.userService.loadProfile()),

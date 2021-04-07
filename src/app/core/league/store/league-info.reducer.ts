@@ -16,11 +16,7 @@ const initialState: LeagueInfo = {
 export const leageInfoReducer = createReducer(
   initialState,
 
-  on(LeagueInfoActions.refreshSuccess, (state, action) => {
-    return { ...action.leagueInfo };
-  }),
-
-  on(LeagueInfoActions.setLeagueInfo, (state, action) => {
-    return { ...action.leagueInfo };
-  })
+  on(LeagueInfoActions.refreshSuccess, (state, action) => ({ ...action.leagueInfo })),
+  on(LeagueInfoActions.refreshFailed, (state, action) => ({ ...state })),
+  on(LeagueInfoActions.setLeagueInfo, (state, action) => ({ ...action.leagueInfo }))
 );
