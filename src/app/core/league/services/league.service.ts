@@ -19,6 +19,10 @@ export class LeagueService {
     return this.http.post<League>(`${this.endpoint}/leagues`, league);
   }
 
+  public all() {
+    return this.http.get<League[]>(`${this.endpoint}/leagues`);
+  }
+
   public read(leagueId: string) {
     return this.http.get<League>(`${this.endpoint}/leagues/${leagueId}`);
   }

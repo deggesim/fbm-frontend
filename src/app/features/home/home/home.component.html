@@ -16,7 +16,7 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let item of (user$ | async)?.leagues" class="manina table-secondary" (click)="selectLeague(item)">
+          <tr *ngFor="let item of leagues" class="manina table-secondary" (click)="selectLeague(item)">
             <td width="20%">{{ item.name }}</td>
             <td width="20%">{{ item.regularSeasonFormat.value.label }}</td>
             <td width="20%">{{ item.playoffFormat.value.label }}</td>
