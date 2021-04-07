@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { LocalStorageService } from '@app/core/local-storage.service';
-import { go } from '@app/core/router/store/router.actions';
+import * as RouterActions from '@app/core/router/store/router.actions';
 import { UserService } from '@app/core/user/services/user.service';
 import * as UserActions from '@app/core/user/store/user.actions';
-import { Auth, User } from '@app/models/user';
+import { Auth } from '@app/models/user';
 import { ToastService } from '@app/shared/services/toast.service';
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import jwtDecode from 'jwt-decode';
@@ -82,10 +82,11 @@ export class AuthEffects {
             this.toastService.warning(title, message);
           }),
           switchMapTo([
+            AuthActions.logoutSuccess(),
+            UserActions.setUser({ user: null }),
             LeagueActions.setSelectedLeague({ league: null }),
             LeagueInfoActions.setLeagueInfo({ leagueInfo: null }),
-            AuthActions.logoutSuccess(),
-            go({ path: ['home'] }),
+            RouterActions.go({ path: ['home'] }),
           ])
         )
       )

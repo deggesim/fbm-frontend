@@ -1,22 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { AuthService } from '@app/core/auth/service/auth.service';
 import * as AuthActions from '@app/core/auth/store/auth.actions';
 import { LeagueService } from '@app/core/league/services/league.service';
-import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { leagueInfo } from '@app/core/league/store/league.selector';
-import { LocalStorageService } from '@app/core/local-storage.service';
-import { redirectAfterSelectLeague } from '@app/core/router/store/router.actions';
 import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
-import { League, LeagueInfo, Status } from '@app/models/league';
+import { League } from '@app/models/league';
 import { Login, User } from '@app/models/user';
 import { select, Store } from '@ngrx/store';
 import { iif } from 'rxjs';
-import { dispatch } from 'rxjs/internal/observable/pairs';
-import { map, mapTo, switchMapTo } from 'rxjs/operators';
+import { map, switchMapTo } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -33,10 +28,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
     private store: Store<AppState>,
     private leagueService: LeagueService,
-    private localStorageService: LocalStorageService,
     private userService: UserService
   ) {}
 

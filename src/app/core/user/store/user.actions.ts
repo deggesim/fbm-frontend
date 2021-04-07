@@ -9,5 +9,5 @@ export const saveUser = createAction('[User] save user', props<{ user: User }>()
 export const saveUserSuccess = createAction('[User] save user success', props<{ user: User }>());
 export const saveUserFailed = createAction('[User] save user failed');
 
-export const setUser = createAction('[User] save user success', props<{ user: User }>());
+export const setUser = createAction('[User] set user', props<{ user: User }>());
 
