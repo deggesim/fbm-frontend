@@ -38,7 +38,14 @@
             >
               <fa-icon icon="pencil-alt"></fa-icon>
             </button>
-            <button type="button" class="btn btn-danger" (click)="apriPopupElimina(user)" tooltip="Elimina" placement="top">
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="apriPopupElimina(user)"
+              tooltip="Elimina"
+              placement="top"
+              [disabled]="user.role === Role.Admin || user.role === Role.SuperAdmin ? !(isSuperAdmin$ | async) : false"
+            >
               <fa-icon icon="trash"></fa-icon>
             </button>
           </td>
