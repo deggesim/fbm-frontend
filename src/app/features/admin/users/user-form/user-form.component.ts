@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '@app/core/user/services/user.service';
 import { User } from '@app/models/user';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-form',
@@ -20,9 +21,12 @@ export class UserFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.authService.isSuperAdmin$().subscribe((isSuperAdmin: boolean) => {
-      this.roleList = isSuperAdmin ? ['User', 'Admin'] : ['User'];
-    });
+    this.authService
+      .isSuperAdmin$()
+      .pipe(take(1))
+      .subscribe((isSuperAdmin: boolean) => {
+        this.roleList = isSuperAdmin ? ['User', 'Admin'] : ['User'];
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

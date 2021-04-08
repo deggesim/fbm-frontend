@@ -8,5 +8,11 @@ export const leageReducer = createReducer(
   initialState,
 
   on(LeagueActions.setSelectedLeague, (state, action) => ({ ...action.league })),
-  on(LeagueActions.completePreseasonFailed, (state, action) => ({ ...state }))
+  on(LeagueActions.completePreseasonFailed, (state, action) => ({ ...state })),
+
+  on(LeagueActions.editLeagueSuccess, (state, action) => ({ ...action.league })),
+  on(LeagueActions.editLeagueFailed, (state, action) => ({ ...state })),
+
+  on(LeagueActions.editParametersSuccess, (state, action) => ({ ...action.league })),
+  on(LeagueActions.editParametersFailed, (state, action) => ({ ...state }))
 );

@@ -2,13 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppState } from '@app/core/app.state';
 import { LeagueService } from '@app/core/league/services/league.service';
-import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { selectedLeague } from '@app/core/league/store/league.selector';
 import { League } from '@app/models/league';
 import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-parameters',
@@ -27,7 +26,7 @@ export class ParametersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+    this.store.pipe(select(selectedLeague), take(1)).subscribe((league: League) => {
       for (const param of league.parameters) {
         this.form.get(param.parameter).setValue(param.value);
       }
@@ -55,21 +54,6 @@ export class ParametersComponent implements OnInit {
     Object.keys(this.form.controls).forEach((key) => {
       parameters.push({ parameter: key, value: this.form.controls[key].value });
     });
-
-    this.store
-      .pipe(
-        select(selectedLeague),
-        take(1),
-        switchMap((league: League) => this.leagueService.setParameters(league._id, parameters)),
-        tap((league: League) => {
-          this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
-          this.store.dispatch(LeagueInfoActions.refresh({ league }));
-        })
-      )
-      .subscribe(() => {
-        const title = 'Modifica parametri';
-        const message = 'I parametri della lega sono stati modificati con successo';
-        this.toastService.success(title, message);
-      });
+    this.store.dispatch(LeagueActions.editParameters({ parameters }));
   }
 }

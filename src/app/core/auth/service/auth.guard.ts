@@ -9,7 +9,7 @@ import * as RouterActions from '@app/core/router/store/router.actions';
 import * as UserActions from '@app/core/user/store/user.actions';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { take, tap } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -23,13 +23,14 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.authService.isLoggedIn$().pipe(
+      take(1),
       tap((loggedIn: boolean) => {
         if (!loggedIn) {
           this.localStorageService.clearStorage();
-          this.store.dispatch(AuthActions.setAuth({auth: null}));
-          this.store.dispatch(UserActions.setUser({user: null}));
-          this.store.dispatch(LeagueActions.setSelectedLeague({league: null}));
-          this.store.dispatch(LeagueInfoActions.setLeagueInfo({leagueInfo: null}));
+          this.store.dispatch(AuthActions.setAuth({ auth: null }));
+          this.store.dispatch(UserActions.setUser({ user: null }));
+          this.store.dispatch(LeagueActions.setSelectedLeague({ league: null }));
+          this.store.dispatch(LeagueInfoActions.setLeagueInfo({ leagueInfo: null }));
           this.store.dispatch(RouterActions.go({ path: ['home'] }));
         }
       })

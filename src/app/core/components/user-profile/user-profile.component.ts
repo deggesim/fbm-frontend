@@ -5,6 +5,7 @@ import { user } from '@app/core/user/store/user.selector';
 import { Role, User } from '@app/models/user';
 import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,7 +22,7 @@ export class UserProfileComponent implements OnInit {
   constructor(private fb: FormBuilder, private toastService: ToastService, private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.store.pipe(select(user)).subscribe((user: User) => {
+    this.store.pipe(select(user), take(1)).subscribe((user: User) => {
       this.user = user;
       this.superAdmin = user && Role.SuperAdmin === user.role;
       this.createForm();

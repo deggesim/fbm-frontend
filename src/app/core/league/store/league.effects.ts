@@ -60,11 +60,12 @@ export class LeagueEffects {
         this.leagueService.completePreseason(league._id).pipe(
           map((league: League) => LeagueActions.completePreseasonSuccess({ league })),
           tap(() => {
-            const title = 'Presason completata';
-            const message = 'Il torneo ora è nella fase "Stagione regolare"';
-            this.toastService.success(title, message);
+            this.toastService.success('Presason completata', 'Il torneo ora è nella fase "Stagione regolare"');
           }),
-          catchError(() => of(LeagueActions.completePreseasonFailed()))
+          catchError(() => {
+            this.toastService.error("Errore nell'avanzamento", 'Errore nel completamento della preseason');
+            return of(LeagueActions.completePreseasonFailed());
+          })
         )
       )
     )
@@ -74,6 +75,63 @@ export class LeagueEffects {
     this.actions$.pipe(
       ofType(LeagueActions.completePreseasonSuccess),
       switchMap(({ league }) => [LeagueInfoActions.refresh({ league }), RouterActions.go({ path: ['home'] })])
+    )
+  );
+
+  editLeague$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LeagueActions.editLeague),
+      switchMap(({ league }) =>
+        this.leagueService.update(league).pipe(
+          map((league: League) => LeagueActions.editLeagueSuccess({ league })),
+          tap(() => {
+            this.toastService.success('Modifica lega', 'Lega modificata con successo');
+          }),
+          catchError(() => {
+            this.toastService.error('Modifica lega', 'Errore nella modifica della lega');
+            return of(LeagueActions.editLeagueFailed());
+          })
+        )
+      )
+    )
+  );
+
+  editLeagueSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LeagueActions.editLeagueSuccess),
+      map(({ league }) => LeagueInfoActions.refresh({ league })),
+      tap(({ league }) => {
+        this.localStorageService.setSelectedLeague(league);
+      })
+    )
+  );
+
+  editParameters$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LeagueActions.editParameters),
+      withLatestFrom(this.store.pipe(select(selectedLeague))),
+      switchMap(([action, selectedLeague]) =>
+        this.leagueService.setParameters(selectedLeague._id, action.parameters).pipe(
+          map((league: League) => LeagueActions.editParametersSuccess({ league })),
+          tap(() => {
+            this.toastService.success('Modifica parametri', 'I parametri della lega sono stati modificati con successo');
+          }),
+          catchError(() => {
+            this.toastService.error('Modifica parametri', 'Errore nella modifica dei parametri');
+            return of(LeagueActions.editParametersFailed());
+          })
+        )
+      )
+    )
+  );
+
+  editParametersSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LeagueActions.editParametersSuccess),
+      map(({ league }) => LeagueInfoActions.refresh({ league })),
+      tap(({ league }) => {
+        this.localStorageService.setSelectedLeague(league);
+      })
     )
   );
 }

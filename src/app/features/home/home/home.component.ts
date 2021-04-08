@@ -4,44 +4,34 @@ import { AuthService } from '@app/core/auth/service/auth.service';
 import * as AuthActions from '@app/core/auth/store/auth.actions';
 import { LeagueService } from '@app/core/league/services/league.service';
 import * as LeagueActions from '@app/core/league/store/league.actions';
-import { leagueInfo } from '@app/core/league/store/league.selector';
-import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
 import { League } from '@app/models/league';
-import { Login, User } from '@app/models/user';
+import { Login, Role, User } from '@app/models/user';
 import { select, Store } from '@ngrx/store';
-import { iif } from 'rxjs';
-import { map, switchMapTo } from 'rxjs/operators';
+import { iif, Observable, of } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  user$ = this.store.pipe(select(user));
-  leagueInfo$ = this.store.pipe(select(leagueInfo));
-
   isLoggedIn$ = this.authService.isLoggedIn$();
-  isAdmin$ = this.userService.isAdmin$();
-  isAdmin: boolean;
-  leagues: League[];
+  leagues$: Observable<League[]>;
 
   constructor(
     private authService: AuthService,
     private store: Store<AppState>,
     private leagueService: LeagueService,
-    private userService: UserService
   ) {}
 
   ngOnInit(): void {
-    this.isAdmin$.subscribe((isAdmin: boolean) => {
-      this.isAdmin = isAdmin;
-    });
-
-    const leagues$ = iif(() => this.isAdmin, this.leagueService.all(), this.user$.pipe(map((user: User) => user?.leagues)));
-    this.store.pipe(select(user), switchMapTo(leagues$)).subscribe((leagues: League[]) => {
-      this.leagues = leagues;
-    });
+    this.leagues$ = this.store.pipe(
+      select(user),
+      mergeMap((user: User) =>
+        iif(() => user && (Role.Admin === user.role || Role.SuperAdmin === user.role), this.leagueService.all(), of(user?.leagues))
+      )
+    );
   }
 
   public login(login: Login) {

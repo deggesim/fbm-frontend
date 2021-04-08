@@ -66,7 +66,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
       switchMapTo(this.userService.loadProfile()),
-      map((auth: Auth) => UserActions.saveUser({ user: auth.user }))
+      map((auth: Auth) => UserActions.setUser({ user: auth.user }))
     )
   );
 

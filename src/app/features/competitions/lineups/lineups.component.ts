@@ -26,7 +26,7 @@ import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lineups',
@@ -70,16 +70,17 @@ export class LineupsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.rounds = data.rounds;
-    });
-    this.userService.isAdmin$().subscribe((isAdmin: boolean) => {
-      this.isAdmin = isAdmin;
-    });
-    this.store.pipe(select(user)).subscribe((user: User) => {
+    this.rounds = this.route.snapshot.data.rounds;
+    this.userService
+      .isAdmin$()
+      .pipe(take(1))
+      .subscribe((isAdmin: boolean) => {
+        this.isAdmin = isAdmin;
+      });
+    this.store.pipe(select(user), take(1)).subscribe((user: User) => {
       this.user = user;
     });
-    this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+    this.store.pipe(select(selectedLeague), take(1)).subscribe((league: League) => {
       this.selectedLeague = league;
     });
   }
