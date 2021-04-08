@@ -6,10 +6,10 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" [collapse]="isCollapsed">
+  <div class="collapse navbar-collapse" [collapse]="isCollapsed" *ngIf="!isEmpty(user)">
     <ul class="navbar-nav mr-auto">
       <!-- SQUADRE -->
-      <li class="nav-item dropdown" dropdown *ngIf="selectedLeague">
+      <li class="nav-item dropdown" dropdown *ngIf="!isEmpty(selectedLeague)">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
         </a>
@@ -24,7 +24,7 @@
       </li>
 
       <!-- COMPETIZIONI -->
-      <li class="nav-item dropdown" dropdown *ngIf="selectedLeague && !leagueInfo?.preSeason">
+      <li class="nav-item dropdown" dropdown *ngIf="!isEmpty(selectedLeague) && !leagueInfo?.preSeason">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="calendar-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Competizioni
         </a>
@@ -48,7 +48,7 @@
       </li>
 
       <!-- GESTIONE LEGA -->
-      <li class="nav-item dropdown" dropdown *ngIf="user && isAdmin && selectedLeague">
+      <li class="nav-item dropdown" dropdown *ngIf="isAdmin && !isEmpty(selectedLeague)">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="cogs" [fixedWidth]="true" class="icon-padding"></fa-icon>Gestione lega
         </a>
@@ -95,7 +95,7 @@
       </li>
 
       <!-- PRESEASON -->
-      <li class="nav-item dropdown" dropdown *ngIf="user && isAdmin && selectedLeague && leagueInfo?.preSeason">
+      <li class="nav-item dropdown" dropdown *ngIf="isAdmin && !isEmpty(selectedLeague) && leagueInfo?.preSeason">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="tools" [fixedWidth]="true" class="icon-padding"></fa-icon>Preseason
         </a>
@@ -124,7 +124,7 @@
       </li>
 
       <!-- ADMIN -->
-      <li class="nav-item dropdown" dropdown *ngIf="user && isAdmin">
+      <li class="nav-item dropdown" dropdown *ngIf="isAdmin">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="user-cog" class="icon-padding"></fa-icon>Admin
         </a>
@@ -140,7 +140,7 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav" *ngIf="user && isLoggedIn$ | async">
+    <ul class="navbar-nav" *ngIf="isLoggedIn$ | async">
       <li class="nav-item">
         <a class="nav-link manina nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
       </li>

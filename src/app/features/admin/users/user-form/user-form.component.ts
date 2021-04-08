@@ -2,7 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '@app/core/user/services/user.service';
 import { User } from '@app/models/user';
-import { take } from 'rxjs/operators';
+import { iif, Observable, of } from 'rxjs';
+import { mergeMap, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user-form',
@@ -14,19 +15,17 @@ export class UserFormComponent implements OnInit, OnChanges {
   @Output() annulla: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
-  roleList = [];
+  roleList$: Observable<string[]>;
 
   constructor(private fb: FormBuilder, private authService: UserService) {
     this.createForm();
   }
 
   ngOnInit() {
-    this.authService
-      .isSuperAdmin$()
-      .pipe(take(1))
-      .subscribe((isSuperAdmin: boolean) => {
-        this.roleList = isSuperAdmin ? ['User', 'Admin'] : ['User'];
-      });
+    this.roleList$ = this.authService.isSuperAdmin$().pipe(
+      take(1),
+      mergeMap((isSuperAdmin: boolean) => iif(() => isSuperAdmin, of(['User', 'Admin']), of(['User'])))
+    );
   }
 
   ngOnChanges(changes: SimpleChanges): void {

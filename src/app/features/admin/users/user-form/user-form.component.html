@@ -40,7 +40,7 @@
     <div fxFlex="49" fxFlex.xs="100">
       <div class="form-group" [ngClass]="{ 'is-invalid': form.get('role').invalid && form.get('role').dirty }">
         <label for="role" class="control-label">Ruolo</label>
-        <ng-select id="role" name="role" [items]="roleList" formControlName="role" clearAllText="Elimina"> </ng-select>
+        <ng-select id="role" name="role" [items]="roleList$ | async" formControlName="role" clearAllText="Elimina"> </ng-select>
       </div>
       <app-error-message [form-control]="form.get('role')" name="Ruolo"></app-error-message>
     </div>

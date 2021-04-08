@@ -16,7 +16,6 @@ export class UserEffects {
       ofType(UserActions.loadUser),
       switchMapTo(
         this.userService.loadProfile().pipe(
-          tap((user) => console.log(user)),
           map((auth: Auth) => UserActions.loadUserSuccess({ user: auth.user })),
           catchError(() => of(UserActions.loadUserFailed()))
         )

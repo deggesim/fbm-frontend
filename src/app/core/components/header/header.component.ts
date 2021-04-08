@@ -8,6 +8,7 @@ import { user } from '@app/core/user/store/user.selector';
 import { League, LeagueInfo } from '@app/models/league';
 import { User } from '@app/models/user';
 import { select, Store } from '@ngrx/store';
+import { isEmpty } from 'lodash-es';
 import { filter } from 'rxjs/operators';
 
 interface IBreadcrumb {
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit {
   user: User;
   selectedLeague: League;
   leagueInfo: LeagueInfo;
+  isEmpty = isEmpty;
 
   constructor(
     private router: Router,
