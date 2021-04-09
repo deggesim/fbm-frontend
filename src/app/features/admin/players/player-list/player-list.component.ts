@@ -9,8 +9,8 @@ import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/po
 import { PlayerService } from '@app/shared/services/player.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { ToastService } from '@app/shared/services/toast.service';
-import { isEmpty } from '@app/shared/util/is-empty';
 import { select, Store } from '@ngrx/store';
+import { isEmpty } from 'lodash-es';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'rxjs/operators';
 

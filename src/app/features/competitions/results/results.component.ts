@@ -12,7 +12,7 @@ import { Round } from '@app/models/round';
 import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { ToastService } from '@app/shared/services/toast.service';
-import { isEmpty } from '@app/shared/util/is-empty';
+import { isEmpty } from 'lodash-es';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
 import { switchMap, switchMapTo, tap } from 'rxjs/operators';

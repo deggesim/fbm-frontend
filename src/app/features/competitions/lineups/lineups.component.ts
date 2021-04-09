@@ -21,7 +21,7 @@ import { LineupService } from '@app/shared/services/lineup.service';
 import { PerformanceService } from '@app/shared/services/performance.service';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { ToastService } from '@app/shared/services/toast.service';
-import { isEmpty } from '@app/shared/util/is-empty';
+import { isEmpty } from 'lodash-es';
 import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';

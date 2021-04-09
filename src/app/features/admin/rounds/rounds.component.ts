@@ -5,7 +5,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 import { Round } from '@app/models/round';
 import { RoundService } from '@app/shared/services/round.service';
 import { ToastService } from '@app/shared/services/toast.service';
-import { isEmpty } from '@app/shared/util/is-empty';
+import { isEmpty } from 'lodash-es';
 
 @Component({
   selector: 'app-rounds',

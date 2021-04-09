@@ -4,6 +4,7 @@ import { AppState } from '@app/core/app.state';
 import { selectedLeague } from '@app/core/league/store/league.selector';
 import { League } from '@app/models/league';
 import { select, Store } from '@ngrx/store';
+import { isEmpty } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
@@ -18,11 +19,12 @@ export class TenantInterceptor implements HttpInterceptor {
       select(selectedLeague),
       take(1),
       switchMap((league: League) => {
-        if (league && league._id) {
-          const cloned = req.clone({
-            headers: req.headers.set('league', league._id),
-          });
-          return next.handle(cloned);
+        if (!isEmpty(league)) {
+          return next.handle(
+            req.clone({
+              headers: req.headers.set('league', league._id),
+            })
+          );
         } else {
           return next.handle(req);
         }
