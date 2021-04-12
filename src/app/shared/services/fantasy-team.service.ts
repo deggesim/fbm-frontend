@@ -19,8 +19,8 @@ export class FantasyTeamService {
     return this.http.get<FantasyTeam>(`${this.endpoint}/fantasy-teams/${id}`);
   }
 
-  public create(fantasyTeams: FantasyTeam[]) {
-    return this.http.post<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`, fantasyTeams);
+  public create(fantasyTeams: FantasyTeam[], leagueId: string) {
+    return this.http.post<FantasyTeam[]>(`${this.endpoint}/fantasy-teams/league/${leagueId}`, fantasyTeams);
   }
 
   public update(fantasyTeam: FantasyTeam) {

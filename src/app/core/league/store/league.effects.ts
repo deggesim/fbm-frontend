@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { AppState } from '@app/core/app.state';
 import { LocalStorageService } from '@app/core/local-storage.service';
 import * as RouterActions from '@app/core/router/store/router.actions';
+import { FantasyTeam } from '@app/models/fantasy-team';
 import { League, LeagueInfo } from '@app/models/league';
+import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { of, zip } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
 import { LeagueService } from '../services/league.service';
 import * as LeagueInfoActions from './league-info.actions';
@@ -19,6 +21,7 @@ export class LeagueEffects {
     private actions$: Actions,
     private store: Store<AppState>,
     private leagueService: LeagueService,
+    private fantasyTeamsService: FantasyTeamService,
     private localStorageService: LocalStorageService,
     private toastService: ToastService
   ) {}
@@ -52,29 +55,33 @@ export class LeagueEffects {
     )
   );
 
-  completePreseason$ = createEffect(() =>
+  createLeague$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(LeagueActions.completePreseason),
-      withLatestFrom(this.store.pipe(select(selectedLeague))),
-      switchMap(([action, league]) =>
-        this.leagueService.completePreseason(league._id).pipe(
-          map((league: League) => LeagueActions.completePreseasonSuccess({ league })),
+      ofType(LeagueActions.createLeague),
+      switchMap(({ league, fantasyTeams }) =>
+        this.leagueService.create(league).pipe(
+          switchMap((league: League) => zip(of(league), this.fantasyTeamsService.create(fantasyTeams, league._id))),
+          switchMap((result: [League, FantasyTeam[]]) => this.leagueService.populate(result[0])),
+          switchMap((league: League) => [LeagueActions.createLeagueSuccess({ league }), RouterActions.go({ path: ['home'] })]),
           tap(() => {
-            this.toastService.success('Presason completata', 'Il torneo ora è nella fase "Stagione regolare"');
+            this.toastService.success('Creazione lega', `La lega ${league.name} è stata create con successo`);
           }),
           catchError(() => {
-            this.toastService.error("Errore nell'avanzamento", 'Errore nel completamento della preseason');
-            return of(LeagueActions.completePreseasonFailed());
+            this.toastService.error('Creazione lega', 'Errore nella creazione della lega');
+            return of(LeagueActions.createLeagueFailed());
           })
         )
       )
     )
   );
 
-  completePreseasonSuccess$ = createEffect(() =>
+  createLeagueSuccess$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(LeagueActions.completePreseasonSuccess),
-      switchMap(({ league }) => [LeagueInfoActions.refresh({ league }), RouterActions.go({ path: ['home'] })])
+      ofType(LeagueActions.createLeagueSuccess),
+      map(({ league }) => LeagueInfoActions.refresh({ league })),
+      tap(({ league }) => {
+        this.localStorageService.setSelectedLeague(league);
+      })
     )
   );
 
@@ -103,6 +110,32 @@ export class LeagueEffects {
       tap(({ league }) => {
         this.localStorageService.setSelectedLeague(league);
       })
+    )
+  );
+
+  completePreseason$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LeagueActions.completePreseason),
+      withLatestFrom(this.store.pipe(select(selectedLeague))),
+      switchMap(([action, league]) =>
+        this.leagueService.completePreseason(league._id).pipe(
+          map((league: League) => LeagueActions.completePreseasonSuccess({ league })),
+          tap(() => {
+            this.toastService.success('Presason completata', 'Il torneo ora è nella fase "Stagione regolare"');
+          }),
+          catchError(() => {
+            this.toastService.error("Errore nell'avanzamento", 'Errore nel completamento della preseason');
+            return of(LeagueActions.completePreseasonFailed());
+          })
+        )
+      )
+    )
+  );
+
+  completePreseasonSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(LeagueActions.completePreseasonSuccess),
+      switchMap(({ league }) => [LeagueInfoActions.refresh({ league }), RouterActions.go({ path: ['home'] })])
     )
   );
 

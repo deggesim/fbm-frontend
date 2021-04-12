@@ -2,16 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '@app/core/app.state';
-import { LeagueService } from '@app/core/league/services/league.service';
-import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { League } from '@app/models/league';
 import { User } from '@app/models/user';
-import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
-import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
-import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-season-step-two',
@@ -26,15 +21,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
   usersLoading = false;
   arrayItems = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private fb: FormBuilder,
-    private leagueService: LeagueService,
-    private fantastyTeamsService: FantasyTeamService,
-    private store: Store<AppState>,
-    private toastService: ToastService
-  ) {
+  constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private store: Store<AppState>) {
     this.league = this.router.getCurrentNavigation().extras.state?.data;
     this.createForm();
   }
@@ -60,27 +47,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
 
   confirm() {
     const fantasyTeams = this.form.get('teamsArray').value as FantasyTeam[];
-    let newLeague: League;
-
-    this.leagueService
-      .create(this.league)
-      .pipe(
-        switchMap((league: League) => {
-          newLeague = league;
-          return this.fantastyTeamsService.create(fantasyTeams);
-        }),
-        switchMap(() => this.leagueService.populate(newLeague)),
-        tap((league: League) => {
-          this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
-          this.store.dispatch(LeagueInfoActions.refresh({ league }));
-        })
-      )
-      .subscribe((league: League) => {
-        const title = 'Nuova lega creata';
-        const message = `La lega ${league.name} è stata create con successo`;
-        this.toastService.success(title, message);
-        this.router.navigate(['/home']);
-      });
+    this.store.dispatch(LeagueActions.createLeague({ league: this.league, fantasyTeams }));
   }
 
   get teamsArray() {
