@@ -41,13 +41,13 @@ export class LeagueEffects {
       ofType(LeagueActions.selectLeague),
       switchMap(({ league }) =>
         this.leagueService.refresh$(league).pipe(
-          switchMap((leagueInfo: LeagueInfo) => [
-            LeagueActions.setSelectedLeague({ league }),
-            LeagueInfoActions.refreshSuccess({ leagueInfo }),
-            RouterActions.redirectAfterSelectLeague(),
-          ]),
-          tap(() => {
+          switchMap((leagueInfo: LeagueInfo) => {
             this.localStorageService.setSelectedLeague(league);
+            return [
+              LeagueActions.setSelectedLeague({ league }),
+              LeagueInfoActions.refreshSuccess({ leagueInfo }),
+              RouterActions.redirectAfterSelectLeague(),
+            ];
           }),
           catchError(() => of(LeagueInfoActions.refreshFailed()))
         )
@@ -62,10 +62,9 @@ export class LeagueEffects {
         this.leagueService.create(league).pipe(
           switchMap((league: League) => zip(of(league), this.fantasyTeamsService.create(fantasyTeams, league._id))),
           switchMap((result: [League, FantasyTeam[]]) => this.leagueService.populate(result[0])),
-          switchMap((league: League) => [LeagueActions.createLeagueSuccess({ league }), RouterActions.go({ path: ['home'] })]),
-          tap(() => {
+          switchMap((league: League) => {
             this.toastService.success('Creazione lega', `La lega ${league.name} è stata create con successo`);
-          }),
+            return [LeagueActions.createLeagueSuccess({ league }), RouterActions.go({ path: ['home'] })]}),
           catchError(() => {
             this.toastService.error('Creazione lega', 'Errore nella creazione della lega');
             return of(LeagueActions.createLeagueFailed());

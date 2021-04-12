@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { SharedService } from '@app/shared/services/shared.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { SharedModule } from '@app/shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -43,6 +42,6 @@ import { UserEffects } from './user/store/user.effects';
     FontAwesomeModule,
   ],
   exports: [HeaderComponent, UserProfileComponent],
-  providers: [SpinnerService, SharedService, AuthService, UserService, LocalStorageService, ToastService],
+  providers: [SpinnerService, AuthService, UserService, LocalStorageService, ToastService],
 })
 export class CoreModule {}

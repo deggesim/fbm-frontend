@@ -51,12 +51,13 @@ export class AuthEffects {
             const expiresAt = moment().add(exp);
             this.localStorageService.setToken(token);
             this.localStorageService.setExpiresAt(expiresAt);
-            const title = 'Login';
-            const message = 'Login effettuato correttamente';
-            this.toastService.success(title, message);
+            this.toastService.success('Login', 'Login effettuato correttamente');
             return AuthActions.loginSuccess({ auth: { token, expiresAt } });
           }),
-          catchError(() => of(AuthActions.loginFailed()))
+          catchError(() => {
+            this.toastService.error('Login', 'Username o password errati');
+            return of(AuthActions.loginFailed());
+          })
         )
       )
     )
@@ -77,9 +78,7 @@ export class AuthEffects {
         this.authService.logout().pipe(
           tap(() => {
             this.localStorageService.clearStorage();
-            const title = 'Logout';
-            const message = 'Logout effettuato correttamente';
-            this.toastService.warning(title, message);
+            this.toastService.warning('Logout', 'Logout effettuato correttamente');
           }),
           switchMapTo([
             AuthActions.logoutSuccess(),
