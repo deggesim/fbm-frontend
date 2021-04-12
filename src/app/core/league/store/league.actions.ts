@@ -17,6 +17,10 @@ export const editParameters = createAction('[League] edit parameters', props<{ p
 export const editParametersSuccess = createAction('[League] edit parameters success', props<{ league: League }>());
 export const editParametersFailed = createAction('[League] edit parameters failed');
 
+export const editRoles = createAction('[League] edit roles', props<{ roles: { role: string; spots: number[] }[] }>());
+export const editRolesSuccess = createAction('[League] edit roles success', props<{ league: League }>());
+export const editRolesFailed = createAction('[League] edit roles failed');
+
 export const completePreseason = createAction('[League] complete pre season');
 export const completePreseasonSuccess = createAction('[League] complete pre season success', props<{ league: League }>());
 export const completePreseasonFailed = createAction('[League] complete pre season failed');

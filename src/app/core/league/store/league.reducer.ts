@@ -14,5 +14,8 @@ export const leageReducer = createReducer(
   on(LeagueActions.editLeagueFailed, (state, action) => ({ ...state })),
 
   on(LeagueActions.editParametersSuccess, (state, action) => ({ ...action.league })),
-  on(LeagueActions.editParametersFailed, (state, action) => ({ ...state }))
+  on(LeagueActions.editParametersFailed, (state, action) => ({ ...state })),
+
+  on(LeagueActions.editRolesSuccess, (state, action) => ({ ...action.league })),
+  on(LeagueActions.editRolesFailed, (state, action) => ({ ...state }))
 );

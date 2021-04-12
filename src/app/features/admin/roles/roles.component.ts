@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppState } from '@app/core/app.state';
-import { LeagueService } from '@app/core/league/services/league.service';
-import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { selectedLeague } from '@app/core/league/store/league.selector';
 import { League } from '@app/models/league';
-import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
-import { concatMap, switchMap, tap } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-roles',
@@ -19,17 +16,12 @@ export class RolesComponent implements OnInit {
 
   spots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  constructor(
-    private fb: FormBuilder,
-    private leagueService: LeagueService,
-    private toastService: ToastService,
-    private store: Store<AppState>
-  ) {
+  constructor(private fb: FormBuilder, private store: Store<AppState>) {
     this.createForm();
   }
 
   ngOnInit() {
-    this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+    this.store.pipe(select(selectedLeague), take(1)).subscribe((league: League) => {
       for (const role of league.roles) {
         this.form.get(role.role).setValue(role.spots);
       }
@@ -54,19 +46,6 @@ export class RolesComponent implements OnInit {
       roles.push({ role: key, spots: this.form.controls[key].value });
     });
 
-    this.store
-      .pipe(
-        select(selectedLeague),
-        switchMap((league: League) => this.leagueService.setRoles(league._id, roles)),
-        tap((league: League) => {
-          this.store.dispatch(LeagueActions.setSelectedLeague({ league }));
-          this.store.dispatch(LeagueInfoActions.refresh({ league }));
-        })
-      )
-      .subscribe(() => {
-        const title = 'Modifica ruoli';
-        const message = 'I ruoli della lega sono stati modificati con successo';
-        this.toastService.success(title, message);
-      });
+    this.store.dispatch(LeagueActions.editRoles({ roles }));
   }
 }
