@@ -57,9 +57,7 @@ export class FantasyTeamListComponent implements OnInit {
       .pipe(
         tap(() => {
           this.mostraPopupModifica = false;
-          const title = 'Modifica squadra';
-          const message = 'Squadra modificata correttamente';
-          this.toastService.success(title, message);
+          this.toastService.success('Modifica squadra', `Squadra ${fantasyTeam.name} modificata correttamente`);
           this.fantasyTeamSelected = undefined;
         }),
         switchMap(() => this.fantasyTeamService.read())

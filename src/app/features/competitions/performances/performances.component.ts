@@ -100,9 +100,7 @@ export class PerformancesComponent implements OnInit {
             })
           );
         }
-        const title = 'Valutazioni recuperate';
-        const message = 'Le valutazioni sono state recuperate correttamente';
-        this.toastService.success(title, message);
+        this.toastService.success('Valutazioni recuperate', 'Le valutazioni sono state recuperate correttamente');
       });
   }
 
@@ -113,9 +111,7 @@ export class PerformancesComponent implements OnInit {
   salva() {
     const performances = this.performanceArray.value as Performance[];
     this.performanceService.save(performances).subscribe(() => {
-      const title = 'Valutazioni salvate';
-      const message = 'Le valutazioni sono state salvate correttamente';
-      this.toastService.success(title, message);
+      this.toastService.success('Valutazioni salvate', 'Le valutazioni sono state salvate correttamente');
     });
   }
 

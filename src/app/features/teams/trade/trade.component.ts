@@ -153,9 +153,7 @@ export class TradeComponent implements OnInit {
         })
       )
       .subscribe(() => {
-        const title = 'Scambio completato';
-        const message = 'I giocatori sono stati scambiati con successo';
-        this.toastService.success(title, message);
+        this.toastService.success('Scambio completato', 'I giocatori sono stati scambiati con successo');
       });
 
     this.mostraPopupTradeBlock = false;

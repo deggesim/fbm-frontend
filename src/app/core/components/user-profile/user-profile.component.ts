@@ -50,9 +50,7 @@ export class UserProfileComponent implements OnInit {
       };
       this.salva.emit(user);
     } else {
-      const title = 'Errore password';
-      const message = 'Le password non coincidono';
-      this.toastService.warning(title, message);
+      this.toastService.warning('Errore password', 'Le password non coincidono');
     }
   }
 }

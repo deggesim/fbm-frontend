@@ -178,9 +178,10 @@ export class TransactionComponent implements OnInit {
         )
         .subscribe((fr: FantasyRoster[]) => {
           this.fantasyRosters = fr;
-          const title = 'Modifica tesseramento';
-          const message = 'Tesseramento modificato correttamente';
-          this.toastService.success(title, message);
+          this.toastService.success(
+            'Modifica tesseramento',
+            `Il tesseramento del giocatore ${this.rosterSelected.player.name} è stato modificato correttamente`
+          );
           this.rosterSelected = null;
           this.form.get('roster').reset();
           this.modal.hide();
@@ -214,9 +215,10 @@ export class TransactionComponent implements OnInit {
         )
         .subscribe((fr: FantasyRoster[]) => {
           this.fantasyRosters = fr;
-          const title = 'Nuovo tesseramento';
-          const message = 'Giocatore tesserato correttamente';
-          this.toastService.success(title, message);
+          this.toastService.success(
+            'Nuovo tesseramento',
+            `Il giocatore ${this.rosterSelected.player.name} è stato tesserarato correttamente`
+          );
           this.rosterSelected = null;
           this.form.get('roster').reset();
           this.modal.hide();
@@ -273,9 +275,10 @@ export class TransactionComponent implements OnInit {
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;
-        const title = 'Giocatore rimosso';
-        const message = 'Il giocatore è stato rimosso correttamente.';
-        this.toastService.success(title, message);
+        this.toastService.success(
+          'Giocatore rimosso',
+          'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rimosso correttamente'
+        );
         this.popupRimuovi.chiudiModale();
         this.fantasyRosterSelected = null;
       });
@@ -295,9 +298,10 @@ export class TransactionComponent implements OnInit {
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;
-        const title = 'Giocatore rilasciato';
-        const message = 'Il giocatore è stato rilasciato correttamente.';
-        this.toastService.success(title, message);
+        this.toastService.success(
+          'Giocatore rilasciato',
+          'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rilasciato correttamente'
+        );
         this.popupRilascia.chiudiModale();
         this.fantasyRosterSelected = null;
       });

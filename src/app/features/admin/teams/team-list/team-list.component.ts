@@ -55,9 +55,7 @@ export class TeamListComponent implements OnInit {
         .pipe(
           tap(() => {
             this.mostraPopupModifica = false;
-            const title = 'Nuova squadra';
-            const message = 'Nuova squadra inserita correttamente';
-            this.toastService.success(title, message);
+            this.toastService.success('Nuova squadra', `La squadra ${team.fullName} è stata inserita correttamente`);
             this.teamSelected = undefined;
           }),
           switchMap(() => this.teamService.read())
@@ -71,9 +69,7 @@ export class TeamListComponent implements OnInit {
         .pipe(
           tap(() => {
             this.mostraPopupModifica = false;
-            const title = 'Modifica squadra';
-            const message = 'Squadra modificata correttamente';
-            this.toastService.success(title, message);
+            this.toastService.success('Modifica squadra', `La squadra ${team.fullName} è stata modificata correttamente`);
             this.teamSelected = undefined;
           }),
           switchMap(() => this.teamService.read())
@@ -100,9 +96,7 @@ export class TeamListComponent implements OnInit {
         .pipe(
           tap(() => {
             this.popupConfermaElimina.chiudiModale();
-            const title = 'Squadra eliminata';
-            const message = 'La squadra è stata eliminata correttamente';
-            this.toastService.success(title, message);
+            this.toastService.success('Squadra eliminata', `La squadra ${this.teamSelected.fullName} è stata modificata correttamente`);
             this.teamSelected = undefined;
           }),
           switchMap(() => this.teamService.read())

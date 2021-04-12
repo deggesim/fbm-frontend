@@ -29,18 +29,14 @@ export class RealFixtureListComponent implements OnInit {
 
   salva(realFixture: RealFixture) {
     if (realFixture._id == null) {
-      const title = 'Giornata non trovata';
-      const message = 'La giornata non esiste, provare a ricaricare la pagina.';
-      this.toastService.success(title, message);
+      this.toastService.success('Giornata non trovata', 'La giornata non esiste, provare a ricaricare la pagina.');
     } else {
       this.realFixtureService
         .update(realFixture)
         .pipe(
           tap(() => {
             this.mostraPopupModifica = false;
-            const title = 'Modifica giornata';
-            const message = 'Giornata modificata correttamente';
-            this.toastService.success(title, message);
+            this.toastService.success('Modifica giornata', `La giornata ${realFixture.name} è stata modificata correttamente`);
             this.realFixtureSelected = undefined;
           }),
           switchMap(() => this.realFixtureService.read())

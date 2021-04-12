@@ -110,9 +110,7 @@ export class ResultsComponent implements OnInit {
       .subscribe((lineups) => {
         this.homeTeamLineup = lineups[0];
         this.awayTeamLineup = lineups[1];
-        const title = 'Risultato calcolato';
-        const message = 'Il risultato è stato calcolato correttamente';
-        this.toastService.success(title, message);
+        this.toastService.success('Risultato calcolato', 'Il risultato è stato calcolato correttamente');
       });
   }
 

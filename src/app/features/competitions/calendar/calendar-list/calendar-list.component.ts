@@ -93,9 +93,7 @@ export class CalendarListComponent implements OnInit {
           return this.selectedRound._id === round._id;
         });
         this.selectedFixture = null;
-        const title = 'Modifica risultati';
-        const message = 'Risultati modificati correttamente';
-        this.toastService.success(title, message);
+        this.toastService.success('Modifica risultati', 'Risultati modificati correttamente');
       });
   }
 

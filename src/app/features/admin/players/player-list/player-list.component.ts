@@ -131,9 +131,7 @@ export class PlayerListComponent implements OnInit {
         switchMap(() => this.rosterService.create(roster)),
         tap(() => {
           this.mostraPopupModifica = false;
-          const title = 'Nuovo giocatore';
-          const message = 'Nuovo giocatore inserito correttamente';
-          this.toastService.success(title, message);
+          this.toastService.success('Nuovo giocatore', `Il giocatore ${roster.player.name} è stato inserito correttamente`);
         }),
         switchMap(() =>
           iif(
@@ -154,9 +152,7 @@ export class PlayerListComponent implements OnInit {
         switchMap(() => this.rosterService.update(roster)),
         tap(() => {
           this.mostraPopupModifica = false;
-          const title = 'Modifica giocatore';
-          const message = 'Giocatore modificato correttamente';
-          this.toastService.success(title, message);
+          this.toastService.success('Modifica giocatore', `Il giocatore ${roster.player.name} è stato modificato correttamente`);
         }),
         switchMap(() =>
           iif(
@@ -192,9 +188,10 @@ export class PlayerListComponent implements OnInit {
         .pipe(
           tap(() => {
             this.popupConfermaElimina.chiudiModale();
-            const title = 'Giocatore eliminata';
-            const message = 'Il giocatore è stato eliminato correttamente';
-            this.toastService.success(title, message);
+            this.toastService.success(
+              'Giocatore eliminato',
+              `Il giocatore ${this.rosterSelected.player.name} è stato eliminato correttamente`
+            );
             this.rosterSelected = undefined;
           }),
           switchMap(() => this.rosterService.read(this.page, this.limit))

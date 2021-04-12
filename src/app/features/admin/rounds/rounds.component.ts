@@ -73,9 +73,7 @@ export class RoundsComponent implements OnInit {
   salva() {
     this.selectedRound.fantasyTeams = this.form.value.sortedList;
     this.roundService.matches(this.selectedRound).subscribe((round: Round) => {
-      const title = 'Generazione incontri';
-      const message = 'Il calendario del round è stato generato correttamente';
-      this.toastService.success(title, message);
+      this.toastService.success('Generazione incontri', 'Il calendario del round è stato generato correttamente');
       this.selectedRound = round;
     });
   }

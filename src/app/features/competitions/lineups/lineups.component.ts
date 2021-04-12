@@ -310,9 +310,7 @@ export class LineupsComponent implements OnInit {
   salva() {
     const filteredLineup = this.lineup.filter((lineup) => lineup != null);
     this.lineupService.save(this.form.value.fantasyTeam._id, this.form.value.fixture._id, filteredLineup).subscribe(() => {
-      const title = 'Formazione salvata';
-      const message = 'La formazione è stata salvata correttamente';
-      this.toastService.success(title, message);
+      this.toastService.success('Formazione salvata', 'La formazione è stata salvata correttamente');
     });
   }
 
@@ -328,9 +326,7 @@ export class LineupsComponent implements OnInit {
           };
         });
         this.form.get('lineup').markAsPristine();
-        const title = 'Formazione ripristinata';
-        const message = 'La formazione è stata ripristinata correttamente';
-        this.toastService.success(title, message);
+        this.toastService.success('Formazione ripristinata', 'La formazione è stata ripristinata correttamente');
       }
     });
   }
@@ -339,9 +335,7 @@ export class LineupsComponent implements OnInit {
     this.lineupService.delete(this.form.value.fantasyTeam._id, this.form.value.fixture._id).subscribe(() => {
       this.lineup = this.initLineup();
       this.form.get('lineup').markAsPristine();
-      const title = 'Formazione eliminata';
-      const message = 'La formazione è stata eliminata correttamente';
-      this.toastService.success(title, message);
+      this.toastService.success('Formazione eliminata', 'La formazione è stata eliminata correttamente');
     });
   }
 
