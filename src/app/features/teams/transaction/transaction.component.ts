@@ -53,12 +53,9 @@ export class TransactionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.fantasyTeams = data.fantasyTeams;
-      this.rosters = data.rosterList.content;
-    });
-
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
+    this.rosters = this.route.snapshot.data.rosterList.content;
+    this.store.pipe(select(leagueInfo), take(1)).subscribe((leagueInfo: LeagueInfo) => {
       this.leagueStatus = leagueInfo?.status;
     });
 

@@ -9,6 +9,7 @@ import { Round } from '@app/models/round';
 import { TableItem } from '@app/models/table-item';
 import { calculator } from '@app/shared/util/standings';
 import { select, Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-standings',
@@ -26,9 +27,7 @@ export class StandingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.rounds = data.rounds.filter((round: Round) => round.roundRobin);
-    });
+    this.rounds = this.route.snapshot.data.rounds?.filter((round: Round) => round.roundRobin);
   }
 
   onChange(round: Round) {
@@ -55,7 +54,7 @@ export class StandingsComponent implements OnInit {
         matches.push(...fixture.matches);
       }
 
-      this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
+      this.store.pipe(select(selectedLeague), take(1)).subscribe((league: League) => {
         for (const fantasyTeam of this.selectedRound.fantasyTeams) {
           this.trend = league.parameters.find((parameter: Parameter) => parameter.parameter === 'TREND');
           const tableItem = calculator(fantasyTeam, matches, this.trend.value);

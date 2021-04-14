@@ -18,9 +18,7 @@ export class FantasyTeamListComponent implements OnInit {
   constructor(private route: ActivatedRoute, private toastService: ToastService, private fantasyTeamService: FantasyTeamService) {}
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.fantasyTeams = data.fantasyTeams;
-    });
+    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
   }
 
   modifica(fantasyTeam: FantasyTeam): void {

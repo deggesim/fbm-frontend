@@ -49,16 +49,14 @@ export class PlayerListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.rosterList = data.rosterList;
-    });
+    this.rosterList = this.route.snapshot.data.rosterList;
     this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
       this.leagueInfo = leagueInfo;
     });
 
     this.filter$
       .pipe(
-        debounceTime(750),
+        debounceTime(400),
         distinctUntilChanged(),
         switchMap(() =>
           iif(

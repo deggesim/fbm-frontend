@@ -29,11 +29,9 @@ export class RoundsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.rounds = data.rounds;
-      this.fantasyTeams = data.fantasyTeams;
-      this.form.get('unsortedList').setValue(this.fantasyTeams);
-    });
+    this.rounds = this.route.snapshot.data.rounds;
+    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
+    this.form.get('unsortedList').setValue(this.fantasyTeams);
   }
 
   createForm() {

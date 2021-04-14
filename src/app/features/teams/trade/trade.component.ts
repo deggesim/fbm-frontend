@@ -13,7 +13,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { fantasyTeamMustBeDifferent } from '@app/shared/util/validations';
 import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-trade',
@@ -46,11 +46,9 @@ export class TradeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.fantasyTeams1 = data.fantasyTeams;
-      this.fantasyTeams2 = data.fantasyTeams;
-    });
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
+    this.fantasyTeams1 = this.route.snapshot.data.fantasyTeams;
+    this.fantasyTeams2 = this.route.snapshot.data.fantasyTeams;
+    this.store.pipe(select(leagueInfo), take(1)).subscribe((leagueInfo: LeagueInfo) => {
       this.nextRealFixture = leagueInfo.nextRealFixture;
     });
   }

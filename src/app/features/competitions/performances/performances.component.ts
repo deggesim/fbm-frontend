@@ -31,10 +31,8 @@ export class PerformancesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.teams = data.teams;
-      this.realFixtures = data.realFixtures;
-    });
+    this.teams = this.route.snapshot.data.teams;
+    this.realFixtures = this.route.snapshot.data.realFixtures;
   }
 
   createForm() {

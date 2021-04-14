@@ -23,9 +23,7 @@ export class TeamListComponent implements OnInit {
   constructor(private route: ActivatedRoute, private toastService: ToastService, private teamService: TeamService) {}
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.teams = data.teams;
-    });
+    this.teams = this.route.snapshot.data.teams;
   }
 
   nuova() {

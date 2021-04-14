@@ -29,14 +29,10 @@ export class NewSeasonStepTwoComponent implements OnInit {
   ngOnInit() {
     if (this.league == null) {
       this.router.navigate(['/home']);
+    } else {      
+      this.addItem();
+      this.users = this.route.snapshot.data.users;
     }
-    this.addItem();
-
-    this.usersLoading = true;
-    this.route.data.subscribe((data) => {
-      this.users = data.users;
-      this.usersLoading = false;
-    });
   }
 
   createForm() {

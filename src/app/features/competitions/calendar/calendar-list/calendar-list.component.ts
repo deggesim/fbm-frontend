@@ -42,9 +42,7 @@ export class CalendarListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.data.subscribe((data) => {
-      this.rounds = data.rounds;
-    });
+    this.rounds = this.route.snapshot.data.rounds;
   }
 
   createForm() {
