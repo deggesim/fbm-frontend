@@ -32,7 +32,6 @@ export class LocalStorageService {
   }
 
   public setSelectedLeague(league: League) {
-    console.log('setSelectedLeague');
     localStorage.setItem('selectedLeague', JSON.stringify(league));
   }
 }
