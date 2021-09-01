@@ -48,17 +48,14 @@ export class RouterEffects {
       this.actions$.pipe(
         ofType(RouterActions.redirectAfterSelectLeague),
         withLatestFrom(this.store.pipe(select(user)), this.store.pipe(select(leagueInfo))),
-        tap(([action, user, leagueInfo]) => {
-          switch (leagueInfo.status) {
+        tap(([action, userSelected, leagueInfoSelected]) => {
+          switch (leagueInfoSelected.status) {
             case Status.Preseason:
-              if (user.role === Role.Admin || user.role === Role.SuperAdmin) {
+              if (userSelected.role === Role.Admin || userSelected.role === Role.SuperAdmin) {
                 this.router.navigate(['admin', 'preseason', 'edit-league']);
               } else {
                 this.router.navigate(['teams', 'transactions']);
               }
-              break;
-            case Status.RegularSeason:
-              this.router.navigate(['competitions', 'standings']);
               break;
             case Status.RegularSeason:
               this.router.navigate(['competitions', 'standings']);
