@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AuthService } from '@app/core/auth/service/auth.service';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { LocalStorageService } from '@app/core/local-storage.service';
@@ -12,7 +13,6 @@ import jwtDecode from 'jwt-decode';
 import * as moment from 'moment';
 import { of } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMap, switchMapTo, tap } from 'rxjs/operators';
-import { AuthService } from '../service/auth.service';
 import * as AuthActions from './auth.actions';
 
 @Injectable()

@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppState } from '@app/core/app.state';
+import { getExpiresAt } from '@app/core/auth/store/auth.selectors';
 import { Auth, Login } from '@app/models/user';
 import { environment } from '@env/environment';
 import { select, Store } from '@ngrx/store';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { getExpiresAt } from '../store/auth.selectors';
 
 @Injectable()
 export class AuthService {

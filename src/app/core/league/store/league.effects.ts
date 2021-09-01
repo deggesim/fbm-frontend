@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppState } from '@app/core/app.state';
+import { LeagueService } from '@app/core/league/services/league.service';
 import { LocalStorageService } from '@app/core/local-storage.service';
 import * as RouterActions from '@app/core/router/store/router.actions';
 import { FantasyTeam } from '@app/models/fantasy-team';
@@ -10,7 +11,6 @@ import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects'
 import { select, Store } from '@ngrx/store';
 import { of, zip } from 'rxjs';
 import { catchError, filter, map, mapTo, switchMap, tap, withLatestFrom } from 'rxjs/operators';
-import { LeagueService } from '../services/league.service';
 import * as LeagueInfoActions from './league-info.actions';
 import * as LeagueActions from './league.actions';
 import { selectedLeague } from './league.selector';
