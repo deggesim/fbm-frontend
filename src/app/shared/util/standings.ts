@@ -1,6 +1,6 @@
-import { FantasyTeam } from '@app/shared/models/fantasy-team';
-import { Match } from '@app/shared/models/match';
-import { TableItem } from '@app/shared/models/table-item';
+import { FantasyTeam } from '@app/models/fantasy-team';
+import { Match } from '@app/models/match';
+import { TableItem } from '@app/models/table-item';
 
 export const calculator = (fantasyTeam: FantasyTeam, matches: Match[], trend: number): TableItem => {
   // init values

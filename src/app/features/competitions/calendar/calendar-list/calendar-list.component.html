@@ -1,0 +1,95 @@
+<form [formGroup]="form" class="needs-validation" novalidate>
+  <fieldset class="fieldset">
+    <legend class="legend"><fa-icon icon="list-ul" class="icon-padding"></fa-icon>Calendario</legend>
+
+    <div class="form-group">
+      <ng-select
+        id="round"
+        name="round"
+        [items]="rounds"
+        bindLabel="name"
+        formControlName="round"
+        clearAllText="Elimina"
+        (change)="onChange($event)"
+        placeholder="Round"
+      >
+      </ng-select>
+    </div>
+
+    <accordion [isAnimated]="true" *ngIf="selectedRound">
+      <accordion-group *ngFor="let fixture of selectedRound.fixtures" isOpen="true">
+        <div accordion-heading>
+          <span>{{ fixture.name }}</span>
+          <span class="fa-pull-right">
+            <button
+              type="button"
+              class="btn btn-warning"
+              (click)="modifica(fixture, $event)"
+              tooltip="Modifica"
+              placement="top"
+              *ngIf="fixture.matches && fixture.matches.length > 0 && (isAdmin$ | async)"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+            </button>
+          </span>
+        </div>
+        <div *ngIf="fixture.matches && fixture.matches.length > 0; else fixtureNotDefined">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th>Partita</th>
+                  <th>Valutazione casa</th>
+                  <th>Valutazione trasferta</th>
+                  <th>Fattore campo</th>
+                  <th>Voti casa</th>
+                  <th>Voti trasferta</th>
+                  <th>Risultato</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let match of fixture.matches" class="table-secondary">
+                  <td class="text-nowrap">{{ match.homeTeam.name }} - {{ match.awayTeam.name }}</td>
+                  <td>{{ match.homeRanking }}</td>
+                  <td>{{ match.awayRanking }}</td>
+                  <td>{{ match.homeFactor }}</td>
+                  <td>{{ match.homeGrade }}</td>
+                  <td>{{ match.awayGrade }}</td>
+                  <td class="text-nowrap">{{ match.homeScore }} - {{ match.awayScore }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <ng-template #fixtureNotDefined>
+          <p>Giornata non definita</p>
+        </ng-template>
+      </accordion-group>
+    </accordion>
+  </fieldset>
+</form>
+
+<!-- popup modifica giornata -->
+<div
+  *ngIf="mostraPopupModifica"
+  class="modal fade"
+  bsModal
+  #modal="bs-modal"
+  [config]="{ backdrop: 'static', keyboard: false, show: true }"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header titolo">
+        <h4 class="modal-title">Modifica risultati - {{ selectedRound.name }}</h4>
+      </div>
+
+      <div class="modal-body">
+        <app-calendar-form [matches]="matches" (salva)="salva($event)" (annulla)="annulla()"></app-calendar-form>
+      </div>
+    </div>
+  </div>
+</div>

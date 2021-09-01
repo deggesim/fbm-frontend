@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Role } from '@app/shared/models/player';
+import { Role } from '@app/models/player';
 
 @Pipe({
   name: 'roleShort',

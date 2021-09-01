@@ -1,0 +1,47 @@
+<form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
+  <fieldset class="fieldset">
+    <legend class="legend"><fa-icon icon="info-circle" class="icon-padding"></fa-icon>Nuova stagione</legend>
+
+    <div>
+      <button type="button" class="btn btn-success" (click)="addItem()" tooltip="Aggiungi squadra" placement="top">
+        <fa-icon icon="plus-circle" class="icon-padding"></fa-icon>
+      </button>
+      <label class="padding">{{ teams }}</label>
+      <button type="button" class="btn btn-success" (click)="removeItem()" tooltip="Rimuovi squadra" placement="top">
+        <fa-icon icon="minus-circle" class="icon-padding"></fa-icon>
+      </button>
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+      <ng-container formArrayName="teamsArray" *ngFor="let arrayItem of arrayItems; let i = index">
+        <div fxFlex="49" fxFlex.xs="100" [formGroupName]="i">
+          <div class="form-group">
+            <label for="{{ arrayItem.id }}" class="control-label">{{ arrayItem.title }}</label>
+            <input type="text" class="form-control" id="{{ arrayItem.id }}" name="{{ arrayItem.id }}" formControlName="name" />
+          </div>
+        </div>
+
+        <div fxFlex="49" fxFlex.xs="100" [formGroupName]="i">
+          <div class="form-group">
+            <label for="proprietario-{{ arrayItem.id }}" class="control-label">Proprietario</label>
+            <ng-select
+              id="proprietario-{{ arrayItem.id }}"
+              [items]="users"
+              [multiple]="true"
+              [trackByFn]="trackUserByFn"
+              typeToSearchText="Inserisci almeno due caratteri"
+              bindLabel="email"
+              formControlName="owners"
+              clearAllText="Elimina"
+            >
+            </ng-select>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </fieldset>
+
+  <div class="text-center">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
+  </div>
+</form>

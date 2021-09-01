@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -6,7 +6,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   templateUrl: './popup-conferma.component.html',
   styleUrls: ['./popup-conferma.component.scss'],
 })
-export class PopupConfermaComponent implements OnInit {
+export class PopupConfermaComponent {
   @Input() titolo: string;
   @Input() btnConferma: string;
   @Input() btnAnnulla: string;
@@ -16,10 +16,6 @@ export class PopupConfermaComponent implements OnInit {
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
 
   constructor() {}
-
-  ngOnInit() {
-    console.log('ngOnInit PopupConfermaComponent');
-  }
 
   apriModale() {
     this.modal.show();

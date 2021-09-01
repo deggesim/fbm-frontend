@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Performance } from '@app/shared/models/performance';
+import { Performance } from '@app/models/performance';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

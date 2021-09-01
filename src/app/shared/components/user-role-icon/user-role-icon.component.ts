@@ -1,16 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-user-role-icon',
   templateUrl: './user-role-icon.component.html',
   styleUrls: ['./user-role-icon.component.scss'],
 })
-export class UserRoleIconComponent implements OnInit {
+export class UserRoleIconComponent {
   @Input() role: string;
 
   constructor() {}
-
-  ngOnInit() {
-    console.log('role', this.role);
-  }
 }

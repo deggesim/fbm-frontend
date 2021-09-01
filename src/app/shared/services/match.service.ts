@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Match } from '@app/shared/models/match';
+import { Match } from '@app/models/match';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

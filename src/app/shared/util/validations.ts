@@ -1,5 +1,5 @@
 import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { isEmpty } from './is-empty';
+import { isEmpty } from 'lodash-es';
 
 export const fantasyTeamMustBeDifferent: ValidatorFn = (fg: FormGroup): { [key: string]: any } | null => {
   const fantasyTeam1 = fg.get('fantasyTeam1').value;

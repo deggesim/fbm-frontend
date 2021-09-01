@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { RosterList } from '@app/shared/models/roster';
+import { RosterList } from '@app/models/roster';
 import { RosterService } from '@app/shared/services/roster.service';
 import { Observable } from 'rxjs';
 

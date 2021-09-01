@@ -1,10 +1,3 @@
-export const toastType = {
-  success: 'success',
-  error: 'error',
-  info: 'info',
-  warning: 'warning',
-};
-
 export enum AppConfig {
   'Starters' = 5,
   'PlayersInBench' = 5,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Team } from '@app/shared/models/team';
+import { Team } from '@app/models/team';
 import { TeamService } from '@app/shared/services/team.service';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
