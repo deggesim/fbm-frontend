@@ -8,12 +8,12 @@ import { UserService } from './user.service';
   providedIn: 'root',
 })
 export class AdminGuard implements CanActivate {
-  constructor(private authService: UserService, private router: Router) {}
+  constructor(private userService: UserService, private router: Router) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.authService.isAdmin$().pipe(take(1));
+    return this.userService.isAdmin$().pipe(take(1));
   }
 }
