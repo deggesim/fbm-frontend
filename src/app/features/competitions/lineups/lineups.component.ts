@@ -1,8 +1,10 @@
+import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { selectedLeague } from '@app/core/league/store/league.selector';
+import { SpinnerService } from '@app/core/spinner.service';
 import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
 import { FantasyRoster, PlayerStatus } from '@app/models/fantasy-roster';
@@ -21,10 +23,10 @@ import { LineupService } from '@app/shared/services/lineup.service';
 import { PerformanceService } from '@app/shared/services/performance.service';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { ToastService } from '@app/shared/services/toast.service';
-import { isEmpty } from 'lodash-es';
 import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
+import { isEmpty } from 'lodash-es';
 import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
@@ -53,6 +55,8 @@ export class LineupsComponent implements OnInit {
   user: User;
   selectedLeague: League;
 
+  disableCopyLineup = true;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -62,7 +66,9 @@ export class LineupsComponent implements OnInit {
     private fantasyRosterService: FantasyRosterService,
     private lineupService: LineupService,
     private performanceService: PerformanceService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private clipboard: Clipboard,
+    private spinnerService: SpinnerService
   ) {
     this.createForm();
     this.createBenchForm();
@@ -138,6 +144,7 @@ export class LineupsComponent implements OnInit {
     this.form.get('fixture').reset();
     this.form.get('fantasyTeam').reset();
     this.disableUpdate = true;
+    this.disableCopyLineup = true;
     this.fantasyRosters = null;
     this.form.get('lineup').reset();
     this.lineup = this.initLineup();
@@ -161,6 +168,7 @@ export class LineupsComponent implements OnInit {
   onChangeFixture(fixture: Fixture) {
     this.form.get('fantasyTeam').reset();
     this.disableUpdate = true;
+    this.disableCopyLineup = true;
     this.fantasyRosters = null;
     this.form.get('lineup').reset();
     this.lineup = this.initLineup();
@@ -175,6 +183,7 @@ export class LineupsComponent implements OnInit {
 
   onChangeFantasyTeam(fantasyTeam: FantasyTeam) {
     this.disableUpdate = true;
+    this.disableCopyLineup = true;
     if (fantasyTeam != null) {
       const teamManagedByLoggedUser =
         (fantasyTeam.owners as User[]).find((owner) => {
@@ -206,6 +215,7 @@ export class LineupsComponent implements OnInit {
             this.lineup = lineup;
             this.form.get('lineup').setValue(this.lineup);
             this.form.get('lineup').markAsDirty();
+            this.disableCopyLineup = false;
           }
         });
     }
@@ -213,6 +223,7 @@ export class LineupsComponent implements OnInit {
 
   addPlayer(fantasyRoster: FantasyRoster) {
     if (!this.disableUpdate) {
+      this.disableCopyLineup = true;
       this.form.get('lineup').markAsDirty();
       const playerFound = this.lineup.find((player: Lineup) => {
         if (player != null) {
@@ -238,6 +249,7 @@ export class LineupsComponent implements OnInit {
 
   removePlayer(index: number) {
     if (!this.disableUpdate) {
+      this.disableCopyLineup = true;
       this.form.get('lineup').markAsDirty();
       this.lineup[index] = null;
       this.form.get('lineup').setValue(this.lineup);
@@ -305,12 +317,14 @@ export class LineupsComponent implements OnInit {
     this.fantasyTeams = null;
     this.fantasyRosters = null;
     this.lineup = null;
+    this.disableCopyLineup = true;
   }
 
   salva() {
     const filteredLineup = this.lineup.filter((lineup) => lineup != null);
     this.lineupService.save(this.form.value.fantasyTeam._id, this.form.value.fixture._id, filteredLineup).subscribe(() => {
       this.toastService.success('Formazione salvata', 'La formazione è stata salvata correttamente');
+      this.disableCopyLineup = false;
     });
   }
 
@@ -327,6 +341,7 @@ export class LineupsComponent implements OnInit {
         });
         this.form.get('lineup').markAsPristine();
         this.toastService.success('Formazione ripristinata', 'La formazione è stata ripristinata correttamente');
+        this.disableCopyLineup = false;
       }
     });
   }
@@ -336,6 +351,7 @@ export class LineupsComponent implements OnInit {
       this.lineup = this.initLineup();
       this.form.get('lineup').markAsPristine();
       this.toastService.success('Formazione eliminata', 'La formazione è stata eliminata correttamente');
+      this.disableCopyLineup = true;
     });
   }
 
@@ -347,11 +363,94 @@ export class LineupsComponent implements OnInit {
     // console.log('inviaEmail');
   }
 
+  formazioneForum() {
+    const filteredLineup: Lineup[] = this.lineup.filter((lineup) => lineup != null);
+    let rows: string[] = [];
+
+    for (let i = 0; i < 5; i++) {
+      const lineup = filteredLineup[i];
+      const benchePlayer = filteredLineup[i + 5];
+      let colorStarter = this.getColor(lineup);
+      let colorBenchPlayer = this.getColor(benchePlayer);
+      const row = `
+      <tr>
+        <td>${lineup.spot}</td>
+        <td ${colorStarter}" >${lineup.fantasyRoster.roster.player.name} (${lineup.fantasyRoster.roster.player.role}-${lineup.fantasyRoster.status}-${lineup.fantasyRoster.roster.team.abbreviation})</td>
+        <td ${colorBenchPlayer}" >${benchePlayer.fantasyRoster.roster.player.name} (${benchePlayer.fantasyRoster.roster.player.role}-${benchePlayer.fantasyRoster.status}-${benchePlayer.fantasyRoster.roster.team.abbreviation}) - ${benchePlayer.benchOrder}</td>
+      </tr>`;
+      rows.push(row);
+    }
+    if (filteredLineup[10]) {
+      const lineup = filteredLineup[10];
+      let color = this.getColor(lineup);
+      rows.push(`
+      <tr>
+        <td>${lineup.spot}</td>
+        <td colspan="2" ${color}" >${lineup.fantasyRoster.roster.player.name} (${lineup.fantasyRoster.roster.player.role}-${lineup.fantasyRoster.status}-${lineup.fantasyRoster.roster.team.abbreviation})</td>
+      </tr>`);
+    }
+
+    if (filteredLineup[11]) {
+      const lineup = filteredLineup[11];
+      let color = this.getColor(lineup);
+      rows.push(`
+      <tr>
+        <td>${lineup.spot}</td>
+        <td colspan="2" ${color}>${lineup.fantasyRoster.roster.player.name} (${lineup.fantasyRoster.roster.player.role}-${lineup.fantasyRoster.status}-${lineup.fantasyRoster.roster.team.abbreviation})</td>
+      </tr>`);
+    }
+
+    let formazioneForum = `
+    <table border="0" cellpadding="4" cellspacing="0" style="font-family: Georgia;font-size: 12px;">
+      <thead>
+        <tr>
+            <th colspan="3" align="center" >${this.form.get('fantasyTeam').value.name}</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows.join('\n')}
+      </tbody>
+    </table>
+    `;
+
+    this.spinnerService.start();
+    const pending = this.clipboard.beginCopy(formazioneForum);
+    let remainingAttempts = 3;
+    const attempt = () => {
+      const result = pending.copy();
+      if (!result && --remainingAttempts) {
+        setTimeout(attempt);
+      } else {
+        // Remember to destroy when you're done!
+        pending.destroy();
+        this.spinnerService.end();
+        this.toastService.success('Formazione copiata', "La formazione è stata copiata. E' possibile incollare direttamente sul forum");
+      }
+    };
+    attempt();
+  }
+
   private initLineup(): Lineup[] {
     const initLineup: Lineup[] = [];
     for (let i = 0; i < AppConfig.MaxPlayersInLineup; i++) {
       initLineup.push(null);
     }
     return initLineup;
+  }
+
+  private getColor(lineup: Lineup): string {
+    let color: string;
+    switch (lineup.fantasyRoster.status) {
+      case PlayerStatus.Ext:
+      case PlayerStatus.Str:
+        color = 'style="color:#e74c3c;"';
+        break;
+      case PlayerStatus.Com:
+        color = 'style="color:#f39c12;"';
+        break;
+      default:
+        break;
+    }
+    return color;
   }
 }

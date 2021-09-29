@@ -13,6 +13,7 @@ import { LineupsComponent } from './lineups/lineups.component';
 import { PerformancesComponent } from './performances/performances.component';
 import { ResultsComponent } from './results/results.component';
 import { StandingsComponent } from './standings/standings.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { StandingsComponent } from './standings/standings.component';
     FontAwesomeModule,
     SharedModule,
     CompetitionsRoutingModule,
+    ClipboardModule,
   ],
 })
 export class CompetitionsModule {}

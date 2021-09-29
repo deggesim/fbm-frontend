@@ -57,15 +57,15 @@
 
         <!-- PLAYERS-->
         <div fxFlex="49" fxFlex.lt-md="100">
-          <label>Roster</label>
+          <label id="roster">Roster</label>
           <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover" aria-describedby="roster">
               <thead class="thead-dark">
                 <tr>
-                  <th>Nome</th>
-                  <th>Naz.</th>
-                  <th>Ruolo</th>
-                  <th fxHide.md fxHide.xs>Squadra</th>
+                  <th id="name">Nome</th>
+                  <th id="nationality">Naz.</th>
+                  <th id="role">Ruolo</th>
+                  <th id="team" fxHide.md fxHide.xs>Squadra</th>
                 </tr>
               </thead>
 
@@ -106,11 +106,14 @@
         <ng-template #statsTooltip let-stats="stats">
           <h5>Valutazione media: {{ stats.performanceAvg | number: '1.1-1' }}</h5>
           <p>Ultime performance:</p>
-          <table width="100%">
+          <table class="w-100">
+            <caption>
+              Statistiche
+            </caption>
             <thead>
               <tr>
-                <th width="50%">Val.</th>
-                <th width="50%">Min.</th>
+                <th id="ranking" class="w-50">Val.</th>
+                <th id="minutes" class="w-50">Min.</th>
               </tr>
             </thead>
             <tbody>
@@ -124,16 +127,16 @@
 
         <!-- LINEUP-->
         <div fxFlex="49" fxFlex.lt-md="100">
-          <label>Formazione</label>
+          <label id="formazione">Formazione</label>
           <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover" aria-describedby="formazione">
               <thead class="thead-dark">
                 <tr>
-                  <th>Spot</th>
-                  <th>Nome</th>
-                  <th>Naz.</th>
-                  <th>Ruolo</th>
-                  <th>Ordine panchina</th>
+                  <th id="spot">Spot</th>
+                  <th id="name">Nome</th>
+                  <th id="nationality">Naz.</th>
+                  <th id="role">Ruolo</th>
+                  <th id="benchOrder">Ordine panchina</th>
                 </tr>
               </thead>
 
@@ -147,7 +150,7 @@
                   <td [appPlayerStatus]="player ? player?.fantasyRoster : null">
                     {{ player?.spot }}
                   </td>
-                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null" nowrap>
+                  <td [appPlayerStatus]="player ? player?.fantasyRoster : null" class="text-nowrap">
                     {{ player?.fantasyRoster.roster.player.name }}
                   </td>
                   <td [appPlayerStatus]="player ? player?.fantasyRoster : null">
@@ -181,11 +184,24 @@
   </fieldset>
 
   <div class="text-center padding">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || disableUpdate">Salva</button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="ripristina()">Ripristina</button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="svuota()">Svuota</button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="importa()">Importa</button>
-    <button type="button" class="btn btn-primary" (click)="inviaEmail()">Invia mail</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || disableUpdate">
+      <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="ripristina()">
+      <fa-icon icon="window-restore" class="icon-padding"></fa-icon>Ripristina
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="svuota()">
+      <fa-icon icon="trash" class="icon-padding"></fa-icon>Svuota
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="importa()">
+      <fa-icon icon="file-import" class="icon-padding"></fa-icon>Importa
+    </button>
+    <button type="button" class="btn btn-primary" (click)="inviaEmail()">
+      <fa-icon icon="envelope" class="icon-padding"></fa-icon>Invia mail
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="disableCopyLineup" (click)="formazioneForum()">
+      <fa-icon icon="copy" class="icon-padding"></fa-icon>Formazione forum
+    </button>
   </div>
 </form>
 
