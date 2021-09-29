@@ -103,7 +103,9 @@
   </fieldset>
 
   <div class="text-center padding">
-    <button type="button" class="btn btn-primary" (click)="reset()"><fa-icon icon="undo" class="icon-padding"></fa-icon>Reset</button>
+    <button type="button" class="btn btn-primary" (click)="reset()">
+      <fa-icon icon="undo" class="icon-padding"></fa-icon>Reset
+    </button>
     <button type="button" class="btn btn-primary" (click)="riepilogo()" [disabled]="!abilitaRiepilogo()">
       <fa-icon icon="list" class="icon-padding"></fa-icon>Riepilogo
     </button>
