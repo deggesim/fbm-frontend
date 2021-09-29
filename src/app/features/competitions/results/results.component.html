@@ -60,7 +60,7 @@
         <ng-container *ngIf="selectedMatch">
           <div fxFlex="49" fxFlex.lt-md="100">
             <div>
-              <h4>{{ selectedMatch.homeTeam.name }} {{ selectedMatch.homeScore }}</h4>
+              <h4 id="homeTeam">{{ selectedMatch.homeTeam.name }} {{ selectedMatch.homeScore }}</h4>
             </div>
             <div>
               <label>Fattore campo: {{ selectedMatch.homeFactor }}</label>
@@ -69,24 +69,24 @@
               <label>Valutazione: {{ selectedMatch.homeRanking }} - Pagelle: {{ selectedMatch.homeGrade }}</label>
             </div>
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table table-hover" aria-describedby="homeTeam">
                 <thead class="thead-dark">
                   <tr>
-                    <th>Nome</th>
-                    <th>Ruolo</th>
-                    <th>Ordine panchina</th>
-                    <th>Val.</th>
-                    <th>Minuti</th>
-                    <th>Voto</th>
-                    <th>Val. dopo 40 minuti</th>
-                    <th>Val. usata</th>
-                    <th>Minuti usati</th>
+                    <th id="name">Nome</th>
+                    <th id="role">Ruolo</th>
+                    <th id="benchOrder">Ordine panchina</th>
+                    <th id="ranking">Val.</th>
+                    <th id="minutes">Minuti</th>
+                    <th id="grade">Voto</th>
+                    <th id="grade40Min">Val. dopo 40 minuti</th>
+                    <th id="rankingUsed">Val. usata</th>
+                    <th id="minutesUsed">Minuti usati</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   <tr *ngFor="let player of homeTeamLineup; let i = index" class="table-secondary lineup-height">
-                    <td nowrap>{{ player?.fantasyRoster.roster.player.name }}</td>
+                    <td class="text-nowrap">{{ player?.fantasyRoster.roster.player.name }}</td>
                     <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
                     <td>{{ player?.benchOrder }}</td>
                     <td>{{ player?.performance.ranking }}</td>
@@ -106,31 +106,31 @@
         <ng-container *ngIf="selectedMatch">
           <div fxFlex="49" fxFlex.lt-md="100">
             <div>
-              <h4>{{ selectedMatch.awayTeam.name }} {{ selectedMatch.awayScore }}</h4>
+              <h4 id="awayTeam">{{ selectedMatch.awayTeam.name }} {{ selectedMatch.awayScore }}</h4>
             </div>
             <div><label>&nbsp;</label></div>
             <div>
               <label>Valutazione: {{ selectedMatch.awayRanking }} - Pagelle: {{ selectedMatch.awayGrade }}</label>
             </div>
             <div class="table-responsive">
-              <table class="table table-hover">
+              <table class="table table-hover" aria-describedby="awayTeam">
                 <thead class="thead-dark">
                   <tr>
-                    <th>Nome</th>
-                    <th>Ruolo</th>
-                    <th>Ordine panchina</th>
-                    <th>Val.</th>
-                    <th>Minuti</th>
-                    <th>Voto</th>
-                    <th>Val. dopo 40 minuti</th>
-                    <th>Val. usata</th>
-                    <th>Minuti usati</th>
+                    <th id="name">Nome</th>
+                    <th id="role">Ruolo</th>
+                    <th id="benchOrder">Ordine panchina</th>
+                    <th id="ranking">Val.</th>
+                    <th id="minutes">Minuti</th>
+                    <th id="grade">Voto</th>
+                    <th id="grade40Min">Val. dopo 40 minuti</th>
+                    <th id="rankingUsed">Val. usata</th>
+                    <th id="minutesUsed">Minuti usati</th>
                   </tr>
                 </thead>
 
                 <tbody>
                   <tr *ngFor="let player of awayTeamLineup; let i = index" class="table-secondary lineup-height">
-                    <td nowrap>{{ player?.fantasyRoster.roster.player.name }}</td>
+                    <td class="text-nowrap">{{ player?.fantasyRoster.roster.player.name }}</td>
                     <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
                     <td>{{ player?.benchOrder }}</td>
                     <td>{{ player?.performance.ranking }}</td>
@@ -150,6 +150,8 @@
   </fieldset>
 
   <div class="text-center padding">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Calcola risultato</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      <fa-icon icon="calculator" class="icon-padding"></fa-icon>Calcola risultato
+    </button>
   </div>
 </form>

@@ -98,7 +98,9 @@
     <progressbar [value]="percentage" [type]="progressbarType" [striped]="true" style="height: 50px"
       >{{ percentage | number: '1.0-0' }}%</progressbar
     >
-    <button type="button" class="btn btn-primary" (click)="reloadPage()" *ngIf="percentage === 100">Ricarica lista</button>
+    <button type="button" class="btn btn-primary" (click)="reloadPage()" *ngIf="percentage === 100">
+      <fa-icon icon="sync" class="icon-padding"></fa-icon>Ricarica lista
+    </button>
   </div>
 </ng-template>
 

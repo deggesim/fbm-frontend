@@ -12,8 +12,12 @@
       <div class="modal-body">
         <h4 class="text-justify titolo">{{ titolo }}</h4>
         <div class="text-center">
-          <button class="btn btn-success" (click)="conferma.emit()">{{ btnConferma }}</button>
-          <button class="btn btn-danger" (click)="annulla.emit()">{{ btnAnnulla }}</button>
+          <button class="btn btn-success" (click)="conferma.emit()">
+            <fa-icon icon="save" class="icon-padding"></fa-icon>{{ btnConferma }}
+          </button>
+          <button class="btn btn-danger" (click)="annulla.emit()">
+            <fa-icon icon="undo" class="icon-padding"></fa-icon>{{ btnAnnulla }}
+          </button>
         </div>
       </div>
     </div>

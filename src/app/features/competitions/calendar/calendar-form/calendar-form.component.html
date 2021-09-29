@@ -91,7 +91,11 @@
   </ng-container>
 
   <div class="text-center">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Salva</button>
-    <button type="button" class="btn btn-primary" (click)="annulla.emit()">Annulla</button>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
+    </button>
+    <button type="button" class="btn btn-primary" (click)="annulla.emit()">
+      <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
+    </button>
   </div>
 </form>

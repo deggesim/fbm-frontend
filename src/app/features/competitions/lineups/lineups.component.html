@@ -171,7 +171,7 @@
           </div>
           <div class="padding text-center">
             <button type="button" class="btn btn-primary" [disabled]="form.invalid || disableUpdate" (click)="openModalBenchOrder()">
-              Ordine panchina
+              <fa-icon icon="sort" class="icon-padding"></fa-icon>Ordine panchina
             </button>
           </div>
         </div>
@@ -191,7 +191,7 @@
       <fa-icon icon="window-restore" class="icon-padding"></fa-icon>Ripristina
     </button>
     <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="svuota()">
-      <fa-icon icon="trash" class="icon-padding"></fa-icon>Svuota
+      <fa-icon icon="undo" class="icon-padding"></fa-icon>Svuota
     </button>
     <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="importa()">
       <fa-icon icon="file-import" class="icon-padding"></fa-icon>Importa
@@ -240,8 +240,12 @@
             ></bs-sortable>
           </div>
           <div class="text-center">
-            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Conferma</button>
-            <button type="button" class="btn btn-primary" (click)="annulla()">Annulla</button>
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+              <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
+            </button>
+            <button type="button" class="btn btn-primary" (click)="annulla()">
+              <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
+            </button>
           </div>
         </form>
       </div>
