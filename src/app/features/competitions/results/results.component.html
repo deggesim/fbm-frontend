@@ -74,11 +74,11 @@
                   <tr>
                     <th id="name">Nome</th>
                     <th id="role">Ruolo</th>
-                    <th id="benchOrder">Ordine panchina</th>
-                    <th id="ranking">Val.</th>
-                    <th id="minutes">Minuti</th>
-                    <th id="grade">Voto</th>
-                    <th id="grade40Min">Val. dopo 40 minuti</th>
+                    <th fxHide.lt-sm id="benchOrder">Ordine panchina</th>
+                    <th fxHide.lt-sm id="ranking">Val.</th>
+                    <th fxHide.lt-sm id="minutes">Minuti</th>
+                    <th fxHide.lt-sm id="grade">Voto</th>
+                    <th fxHide.lt-sm id="grade40Min">Val. dopo 40 minuti</th>
                     <th id="rankingUsed">Val. usata</th>
                     <th id="minutesUsed">Minuti usati</th>
                   </tr>
@@ -88,11 +88,11 @@
                   <tr *ngFor="let player of homeTeamLineup; let i = index" class="table-secondary lineup-height">
                     <td class="text-nowrap">{{ player?.fantasyRoster.roster.player.name }}</td>
                     <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
-                    <td>{{ player?.benchOrder }}</td>
-                    <td>{{ player?.performance.ranking }}</td>
-                    <td>{{ player?.performance.minutes }}</td>
-                    <td>{{ player?.performance.grade }}</td>
-                    <td>{{ player?.matchReport?.realRanking40Min }}</td>
+                    <td fxHide.lt-sm>{{ player?.benchOrder }}</td>
+                    <td fxHide.lt-sm>{{ player?.performance.ranking }}</td>
+                    <td fxHide.lt-sm>{{ player?.performance.minutes }}</td>
+                    <td fxHide.lt-sm>{{ player?.performance.grade }}</td>
+                    <td fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
                     <td>{{ player?.matchReport?.realRanking }}</td>
                     <td>{{ player?.matchReport?.minutesUsed }}</td>
                   </tr>
@@ -118,11 +118,11 @@
                   <tr>
                     <th id="name">Nome</th>
                     <th id="role">Ruolo</th>
-                    <th id="benchOrder">Ordine panchina</th>
-                    <th id="ranking">Val.</th>
-                    <th id="minutes">Minuti</th>
-                    <th id="grade">Voto</th>
-                    <th id="grade40Min">Val. dopo 40 minuti</th>
+                    <th fxHide.lt-sm id="benchOrder">Ordine panchina</th>
+                    <th fxHide.lt-sm id="ranking">Val.</th>
+                    <th fxHide.lt-sm id="minutes">Minuti</th>
+                    <th fxHide.lt-sm id="grade">Voto</th>
+                    <th fxHide.lt-sm id="grade40Min">Val. dopo 40 minuti</th>
                     <th id="rankingUsed">Val. usata</th>
                     <th id="minutesUsed">Minuti usati</th>
                   </tr>
@@ -132,11 +132,11 @@
                   <tr *ngFor="let player of awayTeamLineup; let i = index" class="table-secondary lineup-height">
                     <td class="text-nowrap">{{ player?.fantasyRoster.roster.player.name }}</td>
                     <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
-                    <td>{{ player?.benchOrder }}</td>
-                    <td>{{ player?.performance.ranking }}</td>
-                    <td>{{ player?.performance.minutes }}</td>
-                    <td>{{ player?.performance.grade }}</td>
-                    <td>{{ player?.matchReport?.realRanking40Min }}</td>
+                    <td fxHide.lt-sm>{{ player?.benchOrder }}</td>
+                    <td fxHide.lt-sm>{{ player?.performance.ranking }}</td>
+                    <td fxHide.lt-sm>{{ player?.performance.minutes }}</td>
+                    <td fxHide.lt-sm>{{ player?.performance.grade }}</td>
+                    <td fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
                     <td>{{ player?.matchReport?.realRanking }}</td>
                     <td>{{ player?.matchReport?.minutesUsed }}</td>
                   </tr>

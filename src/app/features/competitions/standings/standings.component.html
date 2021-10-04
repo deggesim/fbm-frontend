@@ -17,48 +17,48 @@
     </div>
 
     <div class="table-responsive" *ngIf="selectedRound; else empty">
-      <table class="table table-hover">
+      <table class="table table-hover" aria-describedby="standings">
         <thead class="thead-dark">
           <tr>
-            <th>Nome</th>
-            <th>Punti</th>
-            <th tooltip="Partite">G</th>
-            <th tooltip="Vinte">V</th>
-            <th tooltip="Perse">P</th>
-            <th>Val. fatta</th>
-            <th>Val. subita</th>
-            <th tooltip="Media valutazione fatta">Media val. f.</th>
-            <th tooltip="Media valutazione subita">Media val. s.</th>
-            <th tooltip="Punti fatti">P. Fatti</th>
-            <th tooltip="Punti subiti">P. subiti</th>
-            <th tooltip="Media punti fatti">Media f.</th>
-            <th tooltip="Media punti subiti">Media s.</th>
-            <th tooltip="Differenza canestri">Diff.</th>
-            <th>Trend</th>
-            <th tooltip="Media punti fatti nelle ultime {{ trend?.value }} partite" placement="left">Tr. media f.</th>
-            <th tooltip="Media punti subiti nelle ultime {{ trend?.value }} partite" placement="left">Tr. media s.</th>
+            <th id="name">Nome</th>
+            <th id="points">Punti</th>
+            <th id="games" tooltip="Partite">G</th>
+            <th id="wins" tooltip="Vinte">V</th>
+            <th id="defeats" tooltip="Perse">P</th>
+            <th fxHide.lt-sm id="rankingMade">Val. fatta</th>
+            <th fxHide.lt-sm id="rankingAgainst">Val. subita</th>
+            <th fxHide.lt-md id="avarageRankingMade" tooltip="Media valutazione fatta">Media val. f.</th>
+            <th fxHide.lt-md id="avarageRankingAgainst" tooltip="Media valutazione subita">Media val. s.</th>
+            <th fxHide.lt-md id="pointsMade" tooltip="Punti fatti">P. Fatti</th>
+            <th fxHide.lt-md id="pointsAgainst" tooltip="Punti subiti">P. subiti</th>
+            <th fxHide.lt-md id="avaragePointsMade" tooltip="Media punti fatti">Media f.</th>
+            <th fxHide.lt-md id="avaragePointsAgainst" tooltip="Media punti subiti">Media s.</th>
+            <th fxHide.lt-md id="difference" tooltip="Differenza canestri">Diff.</th>
+            <th fxHide.lt-lg id="trend">Trend</th>
+            <th fxHide.lt-lg id="trendAvaragePointsMade" tooltip="Media punti fatti nelle ultime {{ trend?.value }} partite" placement="left">Tr. media f.</th>
+            <th fxHide.lt-lg id="trendAvaragePointsAgainst" tooltip="Media punti subiti nelle ultime {{ trend?.value }} partite" placement="left">Tr. media s.</th>
           </tr>
         </thead>
 
         <tbody>
           <tr *ngFor="let tableItem of table" class="table-secondary">
-            <td>{{ tableItem.fantasyTeam.name }}</td>
+            <td class="text-nowrap">{{ tableItem.fantasyTeam.name }}</td>
             <td>{{ tableItem.points }}</td>
             <td>{{ tableItem.games }}</td>
             <td>{{ tableItem.won }}</td>
             <td>{{ tableItem.lost }}</td>
-            <td>{{ tableItem.rankingMade }}</td>
-            <td>{{ tableItem.rankingAgainst }}</td>
-            <td>{{ tableItem.avarageRankingMade | number: '1.1-1' }}</td>
-            <td>{{ tableItem.avarageRankingAgainst | number: '1.1-1' }}</td>
-            <td>{{ tableItem.pointsMade }}</td>
-            <td>{{ tableItem.pointsAgainst }}</td>
-            <td>{{ tableItem.avaragePointsMade | number: '1.1-1' }}</td>
-            <td>{{ tableItem.avaragePointsAgainst | number: '1.1-1' }}</td>
-            <td>{{ tableItem.difference }}</td>
-            <td>{{ tableItem.trend }}</td>
-            <td>{{ tableItem.trendAvaragePointsMade | number: '1.1-1' }}</td>
-            <td>{{ tableItem.trendAvaragePointsAgainst | number: '1.1-1' }}</td>
+            <td fxHide.lt-sm>{{ tableItem.rankingMade }}</td>
+            <td fxHide.lt-sm>{{ tableItem.rankingAgainst }}</td>
+            <td fxHide.lt-md>{{ tableItem.avarageRankingMade | number: '1.1-1' }}</td>
+            <td fxHide.lt-md>{{ tableItem.avarageRankingAgainst | number: '1.1-1' }}</td>
+            <td fxHide.lt-md>{{ tableItem.pointsMade }}</td>
+            <td fxHide.lt-md>{{ tableItem.pointsAgainst }}</td>
+            <td fxHide.lt-md>{{ tableItem.avaragePointsMade | number: '1.1-1' }}</td>
+            <td fxHide.lt-md>{{ tableItem.avaragePointsAgainst | number: '1.1-1' }}</td>
+            <td fxHide.lt-md>{{ tableItem.difference }}</td>
+            <td fxHide.lt-lg>{{ tableItem.trend }}</td>
+            <td fxHide.lt-lg>{{ tableItem.trendAvaragePointsMade | number: '1.1-1' }}</td>
+            <td fxHide.lt-lg>{{ tableItem.trendAvaragePointsAgainst | number: '1.1-1' }}</td>
           </tr>
         </tbody>
       </table>

@@ -8,25 +8,25 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="shield-alt" class="icon-padding"></fa-icon>Squadre</legend>
   <div class="table-responsive" *ngIf="teams && teams.length > 0; else empty">
-    <table class="table table-hover">
+    <table class="table table-hover" aria-describedby="teams">
       <thead class="thead-dark">
         <tr>
-          <th>Nome completo</th>
-          <th>Sponsor</th>
-          <th>Nome</th>
-          <th>Nome città</th>
-          <th>Sigla</th>
-          <th>Azioni</th>
+          <th id="fullName">Nome completo</th>
+          <th fxHide.lt-sm id="sponsor">Sponsor</th>
+          <th fxHide.lt-sm id="name">Nome</th>
+          <th fxHide.lt-sm id="city">Nome città</th>
+          <th fxHide.lt-sm id="abbreviation">Sigla</th>
+          <th id="actions">Azioni</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let team of teams" class="table-secondary">
           <td>{{ team.fullName }}</td>
-          <td>{{ team.sponsor }}</td>
-          <td>{{ team.name }}</td>
-          <td>{{ team.city }}</td>
-          <td>{{ team.abbreviation }}</td>
+          <td fxHide.lt-sm>{{ team.sponsor }}</td>
+          <td fxHide.lt-sm>{{ team.name }}</td>
+          <td fxHide.lt-sm>{{ team.city }}</td>
+          <td fxHide.lt-sm>{{ team.abbreviation }}</td>
 
           <td class="text-nowrap">
             <button type="button" class="btn btn-warning" (click)="modifica(team)" tooltip="Modifica" placement="top">

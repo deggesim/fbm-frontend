@@ -54,27 +54,29 @@
       <hr />
 
       <div class="table-responsive">
-        <table class="table table-hover">
+        <table class="table table-hover" aria-describedby="fantasyRoster">
           <thead class="thead-dark">
             <tr>
-              <th>Nome</th>
-              <th>Status</th>
-              <th>Contratto</th>
-              <th>Anno di contratto</th>
-              <th>Ruolo</th>
-              <th>Squadra</th>
-              <th>Azioni</th>
+              <th id="name">Nome</th>
+              <th fxHide.lt-sm id="status">Status</th>
+              <th fxHide.lt-sm id="contract">Contratto</th>
+              <th fxHide.lt-sm id="yearContract">Anno di contratto</th>
+              <th fxHide.lt-sm id="role">Ruolo</th>
+              <th fxHide.gt-sm id="role">R.</th>
+              <th fxHide.lt-sm id="team">Squadra</th>
+              <th id="actions">Azioni</th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
-              <td [appPlayerStatus]="fr">{{ fr.roster.player.name }}</td>
-              <td [appPlayerStatus]="fr">{{ fr.status }}</td>
-              <td [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
-              <td [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
-              <td [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
-              <td [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
+              <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.status }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
+              <td fxHide.gt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
 
               <td class="text-nowrap">
                 <button type="button" class="btn btn-success" (click)="modifica(fr)" tooltip="Modifica" placement="top">
@@ -119,18 +121,30 @@
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
         <div class="modal-header titolo">
-          <h4 class="modal-title">Acquista giocatore</h4>
+          <h4 class="modal-title">{{ rosterSelected ? 'Acquista giocatore' : 'Modifica giocatore' }}</h4>
         </div>
 
         <div class="modal-body">
           <div fxLayout="row wrap" fxLayoutAlign="space-between">
-            <div fxFlex="100" *ngIf="rosterSelected">
-              <h6>{{ rosterSelected.player.name }} - {{ rosterSelected.player.nationality }} - {{ rosterSelected.player.role }}</h6>
-            </div>
-
-            <div fxFlex="100" *ngIf="rosterSelected">
-              <h6>{{ rosterSelected.team.fullName }}</h6>
-            </div>
+            <ng-container *ngIf="rosterSelected; else modifiyFantasyRoster">
+              <div fxFlex="100">
+                <h6>{{ rosterSelected.player.name }} - {{ rosterSelected.player.nationality }} - {{ rosterSelected.player.role }}</h6>
+              </div>
+              <div fxFlex="100">
+                <h6>{{ rosterSelected.team.fullName }}</h6>
+              </div>
+            </ng-container>
+            <ng-template #modifiyFantasyRoster>
+              <div fxFlex="100">
+                <h6>
+                  {{ fantasyRosterSelected?.roster.player.name }} - {{ fantasyRosterSelected?.roster.player.nationality }} -
+                  {{ fantasyRosterSelected?.roster.player.role }}
+                </h6>
+              </div>
+              <div fxFlex="100">
+                <h6>{{ fantasyRosterSelected?.roster.team.fullName }}</h6>
+              </div>
+            </ng-template>
 
             <div fxFlex="100">
               <div class="form-group">

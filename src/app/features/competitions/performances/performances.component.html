@@ -90,7 +90,7 @@
 
         <div fxFlex="9" fxFlex.xs="33">
           <div class="form-group">
-            <input type="number" class="form-control" id="minutes-{{ i }}" formControlName="minutes" placeholder="Minuti" min="0" />
+            <input type="number" class="form-control" id="minutes-{{ i }}" formControlName="minutes" placeholder="Minuti" />
           </div>
         </div>
 
@@ -107,8 +107,6 @@
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
-    <button type="button" class="btn btn-primary" (click)="reset()">
-      <fa-icon icon="undo" class="icon-padding"></fa-icon>Reset
-    </button>
+    <button type="button" class="btn btn-primary" (click)="reset()"><fa-icon icon="undo" class="icon-padding"></fa-icon>Reset</button>
   </div>
 </form>
