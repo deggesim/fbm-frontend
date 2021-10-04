@@ -107,7 +107,7 @@ export class PerformancesComponent implements OnInit {
   }
 
   salva() {
-    const performances = this.performanceArray.value as Performance[];
+    const performances = this.performanceArray.getRawValue() as Performance[];
     this.performanceService.save(performances).subscribe(() => {
       this.toastService.success('Valutazioni salvate', 'Le valutazioni sono state salvate correttamente');
     });
@@ -129,8 +129,8 @@ export class PerformancesComponent implements OnInit {
           const performanceFG = this.fb.group({
             _id: performance._id,
             ranking: [performance.ranking],
-            minutes: [performance.minutes],
-            grade: [performance.grade],
+            minutes: [performance.minutes, [Validators.min(0)]],
+            grade: [performance.grade, [Validators.min(0), Validators.max]],
           });
           this.performanceArray.push(performanceFG);
           if (performance.minutes == null || performance.minutes === 0) {
@@ -142,8 +142,12 @@ export class PerformancesComponent implements OnInit {
             if (perf.minutes == null || perf.minutes === 0) {
               performanceFG.get('grade').disable({ emitEvent: false });
               performanceFG.get('grade').setValue(null, { emitEvent: false });
-              performanceFG.get('ranking').disable({ emitEvent: false });
-              performanceFG.get('ranking').setValue(null, { emitEvent: false });
+              if (perf.minutes === 0) {
+                performanceFG.get('ranking').disable({ emitEvent: false });
+                performanceFG.get('ranking').setValue(0, { emitEvent: false });
+              } else {
+                performanceFG.get('ranking').setValue(null, { emitEvent: false });
+              }
             } else {
               if (performanceFG.get('grade').disabled) {
                 performanceFG.get('grade').enable({ emitEvent: false });
