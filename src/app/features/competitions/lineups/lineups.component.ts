@@ -196,7 +196,7 @@ export class LineupsComponent implements OnInit {
   onChangeFantasyTeam(fantasyTeam: FantasyTeam) {
     this.disableCopyLineup = true;
     if (fantasyTeam != null) {
-      const teamManagedByLoggedUser = (fantasyTeam.owners as User[]).find((owner) => owner._id === this.user._id) != null;
+      const teamManagedByLoggedUser = fantasyTeam.owners.find((owner) => owner._id === this.user._id) != null;
       this.changeAllowed = this.isAdmin || teamManagedByLoggedUser;
       this.realFixtureService
         .getByFixture(this.form.value.fixture._id)
@@ -227,7 +227,7 @@ export class LineupsComponent implements OnInit {
   }
 
   addPlayer(fantasyRoster: FantasyRoster) {
-    if (!this.changeAllowed) {
+    if (this.changeAllowed) {
       this.disableCopyLineup = true;
       this.form.get('lineup').markAsDirty();
       const playerFound = this.lineup.find((player: Lineup) => {
@@ -253,7 +253,7 @@ export class LineupsComponent implements OnInit {
   }
 
   removePlayer(index: number) {
-    if (!this.changeAllowed) {
+    if (this.changeAllowed) {
       this.disableCopyLineup = true;
       this.form.get('lineup').markAsDirty();
       this.lineup[index] = null;
