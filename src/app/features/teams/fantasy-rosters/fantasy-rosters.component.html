@@ -1,0 +1,67 @@
+<form [formGroup]="form" class="needs-validation" novalidate>
+  <fieldset class="fieldset">
+    <legend class="legend"><fa-icon icon="list" class="icon-padding"></fa-icon>Fantasquadra</legend>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+      <div fxFlex="100">
+        <div class="form-group">
+          <label for="fantasyTeam" class="control-label">Fantasquadra</label>
+          <ng-select
+            id="fantasyTeam"
+            [items]="fantasyTeams"
+            bindLabel="name"
+            formControlName="fantasyTeam"
+            clearAllText="Elimina"
+            (change)="selectFantasyTeam($event)"
+          >
+          </ng-select>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeamSelected">
+      <div>Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}</div>
+      <div>Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
+      <div>Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
+      <div>Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
+    </div>
+
+    <ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
+      <hr />
+
+      <div class="table-responsive">
+        <table class="table table-hover" aria-label="Fantasy roster">
+          <thead class="thead-dark">
+            <tr>
+              <th id="name">Nome</th>
+              <th fxHide.lt-sm id="status">Status</th>
+              <th fxHide.lt-sm id="contract">Contratto</th>
+              <th fxHide.lt-sm id="yearContract">Anno di contratto</th>
+              <th fxHide.lt-sm id="role">Ruolo</th>
+              <th fxHide.gt-sm id="role">R.</th>
+              <th fxHide.lt-sm id="team">Squadra</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
+              <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.status }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
+              <td fxHide.gt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
+              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <ng-template #empty>
+      <div class="padding">
+        <h4>Nessun giocatore presente</h4>
+      </div>
+    </ng-template>
+  </fieldset>
+</form>
