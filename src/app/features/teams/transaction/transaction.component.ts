@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
-import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
 import { FantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
@@ -46,7 +45,6 @@ export class TransactionComponent implements OnInit {
   private fb: FormBuilder;
   private route: ActivatedRoute;
   private toastService: ToastService;
-  private userService: UserService;
   private rosterService: RosterService;
   private fantasyRosterService: FantasyRosterService;
   private fantasyTeamService: FantasyTeamService;
@@ -56,7 +54,6 @@ export class TransactionComponent implements OnInit {
     this.fb = injector.get(FormBuilder);
     this.route = injector.get(ActivatedRoute);
     this.toastService = injector.get(ToastService);
-    this.userService = injector.get(UserService);
     this.rosterService = injector.get(RosterService);
     this.fantasyRosterService = injector.get(FantasyRosterService);
     this.fantasyTeamService = injector.get(FantasyTeamService);

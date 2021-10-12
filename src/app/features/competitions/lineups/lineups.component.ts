@@ -50,6 +50,7 @@ export class LineupsComponent implements OnInit {
   lineup: Lineup[];
   changeAllowed = false;
   tooltip = new Map<string, PlayerStats>();
+  realFixtureSelected: RealFixture;
 
   isAdmin: boolean;
   user: User;
@@ -201,6 +202,9 @@ export class LineupsComponent implements OnInit {
       this.realFixtureService
         .getByFixture(this.form.value.fixture._id)
         .pipe(
+          tap((realFixture: RealFixture) => {
+            this.realFixtureSelected = realFixture;
+          }),
           switchMap((realFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, realFixture._id)),
           tap((fantasyRosters: FantasyRoster[]) => {
             this.fantasyRostersPresent = fantasyRosters != null && !isEmpty(fantasyRosters);
@@ -266,7 +270,7 @@ export class LineupsComponent implements OnInit {
     for (const fr of fantasyRosters) {
       obs.push(
         this.performanceService.getPerformances(fr.roster.player._id).pipe(
-          map((performances: Performance[]) => statistics(fr.roster.player, performances)),
+          map((performances: Performance[]) => statistics(fr.roster.player, performances, this.realFixtureSelected)),
           tap((playerStats: PlayerStats) => {
             this.tooltip.set(fr.roster.player._id, playerStats);
           })
@@ -279,7 +283,7 @@ export class LineupsComponent implements OnInit {
   loadStatistics(fantasyRoster: FantasyRoster) {
     this.performanceService
       .getPerformances(fantasyRoster.roster.player._id)
-      .pipe(map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances)))
+      .pipe(map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances, this.realFixtureSelected)))
       .subscribe((playerStats: PlayerStats) => {
         this.tooltip.set(fantasyRoster.roster.player._id, playerStats);
       });
