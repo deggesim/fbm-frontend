@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -48,7 +48,7 @@ export class LineupsComponent implements OnInit {
   fantasyRostersPresent = false;
   allFieldsSelected = false;
   lineup: Lineup[];
-  disableUpdate = true;
+  changeAllowed = false;
   tooltip = new Map<string, PlayerStats>();
 
   isAdmin: boolean;
@@ -57,19 +57,31 @@ export class LineupsComponent implements OnInit {
 
   disableCopyLineup = true;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private toastService: ToastService,
-    private userService: UserService,
-    private realFixtureService: RealFixtureService,
-    private fantasyRosterService: FantasyRosterService,
-    private lineupService: LineupService,
-    private performanceService: PerformanceService,
-    private store: Store<AppState>,
-    private clipboard: Clipboard,
-    private spinnerService: SpinnerService
-  ) {
+  private fb: FormBuilder;
+  private route: ActivatedRoute;
+  private toastService: ToastService;
+  private userService: UserService;
+  private realFixtureService: RealFixtureService;
+  private fantasyRosterService: FantasyRosterService;
+  private lineupService: LineupService;
+  private performanceService: PerformanceService;
+  private store: Store<AppState>;
+  private clipboard: Clipboard;
+  private spinnerService: SpinnerService;
+
+  constructor(injector: Injector) {
+    this.fb = injector.get(FormBuilder);
+    this.route = injector.get(ActivatedRoute);
+    this.toastService = injector.get(ToastService);
+    this.userService = injector.get(UserService);
+    this.realFixtureService = injector.get(RealFixtureService);
+    this.fantasyRosterService = injector.get(FantasyRosterService);
+    this.lineupService = injector.get(LineupService);
+    this.performanceService = injector.get(PerformanceService);
+    this.store = injector.get(Store);
+    this.clipboard = injector.get(Clipboard);
+    this.spinnerService = injector.get(SpinnerService);
+
     this.createForm();
     this.createBenchForm();
     this.lineup = this.initLineup();
@@ -77,18 +89,18 @@ export class LineupsComponent implements OnInit {
 
   ngOnInit() {
     this.rounds = this.route.snapshot.data.rounds;
-    this.userService
-      .isAdmin$()
-      .pipe(take(1))
-      .subscribe((isAdmin: boolean) => {
-        this.isAdmin = isAdmin;
-      });
     this.store.pipe(select(user), take(1)).subscribe((user: User) => {
       this.user = user;
     });
     this.store.pipe(select(selectedLeague), take(1)).subscribe((league: League) => {
       this.selectedLeague = league;
     });
+    this.userService
+      .isAdmin$()
+      .pipe(take(1))
+      .subscribe((isAdmin: boolean) => {
+        this.isAdmin = isAdmin;
+      });
   }
 
   createForm() {
@@ -143,7 +155,7 @@ export class LineupsComponent implements OnInit {
   onChangeRound(round: Round) {
     this.form.get('fixture').reset();
     this.form.get('fantasyTeam').reset();
-    this.disableUpdate = true;
+    this.changeAllowed = false;
     this.disableCopyLineup = true;
     this.fantasyRosters = null;
     this.form.get('lineup').reset();
@@ -167,7 +179,7 @@ export class LineupsComponent implements OnInit {
 
   onChangeFixture(fixture: Fixture) {
     this.form.get('fantasyTeam').reset();
-    this.disableUpdate = true;
+    this.changeAllowed = false;
     this.disableCopyLineup = true;
     this.fantasyRosters = null;
     this.form.get('lineup').reset();
@@ -182,17 +194,10 @@ export class LineupsComponent implements OnInit {
   }
 
   onChangeFantasyTeam(fantasyTeam: FantasyTeam) {
-    this.disableUpdate = true;
     this.disableCopyLineup = true;
     if (fantasyTeam != null) {
-      const teamManagedByLoggedUser =
-        (fantasyTeam.owners as User[]).find((owner) => {
-          const ret = owner._id === this.user._id;
-          return ret;
-        }) != null;
-      if (this.isAdmin || teamManagedByLoggedUser) {
-        this.disableUpdate = false;
-      }
+      const teamManagedByLoggedUser = (fantasyTeam.owners as User[]).find((owner) => owner._id === this.user._id) != null;
+      this.changeAllowed = this.isAdmin || teamManagedByLoggedUser;
       this.realFixtureService
         .getByFixture(this.form.value.fixture._id)
         .pipe(
@@ -222,7 +227,7 @@ export class LineupsComponent implements OnInit {
   }
 
   addPlayer(fantasyRoster: FantasyRoster) {
-    if (!this.disableUpdate) {
+    if (!this.changeAllowed) {
       this.disableCopyLineup = true;
       this.form.get('lineup').markAsDirty();
       const playerFound = this.lineup.find((player: Lineup) => {
@@ -248,7 +253,7 @@ export class LineupsComponent implements OnInit {
   }
 
   removePlayer(index: number) {
-    if (!this.disableUpdate) {
+    if (!this.changeAllowed) {
       this.disableCopyLineup = true;
       this.form.get('lineup').markAsDirty();
       this.lineup[index] = null;
@@ -356,11 +361,11 @@ export class LineupsComponent implements OnInit {
   }
 
   importa() {
-    // console.log('importa');
+    // TODO
   }
 
   inviaEmail() {
-    // console.log('inviaEmail');
+    // TODO
   }
 
   formazioneForum() {

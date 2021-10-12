@@ -1,12 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
+import { UserService } from '@app/core/user/services/user.service';
+import { user } from '@app/core/user/store/user.selector';
 import { FantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { LeagueInfo, Status } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
+import { Role, User } from '@app/models/user';
 import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
@@ -40,21 +43,40 @@ export class TransactionComponent implements OnInit {
   @ViewChild('popupRilascia', { static: false }) public popupRilascia: PopupConfermaComponent;
   @ViewChild('popupRimuovi', { static: false }) public popupRimuovi: PopupConfermaComponent;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private toastService: ToastService,
-    private rosterService: RosterService,
-    private fantasyRosterService: FantasyRosterService,
-    private fantasyTeamService: FantasyTeamService,
-    private store: Store<AppState>
-  ) {
+  private fb: FormBuilder;
+  private route: ActivatedRoute;
+  private toastService: ToastService;
+  private userService: UserService;
+  private rosterService: RosterService;
+  private fantasyRosterService: FantasyRosterService;
+  private fantasyTeamService: FantasyTeamService;
+  private store: Store<AppState>;
+
+  constructor(injector: Injector) {
+    this.fb = injector.get(FormBuilder);
+    this.route = injector.get(ActivatedRoute);
+    this.toastService = injector.get(ToastService);
+    this.userService = injector.get(UserService);
+    this.rosterService = injector.get(RosterService);
+    this.fantasyRosterService = injector.get(FantasyRosterService);
+    this.fantasyTeamService = injector.get(FantasyTeamService);
+    this.store = injector.get(Store);
+
     this.createForm();
   }
 
   ngOnInit() {
     this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
     this.rosters = this.route.snapshot.data.rosterList.content;
+
+    this.store.pipe(select(user), take(1)).subscribe((user: User) => {
+      const isAdmin = user && (Role.Admin === user.role || Role.SuperAdmin === user.role);
+      if (!isAdmin) {
+        this.fantasyTeams = this.fantasyTeams.filter(
+          (fantasyTeam: FantasyTeam) => fantasyTeam.owners.find((owner: User) => owner._id === user._id) != null
+        );
+      }
+    });
     this.store.pipe(select(leagueInfo), take(1)).subscribe((leagueInfo: LeagueInfo) => {
       this.leagueStatus = leagueInfo?.status;
     });

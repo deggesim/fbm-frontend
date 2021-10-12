@@ -73,10 +73,7 @@
                 <tr
                   *ngFor="let fantasyRoster of fantasyRosters"
                   class="table-secondary lineup-height"
-                  [ngClass]="{
-                    chosen: playerChoosen(fantasyRoster),
-                    manina: !disableUpdate
-                  }"
+                  [ngClass]="{ chosen: playerChoosen(fantasyRoster), manina: changeAllowed }"
                   (click)="addPlayer(fantasyRoster)"
                   [popover]="statsTooltip"
                   [popoverContext]="{
@@ -144,7 +141,7 @@
                 <tr
                   *ngFor="let player of lineup; let i = index"
                   class="table-secondary lineup-height"
-                  [ngClass]="{ manina: !disableUpdate }"
+                  [ngClass]="{ manina: changeAllowed }"
                   (click)="removePlayer(i)"
                 >
                   <td [appPlayerStatus]="player ? player?.fantasyRoster : null">
@@ -169,8 +166,8 @@
           <div class="padding text-center">
             <app-error-message [form-control]="form.get('lineup')" name="Formazione"></app-error-message>
           </div>
-          <div class="padding text-center">
-            <button type="button" class="btn btn-primary" [disabled]="form.invalid || disableUpdate" (click)="openModalBenchOrder()">
+          <div class="padding text-center" *ngIf="changeAllowed">
+            <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="openModalBenchOrder()">
               <fa-icon icon="sort" class="icon-padding"></fa-icon>Ordine panchina
             </button>
           </div>
@@ -184,21 +181,21 @@
   </fieldset>
 
   <div class="text-center padding">
-    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || disableUpdate">
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid" *ngIf="changeAllowed">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="ripristina()">
+    <button type="button" class="btn btn-primary" (click)="ripristina()" *ngIf="changeAllowed">
       <fa-icon icon="window-restore" class="icon-padding"></fa-icon>Ripristina
     </button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="svuota()">
+    <button type="button" class="btn btn-primary" (click)="svuota()" *ngIf="changeAllowed">
       <fa-icon icon="undo" class="icon-padding"></fa-icon>Svuota
     </button>
-    <button type="button" class="btn btn-primary" [disabled]="disableUpdate" (click)="importa()">
+    <!-- <button type="button" class="btn btn-primary" (click)="importa()" *ngIf="changeAllowed">
       <fa-icon icon="file-import" class="icon-padding"></fa-icon>Importa
-    </button>
-    <button type="button" class="btn btn-primary" (click)="inviaEmail()">
+    </button> -->
+    <!-- <button type="button" class="btn btn-primary" (click)="inviaEmail()">
       <fa-icon icon="envelope" class="icon-padding"></fa-icon>Invia mail
-    </button>
+    </button> -->
     <button type="button" class="btn btn-primary" [disabled]="disableCopyLineup" (click)="formazioneForum()">
       <fa-icon icon="copy" class="icon-padding"></fa-icon>Formazione forum
     </button>
