@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/core/auth/service/auth.guard';
 import { FantasyTeamResolverService } from '@app/shared/resolvers/fantasy-team-resolver.service';
 import { FreePlayersResolverService } from '@app/shared/resolvers/free-players-resolver.service';
+import { FantasyRostersComponent } from './fantasy-rosters/fantasy-rosters.component';
 import { TradeComponent } from './trade/trade.component';
 import { TransactionComponent } from './transaction/transaction.component';
 
@@ -23,6 +24,14 @@ const routes: Routes = [
   {
     path: 'trades',
     component: TradeComponent,
+    resolve: {
+      fantasyTeams: FantasyTeamResolverService,
+    },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'fantasy-rosters',
+    component: FantasyRostersComponent,
     resolve: {
       fantasyTeams: FantasyTeamResolverService,
     },
