@@ -6,12 +6,13 @@ import { NgxBootstrapModule } from '@app/ngx-bootstrap.module';
 import { SharedModule } from '@app/shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { FantasyRostersComponent } from './fantasy-rosters/fantasy-rosters.component';
 import { TeamsRoutingModule } from './teams-routing.module';
 import { TradeComponent } from './trade/trade.component';
 import { TransactionComponent } from './transaction/transaction.component';
 
 @NgModule({
-  declarations: [TransactionComponent, TradeComponent],
+  declarations: [TransactionComponent, TradeComponent, FantasyRostersComponent],
   imports: [
     ReactiveFormsModule,
     CommonModule,
