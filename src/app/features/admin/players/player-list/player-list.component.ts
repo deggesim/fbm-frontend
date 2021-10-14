@@ -12,7 +12,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, switchMapTo, takeWhile, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-player-list',
@@ -50,8 +50,8 @@ export class PlayerListComponent implements OnInit {
 
   ngOnInit() {
     this.rosterList = this.route.snapshot.data.rosterList;
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueInfo = leagueInfo;
+    this.store.pipe(select(leagueInfo)).subscribe((li: LeagueInfo) => {
+      this.leagueInfo = li;
     });
 
     this.filter$
@@ -126,18 +126,12 @@ export class PlayerListComponent implements OnInit {
         tap((player: Player) => {
           roster.player = player;
         }),
-        switchMap(() => this.rosterService.create(roster)),
+        switchMapTo(this.rosterService.create(roster)),
         tap(() => {
           this.mostraPopupModifica = false;
           this.toastService.success('Nuovo giocatore', `Il giocatore ${roster.player.name} è stato inserito correttamente`);
         }),
-        switchMap(() =>
-          iif(
-            () => this.filter != null && this.filter !== '',
-            this.filter?.length > 2 ? this.rosterService.read(this.page, this.limit, this.filter) : of(this.rosterList),
-            this.rosterService.read(this.page, this.limit)
-          )
-        ),
+        switchMapTo(this.filterPlayer()),
         tap(() => {
           this.rosterSelected = undefined;
         })
@@ -147,18 +141,12 @@ export class PlayerListComponent implements OnInit {
         tap((player: Player) => {
           roster.player = player;
         }),
-        switchMap(() => this.rosterService.update(roster)),
+        switchMapTo(this.rosterService.update(roster)),
         tap(() => {
           this.mostraPopupModifica = false;
           this.toastService.success('Modifica giocatore', `Il giocatore ${roster.player.name} è stato modificato correttamente`);
         }),
-        switchMap(() =>
-          iif(
-            () => this.filter != null && this.filter !== '',
-            this.filter?.length > 2 ? this.rosterService.read(this.page, this.limit, this.filter) : of(this.rosterList),
-            this.rosterService.read(this.page, this.limit)
-          )
-        ),
+        switchMapTo(this.filterPlayer()),
         tap(() => {
           this.rosterSelected = undefined;
         })
@@ -168,6 +156,14 @@ export class PlayerListComponent implements OnInit {
     $rostersObservable.subscribe((rosterList: RosterList) => {
       this.rosterList = rosterList;
     });
+  }
+
+  private filterPlayer(): Observable<RosterList> {
+    return iif(
+      () => this.filter != null && this.filter !== '',
+      this.filter?.length > 2 ? this.rosterService.read(this.page, this.limit, this.filter) : of(this.rosterList),
+      this.rosterService.read(this.page, this.limit)
+    );
   }
 
   annulla(): void {

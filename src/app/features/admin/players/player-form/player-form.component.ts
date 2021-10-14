@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
 import { LeagueInfo } from '@app/models/league';
@@ -8,7 +9,6 @@ import { RealFixture } from '@app/models/real-fixture';
 import { Roster } from '@app/models/roster';
 import { Team } from '@app/models/team';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
-import { TeamService } from '@app/shared/services/team.service';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -27,8 +27,8 @@ export class PlayerFormComponent implements OnInit, OnChanges {
   preparedRealFixtures: RealFixture[];
 
   constructor(
+    private route: ActivatedRoute,
     private fb: FormBuilder,
-    private teamService: TeamService,
     private realFixtureService: RealFixtureService,
     private store: Store<AppState>
   ) {
@@ -37,9 +37,7 @@ export class PlayerFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.roles = [Role.Playmaker, Role.PlayGuardia, Role.Guardia, Role.GuardiaAla, Role.Ala, Role.AlaCentro, Role.Centro];
-    this.teamService.read().subscribe((teams: Team[]) => {
-      this.teams = teams;
-    });
+    this.teams = this.route.snapshot.data.teams;
     this.realFixtureService.read(true).subscribe((realFixtures: RealFixture[]) => {
       this.preparedRealFixtures = realFixtures;
     });

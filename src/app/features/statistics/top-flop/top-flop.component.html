@@ -1,0 +1,79 @@
+<fieldset class="fieldset">
+  <legend class="legend"><fa-icon icon="chart-bar" class="icon-padding"></fa-icon>Top Flop</legend>
+  <form [formGroup]="form" class="needs-validation" novalidate>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+      <div fxFlex="24" fxFlex.md="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="team" class="control-label">Squadra</label>
+          <ng-select id="team" name="team" [items]="teams" bindLabel="fullName" formControlName="team" clearAllText="Elimina"> </ng-select>
+        </div>
+      </div>
+
+      <div fxFlex="24" fxFlex.md="49" fxFlex.xs="100">
+        <div class="form-group">
+          <label for="role" class="control-label">Ruolo</label>
+          <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina">
+          </ng-select>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="table-responsive">
+    <table class="table table-hover" aria-label="Top Flop">
+      <thead class="thead-dark">
+        <tr>
+          <th id="name">Nome</th>
+          <th id="nationality">Nazionalità</th>
+          <th id="number">#</th>
+          <th id="yearBirth">Anno di nascita</th>
+          <th id="height">Altezza</th>
+          <th id="weight">Peso</th>
+          <th id="role">Ruolo</th>
+          <th id="team">Squadra</th>
+          <th id="fantasyTeam">Fantasquadra</th>
+          <th id="status">Status</th>
+          <th id="avgRanking">Valutazione</th>
+          <th id="avgMinutes">Minuti</th>
+          <th id="avgGrade">Voto</th>
+          <th id="rankingMinutesRatio">Val/Min</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let stat of playerStatisticList?.content" class="table-secondary">
+          <td>{{ stat.player.name }}</td>
+          <td>{{ stat.player.nationality }}</td>
+          <td>{{ stat.player.number }}</td>
+          <td>{{ stat.player.yearBirth }}</td>
+          <td>{{ stat.player.height }}</td>
+          <td>{{ stat.player.weight }}</td>
+          <td>{{ stat.player.role }}</td>
+          <td>{{ stat.team }}</td>
+          <td>{{ stat.fantasyTeam }}</td>
+          <td>{{ stat.status }}</td>
+          <td>{{ stat.avgRanking | number: '1.1-1' }}</td>
+          <td>{{ stat.avgMinutes | number: '1.1-1' }}</td>
+          <td>{{ stat.avgGrade | number: '1.1-1' }}</td>
+          <td>{{ stat.rankingMinutesRatio | number: '1.1-1' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="center" *ngIf="abilitaPaginazione()">
+    <div fxFlex="nogrow">
+      <pagination
+        [totalItems]="playerStatisticList.totalElements"
+        [(ngModel)]="page"
+        [itemsPerPage]="limit"
+        (pageChanged)="pageChange($event)"
+        [maxSize]="maxSize"
+        [boundaryLinks]="boundaryLinks"
+        firstText="<<"
+        previousText="<"
+        nextText=">"
+        lastText=">>"
+      ></pagination>
+    </div>
+  </div>
+</fieldset>

@@ -76,6 +76,7 @@ const routes: Routes = [
         path: 'players',
         component: PlayerListComponent,
         resolve: {
+          teams: TeamResolverService,
           rosterList: RosterResolverService,
         },
       },
