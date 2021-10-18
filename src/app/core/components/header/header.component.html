@@ -50,6 +50,18 @@
         </ul>
       </li>
 
+      <!-- STATISTICHE -->
+      <li class="nav-item dropdown" dropdown *ngIf="!isEmpty(selectedLeague) && !leagueInfo?.preSeason">
+        <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
+          <fa-icon icon="chart-line" [fixedWidth]="true" class="icon-padding"></fa-icon>Statistiche
+        </a>
+        <ul *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item" routerLink="/statistics/top-flop" routerLinkActive="active" (click)="isCollapsed = true">
+            <fa-icon icon="chart-bar" [fixedWidth]="true" class="icon-padding"></fa-icon>Top Flop
+          </a>
+        </ul>
+      </li>
+
       <!-- GESTIONE LEGA -->
       <li class="nav-item dropdown" dropdown *ngIf="isAdmin && !isEmpty(selectedLeague)">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">

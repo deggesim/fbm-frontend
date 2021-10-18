@@ -1,3 +1,4 @@
+import { Performance } from './performance';
 export interface Player {
   _id?: string;
   name: string;
