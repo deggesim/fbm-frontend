@@ -1,6 +1,6 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="chart-bar" class="icon-padding"></fa-icon>Top Flop</legend>
-  <form [formGroup]="form" class="needs-validation" novalidate>
+  <!-- <form [formGroup]="form" class="needs-validation" novalidate>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="24" fxFlex.md="49" fxFlex.xs="100">
         <div class="form-group">
@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-  </form>
+  </form> -->
   <div class="table-responsive">
     <table class="table table-hover" aria-label="Top Flop">
       <thead class="thead-dark">
@@ -51,10 +51,10 @@
           <td>{{ stat.team }}</td>
           <td>{{ stat.fantasyTeam }}</td>
           <td>{{ stat.status }}</td>
-          <td>{{ stat.avgRanking | number: '1.1-1' }}</td>
-          <td>{{ stat.avgMinutes | number: '1.1-1' }}</td>
-          <td>{{ stat.avgGrade | number: '1.1-1' }}</td>
-          <td>{{ stat.rankingMinutesRatio | number: '1.1-1' }}</td>
+          <td>{{ stat.avgRanking | number: '1.2-2' }}</td>
+          <td>{{ stat.avgMinutes | number: '1.2-2' }}</td>
+          <td>{{ stat.avgGrade | number: '1.2-2' }}</td>
+          <td>{{ stat.rankingMinutesRatio | number: '1.2-2' }}</td>
         </tr>
       </tbody>
     </table>
