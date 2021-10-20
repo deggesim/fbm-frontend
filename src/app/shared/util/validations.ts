@@ -1,7 +1,7 @@
-import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { isEmpty } from 'lodash-es';
 
-export const fantasyTeamMustBeDifferent: ValidatorFn = (fg: FormGroup): { [key: string]: any } | null => {
+export const fantasyTeamMustBeDifferent: ValidatorFn = (fg: FormGroup): ValidationErrors | null => {
   const fantasyTeam1 = fg.get('fantasyTeam1').value;
   const fantasyTeam2 = fg.get('fantasyTeam2').value;
   if (!isEmpty(fantasyTeam1) && !isEmpty(fantasyTeam2)) {
@@ -10,7 +10,7 @@ export const fantasyTeamMustBeDifferent: ValidatorFn = (fg: FormGroup): { [key: 
   }
 };
 
-export const atLeastOne: ValidatorFn = (control: AbstractControl): { [key: string]: any } | null => {
+export const atLeastOne: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   if (control != null && control.value != null) {
     const wrongValue = control.value.length < 1;
     return wrongValue ? { wrongLength: { value: control.value.length } } : null;

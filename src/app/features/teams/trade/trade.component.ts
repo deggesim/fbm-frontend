@@ -48,8 +48,8 @@ export class TradeComponent implements OnInit {
   ngOnInit() {
     this.fantasyTeams1 = this.route.snapshot.data.fantasyTeams;
     this.fantasyTeams2 = this.route.snapshot.data.fantasyTeams;
-    this.store.pipe(select(leagueInfo), take(1)).subscribe((leagueInfo: LeagueInfo) => {
-      this.nextRealFixture = leagueInfo.nextRealFixture;
+    this.store.pipe(select(leagueInfo), take(1)).subscribe((li: LeagueInfo) => {
+      this.nextRealFixture = li.nextRealFixture;
     });
   }
 
@@ -62,7 +62,7 @@ export class TradeComponent implements OnInit {
         inPlayers: [[], Validators.required],
         buyout: [undefined],
       },
-      { validator: fantasyTeamMustBeDifferent }
+      { validators: fantasyTeamMustBeDifferent }
     );
   }
 

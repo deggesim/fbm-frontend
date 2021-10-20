@@ -75,14 +75,16 @@
                   class="table-secondary lineup-height"
                   [ngClass]="{ chosen: playerChoosen(fantasyRoster), manina: changeAllowed }"
                   (click)="addPlayer(fantasyRoster)"
-                  [popover]="statsTooltip"
-                  [popoverContext]="{
-                    stats: tooltip.get(fantasyRoster.roster.player._id)
-                  }"
-                  triggers="mouseenter:mouseleave"
-                  container="body"
                 >
-                  <td [appPlayerStatus]="fantasyRoster">
+                  <td
+                    [appPlayerStatus]="fantasyRoster"
+                    [popover]="statsTooltip"
+                    [popoverContext]="{
+                      stats: tooltip.get(fantasyRoster.roster.player._id)
+                    }"
+                    triggers="mouseenter:mouseleave"
+                    container="body"
+                  >
                     {{ fantasyRoster.roster.player.name }}
                   </td>
                   <td [appPlayerStatus]="fantasyRoster">

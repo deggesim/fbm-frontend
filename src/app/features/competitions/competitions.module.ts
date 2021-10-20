@@ -32,8 +32,8 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     NgSelectModule,
     FontAwesomeModule,
     SharedModule,
-    CompetitionsRoutingModule,
     ClipboardModule,
+    CompetitionsRoutingModule,
   ],
 })
 export class CompetitionsModule {}

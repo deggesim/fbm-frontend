@@ -4,7 +4,7 @@ import { PlayerStats } from '@app/models/player-stats';
 import { RealFixture } from '@app/models/real-fixture';
 import { mean } from 'lodash-es';
 
-export const statistics = (player: Player, performances: Performance[], currentRealFixture: RealFixture): PlayerStats => {
+export const statistics = (player: Player, performances: Performance[], currentRealFixture: RealFixture, trend?: number): PlayerStats => {
   let ps: PlayerStats;
   let performanceAvg = 0;
   const rankings = performances
@@ -12,27 +12,19 @@ export const statistics = (player: Player, performances: Performance[], currentR
     .map((performance: Performance) => performance.ranking);
   performanceAvg = mean(rankings);
   let performancesTrend: Performance[] = [];
-  const performanceForTrend = performances.filter(
+  const filteredPerformances = performances.filter(
     (performance: Performance) => performance.realFixture.prepared && performance.realFixture._id !== currentRealFixture._id
   );
-  performancesTrend = performanceForTrend.length > 5 ? performanceForTrend.slice(performanceForTrend.length - 5) : performanceForTrend;
+  if (trend != null) {
+    performancesTrend =
+      filteredPerformances.length > trend ? filteredPerformances.slice(filteredPerformances.length - trend) : filteredPerformances;
+  } else {
+    performancesTrend = filteredPerformances;
+  }
   ps = {
     player,
     performanceAvg,
     trend: performancesTrend,
   };
   return ps;
-};
-
-export const statsTooltip = (stats: PlayerStats): string => {
-  let trend = '<ul>';
-  for (const ranking of stats.trend) {
-    trend += `<li>${ranking}</li>`;
-  }
-  trend += '</ul>';
-  return `
-  <p>Valutazione media: ${stats.performanceAvg}</p>
-  <p>Ultime valutazioni:</p>
-  ${trend}
-  `;
 };

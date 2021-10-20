@@ -3,14 +3,14 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
-import { selectedLeague } from '@app/core/league/store/league.selector';
+import { leagueInfo, selectedLeague } from '@app/core/league/store/league.selector';
 import { SpinnerService } from '@app/core/spinner.service';
 import { UserService } from '@app/core/user/services/user.service';
 import { user } from '@app/core/user/store/user.selector';
 import { FantasyRoster, PlayerStatus } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { Fixture } from '@app/models/fixture';
-import { League } from '@app/models/league';
+import { League, LeagueInfo } from '@app/models/league';
 import { Lineup } from '@app/models/lineup';
 import { Performance } from '@app/models/performance';
 import { PlayerStats } from '@app/models/player-stats';
@@ -55,6 +55,7 @@ export class LineupsComponent implements OnInit {
   isAdmin: boolean;
   user: User;
   selectedLeague: League;
+  nextRealFixture: RealFixture;
 
   disableCopyLineup = true;
 
@@ -90,18 +91,21 @@ export class LineupsComponent implements OnInit {
 
   ngOnInit() {
     this.rounds = this.route.snapshot.data.rounds;
-    this.store.pipe(select(user), take(1)).subscribe((user: User) => {
-      this.user = user;
+    this.store.pipe(select(user), take(1)).subscribe((value: User) => {
+      this.user = value;
     });
-    this.store.pipe(select(selectedLeague), take(1)).subscribe((league: League) => {
-      this.selectedLeague = league;
+    this.store.pipe(select(selectedLeague), take(1)).subscribe((value: League) => {
+      this.selectedLeague = value;
     });
     this.userService
       .isAdmin$()
       .pipe(take(1))
-      .subscribe((isAdmin: boolean) => {
-        this.isAdmin = isAdmin;
+      .subscribe((value: boolean) => {
+        this.isAdmin = value;
       });
+    this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
+      this.nextRealFixture = value.nextRealFixture;
+    });
   }
 
   createForm() {
@@ -268,25 +272,18 @@ export class LineupsComponent implements OnInit {
   buildStatistics(fantasyRosters: FantasyRoster[]): Observable<PlayerStats[]> {
     const obs: Observable<PlayerStats>[] = [];
     for (const fr of fantasyRosters) {
-      obs.push(
-        this.performanceService.getPerformances(fr.roster.player._id).pipe(
-          map((performances: Performance[]) => statistics(fr.roster.player, performances, this.realFixtureSelected)),
-          tap((playerStats: PlayerStats) => {
-            this.tooltip.set(fr.roster.player._id, playerStats);
-          })
-        )
-      );
+      obs.push(this.loadStatistics(fr));
     }
     return forkJoin(obs);
   }
 
   loadStatistics(fantasyRoster: FantasyRoster) {
-    this.performanceService
-      .getPerformances(fantasyRoster.roster.player._id)
-      .pipe(map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances, this.realFixtureSelected)))
-      .subscribe((playerStats: PlayerStats) => {
+    return this.performanceService.getPerformances(fantasyRoster.roster.player._id).pipe(
+      map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances, this.nextRealFixture, 5)),
+      tap((playerStats: PlayerStats) => {
         this.tooltip.set(fantasyRoster.roster.player._id, playerStats);
-      });
+      })
+    );
   }
 
   playerChoosen(fantasyRoster: FantasyRoster): boolean {
