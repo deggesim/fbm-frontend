@@ -3,6 +3,6 @@ import { Player } from './player';
 
 export interface PlayerStats {
   player: Player;
-  performanceAvg: number;
+  performanceAvg?: number;
   trend: Performance[];
 }

@@ -41,7 +41,15 @@
 
       <tbody>
         <tr *ngFor="let stat of playerStatisticList?.content" class="table-secondary">
-          <td [popover]="statsTooltip" [popoverContext]="{ stats: loadStatistics(stat) }" triggers="mouseenter:mouseleave" container="body">
+          <td
+            [popover]="statsTooltip"
+            [popoverContext]="{
+              stats: tooltip.get(stat.player._id)
+            }"
+            triggers="mouseenter:mouseleave"
+            container="body"
+            containerClass="w-100"
+          >
             {{ stat.player.name }}
           </td>
           <td>{{ stat.player.nationality }}</td>
@@ -81,7 +89,6 @@
 </fieldset>
 
 <ng-template #statsTooltip let-stats="stats">
-  <h5>Valutazione media: {{ stats.performanceAvg | number: '1.1-1' }}</h5>
   <table class="w-100" aria-label="Valutazioni">
     <thead>
       <tr>

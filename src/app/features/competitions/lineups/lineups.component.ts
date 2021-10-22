@@ -28,7 +28,7 @@ import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
 import { forkJoin, Observable } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-lineups',
@@ -219,7 +219,7 @@ export class LineupsComponent implements OnInit {
             }
           }),
           switchMap((fantasyRosters: FantasyRoster[]) => this.buildStatistics(fantasyRosters)),
-          switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id))
+          switchMapTo(this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id))
         )
         .subscribe((lineup: Lineup[]) => {
           this.form.get('lineup').reset();
@@ -238,11 +238,7 @@ export class LineupsComponent implements OnInit {
     if (this.changeAllowed) {
       this.disableCopyLineup = true;
       this.form.get('lineup').markAsDirty();
-      const playerFound = this.lineup.find((player: Lineup) => {
-        if (player != null) {
-          return player.fantasyRoster._id === fantasyRoster._id;
-        }
-      });
+      const playerFound = this.findPlayer(fantasyRoster);
       if (playerFound == null) {
         // find first hole
         let index = this.lineup.indexOf(null);
@@ -287,12 +283,8 @@ export class LineupsComponent implements OnInit {
   }
 
   playerChoosen(fantasyRoster: FantasyRoster): boolean {
-    const found = this.lineup.find((player: Lineup) => {
-      if (player != null) {
-        return player.fantasyRoster._id === fantasyRoster._id;
-      }
-    });
-    return found != null;
+    const playerFound = this.findPlayer(fantasyRoster);
+    return playerFound != null;
   }
 
   openModalBenchOrder() {
@@ -458,5 +450,13 @@ export class LineupsComponent implements OnInit {
         break;
     }
     return color;
+  }
+
+  private findPlayer(fantasyRoster: FantasyRoster) {
+    return this.lineup.find((player: Lineup) => {
+      if (player != null) {
+        return player.fantasyRoster._id === fantasyRoster._id;
+      }
+    });
   }
 }

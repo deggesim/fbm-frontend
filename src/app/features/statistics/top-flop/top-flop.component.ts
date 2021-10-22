@@ -4,16 +4,18 @@ import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
 import { LeagueInfo } from '@app/models/league';
-import { Role } from '@app/models/player';
-import { PlayerStatistic, PlayerStatisticList } from '@app/models/player-statistics';
+import { Performance } from '@app/models/performance';
+import { Player, Role } from '@app/models/player';
+import { PlayerStatisticList } from '@app/models/player-statistics';
 import { PlayerStats } from '@app/models/player-stats';
 import { RealFixture } from '@app/models/real-fixture';
 import { Team } from '@app/models/team';
+import { PerformanceService } from '@app/shared/services/performance.service';
 import { PlayerStatisticService } from '@app/shared/services/player-statistics.service';
-import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
-import { take } from 'rxjs/operators';
+import { forkJoin, Observable, of, zip } from 'rxjs';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-top-flop',
@@ -38,7 +40,8 @@ export class TopFlopComponent implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private store: Store<AppState>,
-    private playerStatisticService: PlayerStatisticService
+    private playerStatisticService: PlayerStatisticService,
+    private performanceService: PerformanceService
   ) {
     this.createForm();
   }
@@ -49,9 +52,12 @@ export class TopFlopComponent implements OnInit {
     this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
       this.nextRealFixture = value.nextRealFixture;
     });
-    this.playerStatisticService.read(this.page, this.limit).subscribe((value: PlayerStatisticList) => {
-      this.playerStatisticList = value;
-    });
+    this.playerStatisticService
+      .read(this.page, this.limit)
+      .pipe(switchMap((value: PlayerStatisticList) => zip(of(value), this.buildStatistics(value.content.map((stat) => stat.player)))))
+      .subscribe((value: [PlayerStatisticList, PlayerStats[]]) => {
+        this.playerStatisticList = value[0];
+      });
   }
 
   createForm() {
@@ -72,8 +78,25 @@ export class TopFlopComponent implements OnInit {
     });
   }
 
-  loadStatistics(stat: PlayerStatistic) {
-    return statistics(stat.player, stat.performances, this.nextRealFixture);
+  buildStatistics(players: Player[]): Observable<PlayerStats[]> {
+    const obs: Observable<PlayerStats>[] = [];
+    for (const player of players) {
+      obs.push(this.loadStatistics(player));
+    }
+    return forkJoin(obs);
+  }
+
+  loadStatistics(player: Player) {
+    return this.performanceService.getPerformances(player._id).pipe(
+      map((performances: Performance[]) => {
+        return performances
+          .filter((value) => value.realFixture.prepared && value.realFixture._id !== this.nextRealFixture._id)
+          .sort((a, b) => a.realFixture._id.localeCompare(b.realFixture._id));
+      }),
+      map((performances: Performance[]) => ({ player, trend: performances })),
+      tap((playerStats: PlayerStats) => {
+        this.tooltip.set(player._id, playerStats);
+      })
+    );
   }
 }
-
