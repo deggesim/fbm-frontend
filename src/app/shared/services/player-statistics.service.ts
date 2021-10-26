@@ -4,7 +4,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 import { Role } from '@app/models/player';
 import { PlayerStatistic, PlayerStatisticList } from '@app/models/player-statistics';
 import { Team } from '@app/models/team';
-import { extend } from 'lodash';
+import { extend } from 'lodash-es';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
