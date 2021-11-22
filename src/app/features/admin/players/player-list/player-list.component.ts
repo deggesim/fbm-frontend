@@ -177,11 +177,11 @@ export class PlayerListComponent implements OnInit {
 
   confermaElimina() {
     if (this.rosterSelected) {
+      this.popupConfermaElimina.chiudiModale();
       this.rosterService
         .delete(this.rosterSelected._id)
         .pipe(
           tap(() => {
-            this.popupConfermaElimina.chiudiModale();
             this.toastService.success(
               'Giocatore eliminato',
               `Il giocatore ${this.rosterSelected.player.name} è stato eliminato correttamente`
