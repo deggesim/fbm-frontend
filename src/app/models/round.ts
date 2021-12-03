@@ -1,3 +1,4 @@
+import { Competition } from './competition';
 import { FantasyTeam } from './fantasy-team';
 import { Fixture } from './fixture';
 
@@ -10,4 +11,5 @@ export interface Round {
   roundRobin: boolean;
   fantasyTeams: FantasyTeam[];
   fixtures: Fixture[];
+  competition: Competition;
 }
