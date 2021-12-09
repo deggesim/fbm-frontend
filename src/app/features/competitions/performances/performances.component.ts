@@ -167,7 +167,13 @@ export class PerformancesComponent implements OnInit {
     const bonus = this.form.get('bonus').value;
     Object.keys(this.performanceArray.controls).forEach((key: string) => {
       const formControl = this.performanceArray.controls[key];
-      formControl.get('grade').setValue(bonus ? AppConfig.WinBonus : AppConfig.DefeatMalus);
+      const minutes = formControl.get('minutes').value;
+      if (minutes != null && minutes > 0) {
+        // player played
+        formControl.get('grade').setValue(bonus ? AppConfig.WinBonus : AppConfig.DefeatMalus);
+      } else {
+        formControl.get('grade').reset();
+      }
     });
   }
 }
