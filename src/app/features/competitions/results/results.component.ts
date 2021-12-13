@@ -112,6 +112,10 @@ export class ResultsComponent implements OnInit {
       });
   }
 
+  roundSearchFn = (term: string, round: Round) => {
+    return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
+  };
+
   private loadLineups(match: Match): Observable<[Lineup[], Lineup[]]> {
     const homeTeam = match.homeTeam;
     const awayTeam = match.awayTeam;

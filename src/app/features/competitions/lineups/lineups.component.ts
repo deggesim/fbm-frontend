@@ -26,7 +26,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, round } from 'lodash-es';
 import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
@@ -427,6 +427,10 @@ export class LineupsComponent implements OnInit {
     };
     attempt();
   }
+
+  roundSearchFn = (term: string, round: Round) => {
+    return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
+  };
 
   private initLineup(): Lineup[] {
     const initLineup: Lineup[] = [];

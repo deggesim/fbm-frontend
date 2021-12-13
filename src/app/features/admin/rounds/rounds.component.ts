@@ -75,4 +75,8 @@ export class RoundsComponent implements OnInit {
       this.selectedRound = round;
     });
   }
+
+  roundSearchFn = (term: string, round: Round) => {
+    return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
+  };
 }

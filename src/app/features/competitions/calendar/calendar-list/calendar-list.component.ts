@@ -98,4 +98,8 @@ export class CalendarListComponent implements OnInit {
   annulla(): void {
     this.mostraPopupModifica = false;
   }
+
+  roundSearchFn = (term: string, round: Round) => {
+    return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
+  };
 }

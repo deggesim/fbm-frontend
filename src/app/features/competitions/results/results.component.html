@@ -9,11 +9,13 @@
             id="round"
             name="round"
             [items]="rounds"
-            bindLabel="name"
             formControlName="round"
             clearAllText="Elimina"
             (change)="onChangeRound($event)"
+            [searchFn]="roundSearchFn"
           >
+            <ng-template ng-label-tmp let-item="item"> {{ item.competition.name }} - {{ item.name }} </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index"> {{ item.competition.name }} - {{ item.name }} </ng-template>
           </ng-select>
         </div>
       </div>

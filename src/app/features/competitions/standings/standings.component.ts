@@ -71,4 +71,8 @@ export class StandingsComponent implements OnInit {
       });
     }
   }
+
+  roundSearchFn = (term: string, round: Round) => {
+    return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
+  };
 }
