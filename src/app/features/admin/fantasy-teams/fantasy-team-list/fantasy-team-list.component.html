@@ -7,6 +7,7 @@
           <th>Nome</th>
           <th>Bilancio</th>
           <th>Crediti spesi</th>
+          <th>Crediti residui</th>
           <th># Contratti</th>
           <th># Giocatori</th>
           <th>Visti spesi</th>
@@ -21,6 +22,7 @@
           <td>{{ fantasyTeam.name }}</td>
           <td>{{ fantasyTeam.initialBalance }}</td>
           <td>{{ fantasyTeam.outgo }}</td>
+          <td>{{ fantasyTeam.initialBalance - fantasyTeam.balancePenalty - fantasyTeam.outgo }}</td>
           <td>{{ fantasyTeam.totalContracts }}</td>
           <td>{{ fantasyTeam.playersInRoster }}</td>
           <td>{{ fantasyTeam.extraPlayers }}</td>
