@@ -1,19 +1,18 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="user-shield" class="icon-padding"></fa-icon>Fantasquadre</legend>
   <div class="table-responsive" *ngIf="fantasyTeams && fantasyTeams.length > 0; else empty">
-    <table class="table table-hover">
+    <table class="table table-hover" aria-label="Fantasquadre">
       <thead class="thead-dark">
         <tr>
-          <th>Nome</th>
-          <th>Bilancio</th>
-          <th>Crediti spesi</th>
-          <th>Crediti residui</th>
-          <th># Contratti</th>
-          <th># Giocatori</th>
-          <th>Visti spesi</th>
-          <th>Punti di penalità</th>
-          <th>Malus crediti</th>
-          <!-- <th>Azioni</th> -->
+          <th id="name">Nome</th>
+          <th id="initialBalance">Bilancio</th>
+          <th id="outgo">Crediti spesi</th>
+          <th id="remainingCredits">Crediti residui</th>
+          <th id="totalContracts"># Contratti</th>
+          <th id="playersInRoster"># Giocatori</th>
+          <th id="extraPlayers">Visti spesi</th>
+          <th id="pointsPenalty">Punti di penalità</th>
+          <th id="balancePenalty">Malus crediti</th>
         </tr>
       </thead>
 

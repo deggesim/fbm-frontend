@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
-import { AuthService } from '@app/core/auth/service/auth.service';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
 import { selectedLeague } from '@app/core/league/store/league.selector';
 import { UserService } from '@app/core/user/services/user.service';
@@ -14,11 +13,12 @@ import { MatchService } from '@app/shared/services/match.service';
 import { RoundService } from '@app/shared/services/round.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
-import { switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-calendar-list',
   templateUrl: './calendar-list.component.html',
+  styleUrls: ['./calendar-list.component.scss'],
 })
 export class CalendarListComponent implements OnInit {
   form: FormGroup;

@@ -1,13 +1,13 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="list" class="icon-padding"></fa-icon>Gestione giornate</legend>
   <div class="table-responsive" *ngIf="realFixtures && realFixtures.length > 0; else empty">
-    <table class="table table-hover">
+    <table class="table table-hover" aria-label="Gestione giornate">
       <thead class="thead-dark">
         <tr>
-          <th>Nome</th>
-          <th>Preparata</th>
-          <th>Turni</th>
-          <th>Squadre senza partita</th>
+          <th id="name">Nome</th>
+          <th id="prepared">Preparata</th>
+          <th id="fixtures">Turni</th>
+          <th id="teamsWithNoGame">Squadre senza partita</th>
         </tr>
       </thead>
 

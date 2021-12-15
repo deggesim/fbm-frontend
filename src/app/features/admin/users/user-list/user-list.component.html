@@ -9,13 +9,13 @@
   <legend class="legend"><fa-icon icon="users" class="icon-padding"></fa-icon>Gestione utenti</legend>
 
   <div class="table-responsive" *ngIf="users && users.length > 0; else empty">
-    <table class="table table-hover">
+    <table class="table table-hover" aria-label="Gestione utenti">
       <thead class="thead-dark">
         <tr>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Ruolo</th>
-          <th>Azioni</th>
+          <th id="name">Nome</th>
+          <th id="email">Email</th>
+          <th id="role">Ruolo</th>
+          <th id="actions">Azioni</th>
         </tr>
       </thead>
 
