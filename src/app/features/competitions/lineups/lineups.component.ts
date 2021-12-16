@@ -268,13 +268,18 @@ export class LineupsComponent implements OnInit {
   buildStatistics(fantasyRosters: FantasyRoster[]): Observable<PlayerStats[]> {
     const obs: Observable<PlayerStats>[] = [];
     for (const fr of fantasyRosters) {
-      obs.push(this.loadStatistics(fr));
+      obs.push(this.loadPlayerStatistics(fr));
     }
     return forkJoin(obs);
   }
 
-  loadStatistics(fantasyRoster: FantasyRoster) {
+  private loadPlayerStatistics(fantasyRoster: FantasyRoster) {
     return this.performanceService.getPerformances(fantasyRoster.roster.player._id).pipe(
+      map((performances: Performance[]) => {
+        return performances
+          .filter((value) => value.realFixture.prepared && value.realFixture._id !== this.nextRealFixture._id)
+          .sort((a, b) => a.realFixture._id.localeCompare(b.realFixture._id));
+      }),
       map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances, this.nextRealFixture, 5)),
       tap((playerStats: PlayerStats) => {
         this.tooltip.set(fantasyRoster.roster.player._id, playerStats);
