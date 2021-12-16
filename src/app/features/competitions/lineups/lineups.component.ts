@@ -288,7 +288,8 @@ export class LineupsComponent implements OnInit {
   }
 
   openModalBenchOrder() {
-    this.benchPlayers = this.lineup.filter((player) => player != null && player.benchOrder != null);
+    const benchPlayers = this.lineup.filter((player) => player != null && player.benchOrder != null);
+    this.benchPlayers = [...benchPlayers].sort((b1, b2) => b1.benchOrder - b2.benchOrder);
     this.benchForm.get('sortedList').setValue(this.benchPlayers);
     this.mostraPopupPanchina = true;
   }
@@ -304,6 +305,34 @@ export class LineupsComponent implements OnInit {
     this.form.get('lineup').setValue(this.lineup);
     this.mostraPopupPanchina = false;
   }
+
+  movePlayerUp(index: number) {
+    const newOrder = this.move(this.benchForm.value.sortedList, index, index - 1);
+    this.benchForm.get('sortedList').setValue(newOrder);
+  }
+
+  movePlayerDown(index: number) {
+    const newOrder = this.move(this.benchForm.value.sortedList, index, index + 1);
+    this.benchForm.get('sortedList').setValue(newOrder);
+  }
+
+  test(arr) {
+    console.log(arr.map((item: Lineup) => item.fantasyRoster.roster.player.name));
+  }
+
+  private move = (arr: Lineup[], prevIndex, newIndex): Lineup[] => {
+    let newArr = [...arr];
+    if (newIndex >= newArr.length) {
+      var k = newIndex - newArr.length + 1;
+      while (k--) {
+        newArr.push(undefined);
+      }
+    }
+    newArr.splice(newIndex, 0, newArr.splice(prevIndex, 1)[0]);
+    console.log(newArr.map((item: Lineup) => item.fantasyRoster.roster.player.name));
+
+    return newArr;
+  };
 
   annulla(): void {
     this.mostraPopupPanchina = false;

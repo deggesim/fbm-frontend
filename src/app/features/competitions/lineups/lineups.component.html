@@ -86,6 +86,7 @@
                     }"
                     triggers="mouseenter:mouseleave"
                     container="body"
+                    placement="right"
                   >
                     {{ fantasyRoster.roster.player.name }}
                   </td>
@@ -225,9 +226,20 @@
 
       <div class="modal-body">
         <form [formGroup]="benchForm" (ngSubmit)="salvaPanchina()" class="needs-validation" novalidate>
-          <ng-template #sortedListTemplate let-item="item" let-index="index"
-            ><span>{{ index + 1 }}: {{ item.value.fantasyRoster.roster.player.name }}</span></ng-template
-          >
+          <ng-template #sortedListTemplate let-item="item" let-index="index">
+            <div class="text-center">
+              {{ index + 1 }}: {{ item.value.fantasyRoster.roster.player.name }}
+              <div class="float-right">
+                <fa-icon icon="chevron-circle-up" *ngIf="index > 0" class="icon-padding bench-icon" (click)="movePlayerUp(index)"></fa-icon>
+                <fa-icon
+                  icon="chevron-circle-down"
+                  *ngIf="index < benchPlayers.length - 1"
+                  class="icon-padding bench-icon"
+                  (click)="movePlayerDown(index)"
+                ></fa-icon>
+              </div>
+            </div>
+          </ng-template>
 
           <div class="form-group">
             <bs-sortable
@@ -238,6 +250,7 @@
               itemActiveClass="sortable-item-active"
               placeholderClass="placeholderStyle"
               wrapperClass="sortable-wrapper"
+              (onChange)="test($event)"
             ></bs-sortable>
           </div>
           <div class="text-center">
