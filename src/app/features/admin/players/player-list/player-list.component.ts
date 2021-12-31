@@ -73,7 +73,7 @@ export class PlayerListComponent implements OnInit {
 
   pulisciFiltro(): void {
     this.filter = null;
-    this.filter$.next();
+    this.filter$.next(null);
   }
 
   abilitaPaginazione() {
