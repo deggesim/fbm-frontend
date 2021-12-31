@@ -3,7 +3,6 @@
   "version": "3.0.0",
   "description": "Fantabasket Manager",
   "author": "Simone De Gennaro",
-  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/deggesim/fbm-frontend.git"
@@ -13,22 +12,21 @@
   },
   "homepage": "https://github.com/deggesim/fbm-frontend#readme",
   "engines": {
-    "node": "14.x",
-    "npm": "6.x"
+    "node": "16.x",
+    "npm": "8.x"
   },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production --sourceMap=false",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "ngcc",
     "format:fix": "pretty-quick --staged",
     "precommit": "run-s format:fix lint",
     "format:check": "prettier --config ./.prettierrc --list-different \"src/{app,environments,assets}/**/*{.json,.css,.scss,.html}\"",
     "prettier": "prettier --config ./.prettierrc \"src/{app,environments,assets,styles}/**/*{.json,.css,.scss,.html,.ts}\" --write"
   },
+  "private": true,
   "dependencies": {
     "@angular/animations": "~13.1.1",
     "@angular/cdk": "^13.1.1",
