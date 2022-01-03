@@ -26,7 +26,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
-import { isEmpty, round } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
@@ -90,7 +90,7 @@ export class LineupsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rounds = this.route.snapshot.data.rounds;
+    this.rounds = this.route.snapshot.data['rounds'];
     this.store.pipe(select(user), take(1)).subscribe((value: User) => {
       this.user = value;
     });
@@ -321,11 +321,7 @@ export class LineupsComponent implements OnInit {
     this.benchForm.get('sortedList').setValue(newOrder);
   }
 
-  test(arr) {
-    console.log(arr.map((item: Lineup) => item.fantasyRoster.roster.player.name));
-  }
-
-  private move = (arr: Lineup[], prevIndex, newIndex): Lineup[] => {
+  private move = (arr: Lineup[], prevIndex: number, newIndex: number): Lineup[] => {
     let newArr = [...arr];
     if (newIndex >= newArr.length) {
       var k = newIndex - newArr.length + 1;
@@ -491,10 +487,6 @@ export class LineupsComponent implements OnInit {
   }
 
   private findPlayer(fantasyRoster: FantasyRoster) {
-    return this.lineup.find((player: Lineup) => {
-      if (player != null) {
-        return player.fantasyRoster._id === fantasyRoster._id;
-      }
-    });
+    return this.lineup.find((player: Lineup) => (player != null ? player.fantasyRoster._id === fantasyRoster._id : false));
   }
 }

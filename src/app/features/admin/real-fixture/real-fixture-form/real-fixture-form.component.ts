@@ -39,7 +39,7 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const realFixture: RealFixture = changes.realFixture.currentValue;
+    const realFixture: RealFixture = changes['realFixture'].currentValue;
     if (realFixture != null) {
       const { name, prepared, fixtures, teamsWithNoGame } = realFixture;
       this.form.patchValue({

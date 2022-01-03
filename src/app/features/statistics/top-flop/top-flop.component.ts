@@ -58,8 +58,8 @@ export class TopFlopComponent implements OnInit {
 
   ngOnInit(): void {
     this.roles = [Role.Playmaker, Role.PlayGuardia, Role.Guardia, Role.GuardiaAla, Role.Ala, Role.AlaCentro, Role.Centro];
-    this.teams = this.route.snapshot.data.teams;
-    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
+    this.teams = this.route.snapshot.data['teams'];
+    this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
       this.nextRealFixture = value.nextRealFixture;
     });
@@ -85,7 +85,7 @@ export class TopFlopComponent implements OnInit {
     return !isEmpty(this.playerStatisticList?.content) && this.playerStatisticList?.totalElements > this.limit;
   }
 
-  pageChange(event) {
+  pageChange(event: { page: number }) {
     this.page = event.page;
     const { team, fantasyTeam, role, freePlayers } = this.form.value;
     this.loadStatistics(team, fantasyTeam, role, freePlayers);

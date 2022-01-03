@@ -18,7 +18,7 @@ export class CalendarFormComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const matches: Match[] = changes.matches.currentValue;
+    const matches: Match[] = changes['matches'].currentValue;
     if (matches != null) {
       for (const match of matches) {
         this.matchArray.push(

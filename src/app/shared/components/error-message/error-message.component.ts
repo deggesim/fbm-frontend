@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-error-message',
@@ -7,10 +7,7 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./error-message.component.scss'],
 })
 export class ErrorMessageComponent {
-  // tslint:disable-next-line: no-input-rename
   @Input('form-group') fg: FormGroup;
-  // tslint:disable-next-line: no-input-rename
-  @Input('form-control') formControl: FormControl;
-  // tslint:disable-next-line: no-input-rename
+  @Input('form-control') formControl: AbstractControl;
   @Input('name') formControlName: string;
 }

@@ -37,21 +37,21 @@ export class PlayerFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.roles = [Role.Playmaker, Role.PlayGuardia, Role.Guardia, Role.GuardiaAla, Role.Ala, Role.AlaCentro, Role.Centro];
-    this.teams = this.route.snapshot.data.teams;
+    this.teams = this.route.snapshot.data['teams'];
     this.realFixtureService.read(true).subscribe((realFixtures: RealFixture[]) => {
       this.preparedRealFixtures = realFixtures;
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const roster: Roster = changes.roster.currentValue;
+    const roster: Roster = changes['roster'].currentValue;
     if (roster != null) {
       // tslint:disable-next-line: variable-name
       const { name, nationality, number, yearBirth, height, weight, role } = roster.player;
       this.form.patchValue({ name, nationality, number, yearBirth, height, weight, role });
       this.form.get('team').setValue(roster.team);
-      this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-        this.form.get('realFixture').setValue(leagueInfo.nextRealFixture);
+      this.store.pipe(select(leagueInfo)).subscribe((value: LeagueInfo) => {
+        this.form.get('realFixture').setValue(value.nextRealFixture);
       });
     }
   }

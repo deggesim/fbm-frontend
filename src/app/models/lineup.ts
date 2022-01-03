@@ -1,5 +1,6 @@
 import { FantasyRoster } from './fantasy-roster';
 import { Fixture } from './fixture';
+import { Performance } from './performance';
 
 export interface Lineup {
   _id?: string;

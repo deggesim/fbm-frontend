@@ -19,7 +19,7 @@
     </div>
 
     <accordion [isAnimated]="true" *ngIf="selectedRound">
-      <accordion-group *ngFor="let fixture of selectedRound.fixtures" isOpen="true" class="accordion-group">
+      <accordion-group *ngFor="let fixture of selectedRound.fixtures" [isOpen]="true" class="accordion-group">
         <div accordion-heading>
           <span>{{ fixture.name }}</span>
           <span class="fa-pull-right">

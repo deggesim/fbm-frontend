@@ -15,8 +15,6 @@ export class PopupConfermaComponent {
 
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
 
-  constructor() {}
-
   apriModale() {
     this.modal.show();
   }

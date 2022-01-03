@@ -28,7 +28,7 @@ export class UserEffects {
       ofType(UserActions.saveUser),
       switchMap(({ user }) =>
         this.userService.update(user).pipe(
-          map((user: User) => UserActions.saveUserSuccess({ user })),
+          map((value: User) => UserActions.saveUserSuccess({ user: value })),
           catchError(() => of(UserActions.saveUserFailed()))
         )
       )

@@ -70,7 +70,7 @@
   <fieldset class="fieldset-calendar">
     <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Calendario</legend>
     <accordion [isAnimated]="true">
-      <accordion-group *ngFor="let fixture of selectedRound.fixtures" [heading]="fixture.name" isOpen="true">
+      <accordion-group *ngFor="let fixture of selectedRound.fixtures" [heading]="fixture.name" [isOpen]="true">
         <div *ngIf="fixture.matches && fixture.matches.length > 0; else fixtureNotDefined">
           <p *ngFor="let match of fixture.matches">{{ match.homeTeam.name }} - {{ match.awayTeam.name }}</p>
         </div>

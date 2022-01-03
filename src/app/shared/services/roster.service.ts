@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Roster, RosterList } from '@app/models/roster';
 import { Observable } from 'rxjs';
@@ -18,17 +18,7 @@ export class RosterService {
       filter == null
         ? `${this.endpoint}/rosters?page=${page}&limit=${limit}`
         : `${this.endpoint}/rosters?page=${page}&limit=${limit}&filter=${filter}`;
-    return this.http
-      .get<Roster[]>(endpoint, { observe: 'response' })
-      .pipe(
-        map((response: HttpResponse<Roster[]>) => {
-          const rosterList: RosterList = {
-            totalElements: +response.headers.get('X-Total-Count'),
-            content: response.body,
-          };
-          return rosterList;
-        })
-      );
+    return this.http.get<Roster[]>(endpoint, { observe: 'response' }).pipe(this.rosterList());
   }
 
   public freePlayers(page: number, limit: number, filter?: string): Observable<RosterList> {
@@ -36,17 +26,7 @@ export class RosterService {
       filter == null
         ? `${this.endpoint}/rosters/free?page=${page}&limit=${limit}`
         : `${this.endpoint}/rosters/free?page=${page}&limit=${limit}&filter=${filter}`;
-    return this.http
-      .get<Roster[]>(endpoint, { observe: 'response' })
-      .pipe(
-        map((response: HttpResponse<Roster[]>) => {
-          const rosterList: RosterList = {
-            totalElements: +response.headers.get('X-Total-Count'),
-            content: response.body,
-          };
-          return rosterList;
-        })
-      );
+    return this.http.get<Roster[]>(endpoint, { observe: 'response' }).pipe(this.rosterList());
   }
 
   public create(roster: Roster) {
@@ -60,4 +40,14 @@ export class RosterService {
   public delete(id: string) {
     return this.http.delete<Roster>(`${this.endpoint}/rosters/${id}`);
   }
+
+  rosterList = () => {
+    return map((response: HttpResponse<Roster[]>) => {
+      const rosterList: RosterList = {
+        totalElements: +response.headers.get('X-Total-Count'),
+        content: response.body,
+      };
+      return rosterList;
+    });
+  };
 }

@@ -36,7 +36,7 @@ export class TransactionComponent implements OnInit {
   leagueStatus: Status;
 
   limit = 10;
-  typeahead$ = new Subject();
+  typeahead$ = new Subject<string>();
 
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
   @ViewChild('popupRilascia', { static: false }) public popupRilascia: PopupConfermaComponent;
@@ -63,26 +63,32 @@ export class TransactionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
-    this.rosters = this.route.snapshot.data.rosterList.content;
+    this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
+    this.rosters = this.route.snapshot.data['rosterList'].content;
 
-    this.store.pipe(select(user), take(1)).subscribe((user: User) => {
-      const isAdmin = user && (Role.Admin === user.role || Role.SuperAdmin === user.role);
+    this.store.pipe(select(user), take(1)).subscribe((value: User) => {
+      const isAdmin = value && (Role.Admin === value.role || Role.SuperAdmin === value.role);
       if (!isAdmin) {
         this.fantasyTeams = this.fantasyTeams.filter(
-          (fantasyTeam: FantasyTeam) => fantasyTeam.owners.find((owner: User) => owner._id === user._id) != null
+          (fantasyTeam: FantasyTeam) => fantasyTeam.owners.find((owner: User) => owner._id === value._id) != null
         );
       }
     });
-    this.store.pipe(select(leagueInfo), take(1)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueStatus = leagueInfo?.status;
+    this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
+      this.leagueStatus = value?.status;
     });
 
     this.typeahead$
       .pipe(
         debounceTime(750),
         distinctUntilChanged(),
-        switchMap((value: string) => iif(() => this.modal.isShown, of(this.rosters), this.rosterService.freePlayers(1, this.limit, value)))
+        switchMap((value: string) =>
+          iif(
+            () => this.modal.isShown,
+            of({ totalElements: this.rosters.length, content: this.rosters }),
+            this.rosterService.freePlayers(1, this.limit, value)
+          )
+        )
       )
       .subscribe((rosterList: RosterList) => {
         this.rosters = rosterList.content;
@@ -121,7 +127,7 @@ export class TransactionComponent implements OnInit {
       this.store
         .pipe(
           select(leagueInfo),
-          switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(fantasyTeam._id, leagueInfo.nextRealFixture._id))
+          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(fantasyTeam._id, value.nextRealFixture._id))
         )
         .subscribe((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters = fantasyRosters;
@@ -179,7 +185,7 @@ export class TransactionComponent implements OnInit {
           // }),
           switchMap(() => this.fantasyTeamService.read()),
           tap((fantasyTeams: FantasyTeam[]) => {
-            this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
+            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
             this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
           }),
           switchMap(() => this.rosterService.freePlayers(1, this.limit)),
@@ -188,9 +194,7 @@ export class TransactionComponent implements OnInit {
           }),
           switchMap(() => this.store.select(leagueInfo)),
           take(1),
-          switchMap((leagueInfo: LeagueInfo) =>
-            this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id)
-          )
+          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
         )
         .subscribe((fr: FantasyRoster[]) => {
           this.fantasyRosters = fr;
@@ -216,7 +220,7 @@ export class TransactionComponent implements OnInit {
           // }),
           switchMap(() => this.fantasyTeamService.read()),
           tap((fantasyTeams: FantasyTeam[]) => {
-            this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
+            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
             this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
           }),
           switchMap(() => this.rosterService.freePlayers(1, this.limit)),
@@ -225,9 +229,7 @@ export class TransactionComponent implements OnInit {
           }),
           switchMap(() => this.store.select(leagueInfo)),
           take(1),
-          switchMap((leagueInfo: LeagueInfo) =>
-            this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id)
-          )
+          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
         )
         .subscribe((fr: FantasyRoster[]) => {
           this.fantasyRosters = fr;
@@ -287,7 +289,7 @@ export class TransactionComponent implements OnInit {
         // switchMap(() => this.rosterService.freePlayers()),
         switchMap(() => this.store.select(leagueInfo)),
         take(1),
-        switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id))
+        switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;
@@ -310,7 +312,7 @@ export class TransactionComponent implements OnInit {
         }),
         // switchMap(() => this.rosterService.freePlayers()),
         switchMap(() => this.store.select(leagueInfo)),
-        switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id))
+        switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;

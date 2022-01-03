@@ -29,8 +29,8 @@ export class RoundsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rounds = this.route.snapshot.data.rounds;
-    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
+    this.rounds = this.route.snapshot.data['rounds'];
+    this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.form.get('unsortedList').setValue(this.fantasyTeams);
   }
 
@@ -43,11 +43,13 @@ export class RoundsComponent implements OnInit {
   }
 
   checkLength(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl) => {
       if (this.form && this.form.value.round) {
         const lengthRequested = this.form.value.round.teams;
         const wrongValue = control.value.length !== lengthRequested;
         return wrongValue ? { wrongLength: { value: control.value.length } } : null;
+      } else {
+        return null;
       }
     };
   }

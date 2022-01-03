@@ -30,7 +30,7 @@ export class UserListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.users = this.route.snapshot.data.users;
+    this.users = this.route.snapshot.data['users'];
   }
 
   nuovo() {

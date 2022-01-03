@@ -29,11 +29,11 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(ROOT_EFFECTS_INIT),
       // get token
-      mapTo([this.localStorageService.getToken(), this.localStorageService.getExpiresAt()]),
+      mapTo({ token: this.localStorageService.getToken(), expiresAt: this.localStorageService.getExpiresAt() }),
       // we want dispatch an action only when token and expiresAt are in localStorage
-      filter((auth: [string, moment.Moment]) => !!auth[0] && !!auth[1]),
-      switchMap((auth: [string, moment.Moment]) => [
-        AuthActions.setAuth({ auth: { token: auth[0], expiresAt: auth[1] } }),
+      filter((auth: { token: string; expiresAt: moment.Moment }) => !!auth.token && !!auth.expiresAt),
+      switchMap((auth: { token: string; expiresAt: moment.Moment }) => [
+        AuthActions.setAuth({ auth: { token: auth.token, expiresAt: auth.expiresAt } }),
         UserActions.loadUser(),
       ])
     )

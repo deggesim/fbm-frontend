@@ -24,7 +24,7 @@ export enum PlayerStatus {
 export const sort = (a: FantasyRoster, b: FantasyRoster): number => {
   const aRole = getRole(a);
   const bRole = getRole(b);
-  const map = {};
+  const map: { [x: string]: number } = {};
   map[Role.Playmaker] = 1;
   map[Role.PlayGuardia] = 2;
   map[Role.Guardia] = 3;

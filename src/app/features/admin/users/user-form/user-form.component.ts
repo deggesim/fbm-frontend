@@ -29,7 +29,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const user: User = changes.user.currentValue;
+    const user: User = changes['user'].currentValue;
     if (user != null) {
       const { name, email, role } = user;
       this.form.patchValue({ name, email, role });

@@ -2,14 +2,14 @@
   Il campo {{ formControlName }} è obbligatorio
 </div>
 <div *ngIf="formControl && formControl.hasError('min') && formControl.dirty" class="error-message text-danger">
-  Il campo {{ formControlName }} è inferiore a {{ formControl.errors.min.min }}
+  Il campo {{ formControlName }} è inferiore a {{ formControl.errors['min'].min }}
 </div>
 <div *ngIf="formControl && formControl.hasError('max') && formControl.dirty" class="error-message text-danger">
-  Il campo {{ formControlName }} è superiore a {{ formControl.errors.max.max }}
+  Il campo {{ formControlName }} è superiore a {{ formControl.errors['max'].max }}
 </div>
 <div *ngIf="formControl && formControl.hasError('lineupInvalid') && formControl.dirty" class="error-message text-danger">
   La formazione inserita è sbagliata
 </div>
 <div *ngIf="fg && fg.hasError('mustBeDifferent') && fg.dirty" class="error-message text-danger">
-  {{ fg.errors.mustBeDifferent.field1 }} non può coincidere con {{ fg.errors.mustBeDifferent.field2 }}
+  {{ fg.errors['mustBeDifferent'].field1 }} non può coincidere con {{ fg.errors['mustBeDifferent'].field2 }}
 </div>
