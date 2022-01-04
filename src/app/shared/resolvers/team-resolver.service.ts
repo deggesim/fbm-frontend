@@ -12,6 +12,6 @@ export class TeamResolverService implements Resolve<Team[]> {
   constructor(private teamService: TeamService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Team[] | Observable<Team[]> | Promise<Team[]> {
-    return this.teamService.read().pipe(tap((teams: Team[]) => teams.sort((a, b) => a.fullName.localeCompare(b.fullName))));
+    return this.teamService.read().pipe(tap((teams: Team[]) => [...teams].sort((a, b) => a.fullName.localeCompare(b.fullName))));
   }
 }

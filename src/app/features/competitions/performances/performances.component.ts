@@ -31,8 +31,8 @@ export class PerformancesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.teams = this.route.snapshot.data.teams;
-    this.realFixtures = this.route.snapshot.data.realFixtures;
+    this.teams = this.route.snapshot.data['teams'];
+    this.realFixtures = this.route.snapshot.data['realFixtures'];
   }
 
   createForm() {
@@ -166,7 +166,7 @@ export class PerformancesComponent implements OnInit {
   private applyBonusMalus() {
     const bonus = this.form.get('bonus').value;
     Object.keys(this.performanceArray.controls).forEach((key: string) => {
-      const formControl = this.performanceArray.controls[key];
+      const formControl = this.performanceArray.get(key);
       const minutes = formControl.get('minutes').value;
       if (minutes != null && minutes > 0) {
         // player played

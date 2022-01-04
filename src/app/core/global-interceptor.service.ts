@@ -66,7 +66,7 @@ export class GlobalInterceptor implements HttpInterceptor {
           }
           this.toastService.error(titolo, descrizione);
         }
-        return throwError(response);
+        return throwError(() => response);
       }),
       finalize(() => {
         if (req.headers.get('hideSpinner') !== 'true') {

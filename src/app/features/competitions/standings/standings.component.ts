@@ -27,7 +27,7 @@ export class StandingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rounds = this.route.snapshot.data.rounds?.filter((round: Round) => round.roundRobin);
+    this.rounds = this.route.snapshot.data['rounds']?.filter((round: Round) => round.roundRobin);
   }
 
   onChange(round: Round) {

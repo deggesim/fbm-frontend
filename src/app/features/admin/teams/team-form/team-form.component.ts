@@ -18,7 +18,7 @@ export class TeamFormComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const team: Team = changes.team.currentValue;
+    const team: Team = changes['team'].currentValue;
     if (team != null) {
       const { fullName, sponsor, name, city, abbreviation } = team;
       this.form.patchValue({ fullName, sponsor, name, city, abbreviation });

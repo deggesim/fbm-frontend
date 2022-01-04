@@ -14,6 +14,6 @@ export class FantasyTeamResolverService implements Resolve<FantasyTeam[]> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): FantasyTeam[] | Observable<FantasyTeam[]> | Promise<FantasyTeam[]> {
     return this.fantasyTeamService
       .read()
-      .pipe(tap((fantasyTeams: FantasyTeam[]) => fantasyTeams.sort((a, b) => a.name.localeCompare(b.name))));
+      .pipe(tap((fantasyTeams: FantasyTeam[]) => [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name))));
   }
 }

@@ -46,8 +46,8 @@ export class TradeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fantasyTeams1 = this.route.snapshot.data.fantasyTeams;
-    this.fantasyTeams2 = this.route.snapshot.data.fantasyTeams;
+    this.fantasyTeams1 = this.route.snapshot.data['fantasyTeams'];
+    this.fantasyTeams2 = this.route.snapshot.data['fantasyTeams'];
     this.store.pipe(select(leagueInfo), take(1)).subscribe((li: LeagueInfo) => {
       this.nextRealFixture = li.nextRealFixture;
     });
@@ -56,11 +56,11 @@ export class TradeComponent implements OnInit {
   createForm() {
     this.form = this.fb.group(
       {
-        fantasyTeam1: [undefined, Validators.required],
-        fantasyTeam2: [undefined, [Validators.required]],
+        fantasyTeam1: [null, Validators.required],
+        fantasyTeam2: [null, [Validators.required]],
         outPlayers: [[], Validators.required],
         inPlayers: [[], Validators.required],
-        buyout: [undefined],
+        buyout: [null],
       },
       { validators: fantasyTeamMustBeDifferent }
     );

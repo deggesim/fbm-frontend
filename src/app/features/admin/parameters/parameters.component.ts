@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppState } from '@app/core/app.state';
-import { LeagueService } from '@app/core/league/services/league.service';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { selectedLeague } from '@app/core/league/store/league.selector';
 import { League } from '@app/models/league';
-import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
@@ -16,12 +14,7 @@ import { take } from 'rxjs/operators';
 export class ParametersComponent implements OnInit {
   form: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private leagueService: LeagueService,
-    private toastService: ToastService,
-    private store: Store<AppState>
-  ) {
+  constructor(private fb: FormBuilder, private store: Store<AppState>) {
     this.createForm();
   }
 
@@ -50,7 +43,7 @@ export class ParametersComponent implements OnInit {
   }
 
   salva() {
-    const parameters = [];
+    const parameters: { parameter: string; value: string }[] = [];
     Object.keys(this.form.controls).forEach((key) => {
       parameters.push({ parameter: key, value: this.form.controls[key].value });
     });

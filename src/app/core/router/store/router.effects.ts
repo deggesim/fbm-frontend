@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
 import { user } from '@app/core/user/store/user.selector';
 import { Status } from '@app/models/league';
@@ -12,7 +13,7 @@ import * as RouterActions from './router.actions';
 
 @Injectable()
 export class RouterEffects {
-  constructor(private actions$: Actions, private router: Router, private location: Location, private store: Store) {}
+  constructor(private actions$: Actions, private router: Router, private location: Location, private store: Store<AppState>) {}
 
   goEffect$ = createEffect(
     () =>

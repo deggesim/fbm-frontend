@@ -45,22 +45,17 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // subscribe to the NavigationEnd event
-    this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: NavigationEnd) => {
-      // set breadcrumbs
-      const root: ActivatedRoute = this.activatedRoute.root;
+    this.store.pipe(select(user)).subscribe((value: User) => {
+      this.user = value;
     });
-    this.store.pipe(select(user)).subscribe((user: User) => {
-      this.user = user;
+    this.store.pipe(select(selectedLeague)).subscribe((value: League) => {
+      this.selectedLeague = value;
     });
-    this.store.pipe(select(selectedLeague)).subscribe((league: League) => {
-      this.selectedLeague = league;
+    this.store.pipe(select(leagueInfo)).subscribe((value: LeagueInfo) => {
+      this.leagueInfo = value;
     });
-    this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueInfo = leagueInfo;
-    });
-    this.userService.isAdmin$().subscribe((isAdmin: boolean) => {
-      this.isAdmin = isAdmin;
+    this.userService.isAdmin$().subscribe((value: boolean) => {
+      this.isAdmin = value;
     });
   }
 

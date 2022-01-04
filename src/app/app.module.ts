@@ -11,7 +11,6 @@ import { SharedModule } from '@app/shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
@@ -53,7 +52,6 @@ import { TenantInterceptor } from './core/league/services/tenant-interceptor.ser
     ProgressbarModule.forRoot(),
     // other libraries
     NgSelectModule,
-    NgxChartsModule,
     ToastrModule.forRoot(),
     ToastContainerModule,
     FontAwesomeModule,

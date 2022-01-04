@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AppState } from '@app/core/app.state';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { CupFormat } from '@app/models/formats/cup-format';
 import { PlayoffFormat } from '@app/models/formats/playoff-format';
 import { PlayoutFormat } from '@app/models/formats/playout-format';
 import { RegularSeasonFormat } from '@app/models/formats/regular-season-format';
 import { League } from '@app/models/league';
-import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -53,12 +53,12 @@ export class EditLeagueComponent implements OnInit {
 
   cupFormatList: CupFormat[] = [CupFormat.F8, CupFormat.QF2_F4, CupFormat.QF2_SF2_F, CupFormat.QF2_SF2_F2];
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private store: Store, private toastService: ToastService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {
     this.createForm();
   }
 
   ngOnInit() {
-    this.league = this.route.snapshot.data.league;
+    this.league = this.route.snapshot.data['league'];
     const {
       name,
       realGames,

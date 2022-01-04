@@ -19,17 +19,13 @@ export class HomeComponent implements OnInit {
   isLoggedIn$ = this.authService.isLoggedIn$();
   leagues$: Observable<League[]>;
 
-  constructor(
-    private authService: AuthService,
-    private store: Store<AppState>,
-    private leagueService: LeagueService,
-  ) {}
+  constructor(private authService: AuthService, private store: Store<AppState>, private leagueService: LeagueService) {}
 
   ngOnInit(): void {
     this.leagues$ = this.store.pipe(
       select(user),
-      mergeMap((user: User) =>
-        iif(() => user && (Role.Admin === user.role || Role.SuperAdmin === user.role), this.leagueService.all(), of(user?.leagues))
+      mergeMap((value: User) =>
+        iif(() => value && (Role.Admin === value.role || Role.SuperAdmin === value.role), this.leagueService.all(), of(value?.leagues))
       )
     );
   }

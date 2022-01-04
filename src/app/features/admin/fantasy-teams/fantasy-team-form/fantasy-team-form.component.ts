@@ -32,7 +32,7 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const fantasyTeam: FantasyTeam = changes.fantasyTeam.currentValue;
+    const fantasyTeam: FantasyTeam = changes['fantasyTeam'].currentValue;
     if (fantasyTeam != null) {
       const {
         name,

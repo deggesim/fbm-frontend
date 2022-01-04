@@ -36,7 +36,7 @@ export class FantasyRostersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
+    this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
   }
 
   createForm() {
@@ -51,7 +51,7 @@ export class FantasyRostersComponent implements OnInit {
       this.store
         .pipe(
           select(leagueInfo),
-          switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(fantasyTeam._id, leagueInfo.nextRealFixture._id))
+          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(fantasyTeam._id, value.nextRealFixture._id))
         )
         .subscribe((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters = fantasyRosters;

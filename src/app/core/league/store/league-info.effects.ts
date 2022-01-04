@@ -37,8 +37,8 @@ export class LeagueInfoEffects {
     this.actions$.pipe(
       ofType(LeagueInfoActions.refresh),
       withLatestFrom(this.store.pipe(select(selectedLeague))),
-      switchMap(([action, selectedLeague]) =>
-        this.leagueService.refresh$(selectedLeague).pipe(
+      switchMap(([action, sl]) =>
+        this.leagueService.refresh$(sl).pipe(
           map((leagueInfo: LeagueInfo) => LeagueInfoActions.refreshSuccess({ leagueInfo })),
           catchError(() => of(LeagueInfoActions.refreshFailed()))
         )

@@ -42,8 +42,21 @@ button:disabled {
 }
 
 // bootstrap
+.container-fluid {
+  margin-bottom: 2rem;
+}
+
+.navbar {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
 .form-control:disabled, .form-control[readonly] {
   color: $gray-500;
+}
+
+.form-group {
+  margin-bottom: 1rem;
 }
 
 // customizzazione modal
@@ -148,7 +161,7 @@ ng-select.ng-invalid.ng-touched .ng-select-container {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   width: inherit;
-  margin-bottom: auto;
+  margin-bottom: 0.5rem;
   font-size: 15px;
 }
 

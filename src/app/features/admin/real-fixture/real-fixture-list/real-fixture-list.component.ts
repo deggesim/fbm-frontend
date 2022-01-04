@@ -17,7 +17,7 @@ export class RealFixtureListComponent implements OnInit {
   constructor(private route: ActivatedRoute, private toastService: ToastService, private realFixtureService: RealFixtureService) {}
 
   ngOnInit() {
-    this.realFixtures = this.route.snapshot.data.realFixtures;
+    this.realFixtures = this.route.snapshot.data['realFixtures'];
   }
 
   modifica(realFixture: RealFixture): void {

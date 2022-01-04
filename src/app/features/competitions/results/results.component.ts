@@ -12,10 +12,10 @@ import { Round } from '@app/models/round';
 import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { ToastService } from '@app/shared/services/toast.service';
+import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
-import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-results',
@@ -43,7 +43,7 @@ export class ResultsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rounds = this.route.snapshot.data.rounds;
+    this.rounds = this.route.snapshot.data['rounds'];
   }
 
   createForm() {

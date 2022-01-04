@@ -37,7 +37,7 @@ export class UploadComponent {
     });
   }
 
-  onFileChange(event) {
+  onFileChange(event: any) {
     const reader = new FileReader();
 
     if (event.target.files && event.target.files.length) {

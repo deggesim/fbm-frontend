@@ -233,11 +233,11 @@
           <ng-template #sortedListTemplate let-item="item" let-index="index">
             <div class="text-center">
               {{ index + 1 }}: {{ item.value.fantasyRoster.roster.player.name }}
-              <div class="float-right">
+              <div class="float-end">
                 <fa-icon icon="chevron-circle-up" *ngIf="index > 0" class="icon-padding bench-icon" (click)="movePlayerUp(index)"></fa-icon>
                 <fa-icon
                   icon="chevron-circle-down"
-                  *ngIf="index < benchPlayers.length - 1"
+                  *ngIf="index < benchForm.get('sortedList').value.length - 1"
                   class="icon-padding bench-icon"
                   (click)="movePlayerDown(index)"
                 ></fa-icon>
@@ -248,13 +248,11 @@
           <div class="form-group">
             <bs-sortable
               formControlName="sortedList"
-              items="benchPlayers"
               [itemTemplate]="sortedListTemplate"
               itemClass="sortable-item"
               itemActiveClass="sortable-item-active"
               placeholderClass="placeholderStyle"
               wrapperClass="sortable-wrapper"
-              (onChange)="test($event)"
             ></bs-sortable>
           </div>
           <div class="text-center">

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CupFormat } from '@app/models/formats/cup-format';
@@ -11,7 +11,7 @@ import { League } from '@app/models/league';
   selector: 'app-new-season',
   templateUrl: './new-season.component.html',
 })
-export class NewSeasonComponent implements OnInit {
+export class NewSeasonComponent {
   form: FormGroup;
 
   regularSeasonFormatList: RegularSeasonFormat[] = [
@@ -52,16 +52,14 @@ export class NewSeasonComponent implements OnInit {
     this.createForm();
   }
 
-  ngOnInit() {}
-
   createForm() {
     this.form = this.fb.group({
-      name: [undefined, Validators.required],
+      name: [null, Validators.required],
       realGames: [34, Validators.required],
-      regularSeasonFormat: [undefined, Validators.required],
-      playoffFormat: [undefined, Validators.required],
-      playoutFormat: [undefined, Validators.required],
-      cupFormat: [undefined, Validators.required],
+      regularSeasonFormat: [null, Validators.required],
+      playoffFormat: [null, Validators.required],
+      playoutFormat: [null, Validators.required],
+      cupFormat: [null, Validators.required],
       roundRobinFirstRealFixture: [1, Validators.required],
       playoffFirstRealFixture: [19, Validators.required],
       playoutFirstRealFixture: [19, Validators.required],

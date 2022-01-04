@@ -38,7 +38,7 @@ export class PlayerListComponent implements OnInit {
   boundaryLinks = true;
 
   percentage = 0;
-  progressbarType = 'warning';
+  progressbarType: 'success' | 'info' | 'warning' | 'danger' = 'warning';
 
   constructor(
     private route: ActivatedRoute,
@@ -49,7 +49,7 @@ export class PlayerListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.rosterList = this.route.snapshot.data.rosterList;
+    this.rosterList = this.route.snapshot.data['rosterList'];
     this.store.pipe(select(leagueInfo)).subscribe((li: LeagueInfo) => {
       this.leagueInfo = li;
     });
@@ -73,14 +73,14 @@ export class PlayerListComponent implements OnInit {
 
   pulisciFiltro(): void {
     this.filter = null;
-    this.filter$.next();
+    this.filter$.next(null);
   }
 
   abilitaPaginazione() {
     return !isEmpty(this.rosterList?.content) && this.rosterList?.totalElements > this.limit;
   }
 
-  pageChange(event) {
+  pageChange(event: { page: number }) {
     this.page = event.page;
     this.rosterService.read(this.page, this.limit, this.filter).subscribe((rosterList: RosterList) => {
       this.rosterList = rosterList;
