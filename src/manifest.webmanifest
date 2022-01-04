@@ -1,6 +1,6 @@
 {
-  "name": "fbm-frontend",
-  "short_name": "fbm-frontend",
+  "name": "Fantabasket Manager",
+  "short_name": "FBM",
   "theme_color": "#3B587D",
   "background_color": "#303030",
   "display": "standalone",
