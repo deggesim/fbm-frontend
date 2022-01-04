@@ -27,6 +27,8 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { CoreModule } from './core/core.module';
 import { GlobalInterceptor } from './core/global-interceptor.service';
 import { TenantInterceptor } from './core/league/services/tenant-interceptor.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -58,6 +60,12 @@ import { TenantInterceptor } from './core/league/services/tenant-interceptor.ser
     AppRoutingModule,
     CoreModule,
     SharedModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

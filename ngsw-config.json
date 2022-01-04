@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/assets/**", "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"]
+      },
+      "cacheQueryOptions": { "ignoreSearch": true }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "fbm",
+      "urls": [
+        "https://fbm-server.herokuapp.com/competitions",
+        "https://fbm-server.herokuapp.com/fantasy-rosters",
+        "https://fbm-server.herokuapp.com/fantasy-teams",
+        "https://fbm-server.herokuapp.com/fixtures",
+        "https://fbm-server.herokuapp.com/leagues",
+        "https://fbm-server.herokuapp.com/lineups",
+        "https://fbm-server.herokuapp.com/matches",
+        "https://fbm-server.herokuapp.com/performances",
+        "https://fbm-server.herokuapp.com/players",
+        "https://fbm-server.herokuapp.com/real-fixtures",
+        "https://fbm-server.herokuapp.com/rosters",
+        "https://fbm-server.herokuapp.com/rounds",
+        "https://fbm-server.herokuapp.com/statistics",
+        "https://fbm-server.herokuapp.com/teams",
+        "https://fbm-server.herokuapp.com/users"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 10,
+        "maxAge": "10d",
+        "timeout": "2s"
+      }
+    }
+  ]
+}
