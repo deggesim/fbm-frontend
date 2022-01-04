@@ -38,7 +38,6 @@ import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 export class LineupsComponent implements OnInit {
   form: FormGroup;
   benchForm: FormGroup;
-  benchPlayers: Lineup[];
   mostraPopupPanchina: boolean;
 
   rounds: Round[];
@@ -294,8 +293,7 @@ export class LineupsComponent implements OnInit {
 
   openModalBenchOrder() {
     const benchPlayers = this.lineup.filter((player) => player != null && player.benchOrder != null);
-    this.benchPlayers = [...benchPlayers].sort((b1, b2) => b1.benchOrder - b2.benchOrder);
-    this.benchForm.get('sortedList').setValue(this.benchPlayers);
+    this.benchForm.get('sortedList').setValue([...benchPlayers].sort((b1, b2) => b1.benchOrder - b2.benchOrder));
     this.mostraPopupPanchina = true;
   }
 
