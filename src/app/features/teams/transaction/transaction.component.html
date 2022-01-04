@@ -164,16 +164,16 @@
 
             <div fxFlex="100">
               <div class="form-group">
-                <div class="custom-control custom-switch">
+                <div class="form-check form-switch">
                   <input
                     type="checkbox"
-                    class="custom-control-input"
+                    class="form-check-input"
                     id="draft"
                     name="draft"
                     formControlName="draft"
                     [ngClass]="{ 'is-invalid': form.get('draft').invalid && form.get('draft').dirty }"
                   />
-                  <label class="custom-control-label" for="draft">Draft</label>
+                  <label class="form-check-label" for="draft">Draft</label>
                   <app-error-message [form-control]="form.get('draft')" name="Draft"></app-error-message>
                 </div>
               </div>
