@@ -4,7 +4,7 @@
 
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
             id="fantasyTeam"
@@ -31,7 +31,7 @@
 
       <div class="table-responsive">
         <table class="table table-hover" aria-label="Fantasy roster">
-          <thead class="thead-dark">
+          <thead class="table-dark">
             <tr>
               <th id="name">Nome</th>
               <th fxHide.lt-sm id="status">Status</th>
@@ -59,7 +59,7 @@
     </ng-container>
 
     <ng-template #empty>
-      <div class="padding">
+      <div class="p-3">
         <h4>Nessun giocatore presente</h4>
       </div>
     </ng-template>

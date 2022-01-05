@@ -4,7 +4,7 @@
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <!-- FANTASYTEAM #1-->
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra #1</label>
           <ng-select
             id="fantasyTeam1"
@@ -21,7 +21,7 @@
 
         <div class="table-responsive">
           <table class="table table-hover" aria-label="Fantasquadra #1">
-            <thead class="thead-dark">
+            <thead class="table-dark">
               <tr>
                 <th id="name">Nome</th>
                 <th id="status">Status</th>
@@ -53,7 +53,7 @@
 
       <!-- FANTASYTEAM #2-->
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra #2</label>
           <ng-select
             id="fantasyTeam2"
@@ -70,7 +70,7 @@
 
         <div class="table-responsive">
           <table class="table table-hover" aria-label="Fantasquadra #2">
-            <thead class="thead-dark">
+            <thead class="table-dark">
               <tr>
                 <th id="name">Nome</th>
                 <th id="status">Status</th>
@@ -102,7 +102,7 @@
     </div>
   </fieldset>
 
-  <div class="text-center padding">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="button" class="btn btn-primary" (click)="reset()">
       <fa-icon icon="undo" class="icon-padding"></fa-icon>Reset
     </button>
@@ -148,7 +148,7 @@
               <label class="col-form-label">crediti</label>
             </div>
           </div>
-          <div class="text-center">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>

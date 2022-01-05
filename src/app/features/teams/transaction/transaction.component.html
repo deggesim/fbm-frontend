@@ -4,7 +4,7 @@
 
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
             id="fantasyTeam"
@@ -19,7 +19,7 @@
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="roster" class="control-label">Giocatore</label>
           <ng-select
             id="roster"
@@ -55,7 +55,7 @@
 
       <div class="table-responsive">
         <table class="table table-hover" aria-label="Fantasy roster">
-          <thead class="thead-dark">
+          <thead class="table-dark">
             <tr>
               <th id="name">Nome</th>
               <th fxHide.lt-sm id="status">Status</th>
@@ -79,7 +79,7 @@
               <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
 
               <td class="text-nowrap">
-                <button type="button" class="btn btn-success" (click)="modifica(fr)" tooltip="Modifica" placement="top">
+                <button type="button" class="btn btn-success me-2" (click)="modifica(fr)" tooltip="Modifica" placement="top">
                   <fa-icon icon="pencil-alt"></fa-icon>
                 </button>
                 <button
@@ -92,7 +92,7 @@
                 >
                   <fa-icon icon="trash"></fa-icon>
                 </button>
-                <button type="button" class="btn btn-danger" (click)="apriPopupRimuovi(fr)" tooltip="Rimuovi" placement="top">
+                <button type="button" class="btn btn-danger ms-2" (click)="apriPopupRimuovi(fr)" tooltip="Rimuovi" placement="top">
                   <fa-icon icon="trash"></fa-icon>
                 </button>
               </td>
@@ -103,7 +103,7 @@
     </ng-container>
 
     <ng-template #empty>
-      <div class="padding">
+      <div class="p-3">
         <h4>Nessun giocatore presente</h4>
       </div>
     </ng-template>
@@ -147,7 +147,7 @@
             </ng-template>
 
             <div fxFlex="100">
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="status" class="control-label">Status</label>
                 <ng-select
                   id="status"
@@ -163,7 +163,7 @@
             </div>
 
             <div fxFlex="100">
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="form-check form-switch">
                   <input
                     type="checkbox"
@@ -180,7 +180,7 @@
             </div>
 
             <div fxFlex="49">
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="contract" class="control-label">Costo</label>
                 <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200" />
                 <app-error-message [form-control]="form.get('contract')" name="Costo"></app-error-message>
@@ -188,7 +188,7 @@
             </div>
 
             <div fxFlex="49">
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="yearContract" class="control-label">Anno di contratto</label>
                 <input
                   type="number"
@@ -204,7 +204,7 @@
             </div>
           </div>
 
-          <div class="text-center">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>

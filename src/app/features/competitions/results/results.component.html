@@ -3,7 +3,7 @@
     <legend class="legend"><fa-icon icon="poll-h" class="icon-padding"></fa-icon>Risultati</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="round" class="control-label">Round</label>
           <ng-select
             id="round"
@@ -21,7 +21,7 @@
       </div>
 
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fixture" class="control-label">Giornata</label>
           <ng-select
             id="fixture"
@@ -37,7 +37,7 @@
       </div>
 
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="match" class="control-label">Incontro</label>
           <ng-select
             id="match"
@@ -67,12 +67,12 @@
             <div>
               <label>Fattore campo: {{ selectedMatch.homeFactor }}</label>
             </div>
-            <div>
+            <div class="pb-3">
               <label>Valutazione: {{ selectedMatch.homeRanking }} - Pagelle: {{ selectedMatch.homeGrade }}</label>
             </div>
             <div class="table-responsive">
               <table class="table table-hover" aria-label="Squadra in casa">
-                <thead class="thead-dark">
+                <thead class="table-dark">
                   <tr>
                     <th id="name">Nome</th>
                     <th id="role">Ruolo</th>
@@ -111,12 +111,12 @@
               <h4 id="awayTeam">{{ selectedMatch.awayTeam.name }} {{ selectedMatch.awayScore }}</h4>
             </div>
             <div><label>&nbsp;</label></div>
-            <div>
+            <div class="pb-3">
               <label>Valutazione: {{ selectedMatch.awayRanking }} - Pagelle: {{ selectedMatch.awayGrade }}</label>
             </div>
             <div class="table-responsive">
               <table class="table table-hover" aria-label="Squadra in trasferta">
-                <thead class="thead-dark">
+                <thead class="table-dark">
                   <tr>
                     <th id="name">Nome</th>
                     <th id="role">Ruolo</th>
@@ -151,7 +151,7 @@
     </div>
   </fieldset>
 
-  <div class="text-center padding">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="calculator" class="icon-padding"></fa-icon>Calcola risultato
     </button>

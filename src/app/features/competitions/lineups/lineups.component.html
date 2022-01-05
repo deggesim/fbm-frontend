@@ -3,7 +3,7 @@
     <legend class="legend"><fa-icon icon="address-card" class="icon-padding"></fa-icon>Formazioni</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="round" class="control-label">Round</label>
           <ng-select
             id="round"
@@ -21,7 +21,7 @@
       </div>
 
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fixture" class="control-label">Giornata</label>
           <ng-select
             id="fixture"
@@ -37,7 +37,7 @@
       </div>
 
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
             id="fantasyTeam"
@@ -62,7 +62,7 @@
           <label id="roster">Roster</label>
           <div class="table-responsive">
             <table class="table table-hover" aria-label="Roster">
-              <thead class="thead-dark">
+              <thead class="table-dark">
                 <tr>
                   <th id="name">Nome</th>
                   <th id="nationality">Naz.</th>
@@ -136,7 +136,7 @@
           <label id="formazione">Formazione</label>
           <div class="table-responsive">
             <table class="table table-hover" aria-label="Formazione">
-              <thead class="thead-dark">
+              <thead class="table-dark">
                 <tr>
                   <th id="spot">Spot</th>
                   <th id="name">Nome</th>
@@ -172,10 +172,10 @@
               </tbody>
             </table>
           </div>
-          <div class="padding text-center">
+          <div class="p-3 text-center">
             <app-error-message [form-control]="form.get('lineup')" name="Formazione"></app-error-message>
           </div>
-          <div class="padding text-center" *ngIf="changeAllowed">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3" *ngIf="changeAllowed">
             <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="openModalBenchOrder()">
               <fa-icon icon="sort" class="icon-padding"></fa-icon>Ordine panchina
             </button>
@@ -189,7 +189,7 @@
     </div>
   </fieldset>
 
-  <div class="text-center padding">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid" *ngIf="changeAllowed">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
@@ -245,7 +245,7 @@
             </div>
           </ng-template>
 
-          <div class="form-group">
+          <div class="mb-3">
             <bs-sortable
               formControlName="sortedList"
               [itemTemplate]="sortedListTemplate"
@@ -255,7 +255,7 @@
               wrapperClass="sortable-wrapper"
             ></bs-sortable>
           </div>
-          <div class="text-center">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>

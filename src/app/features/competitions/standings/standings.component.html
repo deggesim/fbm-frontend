@@ -2,7 +2,7 @@
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifiche</legend>
 
-    <div class="form-group">
+    <div class="mb-3">
       <ng-select
         id="round"
         name="round"
@@ -20,7 +20,7 @@
 
     <div class="table-responsive" *ngIf="selectedRound; else empty">
       <table class="table table-hover" aria-label="Classifica">
-        <thead class="thead-dark">
+        <thead class="table-dark">
           <tr>
             <th id="name">Nome</th>
             <th id="points">Punti</th>
@@ -81,7 +81,7 @@
     </div>
 
     <ng-template #empty>
-      <h4 class="padding">Nessun turno selezionato</h4>
+      <h4 class="p-3">Nessun turno selezionato</h4>
     </ng-template>
   </fieldset>
 </form>

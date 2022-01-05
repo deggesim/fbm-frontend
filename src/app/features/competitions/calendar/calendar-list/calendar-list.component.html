@@ -2,7 +2,7 @@
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="list-ul" class="icon-padding"></fa-icon>Calendario</legend>
 
-    <div class="form-group">
+    <div class="mb-3">
       <ng-select
         id="round"
         name="round"
@@ -38,7 +38,7 @@
         <div *ngIf="fixture.matches && fixture.matches.length > 0; else fixtureNotDefined">
           <div class="table-responsive">
             <table class="table table-hover" [attr.aria-label]="fixture.name">
-              <thead class="thead-dark">
+              <thead class="table-dark">
                 <tr>
                   <th id="game">Partita</th>
                   <th id="homeRanking">Valutazione casa</th>

@@ -157,10 +157,10 @@
 
     <ul class="navbar-nav" *ngIf="isLoggedIn$ | async">
       <li class="nav-item">
-        <a class="nav-link manina nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
+        <a class="nav-link manina text-nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link manina nowrap" (click)="profile.emit()">
+        <a class="nav-link manina text-nowrap" (click)="profile.emit()">
           <app-user-role-icon [role]="user.role"></app-user-role-icon>{{ user.name }}
         </a>
       </li>

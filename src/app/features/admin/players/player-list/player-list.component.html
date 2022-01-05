@@ -1,8 +1,8 @@
 <div class="float manina" (click)="nuova()">
-  <fa-icon icon="plus" class="my-float"></fa-icon>
+  <fa-icon icon="plus" class="float-icon"></fa-icon>
 </div>
 <div class="float-2 indent manina" (click)="apriPopupUpload()" *ngIf="leagueInfo?.preSeason">
-  <fa-icon icon="upload" class="my-float"></fa-icon>
+  <fa-icon icon="upload" class="float-icon"></fa-icon>
 </div>
 
 <fieldset class="fieldset" *ngIf="percentage === 0; else uploadInProgress">
@@ -20,14 +20,12 @@
           (ngModelChange)="this.filter$.next($event)"
           placeholder="Filtro"
         />
-        <div class="input-group-append manina" (click)="pulisciFiltro()">
-          <div class="input-group-text">x</div>
-        </div>
+        <span class="input-group-text manina" (click)="pulisciFiltro()">x</span>
       </div>
     </form>
     <div class="table-responsive">
       <table class="table table-hover" aria-label="Giocatori">
-        <thead class="thead-dark">
+        <thead class="table-dark">
           <tr>
             <th id="name">Nome</th>
             <th id="nationality">Nazionalità</th>
@@ -53,13 +51,13 @@
             <td>{{ roster.team.fullName }}</td>
 
             <td class="text-nowrap">
-              <button type="button" class="btn btn-warning" (click)="modifica(roster)" tooltip="Modifica" placement="top">
+              <button type="button" class="btn btn-warning me-2" (click)="modifica(roster)" tooltip="Modifica" placement="top">
                 <fa-icon icon="pencil-alt"></fa-icon>
               </button>
               <button type="button" class="btn btn-success" (click)="clona(roster)" tooltip="Clona" placement="top">
                 <fa-icon icon="clone"></fa-icon>
               </button>
-              <button type="button" class="btn btn-danger" (click)="apriPopupElimina(roster)" tooltip="Elimina" placement="top">
+              <button type="button" class="btn btn-danger ms-2" (click)="apriPopupElimina(roster)" tooltip="Elimina" placement="top">
                 <fa-icon icon="trash"></fa-icon>
               </button>
             </td>
@@ -87,7 +85,7 @@
   </ng-container>
 
   <ng-template #empty>
-    <h4 class="padding">Nessun giocatore presente</h4>
+    <h4 class="p-3">Nessun giocatore presente</h4>
   </ng-template>
 </fieldset>
 
