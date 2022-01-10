@@ -4,7 +4,7 @@ import { AppState } from '@app/core/app.state';
 import { SpinnerService } from '@app/core/spinner.service';
 import * as UserActions from '@app/core/user/store/user.actions';
 import { Store } from '@ngrx/store';
-import { forkJoin, noop, take } from 'rxjs';
+import { forkJoin, noop, of, switchMap, switchMapTo, take, tap, zip } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './core/auth/service/auth.service';
 import * as AuthActions from './core/auth/store/auth.actions';
@@ -32,27 +32,28 @@ export class AppComponent implements OnInit, AfterViewChecked {
   ) {}
 
   ngOnInit(): void {
-    console.log('ngOnInit');
-
-    forkJoin([this.authService.isLoggedIn$(), this.swPush.subscription])
-      .pipe(take(1))
+    this.authService
+      .isLoggedIn$()
+      .pipe(switchMap((loggedIn: boolean) => zip(of(loggedIn), this.swPush.subscription)))
       .subscribe((values: [boolean, PushSubscription]) => {
         if (values[0] && !values[1]) {
-          this.swPush
-            .requestSubscription({
-              serverPublicKey: this.VAPID_PUBLIC_KEY,
-            })
-            .then((sub: PushSubscription) => this.pushSubscriptionService.save(sub).subscribe(noop));
+          this.subscribeToNotification();
         }
       });
+  }
+
+  private subscribeToNotification() {
+    this.swPush
+      .requestSubscription({
+        serverPublicKey: this.VAPID_PUBLIC_KEY,
+      })
+      .then((sub: PushSubscription) => this.pushSubscriptionService.save(sub).subscribe(noop));
   }
 
   ngAfterViewChecked(): void {
     this.loading = this.spinnerService.isLoading();
     this.cdRef.detectChanges();
   }
-
-  subscribeToNotifications() {}
 
   public profile() {
     this.mostraPopupUserProfile = true;
