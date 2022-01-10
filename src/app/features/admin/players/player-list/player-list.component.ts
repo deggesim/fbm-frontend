@@ -100,7 +100,6 @@ export class PlayerListComponent implements OnInit {
   }
 
   clona(roster: Roster): void {
-    // tslint:disable-next-line: variable-name
     const { name, nationality, number, yearBirth, height, weight, role } = roster.player;
     this.rosterSelected = {
       player: {

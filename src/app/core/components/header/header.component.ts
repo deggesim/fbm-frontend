@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Params, Router } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { AuthService } from '@app/core/auth/service/auth.service';
 import { leagueInfo, selectedLeague } from '@app/core/league/store/league.selector';
@@ -9,13 +8,6 @@ import { League, LeagueInfo } from '@app/models/league';
 import { User } from '@app/models/user';
 import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
-import { filter } from 'rxjs/operators';
-
-interface IBreadcrumb {
-  label: string;
-  params?: Params;
-  url: string;
-}
 
 @Component({
   selector: 'app-header',
@@ -36,13 +28,7 @@ export class HeaderComponent implements OnInit {
   leagueInfo: LeagueInfo;
   isEmpty = isEmpty;
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private authService: AuthService,
-    private userService: UserService,
-    private store: Store<AppState>
-  ) {}
+  constructor(private authService: AuthService, private userService: UserService, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.store.pipe(select(user)).subscribe((value: User) => {

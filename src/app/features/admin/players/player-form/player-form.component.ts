@@ -46,7 +46,6 @@ export class PlayerFormComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const roster: Roster = changes['roster'].currentValue;
     if (roster != null) {
-      // tslint:disable-next-line: variable-name
       const { name, nationality, number, yearBirth, height, weight, role } = roster.player;
       this.form.patchValue({ name, nationality, number, yearBirth, height, weight, role });
       this.form.get('team').setValue(roster.team);
@@ -71,7 +70,6 @@ export class PlayerFormComponent implements OnInit, OnChanges {
   }
 
   salvaGiocatore(): void {
-    // tslint:disable-next-line: variable-name
     const { name, nationality, number, yearBirth, height, weight, role } = this.form.value;
     let roster: Roster;
     if (this.roster && this.roster.player) {
