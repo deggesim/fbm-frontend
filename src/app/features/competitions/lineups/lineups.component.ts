@@ -105,6 +105,30 @@ export class LineupsComponent implements OnInit {
     this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
       this.nextRealFixture = value.nextRealFixture;
     });
+
+    const round = this.route.snapshot.queryParams['round'];
+    const fixture = this.route.snapshot.queryParams['fixture'];
+    const fantasyTeam = this.route.snapshot.queryParams['fantasyTeam'];
+
+    if (round && fixture && fantasyTeam) {
+      const selectedRound = this.rounds.find((value: Round) => value._id === round);
+      if (selectedRound) {
+        this.fixtures = selectedRound.fixtures;
+        this.fantasyTeams = selectedRound.fantasyTeams;
+        const selectedFixture = this.fixtures?.find((value: Fixture) => value._id === fixture);
+        const selectedFantasyTeam = this.fantasyTeams?.find((value: FantasyTeam) => value._id === fantasyTeam);
+        this.form.patchValue({
+          round: selectedRound,
+          fixture: selectedFixture,
+          fantasyTeam: selectedFantasyTeam,
+        });
+        if (selectedFixture && selectedFantasyTeam) {
+          this.form.get('fixture').enable();
+          this.form.get('fantasyTeam').enable();
+          this.onChangeFantasyTeam(selectedFantasyTeam);
+        }
+      }
+    }
   }
 
   createForm() {
