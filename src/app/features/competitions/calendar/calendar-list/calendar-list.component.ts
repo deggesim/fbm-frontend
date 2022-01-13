@@ -43,6 +43,12 @@ export class CalendarListComponent implements OnInit {
 
   ngOnInit() {
     this.rounds = this.route.snapshot.data['rounds'];
+
+    const round = this.route.snapshot.queryParams['round'];
+    if (round) {
+      this.selectedRound = this.rounds.find((value: Round) => value._id === round);
+      this.form.get('round').setValue(this.selectedRound);
+    }
   }
 
   createForm() {
