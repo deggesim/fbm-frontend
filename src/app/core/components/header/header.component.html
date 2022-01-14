@@ -1,6 +1,6 @@
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top">
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top" aria-label="navbar">
   <a class="navbar-brand" routerLink="/home">
-    <fa-icon icon="basketball-ball" size="2x"></fa-icon>
+    <img src="/assets/icons/icon-96x96.png" alt="logo" width="35px">
   </a>
   <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="collapseExample" (click)="isCollapsed = !isCollapsed">
     <span class="navbar-toggler-icon"></span>
@@ -157,10 +157,10 @@
 
     <ul class="navbar-nav" *ngIf="isLoggedIn$ | async">
       <li class="nav-item">
-        <a class="nav-link manina nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
+        <a class="nav-link manina text-nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link manina nowrap" (click)="profile.emit()">
+        <a class="nav-link manina text-nowrap" (click)="profile.emit()">
           <app-user-role-icon [role]="user.role"></app-user-role-icon>{{ user.name }}
         </a>
       </li>

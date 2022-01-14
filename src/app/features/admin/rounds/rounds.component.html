@@ -3,7 +3,7 @@
     <legend class="legend"><fa-icon icon="clipboard-list" class="icon-padding"></fa-icon>Gestione turni</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="round" class="control-label">Round *</label>
           <ng-select
             id="round"
@@ -28,7 +28,7 @@
       >
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <bs-sortable
             formControlName="unsortedList"
             [itemTemplate]="unsortedListTemplate"
@@ -41,7 +41,7 @@
         </div>
       </div>
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <bs-sortable
             formControlName="sortedList"
             [itemTemplate]="sortedListTemplate"
@@ -56,7 +56,7 @@
     </div>
   </fieldset>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

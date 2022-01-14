@@ -1,14 +1,14 @@
 <form [formGroup]="form" (ngSubmit)="salvaEvent()" class="needs-validation" novalidate>
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="name" class="control-label">Nome</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name" />
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="initialBalance" class="control-label">Bilancio</label>
         <input
           type="number"
@@ -23,7 +23,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="outgo" class="control-label">Crediti spesi</label>
         <input
           type="number"
@@ -38,7 +38,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="totalContracts" class="control-label"># Contratti</label>
         <input
           type="number"
@@ -53,7 +53,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="playersInRoster" class="control-label"># Giocatori</label>
         <input
           type="number"
@@ -68,7 +68,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="extraPlayers" class="control-label">Visti spesi</label>
         <input
           type="number"
@@ -83,7 +83,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="pointsPenalty" class="control-label">Punti di penalità</label>
         <input
           type="number"
@@ -98,7 +98,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="balancePenalty" class="control-label">Malus crediti</label>
         <input
           type="number"
@@ -113,7 +113,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="owners" class="control-label">Proprietari</label>
         <ng-select
           id="owners"
@@ -131,7 +131,7 @@
     </div>
   </div>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   endpoint: 'http://localhost:5000',
+  vapidPublikKey: 'BEOkSY7JilXkxmpUjGYCXEn4GBGGxMOstB1sKYE7-EwJgrJ7qnsc8n3m6MCR0C3x95Fsg4IadQxYkIZR6OUdgr0',
 };
 
 /*

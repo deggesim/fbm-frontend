@@ -16,23 +16,21 @@
         <form [formGroup]="form" class="needs-validation" novalidate>
           <div fxLayout="row wrap" fxLayoutAlign="space-between">
             <div fxFlex="49" fxFlex.xs="100">
-              <div class="form-group">
+              <div class="mb-3">
                 <div class="input-group mb-3">
                   <div class="custom-file">
                     <input #uploadElement type="file" class="custom-file-input manina" (change)="onFileChange($event)" />
                     <label for="data" class="custom-file-label">{{ fileName }}</label>
                   </div>
-                  <div class="input-group-append">
-                    <span class="input-group-text" [ngClass]="{ manina: form.get('file').valid }" (click)="uploadEvent()"
-                      ><fa-icon icon="upload" class="icon-padding"></fa-icon>Upload</span
-                    >
-                  </div>
+                  <span class="input-group-text" [ngClass]="{ manina: form.get('file').valid }" (click)="uploadEvent()"
+                    ><fa-icon icon="upload" class="icon-padding"></fa-icon>Upload</span
+                  >
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="text-center">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
             <button type="button" class="btn btn-primary" (click)="annulla.emit()">
               <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
             </button>

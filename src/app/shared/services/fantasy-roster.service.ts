@@ -26,10 +26,6 @@ export class FantasyRosterService {
     return this.http.patch<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${fantasyRoster._id}`, fantasyRoster);
   }
 
-  public delete(id: string) {
-    return this.http.delete<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${id}`);
-  }
-
   public release(id: string) {
     return this.http.delete<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${id}/release`);
   }

@@ -1,14 +1,14 @@
 <form [formGroup]="form" (ngSubmit)="salvaEvent()" class="needs-validation" novalidate>
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="name" class="control-label">Nome</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name" />
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="email" class="control-label">Email</label>
         <input
           type="email"
@@ -23,7 +23,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="password" class="control-label">Password</label>
         <input
           type="text"
@@ -38,7 +38,7 @@
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group" [ngClass]="{ 'is-invalid': form.get('role').invalid && form.get('role').dirty }">
+      <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('role').invalid && form.get('role').dirty }">
         <label for="role" class="control-label">Ruolo</label>
         <ng-select id="role" name="role" [items]="roleList$ | async" formControlName="role" clearAllText="Elimina"> </ng-select>
       </div>
@@ -46,7 +46,7 @@
     </div>
   </div>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

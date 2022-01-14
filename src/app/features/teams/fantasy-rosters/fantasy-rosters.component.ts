@@ -37,6 +37,13 @@ export class FantasyRostersComponent implements OnInit {
 
   ngOnInit() {
     this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
+
+    const fantasyTeam = this.route.snapshot.queryParams['fantasyTeam'];
+    if (fantasyTeam) {
+      const fantasyTeamSelected = this.fantasyTeams.find((value: FantasyTeam) => value._id === fantasyTeam);
+      this.form.get('fantasyTeam').setValue(fantasyTeamSelected);
+      this.selectFantasyTeam(fantasyTeamSelected);
+    }
   }
 
   createForm() {

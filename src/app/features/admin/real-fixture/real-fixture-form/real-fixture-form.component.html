@@ -1,14 +1,14 @@
 <form [formGroup]="form" (ngSubmit)="salvaEvent()" class="needs-validation" novalidate>
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
     <div fxFlex="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="name" class="control-label">Nome</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name" />
       </div>
     </div>
 
     <div fxFlex="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="fixtures" class="control-label">Turni</label>
         <ng-select
           id="fixtures"
@@ -26,7 +26,7 @@
     </div>
 
     <div fxFlex="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="teamsWithNoGame" class="control-label">Squadre senza partite</label>
         <ng-select
           id="teamsWithNoGame"
@@ -44,7 +44,7 @@
     </div>
   </div>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

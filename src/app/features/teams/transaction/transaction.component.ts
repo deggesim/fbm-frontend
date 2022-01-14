@@ -200,7 +200,7 @@ export class TransactionComponent implements OnInit {
           this.fantasyRosters = fr;
           this.toastService.success(
             'Modifica tesseramento',
-            `Il tesseramento del giocatore ${this.rosterSelected.player.name} è stato modificato correttamente`
+            `Il tesseramento del giocatore ${this.fantasyRosterSelected.roster.player.name} è stato modificato correttamente`
           );
           this.rosterSelected = null;
           this.form.get('roster').reset();

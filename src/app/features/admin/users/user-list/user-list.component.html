@@ -1,8 +1,8 @@
 <div class="float manina" (click)="nuovo()">
-  <fa-icon icon="plus" class="my-float"></fa-icon>
+  <fa-icon icon="plus" class="float-icon"></fa-icon>
 </div>
 <div class="float-2 indent manina" (click)="apriPopupUpload()">
-  <fa-icon icon="upload" class="my-float"></fa-icon>
+  <fa-icon icon="upload" class="float-icon"></fa-icon>
 </div>
 
 <fieldset class="fieldset">
@@ -10,7 +10,7 @@
 
   <div class="table-responsive" *ngIf="users && users.length > 0; else empty">
     <table class="table table-hover" aria-label="Gestione utenti">
-      <thead class="thead-dark">
+      <thead class="table-dark">
         <tr>
           <th id="name">Nome</th>
           <th id="email">Email</th>
@@ -30,7 +30,7 @@
           <td class="text-nowrap">
             <button
               type="button"
-              class="btn btn-warning"
+              class="btn btn-warning me-2"
               (click)="modifica(user)"
               tooltip="Modifica"
               placement="top"
@@ -54,7 +54,7 @@
     </table>
   </div>
   <ng-template #empty>
-    <h4 class="padding">Nessun utente presente</h4>
+    <h4 class="p-3">Nessun utente presente</h4>
   </ng-template>
 </fieldset>
 

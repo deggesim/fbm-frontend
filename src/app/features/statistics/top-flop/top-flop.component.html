@@ -2,12 +2,12 @@
   <legend class="legend"><fa-icon icon="chart-bar" class="icon-padding"></fa-icon>Top Flop</legend>
   <form [formGroup]="form" class="needs-validation" novalidate>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="32" fxFlex.xs="100" class="form-group">
+      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
         <label for="team" class="control-label">Squadra</label>
         <ng-select id="team" name="team" [items]="teams" bindLabel="fullName" formControlName="team" clearAllText="Elimina"> </ng-select>
       </div>
 
-      <div fxFlex="32" fxFlex.xs="100" class="form-group">
+      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
         <label for="fantasyTeam" class="control-label">Fantasquadra</label>
         <ng-select
           id="fantasyTeam"
@@ -20,7 +20,7 @@
         </ng-select>
       </div>
 
-      <div fxFlex="32" fxFlex.xs="100" class="form-group">
+      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
         <label for="role" class="control-label">Ruolo</label>
         <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina"> </ng-select>
       </div>
@@ -38,10 +38,10 @@
       </div>
     </div>
   </form>
-  <h6 *ngIf="playerStatisticList?.totalElements" class="text-end">Totale: {{ playerStatisticList.totalElements }}</h6>
+  <h6 *ngIf="playerStatisticList?.totalElements" class="text-end pt-3">Totale: {{ playerStatisticList.totalElements }}</h6>
   <div class="table-responsive">
     <table class="table table-hover" aria-label="Top Flop">
-      <thead class="thead-dark">
+      <thead class="table-dark">
         <tr>
           <th id="name">Nome</th>
           <th id="nationality">Nazionalità</th>
