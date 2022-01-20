@@ -352,8 +352,6 @@ export class LineupsComponent implements OnInit {
       }
     }
     newArr.splice(newIndex, 0, newArr.splice(prevIndex, 1)[0]);
-    console.log(newArr.map((item: Lineup) => item.fantasyRoster.roster.player.name));
-
     return newArr;
   };
 
