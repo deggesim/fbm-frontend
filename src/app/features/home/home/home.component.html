@@ -1,4 +1,4 @@
-<app-login (login)="login($event)" *ngIf="!(isLoggedIn$ | async); else loggedInTemplate"></app-login>
+<fbm-login (login)="login($event)" *ngIf="!(isLoggedIn$ | async); else loggedInTemplate"></fbm-login>
 
 <ng-template #loggedInTemplate>
   <fieldset class="fieldset">

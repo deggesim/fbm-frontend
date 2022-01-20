@@ -6,7 +6,7 @@ import { User } from '@app/models/user';
 import { atLeastOne } from '@app/shared/util/validations';
 
 @Component({
-  selector: 'app-fantasy-team-form',
+  selector: 'fbm-fantasy-team-form',
   templateUrl: './fantasy-team-form.component.html',
 })
 export class FantasyTeamFormComponent implements OnInit, OnChanges {

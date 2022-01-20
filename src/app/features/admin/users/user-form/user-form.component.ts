@@ -6,7 +6,7 @@ import { iif, Observable, of } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-user-form',
+  selector: 'fbm-user-form',
   templateUrl: './user-form.component.html',
 })
 export class UserFormComponent implements OnInit, OnChanges {

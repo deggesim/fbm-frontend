@@ -8,7 +8,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { isEmpty } from 'lodash-es';
 
 @Component({
-  selector: 'app-rounds',
+  selector: 'fbm-rounds',
   templateUrl: './rounds.component.html',
   styleUrls: ['./rounds.component.scss'],
 })

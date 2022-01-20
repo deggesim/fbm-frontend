@@ -18,7 +18,7 @@
           formControlName="initialBalance"
           [ngClass]="{ 'is-invalid': form.get('initialBalance').invalid && form.get('initialBalance').dirty }"
         />
-        <app-error-message [form-control]="form.get('initialBalance')" name="Bilancio"></app-error-message>
+        <fbm-error-message [form-control]="form.get('initialBalance')" name="Bilancio"></fbm-error-message>
       </div>
     </div>
 
@@ -33,7 +33,7 @@
           formControlName="outgo"
           [ngClass]="{ 'is-invalid': form.get('outgo').invalid && form.get('outgo').dirty }"
         />
-        <app-error-message [form-control]="form.get('outgo')" name="Crediti spesi"></app-error-message>
+        <fbm-error-message [form-control]="form.get('outgo')" name="Crediti spesi"></fbm-error-message>
       </div>
     </div>
 
@@ -48,7 +48,7 @@
           formControlName="totalContracts"
           [ngClass]="{ 'is-invalid': form.get('totalContracts').invalid && form.get('totalContracts').dirty }"
         />
-        <app-error-message [form-control]="form.get('totalContracts')" name="# Contratti"></app-error-message>
+        <fbm-error-message [form-control]="form.get('totalContracts')" name="# Contratti"></fbm-error-message>
       </div>
     </div>
 
@@ -63,7 +63,7 @@
           formControlName="playersInRoster"
           [ngClass]="{ 'is-invalid': form.get('playersInRoster').invalid && form.get('playersInRoster').dirty }"
         />
-        <app-error-message [form-control]="form.get('playersInRoster')" name="# Giocatori"></app-error-message>
+        <fbm-error-message [form-control]="form.get('playersInRoster')" name="# Giocatori"></fbm-error-message>
       </div>
     </div>
 
@@ -78,7 +78,7 @@
           formControlName="extraPlayers"
           [ngClass]="{ 'is-invalid': form.get('extraPlayers').invalid && form.get('extraPlayers').dirty }"
         />
-        <app-error-message [form-control]="form.get('extraPlayers')" name="Visti spesi"></app-error-message>
+        <fbm-error-message [form-control]="form.get('extraPlayers')" name="Visti spesi"></fbm-error-message>
       </div>
     </div>
 
@@ -93,7 +93,7 @@
           formControlName="pointsPenalty"
           [ngClass]="{ 'is-invalid': form.get('pointsPenalty').invalid && form.get('pointsPenalty').dirty }"
         />
-        <app-error-message [form-control]="form.get('pointsPenalty')" name="Punti di penalità"></app-error-message>
+        <fbm-error-message [form-control]="form.get('pointsPenalty')" name="Punti di penalità"></fbm-error-message>
       </div>
     </div>
 
@@ -108,7 +108,7 @@
           formControlName="balancePenalty"
           [ngClass]="{ 'is-invalid': form.get('balancePenalty').invalid && form.get('balancePenalty').dirty }"
         />
-        <app-error-message [form-control]="form.get('balancePenalty')" name="Malus crediti"></app-error-message>
+        <fbm-error-message [form-control]="form.get('balancePenalty')" name="Malus crediti"></fbm-error-message>
       </div>
     </div>
 

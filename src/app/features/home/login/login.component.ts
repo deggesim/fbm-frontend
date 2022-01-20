@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Login } from '@app/models/user';
 
 @Component({
-  selector: 'app-login',
+  selector: 'fbm-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })

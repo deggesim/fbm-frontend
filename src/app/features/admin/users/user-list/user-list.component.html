@@ -24,7 +24,7 @@
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td>
-            <app-user-role-icon [role]="user.role"></app-user-role-icon>
+            <fbm-user-role-icon [role]="user.role"></fbm-user-role-icon>
           </td>
 
           <td class="text-nowrap">
@@ -59,7 +59,7 @@
 </fieldset>
 
 <!-- popup elimina -->
-<app-popup-conferma
+<fbm-popup-conferma
   #popupConfermaElimina
   titolo="Elimina utente"
   btnConferma="Elimina"
@@ -67,7 +67,7 @@
   (conferma)="confermaElimina()"
   (annulla)="popupConfermaElimina.chiudiModale()"
 >
-</app-popup-conferma>
+</fbm-popup-conferma>
 
 <!-- popup inserimento/modifica utente -->
 <div
@@ -87,11 +87,11 @@
       </div>
 
       <div class="modal-body">
-        <app-user-form [user]="userSelected" (salva)="salva($event)" (annulla)="annulla()"></app-user-form>
+        <fbm-user-form [user]="userSelected" (salva)="salva($event)" (annulla)="annulla()"></fbm-user-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<app-upload #popupUpload titolo="Upload utenti" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></app-upload>
+<fbm-upload #popupUpload titolo="Upload utenti" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></fbm-upload>

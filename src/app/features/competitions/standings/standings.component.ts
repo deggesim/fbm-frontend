@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-standings',
+  selector: 'fbm-standings',
   templateUrl: './standings.component.html',
 })
 export class StandingsComponent implements OnInit {

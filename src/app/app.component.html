@@ -1,4 +1,4 @@
-<app-header (logout)="logout()" (profile)="profile()" (completePreseason)="completePreseason()"></app-header>
+<fbm-header (logout)="logout()" (profile)="profile()" (completePreseason)="completePreseason()"></fbm-header>
 <div class="container-fluid">
   <router-outlet></router-outlet>
 </div>
@@ -27,18 +27,18 @@
       </div>
 
       <div class="modal-body">
-        <app-user-profile (salva)="salva($event)" (annulla)="annulla()"></app-user-profile>
+        <fbm-user-profile (salva)="salva($event)" (annulla)="annulla()"></fbm-user-profile>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup aggiorna app -->
-<app-popup-conferma
+<fbm-popup-conferma
   #popupAggiorna
   titolo="Aggiornamento app disponibile"
   btnConferma="Aggiorna"
   btnAnnulla="Annulla"
   (conferma)="aggiornaApp()"
   (annulla)="popupAggiorna.chiudiModale()"
-></app-popup-conferma>
+></fbm-popup-conferma>

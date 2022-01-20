@@ -19,7 +19,7 @@ import { forkJoin, iif, Observable, of, zip } from 'rxjs';
 import { map, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-top-flop',
+  selector: 'fbm-top-flop',
   templateUrl: './top-flop.component.html',
 })
 export class TopFlopComponent implements OnInit {

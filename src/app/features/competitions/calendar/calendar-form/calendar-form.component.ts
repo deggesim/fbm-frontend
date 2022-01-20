@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { Match } from '@app/models/match';
 
 @Component({
-  selector: 'app-calendar-form',
+  selector: 'fbm-calendar-form',
   templateUrl: './calendar-form.component.html',
 })
 export class CalendarFormComponent implements OnChanges {

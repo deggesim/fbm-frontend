@@ -103,7 +103,7 @@
 </ng-template>
 
 <!-- popup elimina -->
-<app-popup-conferma
+<fbm-popup-conferma
   #popupConfermaElimina
   titolo="Elimina giocatore"
   btnConferma="Elimina"
@@ -111,7 +111,7 @@
   (conferma)="confermaElimina()"
   (annulla)="popupConfermaElimina.chiudiModale()"
 >
-</app-popup-conferma>
+</fbm-popup-conferma>
 
 <!-- popup inserimento/modifica giocatore -->
 <div
@@ -131,11 +131,11 @@
       </div>
 
       <div class="modal-body">
-        <app-player-form [roster]="rosterSelected" (salva)="salva($event)" (annulla)="annulla()"></app-player-form>
+        <fbm-player-form [roster]="rosterSelected" (salva)="salva($event)" (annulla)="annulla()"></fbm-player-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<app-upload #popupUpload titolo="Upload giocatori" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></app-upload>
+<fbm-upload #popupUpload titolo="Upload giocatori" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></fbm-upload>

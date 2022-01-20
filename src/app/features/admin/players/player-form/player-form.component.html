@@ -11,7 +11,7 @@
           formControlName="name"
           [ngClass]="{ 'is-invalid': form.get('name').invalid && form.get('name').dirty }"
         />
-        <app-error-message [form-control]="form.get('name')" name="Nome"></app-error-message>
+        <fbm-error-message [form-control]="form.get('name')" name="Nome"></fbm-error-message>
       </div>
     </div>
 
@@ -26,7 +26,7 @@
           formControlName="nationality"
           [ngClass]="{ 'is-invalid': form.get('nationality').invalid && form.get('nationality').dirty }"
         />
-        <app-error-message [form-control]="form.get('nationality')" name="Nazionalità"></app-error-message>
+        <fbm-error-message [form-control]="form.get('nationality')" name="Nazionalità"></fbm-error-message>
       </div>
     </div>
 
@@ -42,7 +42,7 @@
           maxlength="2"
           [ngClass]="{ 'is-invalid': form.get('number').invalid && form.get('number').dirty }"
         />
-        <app-error-message [form-control]="form.get('number')" name="Numero"></app-error-message>
+        <fbm-error-message [form-control]="form.get('number')" name="Numero"></fbm-error-message>
       </div>
     </div>
 
@@ -59,7 +59,7 @@
           max="2999"
           [ngClass]="{ 'is-invalid': form.get('yearBirth').invalid && form.get('yearBirth').dirty }"
         />
-        <app-error-message [form-control]="form.get('yearBirth')" name="Anno di nascita"></app-error-message>
+        <fbm-error-message [form-control]="form.get('yearBirth')" name="Anno di nascita"></fbm-error-message>
       </div>
     </div>
 
@@ -76,7 +76,7 @@
           max="2999"
           [ngClass]="{ 'is-invalid': form.get('height').invalid && form.get('height').dirty }"
         />
-        <app-error-message [form-control]="form.get('height')" name="Altezza"></app-error-message>
+        <fbm-error-message [form-control]="form.get('height')" name="Altezza"></fbm-error-message>
       </div>
     </div>
 
@@ -93,7 +93,7 @@
           max="199"
           [ngClass]="{ 'is-invalid': form.get('weight').invalid && form.get('weight').dirty }"
         />
-        <app-error-message [form-control]="form.get('weight')" name="Peso"></app-error-message>
+        <fbm-error-message [form-control]="form.get('weight')" name="Peso"></fbm-error-message>
       </div>
     </div>
 
@@ -110,7 +110,7 @@
           [ngClass]="{ 'is-invalid': form.get('role').invalid && form.get('role').dirty }"
         >
         </ng-select>
-        <app-error-message [form-control]="form.get('role')" name="Ruolo"></app-error-message>
+        <fbm-error-message [form-control]="form.get('role')" name="Ruolo"></fbm-error-message>
       </div>
     </div>
 
@@ -126,7 +126,7 @@
           clearAllText="Elimina"
           [ngClass]="{ 'is-invalid': form.get('team').invalid && form.get('team').dirty }"
         >
-          <app-error-message [form-control]="form.get('team')" name="Squadra"></app-error-message>
+          <fbm-error-message [form-control]="form.get('team')" name="Squadra"></fbm-error-message>
         </ng-select>
       </div>
     </div>
@@ -143,7 +143,7 @@
           clearAllText="Elimina"
           [ngClass]="{ 'is-invalid': form.get('realFixture').invalid && form.get('realFixture').dirty }"
         >
-          <app-error-message [form-control]="form.get('team')" name="Squadra"></app-error-message>
+          <fbm-error-message [form-control]="form.get('team')" name="Squadra"></fbm-error-message>
         </ng-select>
       </div>
     </div>

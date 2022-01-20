@@ -15,7 +15,7 @@ import { iif, Observable, of, Subject, timer } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, switchMapTo, takeWhile, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-player-list',
+  selector: 'fbm-player-list',
   templateUrl: './player-list.component.html',
 })
 export class PlayerListComponent implements OnInit {

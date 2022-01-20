@@ -12,7 +12,7 @@ import { iif, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-home',
+  selector: 'fbm-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {

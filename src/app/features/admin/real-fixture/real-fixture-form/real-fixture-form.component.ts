@@ -7,7 +7,7 @@ import { FixtureService } from '@app/shared/services/fixture.service';
 import { TeamService } from '@app/shared/services/team.service';
 
 @Component({
-  selector: 'app-real-fixture-form',
+  selector: 'fbm-real-fixture-form',
   templateUrl: './real-fixture-form.component.html',
 })
 export class RealFixtureFormComponent implements OnInit, OnChanges {

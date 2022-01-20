@@ -16,7 +16,7 @@ import { Store } from '@ngrx/store';
 import { switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-calendar-list',
+  selector: 'fbm-calendar-list',
   templateUrl: './calendar-list.component.html',
   styleUrls: ['./calendar-list.component.scss'],
 })

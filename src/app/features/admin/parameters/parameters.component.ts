@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-parameters',
+  selector: 'fbm-parameters',
   templateUrl: './parameters.component.html',
 })
 export class ParametersComponent implements OnInit {

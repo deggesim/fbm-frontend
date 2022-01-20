@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 
 @Component({
-  selector: 'app-error-message',
+  selector: 'fbm-error-message',
   templateUrl: './error-message.component.html',
   styleUrls: ['./error-message.component.scss'],
 })

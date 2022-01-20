@@ -31,7 +31,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-lineups',
+  selector: 'fbm-lineups',
   templateUrl: './lineups.component.html',
   styleUrls: ['./lineups.component.scss'],
 })

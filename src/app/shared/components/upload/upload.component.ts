@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
-  selector: 'app-upload',
+  selector: 'fbm-upload',
   templateUrl: './upload.component.html',
 })
 export class UploadComponent {

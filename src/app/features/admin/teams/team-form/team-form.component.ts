@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Team } from '@app/models/team';
 
 @Component({
-  selector: 'app-team-form',
+  selector: 'fbm-team-form',
   templateUrl: './team-form.component.html',
 })
 export class TeamFormComponent implements OnChanges {

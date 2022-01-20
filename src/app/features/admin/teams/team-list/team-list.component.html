@@ -49,7 +49,7 @@
 </fieldset>
 
 <!-- popup elimina -->
-<app-popup-conferma
+<fbm-popup-conferma
   #popupConfermaElimina
   titolo="Elimina squadra"
   btnConferma="Elimina"
@@ -57,7 +57,7 @@
   (conferma)="confermaElimina()"
   (annulla)="popupConfermaElimina.chiudiModale()"
 >
-</app-popup-conferma>
+</fbm-popup-conferma>
 
 <!-- popup inserimento/modifica squadra -->
 <div
@@ -77,11 +77,11 @@
       </div>
 
       <div class="modal-body">
-        <app-team-form [team]="teamSelected" (salva)="salva($event)" (annulla)="annulla()"></app-team-form>
+        <fbm-team-form [team]="teamSelected" (salva)="salva($event)" (annulla)="annulla()"></fbm-team-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<app-upload #popupUpload titolo="Upload squadre" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></app-upload>
+<fbm-upload #popupUpload titolo="Upload squadre" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></fbm-upload>

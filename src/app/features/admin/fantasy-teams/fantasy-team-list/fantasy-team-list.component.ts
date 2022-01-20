@@ -6,7 +6,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-fantasy-team-list',
+  selector: 'fbm-fantasy-team-list',
   templateUrl: './fantasy-team-list.component.html',
 })
 export class FantasyTeamListComponent implements OnInit {

@@ -15,7 +15,7 @@ import { AppUpdateService } from './shared/services/app-update.service';
 import { PushSubscriptionService } from './shared/services/push-subscription.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'fbm-root',
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit, AfterViewChecked {

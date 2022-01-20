@@ -11,7 +11,7 @@ import { select, Store } from '@ngrx/store';
 import { switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-fantasy-rosters',
+  selector: 'fbm-fantasy-rosters',
   templateUrl: './fantasy-rosters.component.html',
 })
 export class FantasyRostersComponent implements OnInit {

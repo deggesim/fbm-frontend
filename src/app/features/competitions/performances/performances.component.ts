@@ -9,7 +9,7 @@ import { PerformanceService } from '@app/shared/services/performance.service';
 import { ToastService } from '@app/shared/services/toast.service';
 
 @Component({
-  selector: 'app-performances',
+  selector: 'fbm-performances',
   templateUrl: './performances.component.html',
 })
 export class PerformancesComponent implements OnInit {

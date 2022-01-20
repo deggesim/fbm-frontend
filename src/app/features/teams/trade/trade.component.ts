@@ -16,7 +16,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-trade',
+  selector: 'fbm-trade',
   templateUrl: './trade.component.html',
   styleUrls: ['./trade.component.scss'],
 })

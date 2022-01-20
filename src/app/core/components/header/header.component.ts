@@ -10,7 +10,7 @@ import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
 
 @Component({
-  selector: 'app-header',
+  selector: 'fbm-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })

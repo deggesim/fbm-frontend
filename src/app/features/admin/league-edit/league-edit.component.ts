@@ -11,7 +11,7 @@ import { League } from '@app/models/league';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-league-edit',
+  selector: 'fbm-league-edit',
   templateUrl: './league-edit.component.html',
 })
 export class EditLeagueComponent implements OnInit {

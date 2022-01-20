@@ -8,7 +8,7 @@ import { RegularSeasonFormat } from '@app/models/formats/regular-season-format';
 import { League } from '@app/models/league';
 
 @Component({
-  selector: 'app-new-season',
+  selector: 'fbm-new-season',
   templateUrl: './new-season.component.html',
 })
 export class NewSeasonComponent {

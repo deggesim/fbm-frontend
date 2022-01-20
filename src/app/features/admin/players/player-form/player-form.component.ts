@@ -12,7 +12,7 @@ import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-player-form',
+  selector: 'fbm-player-form',
   templateUrl: './player-form.component.html',
 })
 export class PlayerFormComponent implements OnInit, OnChanges {

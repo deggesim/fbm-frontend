@@ -18,7 +18,7 @@ import { forkJoin, Observable } from 'rxjs';
 import { switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-results',
+  selector: 'fbm-results',
   templateUrl: './results.component.html',
 })
 export class ResultsComponent implements OnInit {

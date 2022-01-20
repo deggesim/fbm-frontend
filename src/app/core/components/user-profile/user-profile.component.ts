@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-user-profile',
+  selector: 'fbm-user-profile',
   templateUrl: './user-profile.component.html',
 })
 export class UserProfileComponent implements OnInit {

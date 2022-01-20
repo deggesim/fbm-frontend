@@ -20,7 +20,7 @@ import { iif, of, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-transaction',
+  selector: 'fbm-transaction',
   templateUrl: './transaction.component.html',
 })
 export class TransactionComponent implements OnInit {

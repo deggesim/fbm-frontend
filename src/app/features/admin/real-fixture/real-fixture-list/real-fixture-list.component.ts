@@ -6,7 +6,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-real-fixture-list',
+  selector: 'fbm-real-fixture-list',
   templateUrl: './real-fixture-list.component.html',
 })
 export class RealFixtureListComponent implements OnInit {

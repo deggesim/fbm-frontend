@@ -7,7 +7,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-team-list',
+  selector: 'fbm-team-list',
   templateUrl: './team-list.component.html',
 })
 export class TeamListComponent implements OnInit {
