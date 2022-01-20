@@ -14,7 +14,7 @@ export class TeamListComponent implements OnInit {
   teams: Team[];
 
   teamSelected: Team;
-  mostraPopupModifica: boolean;
+  showPopupUpdate: boolean;
   titoloModale: string;
 
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
@@ -26,33 +26,33 @@ export class TeamListComponent implements OnInit {
     this.teams = this.route.snapshot.data['teams'];
   }
 
-  nuova() {
+  newTeam() {
     this.teamSelected = undefined;
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     this.titoloModale = 'Nuova squadra';
   }
 
-  modifica(team: Team): void {
+  update(team: Team): void {
     const { _id, fullName, sponsor, name, city, abbreviation, real } = team;
     this.teamSelected = { _id, fullName, sponsor, name, city, abbreviation, real };
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     this.titoloModale = 'Modifica squadra';
   }
 
-  clona(team: Team): void {
+  clone(team: Team): void {
     const { fullName, sponsor, name, city, abbreviation, real } = team;
     this.teamSelected = { fullName, sponsor, name, city, abbreviation, real };
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     this.titoloModale = 'Clona squadra';
   }
 
-  salva(team: Team) {
+  save(team: Team) {
     if (team._id == null) {
       this.teamService
         .create(team)
         .pipe(
           tap(() => {
-            this.mostraPopupModifica = false;
+            this.showPopupUpdate = false;
             this.toastService.success('Nuova squadra', `La squadra ${team.fullName} è stata inserita correttamente`);
             this.teamSelected = undefined;
           }),
@@ -66,7 +66,7 @@ export class TeamListComponent implements OnInit {
         .update(team)
         .pipe(
           tap(() => {
-            this.mostraPopupModifica = false;
+            this.showPopupUpdate = false;
             this.toastService.success('Modifica squadra', `La squadra ${team.fullName} è stata modificata correttamente`);
             this.teamSelected = undefined;
           }),
@@ -78,16 +78,16 @@ export class TeamListComponent implements OnInit {
     }
   }
 
-  annulla(): void {
-    this.mostraPopupModifica = false;
+  cancel(): void {
+    this.showPopupUpdate = false;
   }
 
-  apriPopupElimina(team: Team) {
+  openDeletePopup(team: Team) {
     this.teamSelected = team;
     this.popupConfermaElimina.openModal();
   }
 
-  confermaElimina() {
+  confirmDelete() {
     if (this.teamSelected) {
       this.teamService
         .delete(this.teamSelected._id)
@@ -105,11 +105,11 @@ export class TeamListComponent implements OnInit {
     }
   }
 
-  apriPopupUpload() {
+  openUploadPopup() {
     this.popupUpload.openModal();
   }
 
-  confermaUpload(file: File) {
+  confirmUpload(file: File) {
     this.teamService
       .upload(file)
       .pipe(

@@ -26,7 +26,7 @@ export class CalendarListComponent implements OnInit {
   selectedRound: Round;
   selectedFixture: Fixture;
   matches: Match[];
-  mostraPopupModifica: boolean;
+  showPopupUpdate: boolean;
   isAdmin$ = this.userService.isAdmin$();
 
   constructor(
@@ -68,21 +68,21 @@ export class CalendarListComponent implements OnInit {
     this.selectedFixture = null;
   }
 
-  modifica(fixture: Fixture, event: any) {
+  update(fixture: Fixture, event: any) {
     this.selectedFixture = fixture;
     this.matches = fixture.matches;
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     // prevent accordion event
     event.stopPropagation();
     event.preventDefault();
   }
 
-  salva(matches: Match[]) {
+  save(matches: Match[]) {
     this.matchService
       .updateFixture(matches, this.selectedFixture._id)
       .pipe(
         tap(() => {
-          this.mostraPopupModifica = false;
+          this.showPopupUpdate = false;
           this.matches = undefined;
         }),
         switchMapTo(this.store.select(selectedLeague)),
@@ -101,8 +101,8 @@ export class CalendarListComponent implements OnInit {
       });
   }
 
-  annulla(): void {
-    this.mostraPopupModifica = false;
+  cancel(): void {
+    this.showPopupUpdate = false;
   }
 
   roundSearchFn = (term: string, round: Round) => {

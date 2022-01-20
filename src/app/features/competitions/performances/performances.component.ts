@@ -106,7 +106,7 @@ export class PerformancesComponent implements OnInit {
     return `${performance.player.name} - ${performance.player.nationality} - ${performance.player.role}`;
   }
 
-  salva() {
+  save() {
     const performances = this.performanceArray.getRawValue() as Performance[];
     this.performanceService.save(performances).subscribe(() => {
       this.toastService.success('Valutazioni salvate', 'Le valutazioni sono state salvate correttamente');

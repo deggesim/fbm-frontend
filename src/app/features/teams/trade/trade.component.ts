@@ -115,15 +115,15 @@ export class TradeComponent implements OnInit {
     this.form.get('inPlayers').setValue(this.fantasyRosters2Selected);
   }
 
-  abilitaRiepilogo() {
+  enableRecap() {
     return this.fantasyRosters1Selected.length > 0;
   }
 
-  riepilogo() {
+  recap() {
     this.mostraPopupTradeBlock = true;
   }
 
-  salva() {
+  save() {
     for (const fr of this.fantasyRosters1Selected) {
       fr.fantasyTeam = this.fantasyTeam2Selected;
     }
@@ -165,7 +165,7 @@ export class TradeComponent implements OnInit {
     this.form.markAsPristine();
   }
 
-  annulla() {
+  cancel() {
     this.mostraPopupTradeBlock = false;
   }
 

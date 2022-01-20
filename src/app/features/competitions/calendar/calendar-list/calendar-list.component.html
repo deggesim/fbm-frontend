@@ -26,7 +26,7 @@
             <button
               type="button"
               class="btn btn-warning"
-              (click)="modifica(fixture, $event)"
+              (click)="update(fixture, $event)"
               tooltip="Modifica"
               placement="top"
               *ngIf="fixture.matches && fixture.matches.length > 0 && (isAdmin$ | async)"
@@ -74,7 +74,7 @@
 
 <!-- popup modifica giornata -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showPopupUpdate"
   class="modal fade"
   bsModal
   #modal="bs-modal"
@@ -90,7 +90,7 @@
       </div>
 
       <div class="modal-body">
-        <fbm-calendar-form [matches]="matches" (salva)="salva($event)" (cancel)="annulla()"></fbm-calendar-form>
+        <fbm-calendar-form [matches]="matches" (save)="save($event)" (cancel)="cancel()"></fbm-calendar-form>
       </div>
     </div>
   </div>

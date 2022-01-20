@@ -1,7 +1,7 @@
-<div class="float manina" (click)="nuova()">
+<div class="float manina" (click)="newPlayer()">
   <fa-icon icon="plus" class="float-icon"></fa-icon>
 </div>
-<div class="float-2 indent manina" (click)="apriPopupUpload()" *ngIf="leagueInfo?.preSeason">
+<div class="float-2 indent manina" (click)="openUploadPopup()" *ngIf="leagueInfo?.preSeason">
   <fa-icon icon="upload" class="float-icon"></fa-icon>
 </div>
 
@@ -20,7 +20,7 @@
           (ngModelChange)="this.filter$.next($event)"
           placeholder="Filtro"
         />
-        <span class="input-group-text manina" (click)="pulisciFiltro()">x</span>
+        <span class="input-group-text manina" (click)="clearFilter()">x</span>
       </div>
     </form>
     <div class="table-responsive">
@@ -51,13 +51,13 @@
             <td>{{ roster.team.fullName }}</td>
 
             <td class="text-nowrap">
-              <button type="button" class="btn btn-warning me-2" (click)="modifica(roster)" tooltip="Modifica" placement="top">
+              <button type="button" class="btn btn-warning me-2" (click)="update(roster)" tooltip="Modifica" placement="top">
                 <fa-icon icon="pencil-alt"></fa-icon>
               </button>
-              <button type="button" class="btn btn-success" (click)="clona(roster)" tooltip="Clona" placement="top">
+              <button type="button" class="btn btn-success" (click)="clone(roster)" tooltip="Clona" placement="top">
                 <fa-icon icon="clone"></fa-icon>
               </button>
-              <button type="button" class="btn btn-danger ms-2" (click)="apriPopupElimina(roster)" tooltip="Elimina" placement="top">
+              <button type="button" class="btn btn-danger ms-2" (click)="openDeletePopup(roster)" tooltip="Elimina" placement="top">
                 <fa-icon icon="trash"></fa-icon>
               </button>
             </td>
@@ -66,7 +66,7 @@
       </table>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center" *ngIf="abilitaPaginazione()">
+    <div fxLayout="row" fxLayoutAlign="center" *ngIf="enablePagination()">
       <div fxFlex="nogrow">
         <pagination
           [totalItems]="rosterList.totalElements"
@@ -108,7 +108,7 @@
   title="Elimina giocatore"
   btnConfirm="Elimina"
   btnCancel="Annulla"
-  (confirm)="confermaElimina()"
+  (confirm)="confirmDelete()"
   (cancel)="popupConfermaElimina.closeModal()"
 >
   Vuoi eliminare il giocatore? Attenzione, l'operazione è irreversibile!
@@ -116,7 +116,7 @@
 
 <!-- popup inserimento/modifica giocatore -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showPopupUpdate"
   class="modal fade"
   bsModal
   #modal="bs-modal"
@@ -132,11 +132,11 @@
       </div>
 
       <div class="modal-body">
-        <fbm-player-form [roster]="rosterSelected" (salva)="salva($event)" (cancel)="annulla()"></fbm-player-form>
+        <fbm-player-form [roster]="rosterSelected" (save)="save($event)" (cancel)="cancel()"></fbm-player-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<fbm-upload #popupUpload titolo="Upload giocatori" (upload)="confermaUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>
+<fbm-upload #popupUpload title="Upload giocatori" (upload)="confirmUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>

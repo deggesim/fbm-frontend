@@ -163,7 +163,7 @@ export class TransactionComponent implements OnInit {
     }
   }
 
-  salva() {
+  save() {
     this.limit = 10;
     if (this.fantasyRosterSelected) {
       const fantasyRoster: FantasyRoster = {
@@ -244,7 +244,7 @@ export class TransactionComponent implements OnInit {
     }
   }
 
-  annulla() {
+  cancel() {
     this.limit = 10;
     this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
       this.rosters = rosterList.content;
@@ -255,7 +255,7 @@ export class TransactionComponent implements OnInit {
     this.modal.hide();
   }
 
-  modifica(fantasyRoster: FantasyRoster) {
+  update(fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
     this.form.patchValue({
       status: fantasyRoster.status,
@@ -268,17 +268,17 @@ export class TransactionComponent implements OnInit {
     this.modal.show();
   }
 
-  apriPopupRilascia(fantasyRoster: FantasyRoster) {
+  openReleasePopup(fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
     this.popupRilascia.openModal();
   }
 
-  apriPopupRimuovi(fantasyRoster: FantasyRoster) {
+  openRemovePopup(fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
     this.popupRimuovi.openModal();
   }
 
-  rimuovi() {
+  remove() {
     this.fantasyRosterService
       .remove(this.fantasyRosterSelected._id)
       .pipe(
@@ -302,7 +302,7 @@ export class TransactionComponent implements OnInit {
       });
   }
 
-  rilascia() {
+  release() {
     this.fantasyRosterService
       .release(this.fantasyRosterSelected._id)
       .pipe(

@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="address-card" class="icon-padding"></fa-icon>Formazioni</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
@@ -193,19 +193,19 @@
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid" *ngIf="changeAllowed">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
-    <button type="button" class="btn btn-primary" (click)="ripristina()" *ngIf="changeAllowed">
+    <button type="button" class="btn btn-primary" (click)="restore()" *ngIf="changeAllowed">
       <fa-icon icon="window-restore" class="icon-padding"></fa-icon>Ripristina
     </button>
-    <button type="button" class="btn btn-primary" (click)="svuota()" *ngIf="changeAllowed">
+    <button type="button" class="btn btn-primary" (click)="empty()" *ngIf="changeAllowed">
       <fa-icon icon="undo" class="icon-padding"></fa-icon>Svuota
     </button>
-    <!-- <button type="button" class="btn btn-primary" (click)="importa()" *ngIf="changeAllowed">
+    <!-- <button type="button" class="btn btn-primary" (click)="import()" *ngIf="changeAllowed">
       <fa-icon icon="file-import" class="icon-padding"></fa-icon>Importa
     </button> -->
     <!-- <button type="button" class="btn btn-primary" (click)="inviaEmail()">
       <fa-icon icon="envelope" class="icon-padding"></fa-icon>Invia mail
     </button> -->
-    <button type="button" class="btn btn-primary" [disabled]="disableCopyLineup" (click)="formazioneForum()">
+    <button type="button" class="btn btn-primary" [disabled]="disableCopyLineup" (click)="htmlLineup()">
       <fa-icon icon="copy" class="icon-padding"></fa-icon>Formazione forum
     </button>
   </div>
@@ -229,7 +229,7 @@
       </div>
 
       <div class="modal-body">
-        <form [formGroup]="benchForm" (ngSubmit)="salvaPanchina()" class="needs-validation" novalidate>
+        <form [formGroup]="benchForm" (ngSubmit)="onSubmitBwenchForm()" class="needs-validation" novalidate>
           <ng-template #sortedListTemplate let-item="item" let-index="index">
             <div class="text-center">
               {{ index + 1 }}: {{ item.value.fantasyRoster.roster.player.name }}
@@ -259,7 +259,7 @@
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>
-            <button type="button" class="btn btn-primary" (click)="annulla()">
+            <button type="button" class="btn btn-primary" (click)="cancel()">
               <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
             </button>
           </div>

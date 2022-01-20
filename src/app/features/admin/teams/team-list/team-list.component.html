@@ -1,7 +1,7 @@
-<div class="float manina" (click)="nuova()">
+<div class="float manina" (click)="newTeam()">
   <fa-icon icon="plus" class="float-icon"></fa-icon>
 </div>
-<div class="float-2 indent manina" (click)="apriPopupUpload()">
+<div class="float-2 indent manina" (click)="openUploadPopup()">
   <fa-icon icon="upload" class="float-icon"></fa-icon>
 </div>
 
@@ -29,13 +29,13 @@
           <td fxHide.lt-sm>{{ team.abbreviation }}</td>
 
           <td class="text-nowrap">
-            <button type="button" class="btn btn-warning me-2" (click)="modifica(team)" tooltip="Modifica" placement="top">
+            <button type="button" class="btn btn-warning me-2" (click)="update(team)" tooltip="Modifica" placement="top">
               <fa-icon icon="pencil-alt"></fa-icon>
             </button>
-            <button type="button" class="btn btn-success" (click)="clona(team)" tooltip="Clona" placement="top">
+            <button type="button" class="btn btn-success" (click)="clone(team)" tooltip="Clona" placement="top">
               <fa-icon icon="clone"></fa-icon>
             </button>
-            <button type="button" class="btn btn-danger ms-2" (click)="apriPopupElimina(team)" tooltip="Elimina" placement="top">
+            <button type="button" class="btn btn-danger ms-2" (click)="openDeletePopup(team)" tooltip="Elimina" placement="top">
               <fa-icon icon="trash"></fa-icon>
             </button>
           </td>
@@ -54,7 +54,7 @@
   title="Elimina squadra"
   btnConfirm="Elimina"
   btnCancel="Annulla"
-  (confirm)="confermaElimina()"
+  (confirm)="confirmDelete()"
   (cancel)="popupConfermaElimina.closeModal()"
 >
   Vuoi eliminare la squadra? Attenzione, l'operazione è irreversibile!
@@ -62,7 +62,7 @@
 
 <!-- popup inserimento/modifica squadra -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showPopupUpdate"
   class="modal fade"
   bsModal
   #modal="bs-modal"
@@ -78,11 +78,11 @@
       </div>
 
       <div class="modal-body">
-        <fbm-team-form [team]="teamSelected" (salva)="salva($event)" (cancel)="annulla()"></fbm-team-form>
+        <fbm-team-form [team]="teamSelected" (save)="save($event)" (cancel)="cancel()"></fbm-team-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<fbm-upload #popupUpload titolo="Upload squadre" (upload)="confermaUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>
+<fbm-upload #popupUpload title="Upload squadre" (upload)="confirmUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>

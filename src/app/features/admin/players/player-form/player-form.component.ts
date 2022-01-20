@@ -17,7 +17,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class PlayerFormComponent implements OnInit, OnChanges {
   @Input() roster: Roster;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
@@ -69,7 +69,7 @@ export class PlayerFormComponent implements OnInit, OnChanges {
     });
   }
 
-  salvaGiocatore(): void {
+  onSubmit(): void {
     const { name, nationality, number, yearBirth, height, weight, role } = this.form.value;
     let roster: Roster;
     if (this.roster && this.roster.player) {
@@ -79,6 +79,6 @@ export class PlayerFormComponent implements OnInit, OnChanges {
       const player = { name, nationality, number, yearBirth, height, weight, role };
       roster = { player, team: this.form.value.team, realFixture: this.form.value.realFixture };
     }
-    this.salva.emit(roster);
+    this.save.emit(roster);
   }
 }

@@ -14,7 +14,7 @@ export class UserListComponent implements OnInit {
   users: User[];
 
   userSelected: User;
-  mostraPopupModifica: boolean;
+  showPopupUpdate: boolean;
   titoloModale: string;
 
   isSuperAdmin$ = this.userService.isSuperAdmin$();
@@ -35,24 +35,24 @@ export class UserListComponent implements OnInit {
 
   nuovo() {
     this.userSelected = undefined;
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     this.titoloModale = 'Nuovo utente';
   }
 
-  modifica(user: User): void {
+  update(user: User): void {
     const { _id, name, email, password, role } = user;
     this.userSelected = { _id, name, email, password, role };
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     this.titoloModale = 'Modifica utente';
   }
 
-  salva(user: User) {
+  save(user: User) {
     if (user._id == null) {
       this.userService
         .create(user)
         .pipe(
           tap(() => {
-            this.mostraPopupModifica = false;
+            this.showPopupUpdate = false;
             this.toastService.success('Nuovo utente', 'Nuovo utente inserito correttamente');
             this.userSelected = undefined;
           }),
@@ -66,7 +66,7 @@ export class UserListComponent implements OnInit {
         .update(user)
         .pipe(
           tap(() => {
-            this.mostraPopupModifica = false;
+            this.showPopupUpdate = false;
             this.toastService.success('Modifica utente', 'Utente modificato correttamente');
             this.userSelected = undefined;
           }),
@@ -78,16 +78,16 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  annulla(): void {
-    this.mostraPopupModifica = false;
+  cancel(): void {
+    this.showPopupUpdate = false;
   }
 
-  apriPopupElimina(user: User) {
+  openDeletePopup(user: User) {
     this.userSelected = user;
     this.popupConfermaElimina.openModal();
   }
 
-  confermaElimina() {
+  confirmDelete() {
     if (this.userSelected) {
       this.userService
         .delete(this.userSelected._id)
@@ -105,11 +105,11 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  apriPopupUpload() {
+  openUploadPopup() {
     this.popupUpload.openModal();
   }
 
-  confermaUpload(file: File) {
+  confirmUpload(file: File) {
     this.userService
       .upload(file)
       .pipe(

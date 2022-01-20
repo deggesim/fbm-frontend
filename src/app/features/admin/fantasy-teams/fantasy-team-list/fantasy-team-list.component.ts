@@ -13,7 +13,7 @@ export class FantasyTeamListComponent implements OnInit {
   fantasyTeams: FantasyTeam[];
 
   fantasyTeamSelected: FantasyTeam;
-  mostraPopupModifica: boolean;
+  showPopupUpdate: boolean;
 
   constructor(private route: ActivatedRoute, private toastService: ToastService, private fantasyTeamService: FantasyTeamService) {}
 
@@ -21,7 +21,7 @@ export class FantasyTeamListComponent implements OnInit {
     this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
   }
 
-  modifica(fantasyTeam: FantasyTeam): void {
+  update(fantasyTeam: FantasyTeam): void {
     const {
       _id,
       name,
@@ -46,15 +46,15 @@ export class FantasyTeamListComponent implements OnInit {
       balancePenalty,
       owners,
     };
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
   }
 
-  salva(fantasyTeam: FantasyTeam) {
+  save(fantasyTeam: FantasyTeam) {
     this.fantasyTeamService
       .update(fantasyTeam)
       .pipe(
         tap(() => {
-          this.mostraPopupModifica = false;
+          this.showPopupUpdate = false;
           this.toastService.success('Modifica squadra', `Squadra ${fantasyTeam.name} modificata correttamente`);
           this.fantasyTeamSelected = undefined;
         }),
@@ -65,7 +65,7 @@ export class FantasyTeamListComponent implements OnInit {
       });
   }
 
-  annulla(): void {
-    this.mostraPopupModifica = false;
+  cancel(): void {
+    this.showPopupUpdate = false;
   }
 }

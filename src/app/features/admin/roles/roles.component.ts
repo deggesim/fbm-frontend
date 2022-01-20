@@ -40,7 +40,7 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  salva() {
+  save() {
     const roles: { role: string; spots: any }[] = [];
     Object.keys(this.form.controls).forEach((key) => {
       roles.push({ role: key, spots: this.form.controls[key].value });

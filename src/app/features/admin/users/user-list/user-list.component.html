@@ -1,7 +1,7 @@
 <div class="float manina" (click)="nuovo()">
   <fa-icon icon="plus" class="float-icon"></fa-icon>
 </div>
-<div class="float-2 indent manina" (click)="apriPopupUpload()">
+<div class="float-2 indent manina" (click)="openUploadPopup()">
   <fa-icon icon="upload" class="float-icon"></fa-icon>
 </div>
 
@@ -31,7 +31,7 @@
             <button
               type="button"
               class="btn btn-warning me-2"
-              (click)="modifica(user)"
+              (click)="update(user)"
               tooltip="Modifica"
               placement="top"
               [disabled]="user.role === Role.Admin || user.role === Role.SuperAdmin ? !(isSuperAdmin$ | async) : false"
@@ -41,7 +41,7 @@
             <button
               type="button"
               class="btn btn-danger"
-              (click)="apriPopupElimina(user)"
+              (click)="openDeletePopup(user)"
               tooltip="Elimina"
               placement="top"
               [disabled]="user.role === Role.Admin || user.role === Role.SuperAdmin ? !(isSuperAdmin$ | async) : false"
@@ -64,7 +64,7 @@
   title="Elimina utente"
   btnConfirm="Elimina"
   btnCancel="Annulla"
-  (confirm)="confermaElimina()"
+  (confirm)="confirmDelete()"
   (cancel)="popupConfermaElimina.closeModal()"
 >
   Vuoi eliminare l'utente? Attenzione, l'operazione è irreversibile!
@@ -72,7 +72,7 @@
 
 <!-- popup inserimento/modifica utente -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showPopupUpdate"
   class="modal fade"
   bsModal
   #modal="bs-modal"
@@ -88,11 +88,11 @@
       </div>
 
       <div class="modal-body">
-        <fbm-user-form [user]="userSelected" (salva)="salva($event)" (cancel)="annulla()"></fbm-user-form>
+        <fbm-user-form [user]="userSelected" (save)="save($event)" (cancel)="cancel()"></fbm-user-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<fbm-upload #popupUpload titolo="Upload utenti" (upload)="confermaUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>
+<fbm-upload #popupUpload title="Upload utenti" (upload)="confirmUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>

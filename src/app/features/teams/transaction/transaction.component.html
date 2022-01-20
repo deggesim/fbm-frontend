@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="shopping-cart" class="icon-padding"></fa-icon>{{ transactionLabel }}</legend>
 
@@ -79,20 +79,20 @@
               <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
 
               <td class="text-nowrap">
-                <button type="button" class="btn btn-success me-2" (click)="modifica(fr)" tooltip="Modifica" placement="top">
+                <button type="button" class="btn btn-success me-2" (click)="update(fr)" tooltip="Modifica" placement="top">
                   <fa-icon icon="pencil-alt"></fa-icon>
                 </button>
                 <button
                   type="button"
                   class="btn btn-warning"
-                  (click)="apriPopupRilascia(fr)"
+                  (click)="openReleasePopup(fr)"
                   tooltip="Rilascia"
                   placement="top"
                   *ngIf="!isPreseason()"
                 >
                   <fa-icon icon="trash"></fa-icon>
                 </button>
-                <button type="button" class="btn btn-danger ms-2" (click)="apriPopupRimuovi(fr)" tooltip="Rimuovi" placement="top">
+                <button type="button" class="btn btn-danger ms-2" (click)="openRemovePopup(fr)" tooltip="Rimuovi" placement="top">
                   <fa-icon icon="trash"></fa-icon>
                 </button>
               </td>
@@ -208,7 +208,7 @@
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>
-            <button type="button" class="btn btn-primary" (click)="annulla()">
+            <button type="button" class="btn btn-primary" (click)="cancel()">
               <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
             </button>
           </div>
@@ -224,7 +224,7 @@
   title="Rilascia giocatore"
   btnConfirm="Rilascia"
   btnCancel="Annulla"
-  (confirm)="rilascia()"
+  (confirm)="release()"
   (cancel)="popupRilascia.closeModal()"
 >
   Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, mentre i visti spesi ed il numero di contratti firmati
@@ -237,7 +237,7 @@
   title="Rimuovi giocatore"
   btnConfirm="Rimuovi"
   btnCancel="Annulla"
-  (confirm)="rimuovi()"
+  (confirm)="remove()"
   (cancel)="popupRimuovi.closeModal()"
 >
   Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, mentre i visti spesi ed il numero di contratti firmati

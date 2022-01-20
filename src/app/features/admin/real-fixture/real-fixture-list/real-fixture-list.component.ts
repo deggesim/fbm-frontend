@@ -12,7 +12,7 @@ import { switchMap, tap } from 'rxjs/operators';
 export class RealFixtureListComponent implements OnInit {
   realFixtures: RealFixture[];
   realFixtureSelected: RealFixture;
-  mostraPopupModifica: boolean;
+  showPopupUpdate: boolean;
 
   constructor(private route: ActivatedRoute, private toastService: ToastService, private realFixtureService: RealFixtureService) {}
 
@@ -20,12 +20,12 @@ export class RealFixtureListComponent implements OnInit {
     this.realFixtures = this.route.snapshot.data['realFixtures'];
   }
 
-  modifica(realFixture: RealFixture): void {
+  update(realFixture: RealFixture): void {
     this.realFixtureSelected = realFixture;
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
   }
 
-  salva(realFixture: RealFixture) {
+  save(realFixture: RealFixture) {
     if (realFixture._id == null) {
       this.toastService.success('Giornata non trovata', 'La giornata non esiste, provare a ricaricare la pagina.');
     } else {
@@ -33,7 +33,7 @@ export class RealFixtureListComponent implements OnInit {
         .update(realFixture)
         .pipe(
           tap(() => {
-            this.mostraPopupModifica = false;
+            this.showPopupUpdate = false;
             this.toastService.success('Modifica giornata', `La giornata ${realFixture.name} è stata modificata correttamente`);
             this.realFixtureSelected = undefined;
           }),
@@ -45,7 +45,7 @@ export class RealFixtureListComponent implements OnInit {
     }
   }
 
-  annulla(): void {
-    this.mostraPopupModifica = false;
+  cancel(): void {
+    this.showPopupUpdate = false;
   }
 }

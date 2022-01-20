@@ -7,7 +7,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
   templateUrl: './upload.component.html',
 })
 export class UploadComponent {
-  @Input() titolo: string;
+  @Input() title: string;
   @Output() upload: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 

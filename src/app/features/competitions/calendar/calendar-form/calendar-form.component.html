@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="salvaEvent()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
   <ng-container formArrayName="matchArray" *ngFor="let match of matches; let i = index">
     <fieldset class="fieldset" [formGroupName]="i">
       <legend class="legend">

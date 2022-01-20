@@ -11,7 +11,7 @@ import { atLeastOne } from '@app/shared/util/validations';
 })
 export class FantasyTeamFormComponent implements OnInit, OnChanges {
   @Input() fantasyTeam: FantasyTeam;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
@@ -73,7 +73,7 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
     });
   }
 
-  salvaEvent(): void {
+  onSubmit(): void {
     const {
       name,
       initialBalance,
@@ -97,7 +97,7 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
       balancePenalty,
       owners,
     };
-    this.salva.emit(fantasyTeam);
+    this.save.emit(fantasyTeam);
   }
 
   trackUserByFn(user: User) {

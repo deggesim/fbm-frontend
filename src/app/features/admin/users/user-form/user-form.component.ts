@@ -11,7 +11,7 @@ import { mergeMap, take } from 'rxjs/operators';
 })
 export class UserFormComponent implements OnInit, OnChanges {
   @Input() user: User;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
@@ -45,9 +45,9 @@ export class UserFormComponent implements OnInit, OnChanges {
     });
   }
 
-  salvaEvent(): void {
+  onSubmit(): void {
     const { name, email, password, role } = this.form.value;
     const user: User = { _id: this.user ? this.user._id : null, name, email, password, role };
-    this.salva.emit(user);
+    this.save.emit(user);
   }
 }

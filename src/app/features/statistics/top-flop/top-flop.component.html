@@ -92,7 +92,7 @@
     </table>
   </div>
 
-  <div fxLayout="row" fxLayoutAlign="center" *ngIf="abilitaPaginazione()">
+  <div fxLayout="row" fxLayoutAlign="center" *ngIf="enablePagination()">
     <div fxFlex="nogrow">
       <pagination
         [totalItems]="playerStatisticList.totalElements"

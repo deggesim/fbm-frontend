@@ -70,7 +70,7 @@ export class RoundsComponent implements OnInit {
     this.selectedRound = null;
   }
 
-  salva() {
+  save() {
     this.selectedRound.fantasyTeams = this.form.value.sortedList;
     this.roundService.matches(this.selectedRound).subscribe((round: Round) => {
       this.toastService.success('Generazione incontri', 'Il calendario del round è stato generato correttamente');

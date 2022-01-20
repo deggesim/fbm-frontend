@@ -321,7 +321,7 @@ export class LineupsComponent implements OnInit {
     this.mostraPopupPanchina = true;
   }
 
-  salvaPanchina() {
+  onSubmitBwenchForm() {
     const newOrder: Lineup[] = this.benchForm.value.sortedList;
     let i = 1;
     for (const player of newOrder) {
@@ -355,7 +355,7 @@ export class LineupsComponent implements OnInit {
     return newArr;
   };
 
-  annulla(): void {
+  cancel(): void {
     this.mostraPopupPanchina = false;
   }
 
@@ -368,7 +368,7 @@ export class LineupsComponent implements OnInit {
     this.disableCopyLineup = true;
   }
 
-  salva() {
+  save() {
     const filteredLineup = this.lineup.filter((lineup) => lineup != null);
     this.lineupService.save(this.form.value.fantasyTeam._id, this.form.value.fixture._id, filteredLineup).subscribe(() => {
       this.toastService.success('Formazione salvata', 'La formazione è stata salvata correttamente');
@@ -376,7 +376,7 @@ export class LineupsComponent implements OnInit {
     });
   }
 
-  ripristina() {
+  restore() {
     this.lineupService.lineupByTeam(this.form.value.fantasyTeam._id, this.form.value.fixture._id).subscribe((lineup: Lineup[]) => {
       if (lineup != null && !isEmpty(lineup)) {
         this.lineup = lineup.map((player: Lineup) => {
@@ -394,7 +394,7 @@ export class LineupsComponent implements OnInit {
     });
   }
 
-  svuota() {
+  empty() {
     this.lineupService.delete(this.form.value.fantasyTeam._id, this.form.value.fixture._id).subscribe(() => {
       this.lineup = this.initLineup();
       this.form.get('lineup').markAsPristine();
@@ -403,15 +403,11 @@ export class LineupsComponent implements OnInit {
     });
   }
 
-  importa() {
+  import() {
     // TODO
   }
 
-  inviaEmail() {
-    // TODO
-  }
-
-  formazioneForum() {
+  htmlLineup() {
     const filteredLineup: Lineup[] = this.lineup.filter((lineup) => lineup != null);
     let rows: string[] = [];
 

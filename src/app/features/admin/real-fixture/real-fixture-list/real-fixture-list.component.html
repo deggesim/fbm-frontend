@@ -12,7 +12,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let realFixture of realFixtures" class="table-secondary manina" (click)="modifica(realFixture)">
+        <tr *ngFor="let realFixture of realFixtures" class="table-secondary manina" (click)="update(realFixture)">
           <td>{{ realFixture.name }}</td>
           <td>
             <fa-icon icon="check" *ngIf="realFixture.prepared"></fa-icon>
@@ -29,9 +29,9 @@
   </ng-template>
 </fieldset>
 
-<!-- popup modifica giornata -->
+<!-- popup update turn -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showPopupUpdate"
   class="modal fade"
   bsModal
   #modal="bs-modal"
@@ -47,7 +47,7 @@
       </div>
 
       <div class="modal-body">
-        <fbm-real-fixture-form [realFixture]="realFixtureSelected" (salva)="salva($event)" (cancel)="annulla()"></fbm-real-fixture-form>
+        <fbm-real-fixture-form [realFixture]="realFixtureSelected" (save)="save($event)" (cancel)="cancel()"></fbm-real-fixture-form>
       </div>
     </div>
   </div>

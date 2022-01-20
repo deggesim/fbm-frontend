@@ -1,4 +1,4 @@
-<fbm-header (logout)="logout()" (profile)="profile()" (completePreseason)="openPopupCompletePreseason()"></fbm-header>
+<fbm-header (logout)="logout()" (profile)="profile()" (completePreseason)="openCompletePreseasonPopup()"></fbm-header>
 <div class="container-fluid">
   <router-outlet></router-outlet>
 </div>
@@ -27,7 +27,7 @@
       </div>
 
       <div class="modal-body">
-        <fbm-user-profile (salva)="salva($event)" (cancel)="annulla()"></fbm-user-profile>
+        <fbm-user-profile (save)="save($event)" (cancel)="cancel()"></fbm-user-profile>
       </div>
     </div>
   </div>

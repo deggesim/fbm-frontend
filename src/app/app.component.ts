@@ -75,16 +75,16 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.store.dispatch(AuthActions.logout());
   }
 
-  public annulla() {
+  public cancel() {
     this.mostraPopupUserProfile = false;
   }
 
-  public salva(user: User) {
+  public save(user: User) {
     this.mostraPopupUserProfile = false;
     this.store.dispatch(UserActions.saveUser({ user }));
   }
 
-  openPopupCompletePreseason() {
+  openCompletePreseasonPopup() {
     this.popupConfirmPreseason.openModal();
   }
 

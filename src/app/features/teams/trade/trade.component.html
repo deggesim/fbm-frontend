@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="exchange-alt" class="icon-padding"></fa-icon>Scambi</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
@@ -106,7 +106,7 @@
     <button type="button" class="btn btn-primary" (click)="reset()">
       <fa-icon icon="undo" class="icon-padding"></fa-icon>Reset
     </button>
-    <button type="button" class="btn btn-primary" (click)="riepilogo()" [disabled]="!abilitaRiepilogo()">
+    <button type="button" class="btn btn-primary" (click)="recap()" [disabled]="!enableRecap()">
       <fa-icon icon="list" class="icon-padding"></fa-icon>Riepilogo
     </button>
   </div>
@@ -152,7 +152,7 @@
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>
-            <button type="button" class="btn btn-primary" (click)="annulla()">
+            <button type="button" class="btn btn-primary" (click)="cancel()">
               <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
             </button>
           </div>

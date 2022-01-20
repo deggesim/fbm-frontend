@@ -25,7 +25,7 @@ export class PlayerListComponent implements OnInit {
   filter$ = new Subject<string>();
 
   rosterSelected: Roster;
-  mostraPopupModifica: boolean;
+  showPopupUpdate: boolean;
   titoloModale: string;
 
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
@@ -71,12 +71,12 @@ export class PlayerListComponent implements OnInit {
       });
   }
 
-  pulisciFiltro(): void {
+  clearFilter(): void {
     this.filter = null;
     this.filter$.next(null);
   }
 
-  abilitaPaginazione() {
+  enablePagination() {
     return !isEmpty(this.rosterList?.content) && this.rosterList?.totalElements > this.limit;
   }
 
@@ -87,19 +87,19 @@ export class PlayerListComponent implements OnInit {
     });
   }
 
-  nuova() {
+  newPlayer() {
     this.rosterSelected = undefined;
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     this.titoloModale = 'Nuovo giocatore';
   }
 
-  modifica(roster: Roster): void {
+  update(roster: Roster): void {
     this.rosterSelected = roster;
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     this.titoloModale = 'Modifica giocatore';
   }
 
-  clona(roster: Roster): void {
+  clone(roster: Roster): void {
     const { name, nationality, number, yearBirth, height, weight, role } = roster.player;
     this.rosterSelected = {
       player: {
@@ -114,11 +114,11 @@ export class PlayerListComponent implements OnInit {
       team: roster.team,
       realFixture: roster.realFixture,
     };
-    this.mostraPopupModifica = true;
+    this.showPopupUpdate = true;
     this.titoloModale = 'Clona giocatore';
   }
 
-  salva(roster: Roster) {
+  save(roster: Roster) {
     let $rostersObservable: Observable<RosterList>;
     if (roster._id == null) {
       $rostersObservable = this.playerService.create(roster.player).pipe(
@@ -127,7 +127,7 @@ export class PlayerListComponent implements OnInit {
         }),
         switchMapTo(this.rosterService.create(roster)),
         tap(() => {
-          this.mostraPopupModifica = false;
+          this.showPopupUpdate = false;
           this.toastService.success('Nuovo giocatore', `Il giocatore ${roster.player.name} è stato inserito correttamente`);
         }),
         switchMapTo(this.filterPlayer()),
@@ -142,7 +142,7 @@ export class PlayerListComponent implements OnInit {
         }),
         switchMapTo(this.rosterService.update(roster)),
         tap(() => {
-          this.mostraPopupModifica = false;
+          this.showPopupUpdate = false;
           this.toastService.success('Modifica giocatore', `Il giocatore ${roster.player.name} è stato modificato correttamente`);
         }),
         switchMapTo(this.filterPlayer()),
@@ -165,16 +165,16 @@ export class PlayerListComponent implements OnInit {
     );
   }
 
-  annulla(): void {
-    this.mostraPopupModifica = false;
+  cancel(): void {
+    this.showPopupUpdate = false;
   }
 
-  apriPopupElimina(roster: Roster) {
+  openDeletePopup(roster: Roster) {
     this.rosterSelected = roster;
     this.popupConfermaElimina.openModal();
   }
 
-  confermaElimina() {
+  confirmDelete() {
     if (this.rosterSelected) {
       this.popupConfermaElimina.closeModal();
       this.rosterService
@@ -195,11 +195,11 @@ export class PlayerListComponent implements OnInit {
     }
   }
 
-  apriPopupUpload() {
+  openUploadPopup() {
     this.popupUpload.openModal();
   }
 
-  confermaUpload(file: File) {
+  confirmUpload(file: File) {
     this.playerService.upload(file).subscribe((size: number) => {
       this.popupUpload.closeModal();
       this.uploadPercentage();

@@ -17,7 +17,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let fantasyTeam of fantasyTeams" class="manina table-secondary" (click)="modifica(fantasyTeam)">
+        <tr *ngFor="let fantasyTeam of fantasyTeams" class="manina table-secondary" (click)="update(fantasyTeam)">
           <td>{{ fantasyTeam.name }}</td>
           <td>{{ fantasyTeam.initialBalance }}</td>
           <td>{{ fantasyTeam.outgo }}</td>
@@ -37,9 +37,9 @@
   </ng-template>
 </fieldset>
 
-<!-- popup modifica fantasquadra -->
+<!-- popup update fantasyteam -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showPopupUpdate"
   class="modal fade"
   bsModal
   #modal="bs-modal"
@@ -55,7 +55,7 @@
       </div>
 
       <div class="modal-body">
-        <fbm-fantasy-team-form [fantasyTeam]="fantasyTeamSelected" (salva)="salva($event)" (cancel)="annulla()"></fbm-fantasy-team-form>
+        <fbm-fantasy-team-form [fantasyTeam]="fantasyTeamSelected" (save)="save($event)" (cancel)="cancel()"></fbm-fantasy-team-form>
       </div>
     </div>
   </div>

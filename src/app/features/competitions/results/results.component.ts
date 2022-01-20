@@ -87,7 +87,7 @@ export class ResultsComponent implements OnInit {
     }
   }
 
-  calcolaRisultato() {
+  computeScore() {
     const { round, fixture, match } = this.form.value;
     this.matchService
       .compute(round._id, fixture._id, match._id)

@@ -81,7 +81,7 @@ export class TopFlopComponent implements OnInit {
     });
   }
 
-  abilitaPaginazione() {
+  enablePagination() {
     return !isEmpty(this.playerStatisticList?.content) && this.playerStatisticList?.totalElements > this.limit;
   }
 
