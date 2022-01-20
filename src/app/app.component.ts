@@ -10,7 +10,7 @@ import { AuthService } from './core/auth/service/auth.service';
 import * as AuthActions from './core/auth/store/auth.actions';
 import * as LeagueActions from './core/league/store/league.actions';
 import { User } from './models/user';
-import { PopupConfermaComponent } from './shared/components/popup-conferma/popup-conferma.component';
+import { PopupConfirmComponent } from './shared/components/popup-confirm/popup-confirm.component';
 import { AppUpdateService } from './shared/services/app-update.service';
 import { PushSubscriptionService } from './shared/services/push-subscription.service';
 
@@ -24,7 +24,8 @@ export class AppComponent implements OnInit, AfterViewChecked {
   mostraPopupUserProfile: boolean;
   readonly VAPID_PUBLIC_KEY = environment.vapidPublikKey;
 
-  @ViewChild('popupAggiorna', { static: true }) public popupAggiorna!: PopupConfermaComponent;
+  @ViewChild('popupAggiorna', { static: true }) public popupAggiorna!: PopupConfirmComponent;
+  @ViewChild('popupConfirmPreseason', { static: true }) public popupConfirmPreseason!: PopupConfirmComponent;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -48,7 +49,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
     this.appUpdateService.updateAvaliable$.subscribe((updateAvailable: boolean) => {
       if (updateAvailable) {
-        this.popupAggiorna.apriModale();
+        this.popupAggiorna.openModal();
       }
     });
   }
@@ -83,12 +84,16 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.store.dispatch(UserActions.saveUser({ user }));
   }
 
+  openPopupCompletePreseason() {
+    this.popupConfirmPreseason.openModal();
+  }
+
   public completePreseason() {
     this.store.dispatch(LeagueActions.completePreseason());
   }
 
   public aggiornaApp() {
-    this.popupAggiorna.chiudiModale();
+    this.popupAggiorna.closeModal();
     this.appUpdateService.doAppUpdate();
   }
 }

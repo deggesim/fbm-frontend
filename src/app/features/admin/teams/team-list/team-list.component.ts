@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Team } from '@app/models/team';
-import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
+import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { TeamService } from '@app/shared/services/team.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
@@ -17,8 +17,8 @@ export class TeamListComponent implements OnInit {
   mostraPopupModifica: boolean;
   titoloModale: string;
 
-  @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfermaComponent;
-  @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfermaComponent;
+  @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
+  @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfirmComponent;
 
   constructor(private route: ActivatedRoute, private toastService: ToastService, private teamService: TeamService) {}
 
@@ -84,7 +84,7 @@ export class TeamListComponent implements OnInit {
 
   apriPopupElimina(team: Team) {
     this.teamSelected = team;
-    this.popupConfermaElimina.apriModale();
+    this.popupConfermaElimina.openModal();
   }
 
   confermaElimina() {
@@ -93,7 +93,7 @@ export class TeamListComponent implements OnInit {
         .delete(this.teamSelected._id)
         .pipe(
           tap(() => {
-            this.popupConfermaElimina.chiudiModale();
+            this.popupConfermaElimina.closeModal();
             this.toastService.success('Squadra eliminata', `La squadra ${this.teamSelected.fullName} è stata modificata correttamente`);
             this.teamSelected = undefined;
           }),
@@ -106,7 +106,7 @@ export class TeamListComponent implements OnInit {
   }
 
   apriPopupUpload() {
-    this.popupUpload.apriModale();
+    this.popupUpload.openModal();
   }
 
   confermaUpload(file: File) {
@@ -119,7 +119,7 @@ export class TeamListComponent implements OnInit {
       )
       .subscribe((teams: Team[]) => {
         this.teams = teams;
-        this.popupUpload.chiudiModale();
+        this.popupUpload.closeModal();
       });
   }
 }

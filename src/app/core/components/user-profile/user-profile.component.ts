@@ -13,7 +13,7 @@ import { take } from 'rxjs/operators';
 })
 export class UserProfileComponent implements OnInit {
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
   user: User;

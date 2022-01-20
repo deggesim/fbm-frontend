@@ -59,15 +59,16 @@
 </fieldset>
 
 <!-- popup elimina -->
-<fbm-popup-conferma
+<fbm-popup-confirm
   #popupConfermaElimina
-  titolo="Elimina utente"
-  btnConferma="Elimina"
-  btnAnnulla="Annulla"
-  (conferma)="confermaElimina()"
-  (annulla)="popupConfermaElimina.chiudiModale()"
+  title="Elimina utente"
+  btnConfirm="Elimina"
+  btnCancel="Annulla"
+  (confirm)="confermaElimina()"
+  (cancel)="popupConfermaElimina.closeModal()"
 >
-</fbm-popup-conferma>
+  Vuoi eliminare l'utente? Attenzione, l'operazione è irreversibile!
+</fbm-popup-confirm>
 
 <!-- popup inserimento/modifica utente -->
 <div
@@ -87,11 +88,11 @@
       </div>
 
       <div class="modal-body">
-        <fbm-user-form [user]="userSelected" (salva)="salva($event)" (annulla)="annulla()"></fbm-user-form>
+        <fbm-user-form [user]="userSelected" (salva)="salva($event)" (cancel)="annulla()"></fbm-user-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<fbm-upload #popupUpload titolo="Upload utenti" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></fbm-upload>
+<fbm-upload #popupUpload titolo="Upload utenti" (upload)="confermaUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>

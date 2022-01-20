@@ -13,7 +13,7 @@ import { TeamService } from '@app/shared/services/team.service';
 export class RealFixtureFormComponent implements OnInit, OnChanges {
   @Input() realFixture: RealFixture;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 

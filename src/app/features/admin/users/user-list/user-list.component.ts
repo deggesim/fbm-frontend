@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@app/core/user/services/user.service';
 import { Role, User } from '@app/models/user';
-import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
+import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { ToastService } from '@app/shared/services/toast.service';
 import { switchMap, tap } from 'rxjs/operators';
 
@@ -20,8 +20,8 @@ export class UserListComponent implements OnInit {
   isSuperAdmin$ = this.userService.isSuperAdmin$();
   Role = Role;
 
-  @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfermaComponent;
-  @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfermaComponent;
+  @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
+  @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfirmComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -84,7 +84,7 @@ export class UserListComponent implements OnInit {
 
   apriPopupElimina(user: User) {
     this.userSelected = user;
-    this.popupConfermaElimina.apriModale();
+    this.popupConfermaElimina.openModal();
   }
 
   confermaElimina() {
@@ -93,7 +93,7 @@ export class UserListComponent implements OnInit {
         .delete(this.userSelected._id)
         .pipe(
           tap(() => {
-            this.popupConfermaElimina.chiudiModale();
+            this.popupConfermaElimina.closeModal();
             this.toastService.success('Utente eliminato', "L'utente è stato eliminato correttamente");
             this.userSelected = undefined;
           }),
@@ -106,7 +106,7 @@ export class UserListComponent implements OnInit {
   }
 
   apriPopupUpload() {
-    this.popupUpload.apriModale();
+    this.popupUpload.openModal();
   }
 
   confermaUpload(file: File) {
@@ -119,7 +119,7 @@ export class UserListComponent implements OnInit {
       )
       .subscribe((users: User[]) => {
         this.users = users;
-        this.popupUpload.chiudiModale();
+        this.popupUpload.closeModal();
       });
   }
 }

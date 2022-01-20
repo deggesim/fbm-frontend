@@ -9,7 +9,7 @@ import { User } from '@app/models/user';
 import { Store } from '@ngrx/store';
 
 @Component({
-  selector: 'fbm-new-season-step-two',
+  selector: 'app-new-season-step-two',
   templateUrl: './new-season-step-two.component.html',
 })
 export class NewSeasonStepTwoComponent implements OnInit {

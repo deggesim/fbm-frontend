@@ -12,7 +12,7 @@ import { atLeastOne } from '@app/shared/util/validations';
 export class FantasyTeamFormComponent implements OnInit, OnChanges {
   @Input() fantasyTeam: FantasyTeam;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 

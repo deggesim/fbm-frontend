@@ -9,7 +9,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 import { LeagueInfo, Status } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
 import { Role, User } from '@app/models/user';
-import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
+import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { RosterService } from '@app/shared/services/roster.service';
@@ -39,8 +39,8 @@ export class TransactionComponent implements OnInit {
   typeahead$ = new Subject<string>();
 
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
-  @ViewChild('popupRilascia', { static: false }) public popupRilascia: PopupConfermaComponent;
-  @ViewChild('popupRimuovi', { static: false }) public popupRimuovi: PopupConfermaComponent;
+  @ViewChild('popupRilascia', { static: false }) public popupRilascia: PopupConfirmComponent;
+  @ViewChild('popupRimuovi', { static: false }) public popupRimuovi: PopupConfirmComponent;
 
   private fb: FormBuilder;
   private route: ActivatedRoute;
@@ -270,12 +270,12 @@ export class TransactionComponent implements OnInit {
 
   apriPopupRilascia(fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
-    this.popupRilascia.apriModale();
+    this.popupRilascia.openModal();
   }
 
   apriPopupRimuovi(fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
-    this.popupRimuovi.apriModale();
+    this.popupRimuovi.openModal();
   }
 
   rimuovi() {
@@ -297,7 +297,7 @@ export class TransactionComponent implements OnInit {
           'Giocatore rimosso',
           'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rimosso correttamente'
         );
-        this.popupRimuovi.chiudiModale();
+        this.popupRimuovi.closeModal();
         this.fantasyRosterSelected = null;
       });
   }
@@ -320,7 +320,7 @@ export class TransactionComponent implements OnInit {
           'Giocatore rilasciato',
           'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rilasciato correttamente'
         );
-        this.popupRilascia.chiudiModale();
+        this.popupRilascia.closeModal();
         this.fantasyRosterSelected = null;
       });
   }

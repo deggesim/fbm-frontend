@@ -9,7 +9,7 @@ import { Team } from '@app/models/team';
 export class TeamFormComponent implements OnChanges {
   @Input() team: Team;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 

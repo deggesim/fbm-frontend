@@ -12,7 +12,7 @@ import { mergeMap, take } from 'rxjs/operators';
 export class UserFormComponent implements OnInit, OnChanges {
   @Input() user: User;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
   roleList$: Observable<string[]>;

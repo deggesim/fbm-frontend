@@ -5,7 +5,7 @@ import { leagueInfo } from '@app/core/league/store/league.selector';
 import { LeagueInfo } from '@app/models/league';
 import { Player } from '@app/models/player';
 import { Roster, RosterList } from '@app/models/roster';
-import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
+import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { PlayerService } from '@app/shared/services/player.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { ToastService } from '@app/shared/services/toast.service';
@@ -28,8 +28,8 @@ export class PlayerListComponent implements OnInit {
   mostraPopupModifica: boolean;
   titoloModale: string;
 
-  @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfermaComponent;
-  @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfermaComponent;
+  @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
+  @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfirmComponent;
 
   // paginazione
   page = 1;
@@ -171,12 +171,12 @@ export class PlayerListComponent implements OnInit {
 
   apriPopupElimina(roster: Roster) {
     this.rosterSelected = roster;
-    this.popupConfermaElimina.apriModale();
+    this.popupConfermaElimina.openModal();
   }
 
   confermaElimina() {
     if (this.rosterSelected) {
-      this.popupConfermaElimina.chiudiModale();
+      this.popupConfermaElimina.closeModal();
       this.rosterService
         .delete(this.rosterSelected._id)
         .pipe(
@@ -196,12 +196,12 @@ export class PlayerListComponent implements OnInit {
   }
 
   apriPopupUpload() {
-    this.popupUpload.apriModale();
+    this.popupUpload.openModal();
   }
 
   confermaUpload(file: File) {
     this.playerService.upload(file).subscribe((size: number) => {
-      this.popupUpload.chiudiModale();
+      this.popupUpload.closeModal();
       this.uploadPercentage();
     });
   }

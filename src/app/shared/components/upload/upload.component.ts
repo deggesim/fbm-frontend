@@ -8,8 +8,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 })
 export class UploadComponent {
   @Input() titolo: string;
-  @Output() upload: EventEmitter<any> = new EventEmitter();
-  @Output() annulla: EventEmitter<any> = new EventEmitter();
+  @Output() upload: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
   @ViewChild('uploadElement', { static: false }) uploadElement: ElementRef;
@@ -21,11 +21,11 @@ export class UploadComponent {
     this.createForm();
   }
 
-  apriModale() {
+  openModal() {
     this.modal.show();
   }
 
-  chiudiModale() {
+  closeModal() {
     this.form.reset();
     this.uploadElement.nativeElement.value = '';
     this.modal.hide();

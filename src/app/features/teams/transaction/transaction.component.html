@@ -219,23 +219,27 @@
 </form>
 
 <!-- popup rilascia -->
-<fbm-popup-conferma
+<fbm-popup-confirm
   #popupRilascia
-  titolo="Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, i visti spesi ed il numero di contratti firmati non diminuiranno."
-  btnConferma="Rilascia"
-  btnAnnulla="Annulla"
-  (conferma)="rilascia()"
-  (annulla)="popupRilascia.chiudiModale()"
+  title="Rilascia giocatore"
+  btnConfirm="Rilascia"
+  btnCancel="Annulla"
+  (confirm)="rilascia()"
+  (cancel)="popupRilascia.closeModal()"
 >
-</fbm-popup-conferma>
+  Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, mentre i visti spesi ed il numero di contratti firmati
+  non diminuiranno.
+</fbm-popup-confirm>
 
 <!-- popup rimuovi -->
-<fbm-popup-conferma
+<fbm-popup-confirm
   #popupRimuovi
-  titolo="Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, i visti spesi ed il numero di contratti firmati diminuiranno di uno."
-  btnConferma="Rimuovi"
-  btnAnnulla="Annulla"
-  (conferma)="rimuovi()"
-  (annulla)="popupRimuovi.chiudiModale()"
+  title="Rimuovi giocatore"
+  btnConfirm="Rimuovi"
+  btnCancel="Annulla"
+  (confirm)="rimuovi()"
+  (cancel)="popupRimuovi.closeModal()"
 >
-</fbm-popup-conferma>
+  Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, mentre i visti spesi ed il numero di contratti firmati
+  diminuiranno di uno.
+</fbm-popup-confirm>

@@ -18,7 +18,7 @@ import { select, Store } from '@ngrx/store';
 export class PlayerFormComponent implements OnInit, OnChanges {
   @Input() roster: Roster;
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 

@@ -1,4 +1,4 @@
-<fbm-header (logout)="logout()" (profile)="profile()" (completePreseason)="completePreseason()"></fbm-header>
+<fbm-header (logout)="logout()" (profile)="profile()" (completePreseason)="openPopupCompletePreseason()"></fbm-header>
 <div class="container-fluid">
   <router-outlet></router-outlet>
 </div>
@@ -9,7 +9,7 @@
   </div>
 </div>
 
-<!-- popup profilo utente -->
+<!-- popup user profile -->
 <div
   *ngIf="mostraPopupUserProfile"
   class="modal fade"
@@ -27,18 +27,33 @@
       </div>
 
       <div class="modal-body">
-        <fbm-user-profile (salva)="salva($event)" (annulla)="annulla()"></fbm-user-profile>
+        <fbm-user-profile (salva)="salva($event)" (cancel)="annulla()"></fbm-user-profile>
       </div>
     </div>
   </div>
 </div>
 
-<!-- popup aggiorna app -->
-<fbm-popup-conferma
+<!-- popup update app -->
+<fbm-popup-confirm
   #popupAggiorna
-  titolo="Aggiornamento app disponibile"
-  btnConferma="Aggiorna"
-  btnAnnulla="Annulla"
-  (conferma)="aggiornaApp()"
-  (annulla)="popupAggiorna.chiudiModale()"
-></fbm-popup-conferma>
+  title="Aggiornamento app disponibile"
+  btnConfirm="Aggiorna"
+  btnCancel="Annulla"
+  (confirm)="aggiornaApp()"
+  (cancel)="popupAggiorna.closeModal()"
+>
+  Ricarica per ottenere l'ultima versione dell'app</fbm-popup-confirm
+>
+
+<!-- popup confirm complete preseason -->
+<fbm-popup-confirm
+  #popupConfirmPreseason
+  title="Completa preseason"
+  [textContent]=""
+  btnConfirm="Ok"
+  btnCancel="Annulla"
+  (confirm)="completePreseason()"
+  (cancel)="popupConfirmPreseason.closeModal()"
+>
+  Confermi l'avanzamento alla stagione regolare?
+</fbm-popup-confirm>

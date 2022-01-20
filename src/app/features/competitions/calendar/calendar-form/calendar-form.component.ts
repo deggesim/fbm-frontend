@@ -9,7 +9,7 @@ import { Match } from '@app/models/match';
 export class CalendarFormComponent implements OnChanges {
   @Input() matches: Match[];
   @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 

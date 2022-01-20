@@ -9,7 +9,7 @@
   <legend class="legend"><fa-icon icon="id-badge" class="icon-padding"></fa-icon>Giocatori</legend>
   <ng-container *ngIf="(rosterList?.content && rosterList?.totalElements > 0) || filter != null; else empty">
     <form #form="ngForm" class="form-inline pb-1">
-      <div class="input-group">
+      <div class="input-group mb-3">
         <input
           type="text"
           class="form-control"
@@ -91,9 +91,9 @@
 
 <!--Progress bar -->
 <ng-template #uploadInProgress>
-  <div class="text-center padding">
+  <div class="text-center padding m-3">
     <h4>Percentuale di avanzamento del processo di upload</h4>
-    <progressbar [value]="percentage" [type]="progressbarType" [striped]="true" style="height: 50px"
+    <progressbar [value]="percentage" [type]="progressbarType" [striped]="true" style="height: 50px" class="mb-3"
       >{{ percentage | number: '1.0-0' }}%</progressbar
     >
     <button type="button" class="btn btn-primary" (click)="reloadPage()" *ngIf="percentage === 100">
@@ -103,15 +103,16 @@
 </ng-template>
 
 <!-- popup elimina -->
-<fbm-popup-conferma
+<fbm-popup-confirm
   #popupConfermaElimina
-  titolo="Elimina giocatore"
-  btnConferma="Elimina"
-  btnAnnulla="Annulla"
-  (conferma)="confermaElimina()"
-  (annulla)="popupConfermaElimina.chiudiModale()"
+  title="Elimina giocatore"
+  btnConfirm="Elimina"
+  btnCancel="Annulla"
+  (confirm)="confermaElimina()"
+  (cancel)="popupConfermaElimina.closeModal()"
 >
-</fbm-popup-conferma>
+  Vuoi eliminare il giocatore? Attenzione, l'operazione è irreversibile!
+</fbm-popup-confirm>
 
 <!-- popup inserimento/modifica giocatore -->
 <div
@@ -131,11 +132,11 @@
       </div>
 
       <div class="modal-body">
-        <fbm-player-form [roster]="rosterSelected" (salva)="salva($event)" (annulla)="annulla()"></fbm-player-form>
+        <fbm-player-form [roster]="rosterSelected" (salva)="salva($event)" (cancel)="annulla()"></fbm-player-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<fbm-upload #popupUpload titolo="Upload giocatori" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></fbm-upload>
+<fbm-upload #popupUpload titolo="Upload giocatori" (upload)="confermaUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>
