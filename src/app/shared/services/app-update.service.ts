@@ -17,6 +17,10 @@ export class AppUpdateService {
   }
 
   doAppUpdate() {
-    this.updates.activateUpdate().then(() => document.location.reload());
+    this.updates.activateUpdate().then((value: boolean) => {
+      if (value) {
+        document.location.reload();
+      }
+    });
   }
 }

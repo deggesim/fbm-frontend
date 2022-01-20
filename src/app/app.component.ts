@@ -45,6 +45,12 @@ export class AppComponent implements OnInit, AfterViewChecked {
           this.subscribeToNotification();
         }
       });
+
+    this.appUpdateService.updateAvaliable$.subscribe((updateAvailable: boolean) => {
+      if (updateAvailable) {
+        this.popupAggiorna.apriModale();
+      }
+    });
   }
 
   private subscribeToNotification() {

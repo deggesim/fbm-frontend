@@ -29,6 +29,7 @@ import { GlobalInterceptor } from './core/global-interceptor.service';
 import { TenantInterceptor } from './core/league/services/tenant-interceptor.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { AppUpdateService } from './shared/services/app-update.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -70,6 +71,7 @@ import { environment } from '../environments/environment';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TenantInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: GlobalInterceptor, multi: true },
+    AppUpdateService
   ],
   bootstrap: [AppComponent],
 })
