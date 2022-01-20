@@ -1,15 +1,17 @@
-import { AfterViewChecked, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { SwPush } from '@angular/service-worker';
 import { AppState } from '@app/core/app.state';
 import { SpinnerService } from '@app/core/spinner.service';
 import * as UserActions from '@app/core/user/store/user.actions';
 import { Store } from '@ngrx/store';
-import { forkJoin, noop, of, switchMap, switchMapTo, take, tap, zip } from 'rxjs';
+import { noop, of, switchMap, zip } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './core/auth/service/auth.service';
 import * as AuthActions from './core/auth/store/auth.actions';
 import * as LeagueActions from './core/league/store/league.actions';
 import { User } from './models/user';
+import { PopupConfermaComponent } from './shared/components/popup-conferma/popup-conferma.component';
+import { AppUpdateService } from './shared/services/app-update.service';
 import { PushSubscriptionService } from './shared/services/push-subscription.service';
 
 @Component({
@@ -22,13 +24,16 @@ export class AppComponent implements OnInit, AfterViewChecked {
   mostraPopupUserProfile: boolean;
   readonly VAPID_PUBLIC_KEY = environment.vapidPublikKey;
 
+  @ViewChild('popupAggiorna', { static: true }) public popupAggiorna!: PopupConfermaComponent;
+
   constructor(
     private cdRef: ChangeDetectorRef,
     private spinnerService: SpinnerService,
     private store: Store<AppState>,
     private swPush: SwPush,
     private authService: AuthService,
-    private pushSubscriptionService: PushSubscriptionService
+    private pushSubscriptionService: PushSubscriptionService,
+    private appUpdateService: AppUpdateService
   ) {}
 
   ngOnInit(): void {
@@ -74,5 +79,10 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   public completePreseason() {
     this.store.dispatch(LeagueActions.completePreseason());
+  }
+
+  public aggiornaApp() {
+    this.popupAggiorna.chiudiModale();
+    this.appUpdateService.doAppUpdate();
   }
 }
