@@ -32,3 +32,13 @@
     </div>
   </div>
 </div>
+
+<!-- popup aggiorna app -->
+<app-popup-conferma
+  #popupAggiorna
+  titolo="Aggiornamento app disponibile"
+  btnConferma="Aggiorna"
+  btnAnnulla="Annulla"
+  (conferma)="aggiornaApp()"
+  (annulla)="popupAggiorna.chiudiModale()"
+></app-popup-conferma>
