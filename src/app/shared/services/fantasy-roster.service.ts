@@ -15,7 +15,7 @@ export class FantasyRosterService {
   public read(fantasyTeamId: string, realFixtureId: string) {
     return this.http
       .get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}/real-fixture/${realFixtureId}`)
-      .pipe(tap((fantasyRosters: FantasyRoster[]) => fantasyRosters.sort(sort)));
+      .pipe(tap((fantasyRosters: FantasyRoster[]) => [...fantasyRosters].sort(sort)));
   }
 
   public create(fantasyRoster: FantasyRoster) {
@@ -24,6 +24,10 @@ export class FantasyRosterService {
 
   public update(fantasyRoster: FantasyRoster) {
     return this.http.patch<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${fantasyRoster._id}`, fantasyRoster);
+  }
+
+  public switch(fantasyRoster: FantasyRoster) {
+    return this.http.patch<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${fantasyRoster._id}/switch`, fantasyRoster);
   }
 
   public release(id: string) {

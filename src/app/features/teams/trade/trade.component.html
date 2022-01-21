@@ -1,6 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="exchange-alt" class="icon-padding"></fa-icon>Scambi</legend>
+
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <!-- FANTASYTEAM #1-->
       <div fxFlex="49" fxFlex.xs="100">
@@ -9,7 +10,7 @@
           <ng-select
             id="fantasyTeam1"
             name="fantasyTeam1"
-            [items]="fantasyTeams1"
+            [items]="fantasyTeams"
             bindLabel="name"
             formControlName="fantasyTeam1"
             clearAllText="Elimina"
@@ -18,6 +19,16 @@
           </ng-select>
           <fbm-error-message [form-control]="form.get('fantasyTeam1')"></fbm-error-message>
         </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeam1Selected">
+          <div fxFlex="50" fxFlex.sm="100">
+            Crediti residui: {{ fantasyTeam1Selected.initialBalance - fantasyTeam1Selected.balancePenalty - fantasyTeam1Selected.outgo }}
+          </div>
+          <div fxFlex="50" fxFlex.sm="100">Contratti stipulati: {{ fantasyTeam1Selected.totalContracts }}</div>
+          <div fxFlex="50" fxFlex.sm="100">Giocatori nel roster: {{ fantasyTeam1Selected.playersInRoster }}</div>
+          <div fxFlex="50" fxFlex.sm="100">Visti spesi: {{ fantasyTeam1Selected.extraPlayers }}</div>
+        </div>
+        <hr />
 
         <div class="table-responsive">
           <table class="table table-hover" aria-label="Fantasquadra #1">
@@ -58,7 +69,7 @@
           <ng-select
             id="fantasyTeam2"
             name="fantasyTeam2"
-            [items]="fantasyTeams2"
+            [items]="fantasyTeams"
             bindLabel="name"
             formControlName="fantasyTeam2"
             clearAllText="Elimina"
@@ -67,6 +78,16 @@
           </ng-select>
           <fbm-error-message [form-group]="form" name="Fantasquadra #2"></fbm-error-message>
         </div>
+
+        <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeam2Selected">
+          <div fxFlex="50" fxFlex.sm="100">
+            Crediti residui: {{ fantasyTeam2Selected.initialBalance - fantasyTeam2Selected.balancePenalty - fantasyTeam2Selected.outgo }}
+          </div>
+          <div fxFlex="50" fxFlex.sm="100">Contratti stipulati: {{ fantasyTeam2Selected.totalContracts }}</div>
+          <div fxFlex="50" fxFlex.sm="100">Giocatori nel roster: {{ fantasyTeam2Selected.playersInRoster }}</div>
+          <div fxFlex="50" fxFlex.sm="100">Visti spesi: {{ fantasyTeam2Selected.extraPlayers }}</div>
+        </div>
+        <hr />
 
         <div class="table-responsive">
           <table class="table table-hover" aria-label="Fantasquadra #2">
@@ -103,9 +124,7 @@
   </fieldset>
 
   <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
-    <button type="button" class="btn btn-primary" (click)="reset()">
-      <fa-icon icon="undo" class="icon-padding"></fa-icon>Reset
-    </button>
+    <button type="button" class="btn btn-primary" (click)="reset()"><fa-icon icon="undo" class="icon-padding"></fa-icon>Reset</button>
     <button type="button" class="btn btn-primary" (click)="recap()" [disabled]="!enableRecap()">
       <fa-icon icon="list" class="icon-padding"></fa-icon>Riepilogo
     </button>

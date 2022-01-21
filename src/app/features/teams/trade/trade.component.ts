@@ -23,8 +23,7 @@ import { switchMap, take, tap } from 'rxjs/operators';
 export class TradeComponent implements OnInit {
   form: FormGroup;
   nextRealFixture: RealFixture;
-  fantasyTeams1: FantasyTeam[];
-  fantasyTeams2: FantasyTeam[];
+  fantasyTeams: FantasyTeam[];
   fantasyTeam1Selected: FantasyTeam;
   fantasyTeam2Selected: FantasyTeam;
   fantasyRosters1: FantasyRoster[];
@@ -46,8 +45,7 @@ export class TradeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fantasyTeams1 = this.route.snapshot.data['fantasyTeams'];
-    this.fantasyTeams2 = this.route.snapshot.data['fantasyTeams'];
+    this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.store.pipe(select(leagueInfo), take(1)).subscribe((li: LeagueInfo) => {
       this.nextRealFixture = li.nextRealFixture;
     });
@@ -130,11 +128,24 @@ export class TradeComponent implements OnInit {
     for (const fr of this.fantasyRosters2Selected) {
       fr.fantasyTeam = this.fantasyTeam1Selected;
     }
-    this.fantasyTeam1Selected.outgo -= this.form.value.buyout;
-    this.fantasyTeam2Selected.outgo += this.form.value.buyout;
+
+    const buyout = this.form.value.buyout ? this.form.value.buyout : 0;
+    this.fantasyTeam1Selected.outgo += buyout;
+    this.fantasyTeam2Selected.outgo -= buyout;
+    this.fantasyTeam1Selected.playersInRoster += this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length;
+    this.fantasyTeam2Selected.playersInRoster += this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length;
+    this.fantasyTeam1Selected.totalContracts +=
+      this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length > 0
+        ? this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length
+        : 0;
+
+    this.fantasyTeam2Selected.totalContracts +=
+      this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length > 0
+        ? this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length
+        : 0;
 
     const allTradedPlayers = this.fantasyRosters1Selected.concat(this.fantasyRosters2Selected);
-    const allTradedPlayers$ = allTradedPlayers.map((fr: FantasyRoster) => this.fantasyRosterService.update(fr));
+    const allTradedPlayers$ = allTradedPlayers.map((fr: FantasyRoster) => this.fantasyRosterService.switch(fr));
     const all$: Observable<FantasyRoster>[] = []
       .concat(allTradedPlayers$)
       .concat(this.fantasyTeamService.update(this.fantasyTeam1Selected), this.fantasyTeamService.update(this.fantasyTeam2Selected));
@@ -148,6 +159,12 @@ export class TradeComponent implements OnInit {
         switchMap(() => this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters2 = fantasyRosters;
+        }),
+        switchMap(() => this.fantasyTeamService.read()),
+        tap((fantasyTeams: FantasyTeam[]) => {
+          this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+          this.fantasyTeam1Selected = this.fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeam1Selected._id === ft._id);
+          this.fantasyTeam2Selected = this.fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeam2Selected._id === ft._id);
         })
       )
       .subscribe(() => {
