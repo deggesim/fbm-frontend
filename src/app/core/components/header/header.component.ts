@@ -12,7 +12,6 @@ import { isEmpty } from 'lodash-es';
 @Component({
   selector: 'fbm-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
   @Output() openLogin: EventEmitter<any> = new EventEmitter(true);
