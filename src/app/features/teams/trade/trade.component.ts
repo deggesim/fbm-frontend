@@ -146,7 +146,7 @@ export class TradeComponent implements OnInit {
 
     const allTradedPlayers = this.fantasyRosters1Selected.concat(this.fantasyRosters2Selected);
     const allTradedPlayers$ = allTradedPlayers.map((fr: FantasyRoster) => this.fantasyRosterService.switch(fr));
-    const all$: Observable<FantasyRoster>[] = []
+    const all$: Observable<FantasyRoster | FantasyTeam>[] = []
       .concat(allTradedPlayers$)
       .concat(this.fantasyTeamService.update(this.fantasyTeam1Selected), this.fantasyTeamService.update(this.fantasyTeam2Selected));
 

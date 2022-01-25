@@ -301,7 +301,7 @@ export class LineupsComponent implements OnInit {
       map((performances: Performance[]) => {
         return performances
           .filter((value) => value.realFixture.prepared && value.realFixture._id !== this.nextRealFixture._id)
-          .sort((a, b) => a.realFixture._id.localeCompare(b.realFixture._id));
+          .sort((a, b) => a.realFixture.order - b.realFixture.order);
       }),
       map((performances: Performance[]) => statistics(fantasyRoster.roster.player, performances, this.nextRealFixture, 5)),
       tap((playerStats: PlayerStats) => {

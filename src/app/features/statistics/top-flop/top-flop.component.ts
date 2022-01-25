@@ -125,7 +125,7 @@ export class TopFlopComponent implements OnInit {
       map((performances: Performance[]) => {
         return performances
           .filter((value) => value.realFixture.prepared && value.realFixture._id !== this.nextRealFixture._id)
-          .sort((a, b) => a.realFixture._id.localeCompare(b.realFixture._id));
+          .sort((a, b) => a.realFixture.order - b.realFixture.order);
       }),
       map((performances: Performance[]) => ({ player, trend: performances })),
       tap((playerStats: PlayerStats) => {
