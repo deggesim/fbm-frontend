@@ -1,5 +1,6 @@
-export interface Team {
-  _id?: string;
+import { FbmModel } from './fbm.model';
+
+export interface Team extends FbmModel {
   fullName: string;
   sponsor?: string;
   name?: string;

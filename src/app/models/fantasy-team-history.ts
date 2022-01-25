@@ -1,9 +1,9 @@
-import { FantasyRoster } from './fantasy-roster';
+import { FantasyTeam } from './fantasy-team';
 import { FbmModel } from './fbm.model';
-import { User } from './user';
+import { RealFixture } from './real-fixture';
 
-export interface FantasyTeam extends FbmModel {
-  name: string;
+export interface FantasyTeamHistory extends FbmModel {
+  fantasyTeam: FantasyTeam;
   initialBalance?: number;
   outgo?: number;
   totalContracts?: number;
@@ -11,6 +11,5 @@ export interface FantasyTeam extends FbmModel {
   extraPlayers?: number;
   pointsPenalty?: number;
   balancePenalty?: number;
-  owners: User[];
-  fantasyRosters?: FantasyRoster[];
+  realFixture: RealFixture;
 }
