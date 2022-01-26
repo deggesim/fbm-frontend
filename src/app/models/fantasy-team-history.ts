@@ -4,12 +4,7 @@ import { RealFixture } from './real-fixture';
 
 export interface FantasyTeamHistory extends FbmModel {
   fantasyTeam: FantasyTeam;
-  initialBalance?: number;
-  outgo?: number;
-  totalContracts?: number;
-  playersInRoster?: number;
-  extraPlayers?: number;
-  pointsPenalty?: number;
-  balancePenalty?: number;
+  balance?: number;
+  operation: string;
   realFixture: RealFixture;
 }

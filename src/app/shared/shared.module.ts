@@ -13,6 +13,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { CastToFantasyRosterHistoryPipe } from './pipes/cast-to-fantasy-roster-history.pipe';
 import { CastToFantasyTeamHistoryPipe } from './pipes/cast-to-fantasy-team-history.pipe';
+import { DecodeHistoryPipe } from './pipes/decode-history.pipe';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { CastToFantasyTeamHistoryPipe } from './pipes/cast-to-fantasy-team-histo
     PlayerStatusDirective,
     CastToFantasyRosterHistoryPipe,
     CastToFantasyTeamHistoryPipe,
+    DecodeHistoryPipe,
   ],
   imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule],
   exports: [
@@ -39,6 +41,7 @@ import { CastToFantasyTeamHistoryPipe } from './pipes/cast-to-fantasy-team-histo
     PlayerStatusDirective,
     CastToFantasyRosterHistoryPipe,
     CastToFantasyTeamHistoryPipe,
+    DecodeHistoryPipe,
   ],
 })
 export class SharedModule {

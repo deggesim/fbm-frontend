@@ -57,20 +57,24 @@
         </table>
       </div>
 
-      <ng-container *ngIf="htmlHistory && htmlHistory.length > 0">
+      <ng-container *ngIf="history && history.length > 0">
         <hr />
         <h4>Storico</h4>
 
-        <ul class="list-group list-group-numbered">
+        <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-start" *ngFor="let item of history">
-            <ng-container *ngIf="'name'; in: item; else: fth">
-              <div class="ms-2 me-auto">
+            <ng-container *ngIf="testType(item); else fth">
+              <div fxLayout="row wrap" class="w-100">
                 <!-- player -->
-                <div class="fw-bold">
-                  {{ (item | castToFantasyRosterHistory).realFixture.name }} - {{ (item | castToFantasyRosterHistory).operation }} -
+                <div fxFlex="66" fxFlex.lt-md="100" class="fw-bold">
+                  {{ (item | castToFantasyRosterHistory).realFixture.name }} -
+                  {{ (item | castToFantasyRosterHistory).operation | decodeHistory }}:
                   {{ (item | castToFantasyRosterHistory).name }}
                 </div>
-                <div class="table">
+                <div fxFlex="33" fxFlex.lt-md="100" class="badge bg-primary rounded-pill pill">
+                  Saldo operazione: {{ (item | castToFantasyRosterHistory).balance }}
+                </div>
+                <div fxFlex="100" class="table-responsive">
                   <table class="table table-hover" aria-label="Storico">
                     <thead class="table-dark">
                       <tr>
@@ -96,13 +100,16 @@
               </div>
             </ng-container>
             <ng-template #fth>
-              <div class="ms-2 me-auto">
-                fth
+              <div fxLayout="row wrap" class="w-100">
                 <!-- team -->
-                <div class="fw-bold">
-                  {{ (item | castToFantasyTeamHistory).realFixture.name }}
+                <div fxFlex="66" fxFlex.lt-md="100" class="fw-bold">
+                  {{ (item | castToFantasyTeamHistory).realFixture.name }} -
+                  {{ (item | castToFantasyTeamHistory).operation | decodeHistory }}
                 </div>
-                <div class="table">
+                <div fxFlex="33" fxFlex.lt-md="100" class="badge bg-primary rounded-pill pill">
+                  Saldo operazione: {{ (item | castToFantasyTeamHistory).balance }}
+                </div>
+                <div fxFlex="100" class="table-responsive">
                   <table class="table table-hover" aria-label="Storico">
                     <thead class="table-dark">
                       <tr>
@@ -119,26 +126,25 @@
 
                     <tbody>
                       <tr class="table-secondary">
-                        <td>{{ (item | castToFantasyTeamHistory).initialBalance }}</td>
-                        <td>{{ (item | castToFantasyTeamHistory).outgo }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).fantasyTeam.initialBalance }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).fantasyTeam.outgo }}</td>
                         <td>
                           {{
-                            (item | castToFantasyTeamHistory).initialBalance -
-                              (item | castToFantasyTeamHistory).balancePenalty -
-                              (item | castToFantasyTeamHistory).outgo
+                            (item | castToFantasyTeamHistory).fantasyTeam.initialBalance -
+                              (item | castToFantasyTeamHistory).fantasyTeam.balancePenalty -
+                              (item | castToFantasyTeamHistory).fantasyTeam.outgo
                           }}
                         </td>
-                        <td>{{ (item | castToFantasyTeamHistory).totalContracts }}</td>
-                        <td>{{ (item | castToFantasyTeamHistory).playersInRoster }}</td>
-                        <td>{{ (item | castToFantasyTeamHistory).extraPlayers }}</td>
-                        <td>{{ (item | castToFantasyTeamHistory).pointsPenalty }}</td>
-                        <td>{{ (item | castToFantasyTeamHistory).balancePenalty }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).fantasyTeam.totalContracts }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).fantasyTeam.playersInRoster }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).fantasyTeam.extraPlayers }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).fantasyTeam.pointsPenalty }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).fantasyTeam.balancePenalty }}</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
               </div>
-              <span class="badge bg-primary rounded-pill">Saldo operazione: {{ (item | castToFantasyTeamHistory).outgo }}</span>
             </ng-template>
           </li>
         </ul>

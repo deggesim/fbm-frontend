@@ -12,6 +12,7 @@ import { FantasyRosterHistoryService } from '@app/shared/services/fantasy-roster
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamHistoryService } from '@app/shared/services/fantasy-team-history.service';
 import { select, Store } from '@ngrx/store';
+import { memoize } from 'lodash-es';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { switchMap, switchMapTo, tap } from 'rxjs/operators';
@@ -19,6 +20,7 @@ import { switchMap, switchMapTo, tap } from 'rxjs/operators';
 @Component({
   selector: 'fbm-fantasy-rosters',
   templateUrl: './fantasy-rosters.component.html',
+  styleUrls: ['./fantasy-rosters.component.scss'],
 })
 export class FantasyRostersComponent implements OnInit {
   form: FormGroup;
@@ -27,7 +29,6 @@ export class FantasyRostersComponent implements OnInit {
   fantasyTeamSelected: FantasyTeam;
   fantasyRosters: FantasyRoster[];
   history: (FantasyRosterHistory | FantasyTeamHistory)[] = [];
-  htmlHistory: string[] = [];
 
   private fb: FormBuilder;
   private route: ActivatedRoute;
@@ -80,32 +81,20 @@ export class FantasyRostersComponent implements OnInit {
         )
         .subscribe((values: [FantasyRosterHistory[], FantasyTeamHistory[]]) => {
           this.history = [...values[0], ...values[1]].sort(this.sortHistory);
-          for (const h of this.history) {
-            if ('name' in h) {
-              // player
-              const htmlHistoryItem = `${h.realFixture.name} - ${h.operation} ${h.name} - ${h.status} - ${h.contract} - ${h.yearContract} - ${h.role} - ${h.balance}`;
-              this.htmlHistory.push(htmlHistoryItem);
-            } else {
-              // team
-              const htmlHistoryItem = `${h.realFixture} - ${h.initialBalance} - ${h.outgo} - ${h.totalContracts} - ${h.playersInRoster} - ${h.extraPlayers} - ${h.pointsPenalty} -  ${h.balancePenalty}`;
-              this.htmlHistory.push(htmlHistoryItem);
-            }
-            
-          }
         });
     } else {
       this.fantasyRosters = null;
-      this.htmlHistory = null;
+      this.history = null;
     }
   }
 
-  testType(item: FantasyRosterHistory | FantasyTeamHistory): boolean {
+  testType = memoize((item: FantasyRosterHistory | FantasyTeamHistory): boolean => {
     if ('name' in item) {
       return true;
     } else {
       return false;
     }
-  }
+  });
 
   sortHistory = (a: FantasyRosterHistory | FantasyTeamHistory, b: FantasyRosterHistory | FantasyTeamHistory): number => {
     if (a.realFixture.order === b.realFixture.order) {
