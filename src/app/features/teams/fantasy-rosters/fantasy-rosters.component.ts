@@ -26,6 +26,7 @@ export class FantasyRostersComponent implements OnInit {
   fantasyTeams: FantasyTeam[];
   fantasyTeamSelected: FantasyTeam;
   fantasyRosters: FantasyRoster[];
+  history: (FantasyRosterHistory | FantasyTeamHistory)[] = [];
   htmlHistory: string[] = [];
 
   private fb: FormBuilder;
@@ -78,8 +79,8 @@ export class FantasyRostersComponent implements OnInit {
           )
         )
         .subscribe((values: [FantasyRosterHistory[], FantasyTeamHistory[]]) => {
-          const history = [...values[0], ...values[1]].sort(this.sortHistory);
-          for (const h of history) {
+          this.history = [...values[0], ...values[1]].sort(this.sortHistory);
+          for (const h of this.history) {
             if ('name' in h) {
               // player
               const htmlHistoryItem = `${h.realFixture.name} - ${h.operation} ${h.name} - ${h.status} - ${h.contract} - ${h.yearContract} - ${h.role} - ${h.balance}`;
@@ -95,6 +96,14 @@ export class FantasyRostersComponent implements OnInit {
     } else {
       this.fantasyRosters = null;
       this.htmlHistory = null;
+    }
+  }
+
+  testType(item: FantasyRosterHistory | FantasyTeamHistory): boolean {
+    if ('name' in item) {
+      return true;
+    } else {
+      return false;
     }
   }
 

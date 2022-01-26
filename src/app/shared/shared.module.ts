@@ -11,6 +11,8 @@ import { ToStringPipe } from '@app/shared/pipes/to-string.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { CastToFantasyRosterHistoryPipe } from './pipes/cast-to-fantasy-roster-history.pipe';
+import { CastToFantasyTeamHistoryPipe } from './pipes/cast-to-fantasy-team-history.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     RoleShortPipe,
     ToStringPipe,
     PlayerStatusDirective,
+    CastToFantasyRosterHistoryPipe,
+    CastToFantasyTeamHistoryPipe,
   ],
   imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule],
   exports: [
@@ -33,6 +37,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     RoleShortPipe,
     ToStringPipe,
     PlayerStatusDirective,
+    CastToFantasyRosterHistoryPipe,
+    CastToFantasyTeamHistoryPipe,
   ],
 })
 export class SharedModule {

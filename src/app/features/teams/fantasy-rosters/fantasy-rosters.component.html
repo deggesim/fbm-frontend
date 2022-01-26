@@ -61,9 +61,85 @@
         <hr />
         <h4>Storico</h4>
 
-        <ul class="list-group">
-          <li class="list-group-item" *ngFor="let item of htmlHistory">
-            {{ item }}
+        <ul class="list-group list-group-numbered">
+          <li class="list-group-item d-flex justify-content-between align-items-start" *ngFor="let item of history">
+            <ng-container *ngIf="'name'; in: item; else: fth">
+              <div class="ms-2 me-auto">
+                <!-- player -->
+                <div class="fw-bold">
+                  {{ (item | castToFantasyRosterHistory).realFixture.name }} - {{ (item | castToFantasyRosterHistory).operation }} -
+                  {{ (item | castToFantasyRosterHistory).name }}
+                </div>
+                <div class="table">
+                  <table class="table table-hover" aria-label="Storico">
+                    <thead class="table-dark">
+                      <tr>
+                        <th fxHide.lt-sm id="status">Status</th>
+                        <th fxHide.lt-sm id="contract">Contratto</th>
+                        <th fxHide.lt-sm id="yearContract">Anno di contratto</th>
+                        <th fxHide.lt-sm id="role">Ruolo</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr class="table-secondary">
+                        <td fxHide.lt-sm>{{ (item | castToFantasyRosterHistory).status }}</td>
+                        <td fxHide.lt-sm>
+                          {{ (item | castToFantasyRosterHistory).contract != null ? (item | castToFantasyRosterHistory).contract : 'D' }}
+                        </td>
+                        <td fxHide.lt-sm>{{ (item | castToFantasyRosterHistory).yearContract }}</td>
+                        <td fxHide.lt-sm>{{ (item | castToFantasyRosterHistory).role }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #fth>
+              <div class="ms-2 me-auto">
+                fth
+                <!-- team -->
+                <div class="fw-bold">
+                  {{ (item | castToFantasyTeamHistory).realFixture.name }}
+                </div>
+                <div class="table">
+                  <table class="table table-hover" aria-label="Storico">
+                    <thead class="table-dark">
+                      <tr>
+                        <th id="initialBalance">Bilancio</th>
+                        <th id="outgo">Crediti spesi</th>
+                        <th id="remainingCredits">Crediti residui</th>
+                        <th id="totalContracts"># Contratti</th>
+                        <th id="playersInRoster"># Giocatori</th>
+                        <th id="extraPlayers">Visti spesi</th>
+                        <th id="pointsPenalty">Punti di penalità</th>
+                        <th id="balancePenalty">Malus crediti</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr class="table-secondary">
+                        <td>{{ (item | castToFantasyTeamHistory).initialBalance }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).outgo }}</td>
+                        <td>
+                          {{
+                            (item | castToFantasyTeamHistory).initialBalance -
+                              (item | castToFantasyTeamHistory).balancePenalty -
+                              (item | castToFantasyTeamHistory).outgo
+                          }}
+                        </td>
+                        <td>{{ (item | castToFantasyTeamHistory).totalContracts }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).playersInRoster }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).extraPlayers }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).pointsPenalty }}</td>
+                        <td>{{ (item | castToFantasyTeamHistory).balancePenalty }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <span class="badge bg-primary rounded-pill">Saldo operazione: {{ (item | castToFantasyTeamHistory).outgo }}</span>
+            </ng-template>
           </li>
         </ul>
       </ng-container>
