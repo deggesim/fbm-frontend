@@ -11,6 +11,7 @@ import { ToStringPipe } from '@app/shared/pipes/to-string.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { DecodeHistoryPipe } from './pipes/decode-history.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     RoleShortPipe,
     ToStringPipe,
     PlayerStatusDirective,
+    DecodeHistoryPipe,
   ],
   imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule],
   exports: [
@@ -33,6 +35,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
     RoleShortPipe,
     ToStringPipe,
     PlayerStatusDirective,
+    DecodeHistoryPipe,
   ],
 })
 export class SharedModule {

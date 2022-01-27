@@ -24,10 +24,10 @@ export class FantasyTeamService {
   }
 
   public update(fantasyTeam: FantasyTeam) {
-    return this.http.patch<FantasyTeam[]>(`${this.endpoint}/fantasy-teams/${fantasyTeam._id}`, fantasyTeam);
+    return this.http.patch<FantasyTeam>(`${this.endpoint}/fantasy-teams/${fantasyTeam._id}`, fantasyTeam);
   }
 
   public delete(id: string) {
-    return this.http.delete<FantasyTeam[]>(`${this.endpoint}/fantasy-teams/${id}`);
+    return this.http.delete<FantasyTeam>(`${this.endpoint}/fantasy-teams/${id}`);
   }
 }

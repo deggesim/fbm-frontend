@@ -1,9 +1,8 @@
 import { FantasyRoster } from './fantasy-roster';
-import { Lineup } from './lineup';
+import { FbmModel } from './fbm.model';
 import { User } from './user';
 
-export interface FantasyTeam {
-  _id?: string;
+export interface FantasyTeam extends FbmModel {
   name: string;
   initialBalance?: number;
   outgo?: number;

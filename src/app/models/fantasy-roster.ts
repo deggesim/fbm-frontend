@@ -1,10 +1,10 @@
 import { FantasyTeam } from './fantasy-team';
+import { FbmModel } from './fbm.model';
 import { Role } from './player';
 import { RealFixture } from './real-fixture';
 import { Roster } from './roster';
 
-export interface FantasyRoster {
-  _id?: string;
+export interface FantasyRoster extends FbmModel {
   roster: Roster;
   fantasyTeam: FantasyTeam;
   status: string;
@@ -21,7 +21,7 @@ export enum PlayerStatus {
   'Ita' = 'ITA',
 }
 
-export const sort = (a: FantasyRoster, b: FantasyRoster): number => {
+export const sortFantasyRoster = (a: FantasyRoster, b: FantasyRoster): number => {
   const aRole = getRole(a);
   const bRole = getRole(b);
   const map: { [x: string]: number } = {};

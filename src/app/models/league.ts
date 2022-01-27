@@ -19,6 +19,8 @@ export interface League {
   cupFirstRealFixture: number;
   parameters?: Parameter[];
   roles?: Role[];
+  createdAt?: moment.Moment;
+  updatedAt?: moment.Moment;
 }
 
 export interface Role {

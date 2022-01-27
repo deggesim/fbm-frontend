@@ -168,8 +168,8 @@
   </div>
 </nav>
 
-<nav aria-label="breadcrumb" class="d-none d-sm-block">
+<nav aria-label="breadcrumb" class="d-none d-sm-block" *ngIf="leagueInfo && leagueInfo.info">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active" *ngIf="leagueInfo">{{ leagueInfo.info }}</li>
+    <li class="breadcrumb-item active">{{ leagueInfo.info }}</li>
   </ol>
 </nav>
