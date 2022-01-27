@@ -1,4 +1,3 @@
-import { FantasyRosterHistory } from './fantasy-roster-history';
 import { FantasyTeam } from './fantasy-team';
 import { FbmModel } from './fbm.model';
 import { Role } from './player';

@@ -4,17 +4,14 @@ import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
 import { FantasyRoster } from '@app/models/fantasy-roster';
-import { FantasyRosterHistory } from '@app/models/fantasy-roster-history';
 import { FantasyTeam } from '@app/models/fantasy-team';
-import { FantasyTeamHistory } from '@app/models/fantasy-team-history';
+import { History } from '@app/models/history';
 import { LeagueInfo } from '@app/models/league';
-import { FantasyRosterHistoryService } from '@app/shared/services/fantasy-roster-history.service';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
-import { FantasyTeamHistoryService } from '@app/shared/services/fantasy-team-history.service';
+import { HistoryService } from '@app/shared/services/history.service';
 import { select, Store } from '@ngrx/store';
 import { memoize } from 'lodash-es';
 import * as moment from 'moment';
-import { forkJoin } from 'rxjs';
 import { switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
@@ -28,21 +25,19 @@ export class FantasyRostersComponent implements OnInit {
   fantasyTeams: FantasyTeam[];
   fantasyTeamSelected: FantasyTeam;
   fantasyRosters: FantasyRoster[];
-  history: (FantasyRosterHistory | FantasyTeamHistory)[] = [];
+  history: History[] = [];
 
   private fb: FormBuilder;
   private route: ActivatedRoute;
   private fantasyRosterService: FantasyRosterService;
-  private fantasyRosterHistoryService: FantasyRosterHistoryService;
-  private fantasyTeamHistoryService: FantasyTeamHistoryService;
+  private historyService: HistoryService;
   private store: Store<AppState>;
 
   constructor(injector: Injector) {
     this.fb = injector.get(FormBuilder);
     this.route = injector.get(ActivatedRoute);
     this.fantasyRosterService = injector.get(FantasyRosterService);
-    this.fantasyRosterHistoryService = injector.get(FantasyRosterHistoryService);
-    this.fantasyTeamHistoryService = injector.get(FantasyTeamHistoryService);
+    this.historyService = injector.get(HistoryService);
     this.store = injector.get(Store);
 
     this.createForm();
@@ -75,12 +70,10 @@ export class FantasyRostersComponent implements OnInit {
           tap((fantasyRosters: FantasyRoster[]) => {
             this.fantasyRosters = fantasyRosters;
           }),
-          switchMapTo(
-            forkJoin([this.fantasyRosterHistoryService.read(fantasyTeam._id), this.fantasyTeamHistoryService.read(fantasyTeam._id)])
-          )
+          switchMapTo(this.historyService.read(fantasyTeam._id))
         )
-        .subscribe((values: [FantasyRosterHistory[], FantasyTeamHistory[]]) => {
-          this.history = [...values[0], ...values[1]].sort(this.sortHistory);
+        .subscribe((history: History[]) => {
+          this.history = [...history].sort(this.sortHistory);
         });
     } else {
       this.fantasyRosters = null;
@@ -88,7 +81,7 @@ export class FantasyRostersComponent implements OnInit {
     }
   }
 
-  testType = memoize((item: FantasyRosterHistory | FantasyTeamHistory): boolean => {
+  isPlayer = memoize((item: History): boolean => {
     if ('name' in item) {
       return true;
     } else {
@@ -96,7 +89,7 @@ export class FantasyRostersComponent implements OnInit {
     }
   });
 
-  sortHistory = (a: FantasyRosterHistory | FantasyTeamHistory, b: FantasyRosterHistory | FantasyTeamHistory): number => {
+  sortHistory = (a: History, b: History): number => {
     if (a.realFixture.order === b.realFixture.order) {
       const updatedAtA = moment(a.updatedAt);
       const updatedAtB = moment(b.updatedAt);

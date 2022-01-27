@@ -11,6 +11,12 @@ export class DecodeHistoryPipe implements PipeTransform {
       case 'DRAFT':
         decodedValue = 'Giocatore scelto al draft';
         break;
+      case 'AUCTION_BUY':
+        decodedValue = "Giocatore acquistato all'asta";
+        break;
+      case 'AUCTION_REMOVE':
+        decodedValue = "Giocatore rimosso durante l'asta";
+        break;
       case 'BUY':
         decodedValue = 'Giocatore acquistato al mercato libero';
         break;
