@@ -13,6 +13,7 @@
             clearAllText="Elimina"
             (change)="onChangeRound($event)"
             [searchFn]="roundSearchFn"
+            (clear)="allFieldsSelected = false; changeAllowed = false"
           >
             <ng-template ng-label-tmp let-item="item"> {{ item.competition.name }} - {{ item.name }} </ng-template>
             <ng-template ng-option-tmp let-item="item" let-index="index"> {{ item.competition.name }} - {{ item.name }} </ng-template>
@@ -31,6 +32,7 @@
             formControlName="fixture"
             clearAllText="Elimina"
             (change)="onChangeFixture($event)"
+            (clear)="allFieldsSelected = false; changeAllowed = false"
           >
           </ng-select>
         </div>
@@ -47,6 +49,7 @@
             formControlName="fantasyTeam"
             clearAllText="Elimina"
             (change)="onChangeFantasyTeam($event)"
+            (clear)="allFieldsSelected = false; changeAllowed = false"
           >
           </ng-select>
         </div>
@@ -199,12 +202,15 @@
     <button type="button" class="btn btn-primary" (click)="empty()" *ngIf="changeAllowed">
       <fa-icon icon="undo" class="icon-padding"></fa-icon>Svuota
     </button>
-    <!-- <button type="button" class="btn btn-primary" (click)="import()" *ngIf="changeAllowed">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="import()"
+      *ngIf="changeAllowed"
+      [disabled]="!fantasyRostersPresent || !allFieldsSelected"
+    >
       <fa-icon icon="file-import" class="icon-padding"></fa-icon>Importa
-    </button> -->
-    <!-- <button type="button" class="btn btn-primary" (click)="inviaEmail()">
-      <fa-icon icon="envelope" class="icon-padding"></fa-icon>Invia mail
-    </button> -->
+    </button>
     <button type="button" class="btn btn-primary" [disabled]="disableCopyLineup" (click)="htmlLineup()">
       <fa-icon icon="copy" class="icon-padding"></fa-icon>Formazione forum
     </button>
@@ -229,7 +235,7 @@
       </div>
 
       <div class="modal-body">
-        <form [formGroup]="benchForm" (ngSubmit)="onSubmitBwenchForm()" class="needs-validation" novalidate>
+        <form [formGroup]="benchForm" (ngSubmit)="onSubmitBenchForm()" class="needs-validation" novalidate>
           <ng-template #sortedListTemplate let-item="item" let-index="index">
             <div class="text-center">
               {{ index + 1 }}: {{ item.value.fantasyRoster.roster.player.name }}

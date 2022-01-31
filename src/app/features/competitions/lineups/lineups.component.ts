@@ -27,8 +27,10 @@ import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
-import { forkJoin, Observable } from 'rxjs';
+import * as moment from 'moment';
+import { EMPTY, forkJoin, Observable } from 'rxjs';
 import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { Match } from '@app/models/match';
 
 @Component({
   selector: 'fbm-lineups',
@@ -49,7 +51,10 @@ export class LineupsComponent implements OnInit {
   lineup: Lineup[];
   changeAllowed = false;
   tooltip = new Map<string, PlayerStats>();
-  realFixtureSelected: RealFixture;
+  selectedRound: Round;
+  selectedRealFixture: RealFixture;
+  selectedFantasyTeam: FantasyTeam;
+  selectedFixture: Fixture;
 
   isAdmin: boolean;
   user: User;
@@ -181,6 +186,7 @@ export class LineupsComponent implements OnInit {
   };
 
   onChangeRound(round: Round) {
+    this.selectedRound = round;
     this.form.get('fixture').reset();
     this.form.get('fantasyTeam').reset();
     this.changeAllowed = false;
@@ -206,6 +212,7 @@ export class LineupsComponent implements OnInit {
   }
 
   onChangeFixture(fixture: Fixture) {
+    this.selectedFixture = fixture;
     this.form.get('fantasyTeam').reset();
     this.changeAllowed = false;
     this.disableCopyLineup = true;
@@ -222,6 +229,7 @@ export class LineupsComponent implements OnInit {
   }
 
   onChangeFantasyTeam(fantasyTeam: FantasyTeam) {
+    this.selectedFantasyTeam = fantasyTeam;
     this.disableCopyLineup = true;
     if (fantasyTeam != null) {
       const teamManagedByLoggedUser = fantasyTeam.owners.find((owner) => owner._id === this.user._id) != null;
@@ -230,7 +238,7 @@ export class LineupsComponent implements OnInit {
         .getByFixture(this.form.value.fixture._id)
         .pipe(
           tap((realFixture: RealFixture) => {
-            this.realFixtureSelected = realFixture;
+            this.selectedRealFixture = realFixture;
           }),
           switchMap((realFixture: RealFixture) => this.fantasyRosterService.read(fantasyTeam._id, realFixture._id)),
           tap((fantasyRosters: FantasyRoster[]) => {
@@ -321,7 +329,7 @@ export class LineupsComponent implements OnInit {
     this.mostraPopupPanchina = true;
   }
 
-  onSubmitBwenchForm() {
+  onSubmitBenchForm() {
     const newOrder: Lineup[] = this.benchForm.value.sortedList;
     let i = 1;
     for (const player of newOrder) {
@@ -404,7 +412,65 @@ export class LineupsComponent implements OnInit {
   }
 
   import() {
-    // TODO
+    let prevRealFixutre: RealFixture;
+    let prevFixture: Fixture;
+    this.realFixtureService
+      .read(true)
+      .pipe(
+        switchMap((realFixtures: RealFixture[]) => {
+          const orderedRealFixtures = [...realFixtures].sort((a: RealFixture, b: RealFixture) => a.order - b.order);
+          const index = orderedRealFixtures.map((f) => f._id).indexOf(this.selectedRealFixture._id);
+          if (index > 0) {
+            prevRealFixutre = orderedRealFixtures[index - 1];
+            const orderedFixtures =
+              prevRealFixutre.fixtures?.length > 0
+                ? [...prevRealFixutre.fixtures]
+                    .filter((f: Fixture) => {
+                      const matchPlayedBySelectedFantasyTeam = f.matches.find(
+                        (m: Match) => m.homeTeam._id === this.selectedFantasyTeam._id || m.awayTeam._id === this.selectedFantasyTeam._id
+                      );
+                      return matchPlayedBySelectedFantasyTeam != null;
+                    })
+                    .sort((f1: Fixture, f2: Fixture) => moment(f2.updatedAt).diff(moment(f1.updatedAt)))
+                : null;
+            prevFixture = orderedFixtures?.length > 0 ? orderedFixtures[0] : null;
+          }
+          return prevFixture ? this.lineupService.lineupByTeam(this.selectedFantasyTeam._id, prevFixture._id) : EMPTY;
+        })
+      )
+      .subscribe((lineup: Lineup[]) => {
+        if (lineup != null && !isEmpty(lineup)) {
+          // verify player still present in this fantasy roster
+          let rosterOk = true;
+          for (const player of lineup) {
+            if (!this.fantasyRosters.map((fr: FantasyRoster) => fr.roster.player._id).includes(player.fantasyRoster.roster.player._id)) {
+              // player not present anymore
+              rosterOk = false;
+              this.toastService.error('Errore', 'La formazione non può essere importata perché non è compatibile con il roster attuale');
+              break;
+            }
+          }
+          if (rosterOk) {
+            this.lineup = lineup.map((player: Lineup) => {
+              const actualFantasyRoster = this.fantasyRosters.find(
+                (fr: FantasyRoster) => fr.roster.player._id === player.fantasyRoster.roster.player._id
+              );
+              return {
+                fantasyRoster: actualFantasyRoster,
+                spot: player.spot,
+                benchOrder: player.benchOrder,
+                fixture: this.form.value.fixture,
+              };
+            });
+            this.form.get('lineup').markAsPristine();
+            this.toastService.success(
+              'Formazione importata',
+              `La formazione del round ${this.selectedRound.competition.name} - ${this.selectedRound.name}, turno ${prevFixture.name} è stata importata correttamente`
+            );
+            this.disableCopyLineup = false;
+          }
+        }
+      });
   }
 
   htmlLineup() {
