@@ -109,6 +109,7 @@ const routes: Routes = [
         path: 'fantasy-teams',
         component: FantasyTeamListComponent,
         resolve: {
+          users: UsersResolverService,
           fantasyTeams: FantasyTeamResolverService,
         },
       },

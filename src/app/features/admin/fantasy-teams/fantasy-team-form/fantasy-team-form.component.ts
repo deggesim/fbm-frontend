@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@app/core/user/services/user.service';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { User } from '@app/models/user';
@@ -17,34 +18,20 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
   form: FormGroup;
 
   users: User[];
-  usersLoading = false;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
     this.createForm();
   }
 
   ngOnInit() {
-    this.usersLoading = true;
-    this.userService.read().subscribe((users: User[]) => {
-      this.users = users;
-      this.usersLoading = false;
-    });
+    this.users = this.route.snapshot.data['users'];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const fantasyTeam: FantasyTeam = changes['fantasyTeam'].currentValue;
     if (fantasyTeam != null) {
-      const {
-        name,
-        initialBalance,
-        outgo,
-        totalContracts,
-        playersInRoster,
-        extraPlayers,
-        pointsPenalty,
-        balancePenalty,
-        owners,
-      } = fantasyTeam;
+      const { name, initialBalance, outgo, totalContracts, playersInRoster, extraPlayers, pointsPenalty, balancePenalty, owners } =
+        fantasyTeam;
       this.form.patchValue({
         name,
         initialBalance,
@@ -74,17 +61,8 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    const {
-      name,
-      initialBalance,
-      outgo,
-      totalContracts,
-      playersInRoster,
-      extraPlayers,
-      pointsPenalty,
-      balancePenalty,
-      owners,
-    } = this.form.value;
+    const { name, initialBalance, outgo, totalContracts, playersInRoster, extraPlayers, pointsPenalty, balancePenalty, owners } =
+      this.form.value;
     const fantasyTeam: FantasyTeam = {
       _id: this.fantasyTeam ? this.fantasyTeam._id : null,
       name,
