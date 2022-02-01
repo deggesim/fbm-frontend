@@ -2,12 +2,34 @@ import { AppConfig } from '@app/shared/constants/globals';
 import { PlayerStatus } from '@app/models/fantasy-roster';
 import { League, Role } from '@app/models/league';
 import { Lineup } from '@app/models/lineup';
-import { isEmpty } from 'lodash-es';
+import { isEmpty, isNil } from 'lodash-es';
 
 export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
   if (fullLineup == null || isEmpty(fullLineup)) {
     return false;
   }
+
+  // check holes
+  let indexes: number[] = [];
+  for (let i = 0; i < fullLineup.length; i++) {
+    if (!fullLineup[i]) {
+      indexes.push(i);
+    }
+  }
+  if (indexes.length > 0) {
+    if (indexes.pop() !== 11) {
+      return false;
+    }
+
+    if (indexes.length > 0 && indexes.pop() !== 10) {
+      return false;
+    }
+
+    if (indexes.length > 0) {
+      return false;
+    }
+  }
+
   // count real players in lineup
   const lineup = fullLineup.filter((player) => player != null);
   if (lineup.length < AppConfig.MinPlayersInLineup) {

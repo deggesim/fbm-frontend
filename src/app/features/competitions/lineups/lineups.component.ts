@@ -162,24 +162,31 @@ export class LineupsComponent implements OnInit {
     }
 
     // count EXT, COM, STR, ITA
-    const MAX_EXT_OPT_345 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
-    if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
-      return { lineupInvalid: true };
-    }
+    const MAX_STR = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_STR');
+    if (MAX_STR) {
+      const totalStr = count(lineup, PlayerStatus.Str) || count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com);
+      if (totalStr > MAX_STR.value) {
+        return { lineupInvalid: true };
+      }
 
-    const MAX_STRANGERS_OPT_55 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
-    if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
-      return { lineupInvalid: true };
-    }
+      if (count(lineup, PlayerStatus.Ita) < totalStr) {
+        return { lineupInvalid: true };
+      }
+    } else {
+      const MAX_EXT_OPT_345 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
+      if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
+        return { lineupInvalid: true };
+      }
 
-    // const MAX_STR = league.parameters.find((param) => param.parameter === 'MAX_STR');
-    // if (count(lineup, PlayerStatus.Str) > MAX_STR.value) {
-    //   return { lineupInvalid: true };
-    // }
+      const MAX_STRANGERS_OPT_55 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
+      if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
+        return { lineupInvalid: true };
+      }
 
-    const MIN_NAT_PLAYERS = this.selectedLeague.parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
-    if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
-      return { lineupInvalid: true };
+      const MIN_NAT_PLAYERS = this.selectedLeague.parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
+      if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
+        return { lineupInvalid: true };
+      }
     }
 
     return null;
@@ -274,6 +281,13 @@ export class LineupsComponent implements OnInit {
         // find first hole
         let index = this.lineup.indexOf(null);
         index = index === -1 ? this.lineup.length : index;
+
+        // check cardinality
+        if (index > 11) {
+          this.toastService.warning('Attenzione', 'Non puoi inserire ulteriori giocatori');
+          return;
+        }
+
         const benchOrder = index > AppConfig.Starters - 1 && index < AppConfig.MinPlayersInLineup ? index + 1 - AppConfig.Starters : null;
         const newPlayer: Lineup = {
           fantasyRoster,
