@@ -58,95 +58,10 @@
           <hr />
         </div>
 
-        <!-- SQUADRA 1 -->
         <ng-container *ngIf="selectedMatch">
-          <div fxFlex="49" fxFlex.lt-md="100">
-            <div>
-              <h4 id="homeTeam">{{ selectedMatch.homeTeam.name }} {{ selectedMatch.homeScore }}</h4>
-            </div>
-            <div>
-              <label>Fattore campo: {{ selectedMatch.homeFactor }}</label>
-            </div>
-            <div class="pb-3">
-              <label>Valutazione: {{ selectedMatch.homeRanking }} - Pagelle: {{ selectedMatch.homeGrade }}</label>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-hover" aria-label="Squadra in casa">
-                <thead class="table-dark">
-                  <tr>
-                    <th id="name">Nome</th>
-                    <th id="role">Ruolo</th>
-                    <th fxHide.lt-sm id="benchOrder">Ordine panchina</th>
-                    <th fxHide.lt-sm id="ranking">Val.</th>
-                    <th fxHide.lt-sm id="minutes">Minuti</th>
-                    <th fxHide.lt-sm id="grade">Voto</th>
-                    <th fxHide.lt-sm id="grade40Min">Val. dopo 40 minuti</th>
-                    <th id="rankingUsed">Val. usata</th>
-                    <th id="minutesUsed">Minuti usati</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr *ngFor="let player of homeTeamLineup; let i = index" class="table-secondary lineup-height">
-                    <td class="text-nowrap">{{ player?.fantasyRoster.roster.player.name }}</td>
-                    <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
-                    <td fxHide.lt-sm>{{ player?.benchOrder }}</td>
-                    <td fxHide.lt-sm>{{ player?.performance.ranking }}</td>
-                    <td fxHide.lt-sm>{{ player?.performance.minutes }}</td>
-                    <td fxHide.lt-sm>{{ player?.performance.grade }}</td>
-                    <td fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
-                    <td>{{ player?.matchReport?.realRanking }}</td>
-                    <td>{{ player?.matchReport?.minutesUsed }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <fbm-match-result [fixture]="selectedFixture" [match]="selectedMatch" class="w-100"></fbm-match-result>
         </ng-container>
-
-        <!-- SQUADRA 2 -->
-        <ng-container *ngIf="selectedMatch">
-          <div fxFlex="49" fxFlex.lt-md="100">
-            <div>
-              <h4 id="awayTeam">{{ selectedMatch.awayTeam.name }} {{ selectedMatch.awayScore }}</h4>
-            </div>
-            <div><label>&nbsp;</label></div>
-            <div class="pb-3">
-              <label>Valutazione: {{ selectedMatch.awayRanking }} - Pagelle: {{ selectedMatch.awayGrade }}</label>
-            </div>
-            <div class="table-responsive">
-              <table class="table table-hover" aria-label="Squadra in trasferta">
-                <thead class="table-dark">
-                  <tr>
-                    <th id="name">Nome</th>
-                    <th id="role">Ruolo</th>
-                    <th fxHide.lt-sm id="benchOrder">Ordine panchina</th>
-                    <th fxHide.lt-sm id="ranking">Val.</th>
-                    <th fxHide.lt-sm id="minutes">Minuti</th>
-                    <th fxHide.lt-sm id="grade">Voto</th>
-                    <th fxHide.lt-sm id="grade40Min">Val. dopo 40 minuti</th>
-                    <th id="rankingUsed">Val. usata</th>
-                    <th id="minutesUsed">Minuti usati</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr *ngFor="let player of awayTeamLineup; let i = index" class="table-secondary lineup-height">
-                    <td class="text-nowrap">{{ player?.fantasyRoster.roster.player.name }}</td>
-                    <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
-                    <td fxHide.lt-sm>{{ player?.benchOrder }}</td>
-                    <td fxHide.lt-sm>{{ player?.performance.ranking }}</td>
-                    <td fxHide.lt-sm>{{ player?.performance.minutes }}</td>
-                    <td fxHide.lt-sm>{{ player?.performance.grade }}</td>
-                    <td fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
-                    <td>{{ player?.matchReport?.realRanking }}</td>
-                    <td>{{ player?.matchReport?.minutesUsed }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </ng-container>
+        
       </ng-container>
     </div>
   </fieldset>

@@ -51,7 +51,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let match of fixture.matches" class="table-secondary">
+                <tr *ngFor="let match of fixture.matches" class="table-secondary manina" (click)="openModalMatchResult(fixture, match)">
                   <td class="text-nowrap">{{ match.homeTeam.name }} - {{ match.awayTeam.name }}</td>
                   <td>{{ match.homeRanking }}</td>
                   <td>{{ match.awayRanking }}</td>
@@ -91,6 +91,33 @@
 
       <div class="modal-body">
         <fbm-calendar-form [matches]="matches" (save)="save($event)" (cancel)="cancel()"></fbm-calendar-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- popup match result -->
+<div
+  *ngIf="showPopupMatchResult"
+  class="modal fade"
+  bsModal
+  #matchResultPage="bs-modal"
+  [config]="{ backdrop: 'static', keyboard: true, show: true }"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header titolo">
+        <h4 class="modal-title">Risultato</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Chiudi" (click)="showPopupMatchResult = false;">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <fbm-match-result [fixture]="selectedFixture" [match]="selectedMatch"></fbm-match-result>
       </div>
     </div>
   </div>

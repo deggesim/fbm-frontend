@@ -25,8 +25,10 @@ export class CalendarListComponent implements OnInit {
   rounds: Round[];
   selectedRound: Round;
   selectedFixture: Fixture;
+  selectedMatch: Match;
   matches: Match[];
   showPopupUpdate: boolean;
+  showPopupMatchResult: boolean;
   isAdmin$ = this.userService.isAdmin$();
 
   constructor(
@@ -108,4 +110,10 @@ export class CalendarListComponent implements OnInit {
   roundSearchFn = (term: string, round: Round) => {
     return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
   };
+
+  openModalMatchResult(fixture: Fixture, match: Match) {
+    this.selectedFixture = fixture;
+    this.selectedMatch = match;
+    this.showPopupMatchResult = true;
+  }
 }
