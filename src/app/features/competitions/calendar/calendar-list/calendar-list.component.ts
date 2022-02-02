@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -7,12 +7,16 @@ import { selectedLeague } from '@app/core/league/store/league.selector';
 import { UserService } from '@app/core/user/services/user.service';
 import { Fixture } from '@app/models/fixture';
 import { League } from '@app/models/league';
+import { Lineup } from '@app/models/lineup';
 import { Match } from '@app/models/match';
 import { Round } from '@app/models/round';
+import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { RoundService } from '@app/shared/services/round.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { forkJoin, Observable } from 'rxjs';
 import { switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
@@ -26,10 +30,14 @@ export class CalendarListComponent implements OnInit {
   selectedRound: Round;
   selectedFixture: Fixture;
   selectedMatch: Match;
+  homeTeamLineup: Lineup[];
+  awayTeamLineup: Lineup[];
   matches: Match[];
   showPopupUpdate: boolean;
-  showPopupMatchResult: boolean;
   isAdmin$ = this.userService.isAdmin$();
+
+  @ViewChild('matchResultPage', { static: false }) matchResultPage?: ModalDirective;
+  showPopupMatchResult: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -38,7 +46,8 @@ export class CalendarListComponent implements OnInit {
     private toastService: ToastService,
     private roundService: RoundService,
     private matchService: MatchService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private lineupService: LineupService
   ) {
     this.createForm();
   }
@@ -112,8 +121,30 @@ export class CalendarListComponent implements OnInit {
   };
 
   openModalMatchResult(fixture: Fixture, match: Match) {
-    this.selectedFixture = fixture;
-    this.selectedMatch = match;
-    this.showPopupMatchResult = true;
+    if (fixture != null && match != null) {
+      this.selectedFixture = fixture;
+      this.loadLineups(match).subscribe((lineups: [Lineup[], Lineup[]]) => {
+        this.homeTeamLineup = lineups[0];
+        this.awayTeamLineup = lineups[1];
+        this.selectedMatch = match;
+        this.showPopupMatchResult = true;
+      });
+    }
+  }
+
+  hideModal(): void {
+    this.matchResultPage?.hide();
+  }
+
+  onHidden(): void {
+    this.showPopupMatchResult = false;
+  }
+
+  private loadLineups(match: Match): Observable<[Lineup[], Lineup[]]> {
+    const homeTeam = match.homeTeam;
+    const awayTeam = match.awayTeam;
+    const $homeTeamLineup = this.lineupService.lineupByTeam(homeTeam._id, this.selectedFixture._id);
+    const $awayTeamLineup = this.lineupService.lineupByTeam(awayTeam._id, this.selectedFixture._id);
+    return forkJoin([$homeTeamLineup, $awayTeamLineup]);
   }
 }

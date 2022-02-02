@@ -59,9 +59,14 @@
         </div>
 
         <ng-container *ngIf="selectedMatch">
-          <fbm-match-result [fixture]="selectedFixture" [match]="selectedMatch" class="w-100"></fbm-match-result>
+          <fbm-match-result
+            [fixture]="selectedFixture"
+            [match]="selectedMatch"
+            [homeTeamLineup]="homeTeamLineup"
+            [awayTeamLineup]="awayTeamLineup"
+            class="w-100"
+          ></fbm-match-result>
         </ng-container>
-        
       </ng-container>
     </div>
   </fieldset>

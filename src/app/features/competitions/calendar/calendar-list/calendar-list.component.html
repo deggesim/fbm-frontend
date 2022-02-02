@@ -106,18 +106,24 @@
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header titolo">
         <h4 class="modal-title">Risultato</h4>
-        <button type="button" class="btn-close close pull-right" aria-label="Chiudi" (click)="showPopupMatchResult = false;">
+        <button type="button" class="btn-close close pull-right" aria-label="Chiudi" (click)="hideModal()">
           <span aria-hidden="true" class="visually-hidden">&times;</span>
         </button>
       </div>
 
       <div class="modal-body">
-        <fbm-match-result [fixture]="selectedFixture" [match]="selectedMatch"></fbm-match-result>
+        <fbm-match-result
+          [fixture]="selectedFixture"
+          [match]="selectedMatch"
+          [homeTeamLineup]="homeTeamLineup"
+          [awayTeamLineup]="awayTeamLineup"
+        ></fbm-match-result>
       </div>
     </div>
   </div>
