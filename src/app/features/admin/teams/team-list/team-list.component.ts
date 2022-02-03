@@ -16,7 +16,7 @@ export class TeamListComponent implements OnInit {
 
   teamSelected: Team;
   titoloModale: string;
-  
+
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
   @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfirmComponent;
   @ViewChild('modalTeamForm', { static: false }) modalTeamForm: ModalDirective;
@@ -54,14 +54,14 @@ export class TeamListComponent implements OnInit {
         .create(team)
         .pipe(
           tap(() => {
-            this.hideModal()
+            this.hideModal();
           }),
           switchMap(() => this.teamService.read())
-          )
-          .subscribe((teams: Team[]) => {
-            this.teams = teams;
-            this.teamSelected = undefined;
-            this.toastService.success('Nuova squadra', `La squadra ${team.fullName} è stata inserita correttamente`);
+        )
+        .subscribe((teams: Team[]) => {
+          this.teams = teams;
+          this.teamSelected = undefined;
+          this.toastService.success('Nuova squadra', `La squadra ${team.fullName} è stata inserita correttamente`);
         });
     } else {
       this.teamService
@@ -71,11 +71,11 @@ export class TeamListComponent implements OnInit {
             this.hideModal();
           }),
           switchMap(() => this.teamService.read())
-          )
-          .subscribe((teams: Team[]) => {
-            this.teams = teams;
-            this.teamSelected = undefined;
-            this.toastService.success('Modifica squadra', `La squadra ${team.fullName} è stata modificata correttamente`);
+        )
+        .subscribe((teams: Team[]) => {
+          this.teams = teams;
+          this.teamSelected = undefined;
+          this.toastService.success('Modifica squadra', `La squadra ${team.fullName} è stata modificata correttamente`);
         });
     }
   }
