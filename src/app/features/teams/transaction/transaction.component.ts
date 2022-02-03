@@ -279,12 +279,11 @@ export class TransactionComponent implements OnInit {
     this.fantasyRosterService
       .remove(this.fantasyRosterSelected._id)
       .pipe(
-        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        switchMapTo(this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
         }),
-        // switchMap(() => this.rosterService.freePlayers()),
-        switchMap(() => this.store.select(leagueInfo)),
+        switchMapTo(this.store.select(leagueInfo)),
         take(1),
         switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
       )
@@ -303,12 +302,11 @@ export class TransactionComponent implements OnInit {
     this.fantasyRosterService
       .release(this.fantasyRosterSelected._id)
       .pipe(
-        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        switchMapTo(this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
         }),
-        // switchMap(() => this.rosterService.freePlayers()),
-        switchMap(() => this.store.select(leagueInfo)),
+        switchMapTo(this.store.select(leagueInfo)),
         switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
