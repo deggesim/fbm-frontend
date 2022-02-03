@@ -48,7 +48,7 @@
   </ng-template>
 </fieldset>
 
-<!-- popup elimina -->
+<!-- popup delete -->
 <fbm-popup-confirm
   #popupConfermaElimina
   title="Elimina squadra"
@@ -60,16 +60,17 @@
   Vuoi eliminare la squadra? Attenzione, l'operazione è irreversibile!
 </fbm-popup-confirm>
 
-<!-- popup inserimento/modifica squadra -->
+<!-- modal team form -->
 <div
-  *ngIf="showPopupUpdate"
+  *ngIf="showModalTeamForm"
   class="modal fade"
   bsModal
-  #modal="bs-modal"
+  #modalTeamForm="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -78,7 +79,7 @@
       </div>
 
       <div class="modal-body">
-        <fbm-team-form [team]="teamSelected" (save)="save($event)" (cancel)="cancel()"></fbm-team-form>
+        <fbm-team-form [team]="teamSelected" (save)="save($event)" (cancel)="hideModal()"></fbm-team-form>
       </div>
     </div>
   </div>

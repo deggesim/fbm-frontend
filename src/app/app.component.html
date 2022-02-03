@@ -1,4 +1,4 @@
-<fbm-header (logout)="logout()" (profile)="profile()" (completePreseason)="openCompletePreseasonPopup()"></fbm-header>
+<fbm-header (logout)="logout()" (profile)="openModal()" (completePreseason)="openCompletePreseasonPopup()"></fbm-header>
 <div class="container-fluid">
   <router-outlet></router-outlet>
 </div>
@@ -9,16 +9,17 @@
   </div>
 </div>
 
-<!-- popup user profile -->
+<!-- modal user profile -->
 <div
-  *ngIf="mostraPopupUserProfile"
+  *ngIf="showModalUserProfile"
   class="modal fade"
   bsModal
-  #userProfilePage="bs-modal"
+  #modalUserProfile="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-md">
     <div class="modal-content">
@@ -27,7 +28,7 @@
       </div>
 
       <div class="modal-body">
-        <fbm-user-profile (save)="save($event)" (cancel)="cancel()"></fbm-user-profile>
+        <fbm-user-profile (save)="save($event)" (cancel)="hideModal()"></fbm-user-profile>
       </div>
     </div>
   </div>

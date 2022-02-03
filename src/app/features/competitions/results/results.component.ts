@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -27,6 +27,7 @@ export class ResultsComponent implements OnInit {
   rounds: Round[];
   fixtures: Fixture[];
   matches: Match[];
+  selectedFixture: Fixture;
   selectedMatch: Match;
   homeTeamLineup: Lineup[];
   awayTeamLineup: Lineup[];
@@ -44,6 +45,30 @@ export class ResultsComponent implements OnInit {
 
   ngOnInit() {
     this.rounds = this.route.snapshot.data['rounds'];
+
+    const round = this.route.snapshot.queryParams['round'];
+    const fixture = this.route.snapshot.queryParams['fixture'];
+    const match = this.route.snapshot.queryParams['match'];
+
+    if (round && fixture && match) {
+      const selectedRound = this.rounds.find((value: Round) => value._id === round);
+      if (selectedRound) {
+        this.fixtures = selectedRound.fixtures;
+        this.selectedFixture = this.fixtures?.find((value: Fixture) => value._id === fixture);
+        this.matches = this.selectedFixture.matches;
+        const selectedMatch = this.matches?.find((value: Match) => value._id === match);
+        this.form.patchValue({
+          round: selectedRound,
+          fixture: this.selectedFixture,
+          match: selectedMatch,
+        });
+        if (this.selectedFixture && selectedMatch) {
+          this.form.get('fixture').enable();
+          this.form.get('match').enable();
+          this.onChangeMatch(selectedMatch);
+        }
+      }
+    }
   }
 
   createForm() {
@@ -68,12 +93,15 @@ export class ResultsComponent implements OnInit {
   }
 
   onChangeFixture(fixture: Fixture) {
-    this.form.get('match').reset();
-    if (fixture != null && fixture.matches != null && !isEmpty(fixture.matches)) {
-      this.matches = fixture.matches;
-      this.form.get('match').enable();
-    } else {
-      this.form.get('match').disable();
+    if (fixture != null) {
+      this.selectedFixture = fixture;
+      this.form.get('match').reset();
+      if (fixture != null && fixture.matches != null && !isEmpty(fixture.matches)) {
+        this.matches = fixture.matches;
+        this.form.get('match').enable();
+      } else {
+        this.form.get('match').disable();
+      }
     }
   }
 

@@ -4,7 +4,8 @@ import { Team } from '@app/models/team';
 import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { TeamService } from '@app/shared/services/team.service';
 import { ToastService } from '@app/shared/services/toast.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-team-list',
@@ -14,11 +15,12 @@ export class TeamListComponent implements OnInit {
   teams: Team[];
 
   teamSelected: Team;
-  showPopupUpdate: boolean;
   titoloModale: string;
 
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
   @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfirmComponent;
+  @ViewChild('modalTeamForm', { static: false }) modalTeamForm: ModalDirective;
+  showModalTeamForm: boolean;
 
   constructor(private route: ActivatedRoute, private toastService: ToastService, private teamService: TeamService) {}
 
@@ -28,21 +30,21 @@ export class TeamListComponent implements OnInit {
 
   newTeam() {
     this.teamSelected = undefined;
-    this.showPopupUpdate = true;
+    this.showModalTeamForm = true;
     this.titoloModale = 'Nuova squadra';
   }
 
   update(team: Team): void {
     const { _id, fullName, sponsor, name, city, abbreviation, real } = team;
     this.teamSelected = { _id, fullName, sponsor, name, city, abbreviation, real };
-    this.showPopupUpdate = true;
+    this.showModalTeamForm = true;
     this.titoloModale = 'Modifica squadra';
   }
 
   clone(team: Team): void {
     const { fullName, sponsor, name, city, abbreviation, real } = team;
     this.teamSelected = { fullName, sponsor, name, city, abbreviation, real };
-    this.showPopupUpdate = true;
+    this.showModalTeamForm = true;
     this.titoloModale = 'Clona squadra';
   }
 
@@ -52,34 +54,38 @@ export class TeamListComponent implements OnInit {
         .create(team)
         .pipe(
           tap(() => {
-            this.showPopupUpdate = false;
-            this.toastService.success('Nuova squadra', `La squadra ${team.fullName} è stata inserita correttamente`);
-            this.teamSelected = undefined;
+            this.hideModal();
           }),
-          switchMap(() => this.teamService.read())
+          switchMapTo(this.teamService.read())
         )
         .subscribe((teams: Team[]) => {
           this.teams = teams;
+          this.teamSelected = undefined;
+          this.toastService.success('Nuova squadra', `La squadra ${team.fullName} è stata inserita correttamente`);
         });
     } else {
       this.teamService
         .update(team)
         .pipe(
           tap(() => {
-            this.showPopupUpdate = false;
-            this.toastService.success('Modifica squadra', `La squadra ${team.fullName} è stata modificata correttamente`);
-            this.teamSelected = undefined;
+            this.hideModal();
           }),
-          switchMap(() => this.teamService.read())
+          switchMapTo(this.teamService.read())
         )
         .subscribe((teams: Team[]) => {
           this.teams = teams;
+          this.teamSelected = undefined;
+          this.toastService.success('Modifica squadra', `La squadra ${team.fullName} è stata modificata correttamente`);
         });
     }
   }
 
-  cancel(): void {
-    this.showPopupUpdate = false;
+  hideModal(): void {
+    this.modalTeamForm?.hide();
+  }
+
+  onHidden(): void {
+    this.showModalTeamForm = false;
   }
 
   openDeletePopup(team: Team) {
@@ -97,7 +103,7 @@ export class TeamListComponent implements OnInit {
             this.toastService.success('Squadra eliminata', `La squadra ${this.teamSelected.fullName} è stata modificata correttamente`);
             this.teamSelected = undefined;
           }),
-          switchMap(() => this.teamService.read())
+          switchMapTo(this.teamService.read())
         )
         .subscribe((teams: Team[]) => {
           this.teams = teams;

@@ -109,14 +109,17 @@
     </ng-template>
   </fieldset>
 
+  <!-- modal transaction-->
   <div
+    *ngIf="showModalTransaction"
     class="modal fade"
     bsModal
-    #modal="bs-modal"
-    [config]="{ backdrop: 'static', keyboard: false, show: false }"
+    #modalTransaction="bs-modal"
+    [config]="{ backdrop: 'static', keyboard: false, show: true }"
     tabindex="-1"
     status="dialog"
     aria-hidden="true"
+    (onHidden)="onHidden()"
   >
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -208,7 +211,7 @@
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>
-            <button type="button" class="btn btn-primary" (click)="cancel()">
+            <button type="button" class="btn btn-primary" (click)="hideModal()">
               <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
             </button>
           </div>
@@ -218,27 +221,27 @@
   </div>
 </form>
 
-<!-- popup rilascia -->
+<!-- popup release -->
 <fbm-popup-confirm
-  #popupRilascia
+  #popupRelease
   title="Rilascia giocatore"
   btnConfirm="Rilascia"
   btnCancel="Annulla"
   (confirm)="release()"
-  (cancel)="popupRilascia.closeModal()"
+  (cancel)="popupRelease.closeModal()"
 >
   Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, mentre i visti spesi ed il numero di contratti firmati
   non diminuiranno.
 </fbm-popup-confirm>
 
-<!-- popup rimuovi -->
+<!-- popup remove -->
 <fbm-popup-confirm
-  #popupRimuovi
+  #popupRemove
   title="Rimuovi giocatore"
   btnConfirm="Rimuovi"
   btnCancel="Annulla"
   (confirm)="remove()"
-  (cancel)="popupRimuovi.closeModal()"
+  (cancel)="popupRemove.closeModal()"
 >
   Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, mentre i visti spesi ed il numero di contratti firmati
   diminuiranno di uno.

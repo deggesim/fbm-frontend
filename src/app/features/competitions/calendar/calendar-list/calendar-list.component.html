@@ -26,7 +26,7 @@
             <button
               type="button"
               class="btn btn-warning"
-              (click)="update(fixture, $event)"
+              (click)="openModalCalendarForm(fixture, $event)"
               tooltip="Modifica"
               placement="top"
               *ngIf="fixture.matches && fixture.matches.length > 0 && (isAdmin$ | async)"
@@ -51,7 +51,7 @@
               </thead>
 
               <tbody>
-                <tr *ngFor="let match of fixture.matches" class="table-secondary">
+                <tr *ngFor="let match of fixture.matches" class="table-secondary manina" (click)="openModalMatchResult(fixture, match)">
                   <td class="text-nowrap">{{ match.homeTeam.name }} - {{ match.awayTeam.name }}</td>
                   <td>{{ match.homeRanking }}</td>
                   <td>{{ match.awayRanking }}</td>
@@ -72,16 +72,17 @@
   </fieldset>
 </form>
 
-<!-- popup modifica giornata -->
+<!-- modal calendar form -->
 <div
-  *ngIf="showPopupUpdate"
+  *ngIf="showModalCalendarForm"
   class="modal fade"
   bsModal
-  #modal="bs-modal"
+  #modalCalendarForm="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHiddenCalendarForm()"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -90,7 +91,40 @@
       </div>
 
       <div class="modal-body">
-        <fbm-calendar-form [matches]="matches" (save)="save($event)" (cancel)="cancel()"></fbm-calendar-form>
+        <fbm-calendar-form [matches]="matches" (save)="save($event)" (cancel)="hideModalCalendarForm()"></fbm-calendar-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal match result -->
+<div
+  *ngIf="showModalMatchResult"
+  class="modal fade"
+  bsModal
+  #modalMatchResult="bs-modal"
+  [config]="{ backdrop: 'static', keyboard: true, show: true }"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+  (onHidden)="onHiddenMatchResult()"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header titolo">
+        <h4 class="modal-title">Risultato</h4>
+        <button type="button" class="btn-close close pull-right" aria-label="Chiudi" (click)="hideModalMatchResult()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <fbm-match-result
+          [fixture]="selectedFixture"
+          [match]="selectedMatch"
+          [homeTeamLineup]="homeTeamLineup"
+          [awayTeamLineup]="awayTeamLineup"
+        ></fbm-match-result>
       </div>
     </div>
   </div>

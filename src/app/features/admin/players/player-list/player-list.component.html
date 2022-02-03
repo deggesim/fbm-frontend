@@ -90,7 +90,7 @@
   </ng-template>
 </fieldset>
 
-<!--Progress bar -->
+<!-- progress bar -->
 <ng-template #uploadInProgress>
   <div class="text-center padding m-3">
     <h4>Percentuale di avanzamento del processo di upload</h4>
@@ -103,7 +103,7 @@
   </div>
 </ng-template>
 
-<!-- popup elimina -->
+<!-- popup delete -->
 <fbm-popup-confirm
   #popupConfermaElimina
   title="Elimina giocatore"
@@ -115,16 +115,17 @@
   Vuoi eliminare il giocatore? Attenzione, l'operazione è irreversibile!
 </fbm-popup-confirm>
 
-<!-- popup inserimento/modifica giocatore -->
+<!-- modal player form -->
 <div
-  *ngIf="showPopupUpdate"
+  *ngIf="showModalPlayerForm"
   class="modal fade"
   bsModal
-  #modal="bs-modal"
+  #modalPlayerForm="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -133,7 +134,7 @@
       </div>
 
       <div class="modal-body">
-        <fbm-player-form [roster]="rosterSelected" (save)="save($event)" (cancel)="cancel()"></fbm-player-form>
+        <fbm-player-form [roster]="rosterSelected" (save)="save($event)" (cancel)="hideModal()"></fbm-player-form>
       </div>
     </div>
   </div>

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
 import { PlayerStatusDirective } from '@app/shared//directives/player-status.directive';
 import { ErrorMessageComponent } from '@app/shared/components/error-message/error-message.component';
 import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
@@ -11,11 +12,13 @@ import { ToStringPipe } from '@app/shared/pipes/to-string.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MatchResultComponent } from './components/match-result/match-result.component';
 import { DecodeHistoryPipe } from './pipes/decode-history.pipe';
 
 @NgModule({
   declarations: [
     ErrorMessageComponent,
+    MatchResultComponent,
     PopupConfirmComponent,
     UploadComponent,
     UserRoleIconComponent,
@@ -24,13 +27,12 @@ import { DecodeHistoryPipe } from './pipes/decode-history.pipe';
     PlayerStatusDirective,
     DecodeHistoryPipe,
   ],
-  imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule],
+  imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule, FlexLayoutModule],
   exports: [
-    CommonModule,
-    FormsModule,
+    ErrorMessageComponent,
+    MatchResultComponent,
     PopupConfirmComponent,
     UploadComponent,
-    ErrorMessageComponent,
     UserRoleIconComponent,
     RoleShortPipe,
     ToStringPipe,

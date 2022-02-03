@@ -4,7 +4,8 @@ import { UserService } from '@app/core/user/services/user.service';
 import { Role, User } from '@app/models/user';
 import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { ToastService } from '@app/shared/services/toast.service';
-import { switchMap, tap } from 'rxjs/operators';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { map, switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-user-list',
@@ -14,7 +15,6 @@ export class UserListComponent implements OnInit {
   users: User[];
 
   userSelected: User;
-  showPopupUpdate: boolean;
   titoloModale: string;
 
   isSuperAdmin$ = this.userService.isSuperAdmin$();
@@ -22,12 +22,10 @@ export class UserListComponent implements OnInit {
 
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
   @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfirmComponent;
+  @ViewChild('modalUserForm', { static: false }) modalUserForm: ModalDirective;
+  showModalUserForm: boolean;
 
-  constructor(
-    private route: ActivatedRoute,
-    private toastService: ToastService,
-    private userService: UserService,
-  ) {}
+  constructor(private route: ActivatedRoute, private toastService: ToastService, private userService: UserService) {}
 
   ngOnInit() {
     this.users = this.route.snapshot.data['users'];
@@ -35,14 +33,14 @@ export class UserListComponent implements OnInit {
 
   nuovo() {
     this.userSelected = undefined;
-    this.showPopupUpdate = true;
+    this.showModalUserForm = true;
     this.titoloModale = 'Nuovo utente';
   }
 
   update(user: User): void {
     const { _id, name, email, password, role } = user;
     this.userSelected = { _id, name, email, password, role };
-    this.showPopupUpdate = true;
+    this.showModalUserForm = true;
     this.titoloModale = 'Modifica utente';
   }
 
@@ -52,34 +50,40 @@ export class UserListComponent implements OnInit {
         .create(user)
         .pipe(
           tap(() => {
-            this.showPopupUpdate = false;
-            this.toastService.success('Nuovo utente', 'Nuovo utente inserito correttamente');
-            this.userSelected = undefined;
+            this.hideModal();
           }),
-          switchMap(() => this.userService.read())
+          switchMapTo(this.userService.read()),
+          map((users: User[]) => [...users].sort((a, b) => a.email.localeCompare(b.email)))
         )
         .subscribe((users: User[]) => {
           this.users = users;
+          this.userSelected = undefined;
+          this.toastService.success('Nuovo utente', 'Nuovo utente inserito correttamente');
         });
     } else {
       this.userService
         .update(user)
         .pipe(
           tap(() => {
-            this.showPopupUpdate = false;
-            this.toastService.success('Modifica utente', 'Utente modificato correttamente');
-            this.userSelected = undefined;
+            this.hideModal();
           }),
-          switchMap(() => this.userService.read())
+          switchMapTo(this.userService.read()),
+          map((users: User[]) => [...users].sort((a, b) => a.email.localeCompare(b.email)))
         )
         .subscribe((users: User[]) => {
           this.users = users;
+          this.userSelected = undefined;
+          this.toastService.success('Modifica utente', 'Utente modificato correttamente');
         });
     }
   }
 
-  cancel(): void {
-    this.showPopupUpdate = false;
+  hideModal(): void {
+    this.modalUserForm?.hide();
+  }
+
+  onHidden(): void {
+    this.showModalUserForm = false;
   }
 
   openDeletePopup(user: User) {
@@ -97,7 +101,8 @@ export class UserListComponent implements OnInit {
             this.toastService.success('Utente eliminato', "L'utente è stato eliminato correttamente");
             this.userSelected = undefined;
           }),
-          switchMap(() => this.userService.read())
+          switchMapTo(this.userService.read()),
+          map((users: User[]) => [...users].sort((a, b) => a.email.localeCompare(b.email)))
         )
         .subscribe((users: User[]) => {
           this.users = users;
@@ -113,9 +118,8 @@ export class UserListComponent implements OnInit {
     this.userService
       .upload(file)
       .pipe(
-        switchMap(() => {
-          return this.userService.read();
-        })
+        switchMapTo(this.userService.read()),
+        map((users: User[]) => [...users].sort((a, b) => a.email.localeCompare(b.email)))
       )
       .subscribe((users: User[]) => {
         this.users = users;

@@ -74,21 +74,18 @@ export class AuthEffects {
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.logout),
-      switchMap(() =>
-        this.authService.logout().pipe(
-          tap(() => {
-            this.localStorageService.clearStorage();
-            this.toastService.warning('Logout', 'Logout effettuato correttamente');
-          }),
-          switchMapTo([
-            AuthActions.logoutSuccess(),
-            UserActions.setUser({ user: null }),
-            LeagueActions.setSelectedLeague({ league: null }),
-            LeagueInfoActions.setLeagueInfo({ leagueInfo: null }),
-            RouterActions.go({ path: ['home'] }),
-          ])
-        )
-      )
+      switchMapTo(this.authService.logout()),
+      tap(() => {
+        this.localStorageService.clearStorage();
+        this.toastService.warning('Logout', 'Logout effettuato correttamente');
+      }),
+      switchMapTo([
+        AuthActions.logoutSuccess(),
+        UserActions.setUser({ user: null }),
+        LeagueActions.setSelectedLeague({ league: null }),
+        LeagueInfoActions.setLeagueInfo({ leagueInfo: null }),
+        RouterActions.go({ path: ['home'] }),
+      ])
     )
   );
 }

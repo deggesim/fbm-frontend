@@ -1,5 +1,5 @@
 import { Clipboard } from '@angular/cdk/clipboard';
-import { Component, Injector, OnInit } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -31,6 +31,7 @@ import * as moment from 'moment';
 import { EMPTY, forkJoin, Observable } from 'rxjs';
 import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 import { Match } from '@app/models/match';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'fbm-lineups',
@@ -40,8 +41,7 @@ import { Match } from '@app/models/match';
 export class LineupsComponent implements OnInit {
   form: FormGroup;
   benchForm: FormGroup;
-  mostraPopupPanchina: boolean;
-
+  
   rounds: Round[];
   fixtures: Fixture[];
   fantasyTeams: FantasyTeam[];
@@ -55,13 +55,16 @@ export class LineupsComponent implements OnInit {
   selectedRealFixture: RealFixture;
   selectedFantasyTeam: FantasyTeam;
   selectedFixture: Fixture;
-
+  
   isAdmin: boolean;
   user: User;
   selectedLeague: League;
   nextRealFixture: RealFixture;
-
+  
   disableCopyLineup = true;
+  
+  @ViewChild('modalBenchForm', { static: false }) modalBenchForm: ModalDirective;
+  showModalBenchForm: boolean;
 
   private fb: FormBuilder;
   private route: ActivatedRoute;
@@ -340,10 +343,11 @@ export class LineupsComponent implements OnInit {
   openModalBenchOrder() {
     const benchPlayers = this.lineup.filter((player) => player != null && player.benchOrder != null);
     this.benchForm.get('sortedList').setValue([...benchPlayers].sort((b1, b2) => b1.benchOrder - b2.benchOrder));
-    this.mostraPopupPanchina = true;
+    this.showModalBenchForm = true;
   }
 
   onSubmitBenchForm() {
+    this.hideModal();
     const newOrder: Lineup[] = this.benchForm.value.sortedList;
     let i = 1;
     for (const player of newOrder) {
@@ -352,7 +356,6 @@ export class LineupsComponent implements OnInit {
     newOrder.sort((a: Lineup, b: Lineup) => a.spot - b.spot);
     this.lineup.splice(AppConfig.FirstBenchPlayerIndex, AppConfig.PlayersInBench, ...newOrder);
     this.form.get('lineup').setValue(this.lineup);
-    this.mostraPopupPanchina = false;
   }
 
   movePlayerUp(index: number) {
@@ -377,8 +380,12 @@ export class LineupsComponent implements OnInit {
     return newArr;
   };
 
-  cancel(): void {
-    this.mostraPopupPanchina = false;
+  hideModal(): void {
+    this.modalBenchForm?.hide();
+  }
+
+  onHidden(): void {
+    this.showModalBenchForm = false;
   }
 
   reset() {
