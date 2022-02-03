@@ -4,6 +4,7 @@ import { AppState } from '@app/core/app.state';
 import { SpinnerService } from '@app/core/spinner.service';
 import * as UserActions from '@app/core/user/store/user.actions';
 import { Store } from '@ngrx/store';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { noop, of, switchMap, zip } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { AuthService } from './core/auth/service/auth.service';
@@ -21,11 +22,12 @@ import { PushSubscriptionService } from './shared/services/push-subscription.ser
 export class AppComponent implements OnInit, AfterViewChecked {
   // Sets initial value to true to show loading spinner on first load
   loading = true;
-  mostraPopupUserProfile: boolean;
+  showModalUserProfile: boolean;
   readonly VAPID_PUBLIC_KEY = environment.vapidPublikKey;
 
   @ViewChild('popupAggiorna', { static: true }) public popupAggiorna!: PopupConfirmComponent;
   @ViewChild('popupConfirmPreseason', { static: true }) public popupConfirmPreseason!: PopupConfirmComponent;
+  @ViewChild('modalUserProfile', { static: false }) modalUserProfile: ModalDirective;
 
   constructor(
     private cdRef: ChangeDetectorRef,
@@ -67,21 +69,25 @@ export class AppComponent implements OnInit, AfterViewChecked {
     this.cdRef.detectChanges();
   }
 
-  public profile() {
-    this.mostraPopupUserProfile = true;
+  public openModal() {
+    this.showModalUserProfile = true;
   }
 
   public logout() {
     this.store.dispatch(AuthActions.logout());
   }
 
-  public cancel() {
-    this.mostraPopupUserProfile = false;
+  public save(user: User) {
+    this.hideModal();
+    this.store.dispatch(UserActions.saveUser({ user }));
   }
 
-  public save(user: User) {
-    this.mostraPopupUserProfile = false;
-    this.store.dispatch(UserActions.saveUser({ user }));
+  hideModal(): void {
+    this.modalUserProfile?.hide();
+  }
+
+  onHidden(): void {
+    this.showModalUserProfile = false;
   }
 
   openCompletePreseasonPopup() {

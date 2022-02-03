@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -12,8 +12,9 @@ import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { fantasyTeamMustBeDifferent } from '@app/shared/util/validations';
 import { select, Store } from '@ngrx/store';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-trade',
@@ -31,7 +32,8 @@ export class TradeComponent implements OnInit {
   fantasyRosters2: FantasyRoster[];
   fantasyRosters2Selected: FantasyRoster[] = [];
 
-  mostraPopupTradeBlock: boolean;
+  @ViewChild('modalTradeBlock', { static: false }) modalTradeBlock: ModalDirective;
+  showModalTradeBlock: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -118,7 +120,7 @@ export class TradeComponent implements OnInit {
   }
 
   recap() {
-    this.mostraPopupTradeBlock = true;
+    this.showModalTradeBlock = true;
   }
 
   save() {
@@ -152,15 +154,18 @@ export class TradeComponent implements OnInit {
 
     forkJoin(all$)
       .pipe(
-        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
+        tap(() => {
+          this.hideModal();
+        }),
+        switchMapTo(this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters1 = fantasyRosters;
         }),
-        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
+        switchMapTo(this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters2 = fantasyRosters;
         }),
-        switchMap(() => this.fantasyTeamService.read()),
+        switchMapTo(this.fantasyTeamService.read()),
         tap((fantasyTeams: FantasyTeam[]) => {
           this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
           this.fantasyTeam1Selected = this.fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeam1Selected._id === ft._id);
@@ -168,22 +173,24 @@ export class TradeComponent implements OnInit {
         })
       )
       .subscribe(() => {
+        this.form.patchValue({
+          outPlayers: [],
+          inPlayers: [],
+          buyout: undefined,
+        });
+        this.fantasyRosters1Selected = [];
+        this.fantasyRosters2Selected = [];
+        this.form.markAsPristine();
         this.toastService.success('Scambio completato', 'I giocatori sono stati scambiati con successo');
       });
-
-    this.mostraPopupTradeBlock = false;
-    this.form.patchValue({
-      outPlayers: [],
-      inPlayers: [],
-      buyout: undefined,
-    });
-    this.fantasyRosters1Selected = [];
-    this.fantasyRosters2Selected = [];
-    this.form.markAsPristine();
   }
 
-  cancel() {
-    this.mostraPopupTradeBlock = false;
+  hideModal(): void {
+    this.modalTradeBlock.hide();
+  }
+
+  onHidden(): void {
+    this.showModalTradeBlock = false;
   }
 
   reset() {

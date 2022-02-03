@@ -11,6 +11,7 @@ import { RosterService } from '@app/shared/services/roster.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, switchMapTo, takeWhile, tap } from 'rxjs/operators';
 
@@ -25,11 +26,12 @@ export class PlayerListComponent implements OnInit {
   filter$ = new Subject<string>();
 
   rosterSelected: Roster;
-  showPopupUpdate: boolean;
   titoloModale: string;
 
   @ViewChild('popupConfermaElimina', { static: false }) public popupConfermaElimina: PopupConfirmComponent;
   @ViewChild('popupUpload', { static: false }) public popupUpload: PopupConfirmComponent;
+  @ViewChild('modalPlayerForm', { static: false }) modalPlayerForm: ModalDirective;
+  showModalPlayerForm: boolean;
 
   // paginazione
   page = 1;
@@ -89,13 +91,13 @@ export class PlayerListComponent implements OnInit {
 
   newPlayer() {
     this.rosterSelected = undefined;
-    this.showPopupUpdate = true;
+    this.showModalPlayerForm = true;
     this.titoloModale = 'Nuovo giocatore';
   }
 
   update(roster: Roster): void {
     this.rosterSelected = roster;
-    this.showPopupUpdate = true;
+    this.showModalPlayerForm = true;
     this.titoloModale = 'Modifica giocatore';
   }
 
@@ -114,7 +116,7 @@ export class PlayerListComponent implements OnInit {
       team: roster.team,
       realFixture: roster.realFixture,
     };
-    this.showPopupUpdate = true;
+    this.showModalPlayerForm = true;
     this.titoloModale = 'Clona giocatore';
   }
 
@@ -123,31 +125,27 @@ export class PlayerListComponent implements OnInit {
     if (roster._id == null) {
       $rostersObservable = this.playerService.create(roster.player).pipe(
         tap((player: Player) => {
+          this.hideModal();
           roster.player = player;
         }),
         switchMapTo(this.rosterService.create(roster)),
-        tap(() => {
-          this.showPopupUpdate = false;
-          this.toastService.success('Nuovo giocatore', `Il giocatore ${roster.player.name} è stato inserito correttamente`);
-        }),
         switchMapTo(this.filterPlayer()),
         tap(() => {
           this.rosterSelected = undefined;
+          this.toastService.success('Nuovo giocatore', `Il giocatore ${roster.player.name} è stato inserito correttamente`);
         })
       );
     } else {
       $rostersObservable = this.playerService.update(roster.player).pipe(
         tap((player: Player) => {
+          this.hideModal();
           roster.player = player;
         }),
         switchMapTo(this.rosterService.update(roster)),
-        tap(() => {
-          this.showPopupUpdate = false;
-          this.toastService.success('Modifica giocatore', `Il giocatore ${roster.player.name} è stato modificato correttamente`);
-        }),
         switchMapTo(this.filterPlayer()),
         tap(() => {
           this.rosterSelected = undefined;
+          this.toastService.success('Modifica giocatore', `Il giocatore ${roster.player.name} è stato modificato correttamente`);
         })
       );
     }
@@ -165,8 +163,12 @@ export class PlayerListComponent implements OnInit {
     );
   }
 
-  cancel(): void {
-    this.showPopupUpdate = false;
+  hideModal(): void {
+    this.modalPlayerForm?.hide();
+  }
+
+  onHidden(): void {
+    this.showModalPlayerForm = false;
   }
 
   openDeletePopup(roster: Roster) {
@@ -179,17 +181,13 @@ export class PlayerListComponent implements OnInit {
       this.popupConfermaElimina.closeModal();
       this.rosterService
         .delete(this.rosterSelected._id)
-        .pipe(
-          tap(() => {
-            this.toastService.success(
-              'Giocatore eliminato',
-              `Il giocatore ${this.rosterSelected.player.name} è stato eliminato correttamente`
-            );
-            this.rosterSelected = undefined;
-          }),
-          switchMap(() => this.rosterService.read(this.page, this.limit))
-        )
+        .pipe(switchMapTo(this.rosterService.read(this.page, this.limit)))
         .subscribe((rosterList: RosterList) => {
+          this.toastService.success(
+            'Giocatore eliminato',
+            `Il giocatore ${this.rosterSelected.player.name} è stato eliminato correttamente`
+          );
+          this.rosterSelected = undefined;
           this.rosterList = rosterList;
         });
     }

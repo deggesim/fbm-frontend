@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RealFixture } from '@app/models/real-fixture';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { ToastService } from '@app/shared/services/toast.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -12,7 +13,9 @@ import { switchMap, tap } from 'rxjs/operators';
 export class RealFixtureListComponent implements OnInit {
   realFixtures: RealFixture[];
   realFixtureSelected: RealFixture;
-  showPopupUpdate: boolean;
+
+  @ViewChild('modalRealFixtureForm', { static: false }) modalRealFixtureForm: ModalDirective;
+  showModalRealFixtureForm: boolean;
 
   constructor(private route: ActivatedRoute, private toastService: ToastService, private realFixtureService: RealFixtureService) {}
 
@@ -20,9 +23,9 @@ export class RealFixtureListComponent implements OnInit {
     this.realFixtures = this.route.snapshot.data['realFixtures'];
   }
 
-  update(realFixture: RealFixture): void {
+  openModal(realFixture: RealFixture): void {
     this.realFixtureSelected = realFixture;
-    this.showPopupUpdate = true;
+    this.showModalRealFixtureForm = true;
   }
 
   save(realFixture: RealFixture) {
@@ -33,19 +36,23 @@ export class RealFixtureListComponent implements OnInit {
         .update(realFixture)
         .pipe(
           tap(() => {
-            this.showPopupUpdate = false;
-            this.toastService.success('Modifica giornata', `La giornata ${realFixture.name} è stata modificata correttamente`);
-            this.realFixtureSelected = undefined;
+            this.hideModal();
           }),
           switchMap(() => this.realFixtureService.read())
         )
         .subscribe((realFixtures: RealFixture[]) => {
           this.realFixtures = realFixtures;
+          this.toastService.success('Modifica giornata', `La giornata ${realFixture.name} è stata modificata correttamente`);
+          this.realFixtureSelected = undefined;
         });
     }
   }
 
-  cancel(): void {
-    this.showPopupUpdate = false;
+  hideModal(): void {
+    this.modalRealFixtureForm?.hide();
+  }
+
+  onHidden(): void {
+    this.showModalRealFixtureForm = false;
   }
 }

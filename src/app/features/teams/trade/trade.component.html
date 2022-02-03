@@ -130,16 +130,17 @@
     </button>
   </div>
 
-  <!-- popup completa scambio -->
+  <!-- modal trade block -->
   <div
-    *ngIf="mostraPopupTradeBlock"
+    *ngIf="showModalTradeBlock"
     class="modal fade"
     bsModal
-    #modal="bs-modal"
+    #modalTradeBlock="bs-modal"
     [config]="{ backdrop: 'static', keyboard: false, show: true }"
     tabindex="-1"
     role="dialog"
     aria-hidden="true"
+    (onHidden)="onHidden()"
   >
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -171,7 +172,7 @@
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>
-            <button type="button" class="btn btn-primary" (click)="cancel()">
+            <button type="button" class="btn btn-primary" (click)="hideModal()">
               <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
             </button>
           </div>

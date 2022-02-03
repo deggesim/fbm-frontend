@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { ToastService } from '@app/shared/services/toast.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
@@ -13,6 +14,8 @@ export class FantasyTeamListComponent implements OnInit {
   fantasyTeams: FantasyTeam[];
 
   fantasyTeamSelected: FantasyTeam;
+
+  @ViewChild('modalUpdateFantasyTeam', { static: false }) modalUpdateFantasyTeam: ModalDirective;
   showPopupUpdate: boolean;
 
   constructor(private route: ActivatedRoute, private toastService: ToastService, private fantasyTeamService: FantasyTeamService) {}
@@ -22,18 +25,8 @@ export class FantasyTeamListComponent implements OnInit {
   }
 
   update(fantasyTeam: FantasyTeam): void {
-    const {
-      _id,
-      name,
-      initialBalance,
-      outgo,
-      totalContracts,
-      playersInRoster,
-      extraPlayers,
-      pointsPenalty,
-      balancePenalty,
-      owners,
-    } = fantasyTeam;
+    const { _id, name, initialBalance, outgo, totalContracts, playersInRoster, extraPlayers, pointsPenalty, balancePenalty, owners } =
+      fantasyTeam;
     this.fantasyTeamSelected = {
       _id,
       name,
@@ -54,7 +47,7 @@ export class FantasyTeamListComponent implements OnInit {
       .update(fantasyTeam)
       .pipe(
         tap(() => {
-          this.showPopupUpdate = false;
+          this.hideModal();
           this.toastService.success('Modifica squadra', `Squadra ${fantasyTeam.name} modificata correttamente`);
           this.fantasyTeamSelected = undefined;
         }),
@@ -65,7 +58,11 @@ export class FantasyTeamListComponent implements OnInit {
       });
   }
 
-  cancel(): void {
+  hideModal(): void {
+    this.modalUpdateFantasyTeam?.hide();
+  }
+
+  onHidden(): void {
     this.showPopupUpdate = false;
   }
 }

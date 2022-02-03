@@ -37,16 +37,17 @@
   </ng-template>
 </fieldset>
 
-<!-- popup update fantasyteam -->
+<!-- modal update fantasyteam -->
 <div
   *ngIf="showPopupUpdate"
   class="modal fade"
   bsModal
-  #modal="bs-modal"
+  #modalUpdateFantasyTeam="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -55,7 +56,7 @@
       </div>
 
       <div class="modal-body">
-        <fbm-fantasy-team-form [fantasyTeam]="fantasyTeamSelected" (save)="save($event)" (cancel)="cancel()"></fbm-fantasy-team-form>
+        <fbm-fantasy-team-form [fantasyTeam]="fantasyTeamSelected" (save)="save($event)" (cancel)="hideModal()"></fbm-fantasy-team-form>
       </div>
     </div>
   </div>

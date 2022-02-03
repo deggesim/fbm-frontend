@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -33,26 +33,36 @@ export class CalendarListComponent implements OnInit {
   homeTeamLineup: Lineup[];
   awayTeamLineup: Lineup[];
   matches: Match[];
-  showPopupUpdate: boolean;
-  isAdmin$ = this.userService.isAdmin$();
+  isAdmin$: Observable<boolean>;
 
-  @ViewChild('matchResultPage', { static: false }) matchResultPage?: ModalDirective;
-  showPopupMatchResult: boolean;
+  @ViewChild('modalCalendarForm', { static: false }) modalCalendarForm: ModalDirective;
+  @ViewChild('modalMatchResult', { static: false }) modalMatchResult: ModalDirective;
+  showModalCalendarForm: boolean;
+  showModalMatchResult: boolean;
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private userService: UserService,
-    private toastService: ToastService,
-    private roundService: RoundService,
-    private matchService: MatchService,
-    private store: Store<AppState>,
-    private lineupService: LineupService
-  ) {
+  private fb: FormBuilder;
+  private route: ActivatedRoute;
+  private userService: UserService;
+  private toastService: ToastService;
+  private roundService: RoundService;
+  private matchService: MatchService;
+  private store: Store<AppState>;
+  private lineupService: LineupService;
+
+  constructor(injector: Injector) {
+    this.fb = injector.get(FormBuilder);
+    this.route = injector.get(ActivatedRoute);
+    this.userService = injector.get(UserService);
+    this.toastService = injector.get(ToastService);
+    this.roundService = injector.get(RoundService);
+    this.matchService = injector.get(MatchService);
+    this.store = injector.get(Store);
+    this.lineupService = injector.get(LineupService);
     this.createForm();
   }
 
   ngOnInit() {
+    this.isAdmin$ = this.userService.isAdmin$();
     this.rounds = this.route.snapshot.data['rounds'];
 
     const round = this.route.snapshot.queryParams['round'];
@@ -79,13 +89,21 @@ export class CalendarListComponent implements OnInit {
     this.selectedFixture = null;
   }
 
-  update(fixture: Fixture, event: any) {
+  openModalCalendarForm(fixture: Fixture, event: any) {
     this.selectedFixture = fixture;
     this.matches = fixture.matches;
-    this.showPopupUpdate = true;
+    this.showModalCalendarForm = true;
     // prevent accordion event
     event.stopPropagation();
     event.preventDefault();
+  }
+
+  hideModalCalendarForm(): void {
+    this.modalCalendarForm?.hide();
+  }
+
+  onHiddenCalendarForm(): void {
+    this.showModalCalendarForm = false;
   }
 
   save(matches: Match[]) {
@@ -93,8 +111,7 @@ export class CalendarListComponent implements OnInit {
       .updateFixture(matches, this.selectedFixture._id)
       .pipe(
         tap(() => {
-          this.showPopupUpdate = false;
-          this.matches = undefined;
+          this.hideModalCalendarForm();
         }),
         switchMapTo(this.store.select(selectedLeague)),
         tap((league: League) => {
@@ -103,17 +120,12 @@ export class CalendarListComponent implements OnInit {
         switchMapTo(this.roundService.read())
       )
       .subscribe((rounds: Round[]) => {
-        this.rounds = rounds;
-        this.selectedRound = rounds.find((round: Round) => {
-          return this.selectedRound._id === round._id;
-        });
+        this.matches = undefined;
         this.selectedFixture = null;
+        this.rounds = rounds;
+        this.selectedRound = rounds.find((round: Round) => this.selectedRound._id === round._id);
         this.toastService.success('Modifica risultati', 'Risultati modificati correttamente');
       });
-  }
-
-  cancel(): void {
-    this.showPopupUpdate = false;
   }
 
   roundSearchFn = (term: string, round: Round) => {
@@ -127,17 +139,17 @@ export class CalendarListComponent implements OnInit {
         this.homeTeamLineup = lineups[0];
         this.awayTeamLineup = lineups[1];
         this.selectedMatch = match;
-        this.showPopupMatchResult = true;
+        this.showModalMatchResult = true;
       });
     }
   }
 
-  hideModal(): void {
-    this.matchResultPage?.hide();
+  hideModalMatchResult(): void {
+    this.modalMatchResult?.hide();
   }
 
-  onHidden(): void {
-    this.showPopupMatchResult = false;
+  onHiddenMatchResult(): void {
+    this.showModalMatchResult = false;
   }
 
   private loadLineups(match: Match): Observable<[Lineup[], Lineup[]]> {
