@@ -13,7 +13,7 @@ import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMapTo, takeWhile, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, switchMapTo, takeWhile, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-player-list',
@@ -60,7 +60,7 @@ export class PlayerListComponent implements OnInit {
       .pipe(
         debounceTime(400),
         distinctUntilChanged(),
-        switchMapTo(
+        switchMap(() =>
           iif(
             () => this.filter != null && this.filter !== '',
             this.filter?.length > 2 ? this.rosterService.read(this.page, this.limit, this.filter) : of(this.rosterList),
