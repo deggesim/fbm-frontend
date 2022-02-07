@@ -85,7 +85,7 @@ export class TransactionComponent implements OnInit {
         distinctUntilChanged(),
         switchMap((value: string) =>
           iif(
-            () => this.modalTransaction.isShown,
+            () => this.showModalTransaction,
             of({ totalElements: this.rosters.length, content: this.rosters }),
             this.rosterService.freePlayers(1, this.limit, value)
           )
