@@ -15,7 +15,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMapTo, tap } from 'rxjs/operators';
+import { switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-results',
@@ -73,9 +73,10 @@ export class ResultsComponent implements OnInit {
 
   createForm() {
     this.form = this.fb.group({
-      round: [undefined, Validators.required],
-      fixture: [undefined, Validators.required],
-      match: [undefined, Validators.required],
+      round: [null, Validators.required],
+      fixture: [null, Validators.required],
+      match: [null, Validators.required],
+      homeFactor: [null, Validators.min(0)],
     });
     this.form.get('fixture').disable();
     this.form.get('match').disable();
@@ -116,22 +117,22 @@ export class ResultsComponent implements OnInit {
   }
 
   computeScore() {
-    const { round, fixture, match } = this.form.value;
+    const { round, fixture, match, homeFactor } = this.form.value;
     this.matchService
-      .compute(round._id, fixture._id, match._id)
+      .compute(round._id, fixture._id, match._id, homeFactor)
       .pipe(
-        tap((matchComputed) => {
+        switchMap((matchComputed: Match) => {
           this.selectedMatch = matchComputed;
+          return this.matchService.read(fixture._id);
         }),
-        switchMapTo(this.matchService.read(fixture._id)),
-        tap((matches: Match[]) => {
+        switchMap((matches: Match[]) => {
           this.matches = matches;
+          return this.store.select(selectedLeague);
         }),
-        switchMapTo(this.store.select(selectedLeague)),
-        tap((league: League) => {
+        switchMap((league: League) => {
           this.store.dispatch(LeagueInfoActions.refresh({ league }));
-        }),
-        switchMapTo(this.loadLineups(this.selectedMatch))
+          return this.loadLineups(this.selectedMatch);
+        })
       )
       .subscribe((lineups) => {
         this.homeTeamLineup = lineups[0];
@@ -145,6 +146,7 @@ export class ResultsComponent implements OnInit {
   };
 
   private loadLineups(match: Match): Observable<[Lineup[], Lineup[]]> {
+    this.form.get('homeFactor').setValue(match.homeFactor);
     const homeTeam = match.homeTeam;
     const awayTeam = match.awayTeam;
     const $homeTeamLineup = this.lineupService.lineupByTeam(homeTeam._id, this.form.value.fixture._id);

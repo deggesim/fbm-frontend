@@ -5,9 +5,29 @@
       <div>
         <h4 id="homeTeam">{{ match.homeTeam.name }} {{ match.homeScore }}</h4>
       </div>
-      <div>
-        <label>Fattore campo: {{ match.homeFactor }}</label>
+      <div *ngIf="match.overtime != null">
+        <label>Overtime: {{ match.overtime }}</label>
       </div>
+
+      <ng-container *ngIf="form; else noForm">
+        <form [formGroup]="form">
+          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" class="home-factor-div">
+            <div fxFlex="initial">
+              <label for="homeFactor">Fattore campo</label>
+            </div>
+            <div fxFlex="4rem">
+              <input type="number" class="form-control" id="homeFactor" formControlName="homeFactor" />
+            </div>
+            <fbm-error-message [form-control]="form.get('homeFactor')" name="Fattore campo"></fbm-error-message>
+          </div>
+        </form>
+      </ng-container>
+      <ng-template #noForm>
+        <div>
+          <label>Fattore campo: {{ match.homeFactor }}</label>
+        </div>
+      </ng-template>
+
       <div class="pb-3">
         <label>Valutazione: {{ match.homeRanking }} - Pagelle: {{ match.homeGrade }}</label>
       </div>
@@ -21,7 +41,7 @@
               <th fxHide.lt-sm id="ranking">Val.</th>
               <th fxHide.lt-sm id="minutes">Minuti</th>
               <th fxHide.lt-sm id="grade">Voto</th>
-              <th fxHide.lt-sm id="grade40Min">Val. dopo 40 minuti</th>
+              <th *ngIf="match.overtime != null" fxHide.lt-sm id="ranking40Min" tooltip="Valutazione dopo 40 minuti">V. 40m</th>
               <th id="rankingUsed">Val. usata</th>
               <th id="minutesUsed">Minuti usati</th>
             </tr>
@@ -35,7 +55,7 @@
               <td fxHide.lt-sm>{{ player?.performance.ranking }}</td>
               <td fxHide.lt-sm>{{ player?.performance.minutes }}</td>
               <td fxHide.lt-sm>{{ player?.performance.grade }}</td>
-              <td fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
+              <td *ngIf="match.overtime != null" fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
               <td>{{ player?.matchReport?.realRanking }}</td>
               <td>{{ player?.matchReport?.minutesUsed }}</td>
             </tr>
@@ -47,9 +67,10 @@
     <!-- SQUADRA 2 -->
     <div fxFlex="49" fxFlex.lt-md="100">
       <div>
-        <h4 id="awayTeam">{{ match.awayTeam.name }} {{ match.awayScore }}</h4>
+        <h4 id="awayTeam" [ngClass.lt-md]="'space-above'">{{ match.awayTeam.name }} {{ match.awayScore }}</h4>
       </div>
-      <div><label>&nbsp;</label></div>
+      <div *ngIf="match.overtime != null"><label>&nbsp;</label></div>
+      <div [ngClass]="{ 'home-factor-div': form }" fxHide.lt-md><label>&nbsp;</label></div>
       <div class="pb-3">
         <label>Valutazione: {{ match.awayRanking }} - Pagelle: {{ match.awayGrade }}</label>
       </div>
@@ -63,7 +84,7 @@
               <th fxHide.lt-sm id="ranking">Val.</th>
               <th fxHide.lt-sm id="minutes">Minuti</th>
               <th fxHide.lt-sm id="grade">Voto</th>
-              <th fxHide.lt-sm id="grade40Min">Val. dopo 40 minuti</th>
+              <th *ngIf="match.overtime != null" fxHide.lt-sm id="ranking40Min" tooltip="Valutazione dopo 40 minuti">V. 40m</th>
               <th id="rankingUsed">Val. usata</th>
               <th id="minutesUsed">Minuti usati</th>
             </tr>
@@ -77,7 +98,7 @@
               <td fxHide.lt-sm>{{ player?.performance.ranking }}</td>
               <td fxHide.lt-sm>{{ player?.performance.minutes }}</td>
               <td fxHide.lt-sm>{{ player?.performance.grade }}</td>
-              <td fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
+              <td *ngIf="match.overtime != null" fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
               <td>{{ player?.matchReport?.realRanking }}</td>
               <td>{{ player?.matchReport?.minutesUsed }}</td>
             </tr>
