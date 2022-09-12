@@ -30,6 +30,7 @@ export class ParametersComponent implements OnInit {
     this.form = this.fb.group({
       DRAFT: [20, Validators.required],
       MAX_CONTRACTS: [21, Validators.required],
+      MAX_STR: [6, Validators.required],
       MAX_EXT_OPT_345: [6, Validators.required],
       MAX_PLAYERS_IN_ROSTER: [18, Validators.required],
       MAX_STRANGERS_OPT_55: [6, Validators.required],

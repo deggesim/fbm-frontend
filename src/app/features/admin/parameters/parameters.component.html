@@ -38,6 +38,23 @@
 
       <div fxFlex="49" fxFlex.xs="100">
         <div class="mb-3">
+          <label for="MAX_EXT_OPT_345" class="control-label">MAX_STR</label>
+          <input
+            type="number"
+            class="form-control"
+            id="MAX_STR"
+            name="MAX_STR"
+            formControlName="MAX_STR"
+            [ngClass]="{ 'is-invalid': form.get('MAX_STR').invalid && form.get('MAX_STR').dirty }"
+          />
+          <div *ngIf="form.get('MAX_STR').hasError('required') && form.get('MAX_STR').dirty" class="invalid-feedback">
+            Il campo MAX_STR è obbligatorio
+          </div>
+        </div>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="mb-3">
           <label for="MAX_EXT_OPT_345" class="control-label">MAX_EXT_OPT_345</label>
           <input
             type="number"
