@@ -14,16 +14,12 @@
       </div>
       <div class="modal-body">
         <form [formGroup]="form" class="needs-validation" novalidate>
-          <div fxLayout="row wrap" fxLayoutAlign="space-between">
-            <div fxFlex="100">
-              <div class="mb-3">
-                <div class="input-group mb-3">
-                  <input #uploadElement type="file" class="form-control manina" (change)="onFileChange($event)" />
-                  <span class="input-group-text" [ngClass]="{ manina: form.get('file').valid }" (click)="uploadEvent()">
-                    <fa-icon icon="upload" class="icon-padding"></fa-icon>Upload
-                  </span>
-                </div>
-              </div>
+          <div class="mb-3">
+            <div class="input-group mb-3">
+              <input #uploadElement type="file" class="form-control manina" (change)="onFileChange($event)" />
+              <span class="input-group-text" [ngClass]="{ manina: form.get('file').valid }" (click)="uploadEvent()">
+                <fa-icon icon="upload" class="icon-padding"></fa-icon>Upload
+              </span>
             </div>
           </div>
 
