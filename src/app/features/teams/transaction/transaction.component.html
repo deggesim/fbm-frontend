@@ -82,14 +82,7 @@
                 <button type="button" class="btn btn-success me-2" (click)="update(fr)" tooltip="Modifica" placement="top">
                   <fa-icon icon="pencil-alt"></fa-icon>
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  (click)="openReleasePopup(fr)"
-                  tooltip="Rilascia"
-                  placement="top"
-                  *ngIf="!isPreseason()"
-                >
+                <button type="button" class="btn btn-warning" (click)="openReleasePopup(fr)" tooltip="Rilascia" placement="top">
                   <fa-icon icon="trash"></fa-icon>
                 </button>
                 <button type="button" class="btn btn-danger ms-2" (click)="openRemovePopup(fr)" tooltip="Rimuovi" placement="top">

@@ -138,13 +138,6 @@ export class TransactionComponent implements OnInit {
     }
   }
 
-  clear() {
-    this.limit = 10;
-    this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
-      this.rosters = rosterList.content;
-    });
-  }
-
   loadMore() {
     this.limit += 10;
     this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
@@ -314,10 +307,6 @@ export class TransactionComponent implements OnInit {
         this.popupRelease.closeModal();
         this.fantasyRosterSelected = null;
       });
-  }
-
-  public isPreseason() {
-    return this.leagueStatus != null && this.leagueStatus === Status.Preseason;
   }
 
   private resetForm() {
