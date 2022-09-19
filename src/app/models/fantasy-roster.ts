@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { FantasyTeam } from './fantasy-team';
 import { FbmModel } from './fbm.model';
 import { Role } from './player';
@@ -38,7 +39,8 @@ export const sortFantasyRoster = (a: FantasyRoster, b: FantasyRoster): number =>
   } else if (map[aRole] > map[bRole]) {
     return 1;
   } else {
-    return a.roster.player.name.localeCompare(b.roster.player.name);
+    const isBefore = moment(a.createdAt).isBefore(b.createdAt);
+    return isBefore ? -1 : 1;
   }
 };
 

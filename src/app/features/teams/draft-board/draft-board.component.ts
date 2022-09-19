@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
 import { user } from '@app/core/user/store/user.selector';
-import { FantasyRoster } from '@app/models/fantasy-roster';
+import { FantasyRoster, sortFantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { LeagueInfo, Status } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
@@ -163,6 +163,9 @@ export class DraftBoardComponent implements OnInit {
           switchMapTo(this.fantasyTeamService.draftBoard()),
           tap((fantasyTeams: FantasyTeam[]) => {
             this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+            for (const ft of this.fantasyTeams) {
+              ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
+            }
             this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
           }),
           switchMapTo(this.rosterService.freePlayers(1, this.limit)),
@@ -196,6 +199,9 @@ export class DraftBoardComponent implements OnInit {
           switchMapTo(this.fantasyTeamService.draftBoard()),
           tap((fantasyTeams: FantasyTeam[]) => {
             this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+            for (const ft of this.fantasyTeams) {
+              ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
+            }
             this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
           }),
           switchMapTo(this.rosterService.freePlayers(1, this.limit)),
