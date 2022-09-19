@@ -15,6 +15,10 @@ export class FantasyTeamService {
     return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`);
   }
 
+  public draftBoard() {
+    return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams/draft-board`);
+  }
+
   public get(id: string) {
     return this.http.get<FantasyTeam>(`${this.endpoint}/fantasy-teams/${id}`);
   }
