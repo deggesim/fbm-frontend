@@ -17,6 +17,7 @@ import { select, Store } from '@ngrx/store';
 })
 export class PlayerFormComponent implements OnInit, OnChanges {
   @Input() roster: Roster;
+  @Input() leagueInfo: LeagueInfo;
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
@@ -38,19 +39,21 @@ export class PlayerFormComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.roles = [Role.Playmaker, Role.PlayGuardia, Role.Guardia, Role.GuardiaAla, Role.Ala, Role.AlaCentro, Role.Centro];
     this.teams = this.route.snapshot.data['teams'];
-    this.realFixtureService.read(true).subscribe((realFixtures: RealFixture[]) => {
-      this.preparedRealFixtures = realFixtures;
-    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     const roster: Roster = changes['roster'].currentValue;
+    const leagueInfo: LeagueInfo = changes['leagueInfo'].currentValue;
     if (roster != null) {
       const { name, nationality, number, yearBirth, height, weight, role } = roster.player;
       this.form.patchValue({ name, nationality, number, yearBirth, height, weight, role });
       this.form.get('team').setValue(roster.team);
-      this.store.pipe(select(leagueInfo)).subscribe((value: LeagueInfo) => {
-        this.form.get('realFixture').setValue(value.nextRealFixture);
+    }
+    this.form.get('realFixture').setValue(leagueInfo.nextRealFixture);
+
+    if (!leagueInfo.preSeason) {
+      this.realFixtureService.read(true).subscribe((realFixtures: RealFixture[]) => {
+        this.preparedRealFixtures = realFixtures;
       });
     }
   }

@@ -131,7 +131,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100" *ngIf="roster == null">
+    <div fxFlex="49" fxFlex.xs="100" *ngIf="roster == null && !leagueInfo?.preSeason">
       <div class="mb-3">
         <label for="realFixture" class="control-label">Giornata *</label>
         <ng-select
