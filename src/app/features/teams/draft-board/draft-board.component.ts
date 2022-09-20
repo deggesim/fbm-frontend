@@ -16,7 +16,7 @@ import { RosterService } from '@app/shared/services/roster.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { debounceTime, distinctUntilChanged, iif, of, Subject, switchMap, switchMapTo, take, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, iif, noop, of, Subject, switchMap, switchMapTo, take, tap } from 'rxjs';
 
 @Component({
   selector: 'fbm-draft-board',
@@ -151,30 +151,29 @@ export class DraftBoardComponent implements OnInit {
         .pipe(
           tap(() => {
             this.hideModal();
-          }),
-          switchMapTo(this.fantasyTeamService.draftBoard()),
-          tap((fantasyTeams: FantasyTeam[]) => {
-            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
-            for (const ft of this.fantasyTeams) {
-              ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
-            }
+            this.toastService.success(
+              'Modifica tesseramento',
+              `Il tesseramento del giocatore ${this.fantasyRosterSelected.roster.player.name} è stato modificato correttamente`
+            );
+            this.rosterSelected = null;
+            this.form.get('roster').reset();
+            this.fantasyRosterSelected = null;
           }),
           switchMapTo(this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
           switchMapTo(this.store.select(leagueInfo)),
-          take(1)
+          take(1),
+          switchMapTo(this.fantasyTeamService.draftBoard(true)),
+          tap((fantasyTeams: FantasyTeam[]) => {
+            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+            for (const ft of this.fantasyTeams) {
+              ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
+            }
+          })
         )
-        .subscribe(() => {
-          this.toastService.success(
-            'Modifica tesseramento',
-            `Il tesseramento del giocatore ${this.fantasyRosterSelected.roster.player.name} è stato modificato correttamente`
-          );
-          this.rosterSelected = null;
-          this.form.get('roster').reset();
-          this.fantasyRosterSelected = null;
-        });
+        .subscribe(noop);
     } else {
       const fantasyRoster: FantasyRoster = {
         ...this.form.value,
@@ -184,29 +183,28 @@ export class DraftBoardComponent implements OnInit {
         .pipe(
           tap(() => {
             this.hideModal();
-          }),
-          switchMapTo(this.fantasyTeamService.draftBoard()),
-          tap((fantasyTeams: FantasyTeam[]) => {
-            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
-            for (const ft of this.fantasyTeams) {
-              ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
-            }
+            this.toastService.success(
+              'Nuovo tesseramento',
+              `Il giocatore ${fantasyRoster.roster.player.name} è stato tesserarato correttamente`
+            );
+            this.rosterSelected = null;
+            this.form.get('roster').reset();
           }),
           switchMapTo(this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
           switchMapTo(this.store.select(leagueInfo)),
-          take(1)
+          take(1),
+          switchMapTo(this.fantasyTeamService.draftBoard(true)),
+          tap((fantasyTeams: FantasyTeam[]) => {
+            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+            for (const ft of this.fantasyTeams) {
+              ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
+            }
+          })
         )
-        .subscribe(() => {
-          this.toastService.success(
-            'Nuovo tesseramento',
-            `Il giocatore ${this.rosterSelected.player.name} è stato tesserarato correttamente`
-          );
-          this.rosterSelected = null;
-          this.form.get('roster').reset();
-        });
+        .subscribe(noop);
     }
   }
 
@@ -244,28 +242,29 @@ export class DraftBoardComponent implements OnInit {
     this.fantasyRosterService
       .remove(this.fantasyRosterSelected._id)
       .pipe(
-        switchMapTo(this.fantasyTeamService.draftBoard()),
-        tap((fantasyTeams: FantasyTeam[]) => {
-          this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
-          for (const ft of this.fantasyTeams) {
-            ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
-          }
+        tap(() => {
+          this.popupRemove.closeModal();
+          this.toastService.success(
+            'Giocatore rimosso',
+            'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rimosso correttamente'
+          );
+          this.fantasyRosterSelected = null;
         }),
         switchMapTo(this.rosterService.freePlayers(1, this.limit)),
         tap((rosterList: RosterList) => {
           this.rosters = rosterList.content;
         }),
         switchMapTo(this.store.select(leagueInfo)),
-        take(1)
+        take(1),
+        switchMapTo(this.fantasyTeamService.draftBoard(true)),
+        tap((fantasyTeams: FantasyTeam[]) => {
+          this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+          for (const ft of this.fantasyTeams) {
+            ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
+          }
+        })
       )
-      .subscribe(() => {
-        this.toastService.success(
-          'Giocatore rimosso',
-          'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rimosso correttamente'
-        );
-        this.popupRemove.closeModal();
-        this.fantasyRosterSelected = null;
-      });
+      .subscribe(noop);
   }
 
   private resetForm() {

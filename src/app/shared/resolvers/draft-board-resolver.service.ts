@@ -13,7 +13,7 @@ export class DraftBoardResolverService implements Resolve<FantasyTeam[]> {
   constructor(private fantasyTeamService: FantasyTeamService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): FantasyTeam[] | Observable<FantasyTeam[]> | Promise<FantasyTeam[]> {
-    return this.fantasyTeamService.draftBoard().pipe(
+    return this.fantasyTeamService.draftBoard(false).pipe(
       map((fantasyTeams: FantasyTeam[]) => {
         const sortedList = [...fantasyTeams];
         sortedList.sort((a, b) => a.name.localeCompare(b.name));
