@@ -68,15 +68,6 @@ export class DraftBoardComponent implements OnInit {
   ngOnInit() {
     this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.rosters = this.route.snapshot.data['rosterList'].content;
-
-    this.store.pipe(select(user), take(1)).subscribe((value: User) => {
-      const isAdmin = value && (Role.Admin === value.role || Role.SuperAdmin === value.role);
-      if (!isAdmin) {
-        this.fantasyTeams = this.fantasyTeams.filter(
-          (fantasyTeam: FantasyTeam) => fantasyTeam.owners.find((owner: User) => owner._id === value._id) != null
-        );
-      }
-    });
     this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
       this.leagueStatus = value?.status;
     });

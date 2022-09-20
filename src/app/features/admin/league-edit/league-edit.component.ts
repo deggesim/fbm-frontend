@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -8,6 +8,7 @@ import { PlayoffFormat } from '@app/models/formats/playoff-format';
 import { PlayoutFormat } from '@app/models/formats/playout-format';
 import { RegularSeasonFormat } from '@app/models/formats/regular-season-format';
 import { League } from '@app/models/league';
+import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -18,6 +19,8 @@ export class EditLeagueComponent implements OnInit {
   form: FormGroup;
 
   league: League;
+
+  @ViewChild('popupConfirmEditLeague', { static: true }) public popupConfirmEditLeague!: PopupConfirmComponent;
 
   regularSeasonFormatList: RegularSeasonFormat[] = [
     RegularSeasonFormat.SINGLE,
@@ -100,8 +103,13 @@ export class EditLeagueComponent implements OnInit {
     });
   }
 
+  openEditLeaguePopup() {
+    this.popupConfirmEditLeague.openModal();
+  }
+
   confirm() {
     const league: League = { _id: this.league._id, ...this.form.getRawValue() };
     this.store.dispatch(LeagueActions.editLeague({ league }));
+    this.popupConfirmEditLeague.closeModal();
   }
 }

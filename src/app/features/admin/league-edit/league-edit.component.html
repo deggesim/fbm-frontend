@@ -1,4 +1,4 @@
-<form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="openEditLeaguePopup()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="tools" class="icon-padding"></fa-icon>Impostazioni lega</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
@@ -39,10 +39,7 @@
       </div>
 
       <div fxFlex="69" fxFlex.xs="49">
-        <div
-          class="mb-3"
-          [ngClass]="{ 'is-invalid': form.get('regularSeasonFormat').invalid && form.get('regularSeasonFormat').dirty }"
-        >
+        <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('regularSeasonFormat').invalid && form.get('regularSeasonFormat').dirty }">
           <label for="regularSeasonFormat" class="control-label">Stagione regolare *</label>
           <ng-select
             id="regularSeasonFormat"
@@ -212,3 +209,17 @@
     </button>
   </div>
 </form>
+
+<!-- popup confirm edit league -->
+<fbm-popup-confirm
+  #popupConfirmEditLeague
+  title="Modifica impostazioni"
+  [textContent]=""
+  btnConfirm="Ok"
+  btnCancel="Annulla"
+  (confirm)="confirm()"
+  (cancel)="popupConfirmEditLeague.closeModal()"
+>
+  <h5 class="text-center text-warning">Attenzione! <fa-icon icon="exclamation-triangle" class="icon-padding"></fa-icon></h5>
+  <p class="text-center">La modifica eliminerà tutte le transazioni, le squadre ed i giocatori inseriti fino adesso!</p>
+</fbm-popup-confirm>
