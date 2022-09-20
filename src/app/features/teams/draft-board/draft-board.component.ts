@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
 import { user } from '@app/core/user/store/user.selector';
-import { FantasyRoster } from '@app/models/fantasy-roster';
+import { FantasyRoster, sortFantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { LeagueInfo, Status } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
@@ -16,18 +16,16 @@ import { RosterService } from '@app/shared/services/roster.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { iif, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, iif, noop, of, Subject, switchMap, switchMapTo, take, tap } from 'rxjs';
 
 @Component({
-  selector: 'fbm-transaction',
-  templateUrl: './transaction.component.html',
+  selector: 'fbm-draft-board',
+  templateUrl: './draft-board.component.html',
 })
-export class TransactionComponent implements OnInit {
+export class DraftBoardComponent implements OnInit {
   form: FormGroup;
 
   fantasyTeams: FantasyTeam[];
-  fantasyTeamSelected: FantasyTeam;
   rosters: Roster[];
   rosterSelected: Roster;
   fantasyRosters: FantasyRoster[];
@@ -51,6 +49,8 @@ export class TransactionComponent implements OnInit {
   private fantasyTeamService: FantasyTeamService;
   private store: Store<AppState>;
 
+  playersInRoster: number[];
+
   constructor(injector: Injector) {
     this.fb = injector.get(FormBuilder);
     this.route = injector.get(ActivatedRoute);
@@ -59,6 +59,8 @@ export class TransactionComponent implements OnInit {
     this.fantasyRosterService = injector.get(FantasyRosterService);
     this.fantasyTeamService = injector.get(FantasyTeamService);
     this.store = injector.get(Store);
+
+    this.playersInRoster = Array.from(Array(16).keys());
 
     this.createForm();
   }
@@ -118,26 +120,6 @@ export class TransactionComponent implements OnInit {
     });
   }
 
-  selectFantasyTeam(fantasyTeam: FantasyTeam) {
-    this.fantasyTeamSelected = fantasyTeam;
-    if (fantasyTeam != null) {
-      this.store
-        .pipe(
-          select(leagueInfo),
-          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(fantasyTeam._id, value.nextRealFixture._id))
-        )
-        .subscribe((fantasyRosters: FantasyRoster[]) => {
-          this.fantasyRosters = fantasyRosters;
-        });
-      if (this.rosterSelected != null) {
-        this.resetForm();
-        this.showModalTransaction = true;
-      }
-    } else {
-      this.fantasyRosters = null;
-    }
-  }
-
   loadMore() {
     this.limit += 10;
     this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
@@ -147,10 +129,8 @@ export class TransactionComponent implements OnInit {
 
   selectRoster(roster: Roster) {
     this.rosterSelected = roster;
-    if (this.fantasyTeamSelected != null) {
-      this.resetForm();
-      this.showModalTransaction = true;
-    }
+    this.resetForm();
+    this.showModalTransaction = true;
   }
 
   save() {
@@ -171,11 +151,13 @@ export class TransactionComponent implements OnInit {
         .pipe(
           tap(() => {
             this.hideModal();
-          }),
-          switchMapTo(this.fantasyTeamService.read()),
-          tap((fantasyTeams: FantasyTeam[]) => {
-            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
-            this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
+            this.toastService.success(
+              'Modifica tesseramento',
+              `Il tesseramento del giocatore ${this.fantasyRosterSelected.roster.player.name} è stato modificato correttamente`
+            );
+            this.rosterSelected = null;
+            this.form.get('roster').reset();
+            this.fantasyRosterSelected = null;
           }),
           switchMapTo(this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
@@ -183,18 +165,15 @@ export class TransactionComponent implements OnInit {
           }),
           switchMapTo(this.store.select(leagueInfo)),
           take(1),
-          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
+          switchMapTo(this.fantasyTeamService.draftBoard(true)),
+          tap((fantasyTeams: FantasyTeam[]) => {
+            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+            for (const ft of this.fantasyTeams) {
+              ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
+            }
+          })
         )
-        .subscribe((fr: FantasyRoster[]) => {
-          this.fantasyRosters = fr;
-          this.toastService.success(
-            'Modifica tesseramento',
-            `Il tesseramento del giocatore ${this.fantasyRosterSelected.roster.player.name} è stato modificato correttamente`
-          );
-          this.rosterSelected = null;
-          this.form.get('roster').reset();
-          this.fantasyRosterSelected = null;
-        });
+        .subscribe(noop);
     } else {
       const fantasyRoster: FantasyRoster = {
         ...this.form.value,
@@ -204,11 +183,12 @@ export class TransactionComponent implements OnInit {
         .pipe(
           tap(() => {
             this.hideModal();
-          }),
-          switchMapTo(this.fantasyTeamService.read()),
-          tap((fantasyTeams: FantasyTeam[]) => {
-            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
-            this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
+            this.toastService.success(
+              'Nuovo tesseramento',
+              `Il giocatore ${fantasyRoster.roster.player.name} è stato tesserarato correttamente`
+            );
+            this.rosterSelected = null;
+            this.form.get('roster').reset();
           }),
           switchMapTo(this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
@@ -216,17 +196,15 @@ export class TransactionComponent implements OnInit {
           }),
           switchMapTo(this.store.select(leagueInfo)),
           take(1),
-          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
+          switchMapTo(this.fantasyTeamService.draftBoard(true)),
+          tap((fantasyTeams: FantasyTeam[]) => {
+            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+            for (const ft of this.fantasyTeams) {
+              ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
+            }
+          })
         )
-        .subscribe((fr: FantasyRoster[]) => {
-          this.fantasyRosters = fr;
-          this.toastService.success(
-            'Nuovo tesseramento',
-            `Il giocatore ${this.rosterSelected.player.name} è stato tesserarato correttamente`
-          );
-          this.rosterSelected = null;
-          this.form.get('roster').reset();
-        });
+        .subscribe(noop);
     }
   }
 
@@ -241,9 +219,10 @@ export class TransactionComponent implements OnInit {
     this.showModalTransaction = false;
   }
 
-  update(fantasyRoster: FantasyRoster) {
+  update(fantasyTeam: FantasyTeam, fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
     this.form.patchValue({
+      fantasyTeam,
       status: fantasyRoster.status,
       draft: fantasyRoster.draft,
       contract: fantasyRoster.contract,
@@ -252,11 +231,6 @@ export class TransactionComponent implements OnInit {
     this.rosterSelected = null;
     this.form.get('roster').reset();
     this.showModalTransaction = true;
-  }
-
-  openReleasePopup(fantasyRoster: FantasyRoster) {
-    this.fantasyRosterSelected = fantasyRoster;
-    this.popupRelease.openModal();
   }
 
   openRemovePopup(fantasyRoster: FantasyRoster) {
@@ -268,50 +242,35 @@ export class TransactionComponent implements OnInit {
     this.fantasyRosterService
       .remove(this.fantasyRosterSelected._id)
       .pipe(
-        switchMapTo(this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-        tap((fantasyTeam: FantasyTeam) => {
-          this.fantasyTeamSelected = fantasyTeam;
+        tap(() => {
+          this.popupRemove.closeModal();
+          this.toastService.success(
+            'Giocatore rimosso',
+            'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rimosso correttamente'
+          );
+          this.fantasyRosterSelected = null;
+        }),
+        switchMapTo(this.rosterService.freePlayers(1, this.limit)),
+        tap((rosterList: RosterList) => {
+          this.rosters = rosterList.content;
         }),
         switchMapTo(this.store.select(leagueInfo)),
         take(1),
-        switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
+        switchMapTo(this.fantasyTeamService.draftBoard(true)),
+        tap((fantasyTeams: FantasyTeam[]) => {
+          this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+          for (const ft of this.fantasyTeams) {
+            ft.fantasyRosters = [...ft.fantasyRosters].sort(sortFantasyRoster);
+          }
+        })
       )
-      .subscribe((fantasyRosters: FantasyRoster[]) => {
-        this.fantasyRosters = fantasyRosters;
-        this.toastService.success(
-          'Giocatore rimosso',
-          'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rimosso correttamente'
-        );
-        this.popupRemove.closeModal();
-        this.fantasyRosterSelected = null;
-      });
-  }
-
-  release() {
-    this.fantasyRosterService
-      .release(this.fantasyRosterSelected._id)
-      .pipe(
-        switchMapTo(this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-        tap((fantasyTeam: FantasyTeam) => {
-          this.fantasyTeamSelected = fantasyTeam;
-        }),
-        switchMapTo(this.store.select(leagueInfo)),
-        switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
-      )
-      .subscribe((fantasyRosters: FantasyRoster[]) => {
-        this.fantasyRosters = fantasyRosters;
-        this.toastService.success(
-          'Giocatore rilasciato',
-          'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rilasciato correttamente'
-        );
-        this.popupRelease.closeModal();
-        this.fantasyRosterSelected = null;
-      });
+      .subscribe(noop);
   }
 
   private resetForm() {
     this.form.patchValue({
-      status: undefined,
+      fantasyTeam: null,
+      status: null,
       draft: false,
       contract: 1,
       yearContract: 1,

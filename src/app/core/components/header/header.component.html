@@ -14,8 +14,11 @@
           <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true">
-            <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>{{ transactionLabel }}
+          <a class="dropdown-item" routerLink="/teams/draft-board" routerLinkActive="active" (click)="isCollapsed = true" *ngIf="leagueInfo?.preSeason">
+            <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>Asta fantamercato
+          </a>
+          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true" *ngIf="!leagueInfo?.preSeason">
+            <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>Mercato libero
           </a>
           <a class="dropdown-item" routerLink="/teams/trades" routerLinkActive="active" (click)="isCollapsed = true">
             <fa-icon icon="exchange-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Scambi

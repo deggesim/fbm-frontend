@@ -15,6 +15,12 @@ export class FantasyTeamService {
     return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`);
   }
 
+  public draftBoard(hideSpinner: boolean) {
+    return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams/draft-board`, {
+      headers: { hideSpinner: hideSpinner ? 'true' : 'false' },
+    });
+  }
+
   public get(id: string) {
     return this.http.get<FantasyTeam>(`${this.endpoint}/fantasy-teams/${id}`);
   }

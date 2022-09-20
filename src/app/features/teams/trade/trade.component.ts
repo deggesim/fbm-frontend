@@ -14,7 +14,7 @@ import { fantasyTeamMustBeDifferent } from '@app/shared/util/validations';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { switchMapTo, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-trade',

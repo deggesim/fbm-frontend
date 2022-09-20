@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@app/core/auth/service/auth.guard';
+import { DraftBoardResolverService } from '@app/shared/resolvers/draft-board-resolver.service';
 import { FantasyTeamResolverService } from '@app/shared/resolvers/fantasy-team-resolver.service';
 import { FreePlayersResolverService } from '@app/shared/resolvers/free-players-resolver.service';
+import { DraftBoardComponent } from './draft-board/draft-board.component';
 import { FantasyRostersComponent } from './fantasy-rosters/fantasy-rosters.component';
 import { TradeComponent } from './trade/trade.component';
 import { TransactionComponent } from './transaction/transaction.component';
@@ -11,6 +13,15 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'transactions',
+  },
+  {
+    path: 'draft-board',
+    component: DraftBoardComponent,
+    resolve: {
+      fantasyTeams: DraftBoardResolverService,
+      rosterList: FreePlayersResolverService,
+    },
+    canActivate: [AuthGuard],
   },
   {
     path: 'transactions',

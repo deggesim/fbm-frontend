@@ -43,8 +43,4 @@ export class HeaderComponent implements OnInit {
       this.isAdmin = value;
     });
   }
-
-  get transactionLabel() {
-    return this.leagueInfo.preSeason ? 'Asta fantamercato' : 'Mercato libero';
-  }
 }

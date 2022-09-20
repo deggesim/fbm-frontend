@@ -1,105 +1,89 @@
 <form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
-    <legend class="legend"><fa-icon icon="shopping-cart" class="icon-padding"></fa-icon>Mercato libero</legend>
+    <legend class="legend"><fa-icon icon="shopping-cart" class="icon-padding"></fa-icon>Asta fantamercato</legend>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="49" fxFlex.xs="100">
-        <div class="mb-3">
-          <label for="fantasyTeam" class="control-label">Fantasquadra</label>
-          <ng-select
-            id="fantasyTeam"
-            [items]="fantasyTeams"
-            bindLabel="name"
-            formControlName="fantasyTeam"
-            clearAllText="Elimina"
-            (change)="selectFantasyTeam($event)"
-          >
-          </ng-select>
-        </div>
-      </div>
-
-      <div fxFlex="49" fxFlex.xs="100">
-        <div class="mb-3">
-          <label for="roster" class="control-label">Giocatore</label>
-          <ng-select
-            id="roster"
-            [items]="rosters"
-            bindLabel="player.name"
-            formControlName="roster"
-            clearAllText="Elimina"
-            [typeahead]="typeahead$"
-            [minTermLength]="3"
-            (scrollToEnd)="loadMore()"
-            (change)="selectRoster($event)"
-          >
-            <ng-template ng-option-tmp let-item="item">
-              {{ item.player.name }} - {{ item.player.nationality }} - {{ item.player.role }} - {{ item.team.fullName }}
-            </ng-template>
-            <ng-template ng-label-tmp let-item="item">
-              {{ item.player.name }} - {{ item.player.nationality }} - {{ item.player.role }} - {{ item.team.fullName }}
-            </ng-template>
-          </ng-select>
-        </div>
-      </div>
+    <div class="mb-3">
+      <label for="roster" class="control-label">Giocatore</label>
+      <ng-select
+        id="roster"
+        [items]="rosters"
+        bindLabel="player.name"
+        formControlName="roster"
+        clearAllText="Elimina"
+        [typeahead]="typeahead$"
+        [minTermLength]="3"
+        (scrollToEnd)="loadMore()"
+        (change)="selectRoster($event)"
+      >
+        <ng-template ng-option-tmp let-item="item">
+          {{ item.player.name }} - {{ item.player.nationality }} - {{ item.player.role }} - {{ item.team.fullName }}
+        </ng-template>
+        <ng-template ng-label-tmp let-item="item">
+          {{ item.player.name }} - {{ item.player.nationality }} - {{ item.player.role }} - {{ item.team.fullName }}
+        </ng-template>
+      </ng-select>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeamSelected">
-      <div>Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}</div>
-      <div>Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
-      <div>Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
-      <div>Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
-    </div>
+    <table class="table table-hover" aria-label="Fantasy roster">
+      <thead class="table-dark">
+        <tr>
+          <th *ngFor="let fantasyTeam of fantasyTeams" [id]="fantasyTeam.name">{{ fantasyTeam.name }}</th>
+        </tr>
+      </thead>
 
-    <ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
-      <hr />
+      <tbody>
+        <tr class="table-secondary">
+          <td *ngFor="let fantasyTeam of fantasyTeams">
+            <div fxLayout="row wrap">
+              <div fxFlex="50" tooltip="Crediti spesi" class="text-nowrap">
+                <fa-icon icon="money-bill-wave" [fixedWidth]="true" class="icon-padding"></fa-icon>:
+                {{ fantasyTeam.outgo }}
+              </div>
+              <div fxFlex="50" tooltip="Crediti residui" class="text-nowrap">
+                <fa-icon icon="piggy-bank" [fixedWidth]="true" class="icon-padding"></fa-icon>:
+                {{ fantasyTeam.initialBalance - fantasyTeam.balancePenalty - fantasyTeam.outgo }}
+              </div>
+              <div fxFlex="50" tooltip="Giocatori nel roster" class="text-nowrap">
+                <fa-icon icon="users" [fixedWidth]="true" class="icon-padding"></fa-icon>: {{ fantasyTeam.playersInRoster }}
+              </div>
+              <div fxFlex="50" tooltip="Visti spesi" class="text-nowrap">
+                <fa-icon icon="globe-americas" [fixedWidth]="true" class="icon-padding"></fa-icon>: {{ fantasyTeam.extraPlayers }}
+              </div>
+            </div>
+          </td>
+        </tr>
 
-      <div class="table-responsive">
-        <table class="table table-hover" aria-label="Fantasy roster">
-          <thead class="table-dark">
-            <tr>
-              <th id="name">Nome</th>
-              <th fxHide.lt-sm id="status">Status</th>
-              <th fxHide.lt-sm id="contract">Contratto</th>
-              <th fxHide.lt-sm id="yearContract">Anno di contratto</th>
-              <th fxHide.lt-sm id="role">Ruolo</th>
-              <th fxHide.gt-sm id="role">R.</th>
-              <th fxHide.lt-sm id="team">Squadra</th>
-              <th id="actions">Azioni</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
-              <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.status }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
-              <td fxHide.gt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
-
-              <td class="text-nowrap">
-                <button type="button" class="btn btn-success me-2" (click)="update(fr)" tooltip="Modifica" placement="top">
-                  <fa-icon icon="pencil-alt"></fa-icon>
-                </button>
-                <button type="button" class="btn btn-warning" (click)="openReleasePopup(fr)" tooltip="Rilascia" placement="top">
-                  <fa-icon icon="trash"></fa-icon>
-                </button>
-                <button type="button" class="btn btn-danger ms-2" (click)="openRemovePopup(fr)" tooltip="Rimuovi" placement="top">
-                  <fa-icon icon="trash"></fa-icon>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </ng-container>
-
-    <ng-template #empty>
-      <div class="p-3">
-        <h4>Nessun giocatore presente</h4>
-      </div>
-    </ng-template>
+        <!-- players-->
+        <tr class="manina table-secondary" *ngFor="let i of playersInRoster">
+          <td *ngFor="let fantasyTeam of fantasyTeams" [appPlayerStatus]="fantasyTeam.fantasyRosters[i]">
+            <ng-container *ngIf="fantasyTeam.fantasyRosters[i]">
+              <div>
+                {{ fantasyTeam.fantasyRosters[i].roster?.player?.name }}
+                ({{ fantasyTeam.fantasyRosters[i].roster?.player?.role | roleShort }}) -
+                {{ fantasyTeam.fantasyRosters[i].contract }}
+                ({{ fantasyTeam.fantasyRosters[i].yearContract }})
+              </div>
+              <span role="button" tooltip="Modifica tesseramento">
+                <fa-icon
+                  icon="pencil-alt"
+                  [fixedWidth]="true"
+                  class="icon-padding"
+                  (click)="update(fantasyTeam, fantasyTeam.fantasyRosters[i])"
+                ></fa-icon>
+              </span>
+              <span role="button" tooltip="Elimina tesseramento">
+                <fa-icon
+                  icon="trash"
+                  [fixedWidth]="true"
+                  class="icon-padding"
+                  (click)="openRemovePopup(fantasyTeam.fantasyRosters[i])"
+                ></fa-icon>
+              </span>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </fieldset>
 
   <!-- modal transaction-->
@@ -141,6 +125,22 @@
                 <h6>{{ fantasyRosterSelected?.roster.team.fullName }}</h6>
               </div>
             </ng-template>
+
+            <div fxFlex="100">
+              <div class="mb-3">
+                <label for="fantasyTeam" class="control-label">Fantasquadra</label>
+                <ng-select
+                  id="fantasyTeam"
+                  name="fantasyTeam"
+                  [items]="fantasyTeams"
+                  bindLabel="name"
+                  formControlName="fantasyTeam"
+                  clearAllText="Elimina"
+                >
+                </ng-select>
+                <fbm-error-message [form-control]="form.get('status')" name="Status"></fbm-error-message>
+              </div>
+            </div>
 
             <div fxFlex="100">
               <div class="mb-3">
@@ -213,19 +213,6 @@
     </div>
   </div>
 </form>
-
-<!-- popup release -->
-<fbm-popup-confirm
-  #popupRelease
-  title="Rilascia giocatore"
-  btnConfirm="Rilascia"
-  btnCancel="Annulla"
-  (confirm)="release()"
-  (cancel)="popupRelease.closeModal()"
->
-  Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, mentre i visti spesi ed il numero di contratti firmati
-  non diminuiranno.
-</fbm-popup-confirm>
 
 <!-- popup remove -->
 <fbm-popup-confirm
