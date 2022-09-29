@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top" aria-label="navbar">
   <a class="navbar-brand" routerLink="/home">
-    <img src="/assets/icons/icon-96x96.png" alt="logo" width="35px">
+    <img src="/assets/icons/icon-96x96.png" alt="logo" width="35px" />
   </a>
   <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="collapseExample" (click)="isCollapsed = !isCollapsed">
     <span class="navbar-toggler-icon"></span>
@@ -8,16 +8,34 @@
 
   <div class="collapse navbar-collapse" [collapse]="isCollapsed" *ngIf="!isEmpty(user)">
     <ul class="navbar-nav me-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/home/dash-board" *ngIf="!leagueInfo?.preSeason">
+          <fa-icon icon="tachometer-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Dashboard
+        </a>
+      </li>
+
       <!-- SQUADRE -->
       <li class="nav-item dropdown" dropdown *ngIf="!isEmpty(selectedLeague)">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/teams/draft-board" routerLinkActive="active" (click)="isCollapsed = true" *ngIf="leagueInfo?.preSeason">
+          <a
+            class="dropdown-item"
+            routerLink="/teams/draft-board"
+            routerLinkActive="active"
+            (click)="isCollapsed = true"
+            *ngIf="leagueInfo?.preSeason"
+          >
             <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>Asta fantamercato
           </a>
-          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true" *ngIf="!leagueInfo?.preSeason">
+          <a
+            class="dropdown-item"
+            routerLink="/teams/transactions"
+            routerLinkActive="active"
+            (click)="isCollapsed = true"
+            *ngIf="!leagueInfo?.preSeason"
+          >
             <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>Mercato libero
           </a>
           <a class="dropdown-item" routerLink="/teams/trades" routerLinkActive="active" (click)="isCollapsed = true">
@@ -160,7 +178,9 @@
 
     <ul class="navbar-nav" *ngIf="isLoggedIn$ | async">
       <li class="nav-item">
-        <a class="nav-link manina text-nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
+        <a class="nav-link manina text-nowrap" (click)="logout.emit()">
+          <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout
+        </a>
       </li>
       <li class="nav-item">
         <a class="nav-link manina text-nowrap" (click)="profile.emit()">

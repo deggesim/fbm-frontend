@@ -1,1 +1,101 @@
-<p>dashboard works!</p>
+<fieldset class="fieldset">
+  <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifica {{ activeRound?.name }}</legend>
+
+  <div class="table-responsive" *ngIf="activeRound; else empty">
+    <table class="table table-hover" aria-label="Classifica">
+      <thead class="table-dark">
+        <tr>
+          <th id="name">Nome</th>
+          <th id="points">Punti</th>
+          <th id="games" tooltip="Partite">G</th>
+          <th id="wins" tooltip="Vinte">V</th>
+          <th id="defeats" tooltip="Perse">P</th>
+          <th fxHide.lt-sm id="rankingMade">Val. fatta</th>
+          <th fxHide.lt-sm id="rankingAgainst">Val. subita</th>
+          <th fxHide.lt-md id="avarageRankingMade" tooltip="Media valutazione fatta">Media val. f.</th>
+          <th fxHide.lt-md id="avarageRankingAgainst" tooltip="Media valutazione subita">Media val. s.</th>
+          <th fxHide.lt-md id="pointsMade" tooltip="Punti fatti">P. Fatti</th>
+          <th fxHide.lt-md id="pointsAgainst" tooltip="Punti subiti">P. subiti</th>
+          <th fxHide.lt-md id="avaragePointsMade" tooltip="Media punti fatti">Media f.</th>
+          <th fxHide.lt-md id="avaragePointsAgainst" tooltip="Media punti subiti">Media s.</th>
+          <th fxHide.lt-md id="difference" tooltip="Differenza canestri">Diff.</th>
+          <th fxHide.lt-lg id="trend">Trend</th>
+          <th fxHide.lt-lg id="trendAvaragePointsMade" tooltip="Media punti fatti nelle ultime {{ trend?.value }} partite" placement="left">
+            Tr. media f.
+          </th>
+          <th
+            fxHide.lt-lg
+            id="trendAvaragePointsAgainst"
+            tooltip="Media punti subiti nelle ultime {{ trend?.value }} partite"
+            placement="left"
+          >
+            Tr. media s.
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let tableItem of table" class="table-secondary">
+          <td class="text-nowrap">{{ tableItem.fantasyTeam.name }}</td>
+          <td>{{ tableItem.points }}</td>
+          <td>{{ tableItem.games }}</td>
+          <td>{{ tableItem.won }}</td>
+          <td>{{ tableItem.lost }}</td>
+          <td fxHide.lt-sm>{{ tableItem.rankingMade }}</td>
+          <td fxHide.lt-sm>{{ tableItem.rankingAgainst }}</td>
+          <td fxHide.lt-md>{{ tableItem.avarageRankingMade | number: '1.1-1' }}</td>
+          <td fxHide.lt-md>{{ tableItem.avarageRankingAgainst | number: '1.1-1' }}</td>
+          <td fxHide.lt-md>{{ tableItem.pointsMade }}</td>
+          <td fxHide.lt-md>{{ tableItem.pointsAgainst }}</td>
+          <td fxHide.lt-md>{{ tableItem.avaragePointsMade | number: '1.1-1' }}</td>
+          <td fxHide.lt-md>{{ tableItem.avaragePointsAgainst | number: '1.1-1' }}</td>
+          <td fxHide.lt-md>{{ tableItem.difference }}</td>
+          <td fxHide.lt-lg>{{ tableItem.trend }}</td>
+          <td fxHide.lt-lg>{{ tableItem.trendAvaragePointsMade | number: '1.1-1' }}</td>
+          <td fxHide.lt-lg>{{ tableItem.trendAvaragePointsAgainst | number: '1.1-1' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #empty>
+    <h4 class="p-3">Nessun turno selezionato</h4>
+  </ng-template>
+</fieldset>
+
+<fieldset class="fieldset">
+  <legend class="legend"><fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata</legend>
+  <div *ngIf="lastFixture.matches && lastFixture.matches.length > 0; else fixtureNotDefined">
+    <div class="table-responsive">
+      <table class="table table-hover" [attr.aria-label]="lastFixture.name">
+        <thead class="table-dark">
+          <tr>
+            <th id="game">Partita</th>
+            <th id="homeRanking">Valutazione casa</th>
+            <th id="awayRanking">Valutazione trasferta</th>
+            <th id="homeFactor">Fattore campo</th>
+            <th id="homeGrade">Voti casa</th>
+            <th id="awayGrade">Voti trasferta</th>
+            <th id="result">Risultato</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let match of lastFixture.matches" class="table-secondary manina">
+            <td class="text-nowrap">{{ match.homeTeam.name }} - {{ match.awayTeam.name }}</td>
+            <td>{{ match.homeRanking }}</td>
+            <td>{{ match.awayRanking }}</td>
+            <td>{{ match.homeFactor }}</td>
+            <td>{{ match.homeGrade }}</td>
+            <td>{{ match.awayGrade }}</td>
+            <td class="text-nowrap">{{ match.homeScore }} - {{ match.awayScore }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ng-template #fixtureNotDefined>
+    <p>Giornata non definita</p>
+  </ng-template>
+</fieldset>
