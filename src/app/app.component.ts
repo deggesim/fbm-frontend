@@ -96,6 +96,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   public completePreseason() {
     this.store.dispatch(LeagueActions.completePreseason());
+    this.popupConfirmPreseason.closeModal()
   }
 
   public aggiornaApp() {
