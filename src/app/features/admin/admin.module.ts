@@ -1,12 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NgxBootstrapModule } from '@app/ngx-bootstrap.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@app/shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AccordionModule } from 'ngx-bootstrap/accordion';
+import { AlertModule } from 'ngx-bootstrap/alert';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { CollapseModule } from 'ngx-bootstrap/collapse';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { PopoverModule } from 'ngx-bootstrap/popover';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { SortableModule } from 'ngx-bootstrap/sortable';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { AdminRoutingModule } from './admin-routing.module';
 import { FantasyTeamFormComponent } from './fantasy-teams/fantasy-team-form/fantasy-team-form.component';
 import { FantasyTeamListComponent } from './fantasy-teams/fantasy-team-list/fantasy-team-list.component';
@@ -45,10 +56,22 @@ import { UserListComponent } from './users/user-list/user-list.component';
     RealFixtureFormComponent,
   ],
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     CommonModule,
     FlexLayoutModule,
-    NgxBootstrapModule,
+    CollapseModule,
+    BsDropdownModule,
+    PaginationModule,
+    TooltipModule,
+    ModalModule,
+    BsDatepickerModule,
+    ButtonsModule,
+    AccordionModule,
+    PopoverModule,
+    AlertModule,
+    SortableModule,
+    ProgressbarModule,
     NgSelectModule,
     FontAwesomeModule,
     SharedModule,

@@ -19,19 +19,19 @@ export class NewSeasonStepTwoComponent implements OnInit {
   teams = 0;
   users: User[];
   usersLoading = false;
-  arrayItems = [];
+  arrayItems: { id: number; title: string }[] = [];
 
   constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private store: Store<AppState>) {
-    this.league = this.router.getCurrentNavigation().extras.state?.data;
+    this.league = this.router.getCurrentNavigation().extras.state?.['data'];
     this.createForm();
   }
 
   ngOnInit() {
     if (this.league == null) {
       this.router.navigate(['/home']);
-    } else {      
+    } else {
       this.addItem();
-      this.users = this.route.snapshot.data.users;
+      this.users = this.route.snapshot.data['users'];
     }
   }
 
@@ -51,7 +51,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
   }
 
   addItem() {
-    const item = { _id: ++this.teams, title: `Squadra ${this.teams}` };
+    const item = { id: ++this.teams, title: `Squadra ${this.teams}` };
     this.arrayItems.push(item);
     this.teamsArray.push(
       this.fb.group({

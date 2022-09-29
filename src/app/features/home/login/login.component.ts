@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Login } from '@app/models/user';
 
 @Component({
-  selector: 'app-login',
+  selector: 'fbm-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   @Output() login: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
@@ -15,8 +15,6 @@ export class LoginComponent implements OnInit {
   constructor(private fb: FormBuilder) {
     this.createForm();
   }
-
-  ngOnInit() {}
 
   createForm() {
     this.form = this.fb.group({

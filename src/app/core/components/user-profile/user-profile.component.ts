@@ -8,12 +8,12 @@ import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-user-profile',
+  selector: 'fbm-user-profile',
   templateUrl: './user-profile.component.html',
 })
 export class UserProfileComponent implements OnInit {
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
   user: User;
@@ -41,14 +41,14 @@ export class UserProfileComponent implements OnInit {
 
   confirm(): void {
     if (this.form.value.newPassword === this.form.value.confirmPassword) {
-      const user: User = {
+      const newUser: User = {
         _id: this.form.value._id,
         name: this.form.value.name,
         email: this.form.value.email,
         password: this.form.value.newPassword,
         role: this.user.role,
       };
-      this.salva.emit(user);
+      this.save.emit(newUser);
     } else {
       this.toastService.warning('Errore password', 'Le password non coincidono');
     }

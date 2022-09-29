@@ -1,10 +1,10 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
-    <legend class="legend"><fa-icon icon="shopping-cart" class="icon-padding"></fa-icon>{{ transactionLabel }}</legend>
+    <legend class="legend"><fa-icon icon="shopping-cart" class="icon-padding"></fa-icon>Mercato libero</legend>
 
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
             id="fantasyTeam"
@@ -19,7 +19,7 @@
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="roster" class="control-label">Giocatore</label>
           <ng-select
             id="roster"
@@ -55,7 +55,7 @@
 
       <div class="table-responsive">
         <table class="table table-hover" aria-label="Fantasy roster">
-          <thead class="thead-dark">
+          <thead class="table-dark">
             <tr>
               <th id="name">Nome</th>
               <th fxHide.lt-sm id="status">Status</th>
@@ -79,20 +79,13 @@
               <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
 
               <td class="text-nowrap">
-                <button type="button" class="btn btn-success" (click)="modifica(fr)" tooltip="Modifica" placement="top">
+                <button type="button" class="btn btn-success me-2" (click)="update(fr)" tooltip="Modifica" placement="top">
                   <fa-icon icon="pencil-alt"></fa-icon>
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-warning"
-                  (click)="apriPopupRilascia(fr)"
-                  tooltip="Rilascia"
-                  placement="top"
-                  *ngIf="!isPreseason()"
-                >
+                <button type="button" class="btn btn-warning" (click)="openReleasePopup(fr)" tooltip="Rilascia" placement="top">
                   <fa-icon icon="trash"></fa-icon>
                 </button>
-                <button type="button" class="btn btn-danger" (click)="apriPopupRimuovi(fr)" tooltip="Rimuovi" placement="top">
+                <button type="button" class="btn btn-danger ms-2" (click)="openRemovePopup(fr)" tooltip="Rimuovi" placement="top">
                   <fa-icon icon="trash"></fa-icon>
                 </button>
               </td>
@@ -103,20 +96,23 @@
     </ng-container>
 
     <ng-template #empty>
-      <div class="padding">
+      <div class="p-3">
         <h4>Nessun giocatore presente</h4>
       </div>
     </ng-template>
   </fieldset>
 
+  <!-- modal transaction-->
   <div
+    *ngIf="showModalTransaction"
     class="modal fade"
     bsModal
-    #modal="bs-modal"
-    [config]="{ backdrop: 'static', keyboard: false, show: false }"
+    #modalTransaction="bs-modal"
+    [config]="{ backdrop: 'static', keyboard: false, show: true }"
     tabindex="-1"
     status="dialog"
     aria-hidden="true"
+    (onHidden)="onHidden()"
   >
     <div class="modal-dialog modal-sm">
       <div class="modal-content">
@@ -147,7 +143,7 @@
             </ng-template>
 
             <div fxFlex="100">
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="status" class="control-label">Status</label>
                 <ng-select
                   id="status"
@@ -158,37 +154,37 @@
                   clearAllText="Elimina"
                 >
                 </ng-select>
-                <app-error-message [form-control]="form.get('status')" name="Status"></app-error-message>
+                <fbm-error-message [form-control]="form.get('status')" name="Status"></fbm-error-message>
               </div>
             </div>
 
             <div fxFlex="100">
-              <div class="form-group">
-                <div class="custom-control custom-switch">
+              <div class="mb-3">
+                <div class="form-check form-switch">
                   <input
                     type="checkbox"
-                    class="custom-control-input"
+                    class="form-check-input"
                     id="draft"
                     name="draft"
                     formControlName="draft"
                     [ngClass]="{ 'is-invalid': form.get('draft').invalid && form.get('draft').dirty }"
                   />
-                  <label class="custom-control-label" for="draft">Draft</label>
-                  <app-error-message [form-control]="form.get('draft')" name="Draft"></app-error-message>
+                  <label class="form-check-label" for="draft">Draft</label>
+                  <fbm-error-message [form-control]="form.get('draft')" name="Draft"></fbm-error-message>
                 </div>
               </div>
             </div>
 
             <div fxFlex="49">
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="contract" class="control-label">Costo</label>
                 <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200" />
-                <app-error-message [form-control]="form.get('contract')" name="Costo"></app-error-message>
+                <fbm-error-message [form-control]="form.get('contract')" name="Costo"></fbm-error-message>
               </div>
             </div>
 
             <div fxFlex="49">
-              <div class="form-group">
+              <div class="mb-3">
                 <label for="yearContract" class="control-label">Anno di contratto</label>
                 <input
                   type="number"
@@ -199,16 +195,16 @@
                   min="1"
                   max="3"
                 />
-                <app-error-message [form-control]="form.get('yearContract')" name="Anno di contratto"></app-error-message>
+                <fbm-error-message [form-control]="form.get('yearContract')" name="Anno di contratto"></fbm-error-message>
               </div>
             </div>
           </div>
 
-          <div class="text-center">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>
-            <button type="button" class="btn btn-primary" (click)="annulla()">
+            <button type="button" class="btn btn-primary" (click)="hideModal()">
               <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
             </button>
           </div>
@@ -218,24 +214,28 @@
   </div>
 </form>
 
-<!-- popup rilascia -->
-<app-popup-conferma
-  #popupRilascia
-  titolo="Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, i visti spesi ed il numero di contratti firmati non diminuiranno."
-  btnConferma="Rilascia"
-  btnAnnulla="Annulla"
-  (conferma)="rilascia()"
-  (annulla)="popupRilascia.chiudiModale()"
+<!-- popup release -->
+<fbm-popup-confirm
+  #popupRelease
+  title="Rilascia giocatore"
+  btnConfirm="Rilascia"
+  btnCancel="Annulla"
+  (confirm)="release()"
+  (cancel)="popupRelease.closeModal()"
 >
-</app-popup-conferma>
+  Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, mentre i visti spesi ed il numero di contratti firmati
+  non diminuiranno.
+</fbm-popup-confirm>
 
-<!-- popup rimuovi -->
-<app-popup-conferma
-  #popupRimuovi
-  titolo="Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, i visti spesi ed il numero di contratti firmati diminuiranno di uno."
-  btnConferma="Rimuovi"
-  btnAnnulla="Annulla"
-  (conferma)="rimuovi()"
-  (annulla)="popupRimuovi.chiudiModale()"
+<!-- popup remove -->
+<fbm-popup-confirm
+  #popupRemove
+  title="Rimuovi giocatore"
+  btnConfirm="Rimuovi"
+  btnCancel="Annulla"
+  (confirm)="remove()"
+  (cancel)="popupRemove.closeModal()"
 >
-</app-popup-conferma>
+  Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, mentre i visti spesi ed il numero di contratti firmati
+  diminuiranno di uno.
+</fbm-popup-confirm>

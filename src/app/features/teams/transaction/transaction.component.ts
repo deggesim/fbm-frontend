@@ -9,7 +9,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 import { LeagueInfo, Status } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
 import { Role, User } from '@app/models/user';
-import { PopupConfermaComponent } from '@app/shared/components/popup-conferma/popup-conferma.component';
+import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { RosterService } from '@app/shared/services/roster.service';
@@ -17,10 +17,10 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-transaction',
+  selector: 'fbm-transaction',
   templateUrl: './transaction.component.html',
 })
 export class TransactionComponent implements OnInit {
@@ -36,11 +36,12 @@ export class TransactionComponent implements OnInit {
   leagueStatus: Status;
 
   limit = 10;
-  typeahead$ = new Subject();
+  typeahead$ = new Subject<string>();
 
-  @ViewChild('modal', { static: false }) private modal: ModalDirective;
-  @ViewChild('popupRilascia', { static: false }) public popupRilascia: PopupConfermaComponent;
-  @ViewChild('popupRimuovi', { static: false }) public popupRimuovi: PopupConfermaComponent;
+  @ViewChild('popupRelease', { static: false }) public popupRelease: PopupConfirmComponent;
+  @ViewChild('popupRemove', { static: false }) public popupRemove: PopupConfirmComponent;
+  @ViewChild('modalTransaction', { static: false }) private modalTransaction: ModalDirective;
+  showModalTransaction: boolean;
 
   private fb: FormBuilder;
   private route: ActivatedRoute;
@@ -63,26 +64,32 @@ export class TransactionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
-    this.rosters = this.route.snapshot.data.rosterList.content;
+    this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
+    this.rosters = this.route.snapshot.data['rosterList'].content;
 
-    this.store.pipe(select(user), take(1)).subscribe((user: User) => {
-      const isAdmin = user && (Role.Admin === user.role || Role.SuperAdmin === user.role);
+    this.store.pipe(select(user), take(1)).subscribe((value: User) => {
+      const isAdmin = value && (Role.Admin === value.role || Role.SuperAdmin === value.role);
       if (!isAdmin) {
         this.fantasyTeams = this.fantasyTeams.filter(
-          (fantasyTeam: FantasyTeam) => fantasyTeam.owners.find((owner: User) => owner._id === user._id) != null
+          (fantasyTeam: FantasyTeam) => fantasyTeam.owners.find((owner: User) => owner._id === value._id) != null
         );
       }
     });
-    this.store.pipe(select(leagueInfo), take(1)).subscribe((leagueInfo: LeagueInfo) => {
-      this.leagueStatus = leagueInfo?.status;
+    this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
+      this.leagueStatus = value?.status;
     });
 
     this.typeahead$
       .pipe(
         debounceTime(750),
         distinctUntilChanged(),
-        switchMap((value: string) => iif(() => this.modal.isShown, of(this.rosters), this.rosterService.freePlayers(1, this.limit, value)))
+        switchMap((value: string) =>
+          iif(
+            () => this.showModalTransaction,
+            of({ totalElements: this.rosters.length, content: this.rosters }),
+            this.rosterService.freePlayers(1, this.limit, value)
+          )
+        )
       )
       .subscribe((rosterList: RosterList) => {
         this.rosters = rosterList.content;
@@ -111,35 +118,24 @@ export class TransactionComponent implements OnInit {
     });
   }
 
-  get transactionLabel() {
-    return this.leagueStatus != null && this.leagueStatus === Status.Preseason ? 'Asta fantamercato' : 'Mercato libero';
-  }
-
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
     this.fantasyTeamSelected = fantasyTeam;
     if (fantasyTeam != null) {
       this.store
         .pipe(
           select(leagueInfo),
-          switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(fantasyTeam._id, leagueInfo.nextRealFixture._id))
+          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(fantasyTeam._id, value.nextRealFixture._id))
         )
         .subscribe((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters = fantasyRosters;
         });
       if (this.rosterSelected != null) {
         this.resetForm();
-        this.modal.show();
+        this.showModalTransaction = true;
       }
     } else {
       this.fantasyRosters = null;
     }
-  }
-
-  clear() {
-    this.limit = 10;
-    this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
-      this.rosters = rosterList.content;
-    });
   }
 
   loadMore() {
@@ -153,11 +149,11 @@ export class TransactionComponent implements OnInit {
     this.rosterSelected = roster;
     if (this.fantasyTeamSelected != null) {
       this.resetForm();
-      this.modal.show();
+      this.showModalTransaction = true;
     }
   }
 
-  salva() {
+  save() {
     this.limit = 10;
     if (this.fantasyRosterSelected) {
       const fantasyRoster: FantasyRoster = {
@@ -173,34 +169,30 @@ export class TransactionComponent implements OnInit {
       this.fantasyRosterService
         .update(fantasyRoster)
         .pipe(
-          // switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-          // tap((fantasyTeam: FantasyTeam) => {
-          //   this.fantasyTeamSelected = fantasyTeam;
-          // }),
-          switchMap(() => this.fantasyTeamService.read()),
+          tap(() => {
+            this.hideModal();
+          }),
+          switchMapTo(this.fantasyTeamService.read()),
           tap((fantasyTeams: FantasyTeam[]) => {
-            this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
+            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
             this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
           }),
-          switchMap(() => this.rosterService.freePlayers(1, this.limit)),
+          switchMapTo(this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
-          switchMap(() => this.store.select(leagueInfo)),
+          switchMapTo(this.store.select(leagueInfo)),
           take(1),
-          switchMap((leagueInfo: LeagueInfo) =>
-            this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id)
-          )
+          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
         )
         .subscribe((fr: FantasyRoster[]) => {
           this.fantasyRosters = fr;
           this.toastService.success(
             'Modifica tesseramento',
-            `Il tesseramento del giocatore ${this.rosterSelected.player.name} è stato modificato correttamente`
+            `Il tesseramento del giocatore ${this.fantasyRosterSelected.roster.player.name} è stato modificato correttamente`
           );
           this.rosterSelected = null;
           this.form.get('roster').reset();
-          this.modal.hide();
           this.fantasyRosterSelected = null;
         });
     } else {
@@ -210,24 +202,21 @@ export class TransactionComponent implements OnInit {
       this.fantasyRosterService
         .create(fantasyRoster)
         .pipe(
-          // switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
-          // tap((fantasyTeam: FantasyTeam) => {
-          //   this.fantasyTeamSelected = fantasyTeam;
-          // }),
-          switchMap(() => this.fantasyTeamService.read()),
+          tap(() => {
+            this.hideModal();
+          }),
+          switchMapTo(this.fantasyTeamService.read()),
           tap((fantasyTeams: FantasyTeam[]) => {
-            this.fantasyTeams = fantasyTeams.sort((a, b) => a.name.localeCompare(b.name));
+            this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
             this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
           }),
-          switchMap(() => this.rosterService.freePlayers(1, this.limit)),
+          switchMapTo(this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
-          switchMap(() => this.store.select(leagueInfo)),
+          switchMapTo(this.store.select(leagueInfo)),
           take(1),
-          switchMap((leagueInfo: LeagueInfo) =>
-            this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id)
-          )
+          switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
         )
         .subscribe((fr: FantasyRoster[]) => {
           this.fantasyRosters = fr;
@@ -237,23 +226,22 @@ export class TransactionComponent implements OnInit {
           );
           this.rosterSelected = null;
           this.form.get('roster').reset();
-          this.modal.hide();
         });
     }
   }
 
-  annulla() {
-    this.limit = 10;
-    this.rosterService.freePlayers(1, this.limit).subscribe((rosterList: RosterList) => {
-      this.rosters = rosterList.content;
-    });
+  hideModal(): void {
+    this.modalTransaction.hide();
     this.resetForm();
     this.rosterSelected = null;
     this.form.get('roster').reset();
-    this.modal.hide();
   }
 
-  modifica(fantasyRoster: FantasyRoster) {
+  onHidden(): void {
+    this.showModalTransaction = false;
+  }
+
+  update(fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
     this.form.patchValue({
       status: fantasyRoster.status,
@@ -263,31 +251,30 @@ export class TransactionComponent implements OnInit {
     });
     this.rosterSelected = null;
     this.form.get('roster').reset();
-    this.modal.show();
+    this.showModalTransaction = true;
   }
 
-  apriPopupRilascia(fantasyRoster: FantasyRoster) {
+  openReleasePopup(fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
-    this.popupRilascia.apriModale();
+    this.popupRelease.openModal();
   }
 
-  apriPopupRimuovi(fantasyRoster: FantasyRoster) {
+  openRemovePopup(fantasyRoster: FantasyRoster) {
     this.fantasyRosterSelected = fantasyRoster;
-    this.popupRimuovi.apriModale();
+    this.popupRemove.openModal();
   }
 
-  rimuovi() {
+  remove() {
     this.fantasyRosterService
       .remove(this.fantasyRosterSelected._id)
       .pipe(
-        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        switchMapTo(this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
         }),
-        // switchMap(() => this.rosterService.freePlayers()),
-        switchMap(() => this.store.select(leagueInfo)),
+        switchMapTo(this.store.select(leagueInfo)),
         take(1),
-        switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id))
+        switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;
@@ -295,22 +282,21 @@ export class TransactionComponent implements OnInit {
           'Giocatore rimosso',
           'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rimosso correttamente'
         );
-        this.popupRimuovi.chiudiModale();
+        this.popupRemove.closeModal();
         this.fantasyRosterSelected = null;
       });
   }
 
-  rilascia() {
+  release() {
     this.fantasyRosterService
       .release(this.fantasyRosterSelected._id)
       .pipe(
-        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        switchMapTo(this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
         }),
-        // switchMap(() => this.rosterService.freePlayers()),
-        switchMap(() => this.store.select(leagueInfo)),
-        switchMap((leagueInfo: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, leagueInfo.nextRealFixture._id))
+        switchMapTo(this.store.select(leagueInfo)),
+        switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {
         this.fantasyRosters = fantasyRosters;
@@ -318,13 +304,9 @@ export class TransactionComponent implements OnInit {
           'Giocatore rilasciato',
           'Il giocatore ' + this.fantasyRosterSelected.roster.player.name + ' è stato rilasciato correttamente'
         );
-        this.popupRilascia.chiudiModale();
+        this.popupRelease.closeModal();
         this.fantasyRosterSelected = null;
       });
-  }
-
-  public isPreseason() {
-    return this.leagueStatus != null && this.leagueStatus === Status.Preseason;
   }
 
   private resetForm() {

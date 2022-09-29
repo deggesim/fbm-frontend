@@ -15,6 +15,12 @@ export class FantasyTeamService {
     return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams`);
   }
 
+  public draftBoard(hideSpinner: boolean) {
+    return this.http.get<FantasyTeam[]>(`${this.endpoint}/fantasy-teams/draft-board`, {
+      headers: { hideSpinner: hideSpinner ? 'true' : 'false' },
+    });
+  }
+
   public get(id: string) {
     return this.http.get<FantasyTeam>(`${this.endpoint}/fantasy-teams/${id}`);
   }
@@ -24,10 +30,10 @@ export class FantasyTeamService {
   }
 
   public update(fantasyTeam: FantasyTeam) {
-    return this.http.patch<FantasyTeam[]>(`${this.endpoint}/fantasy-teams/${fantasyTeam._id}`, fantasyTeam);
+    return this.http.patch<FantasyTeam>(`${this.endpoint}/fantasy-teams/${fantasyTeam._id}`, fantasyTeam);
   }
 
   public delete(id: string) {
-    return this.http.delete<FantasyTeam[]>(`${this.endpoint}/fantasy-teams/${id}`);
+    return this.http.delete<FantasyTeam>(`${this.endpoint}/fantasy-teams/${id}`);
   }
 }

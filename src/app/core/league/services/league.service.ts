@@ -60,7 +60,7 @@ export class LeagueService {
         const nextFixture = values[4];
         let nextFixtureName = '';
         for (const fixture of nextRealFixture.fixtures) {
-          nextFixtureName += ` - ${fixture.round.name} ${fixture.name}`;
+          nextFixtureName += ` - [${fixture.round.competition.name} - ${fixture.round.name} - ${fixture.name}]`;
         }
 
         let info: string;

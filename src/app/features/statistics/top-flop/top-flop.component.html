@@ -1,0 +1,132 @@
+<fieldset class="fieldset">
+  <legend class="legend"><fa-icon icon="chart-bar" class="icon-padding"></fa-icon>Top Flop</legend>
+  <form [formGroup]="form" class="needs-validation" novalidate>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+        <label for="team" class="control-label">Squadra</label>
+        <ng-select id="team" name="team" [items]="teams" bindLabel="fullName" formControlName="team" clearAllText="Elimina"> </ng-select>
+      </div>
+
+      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+        <label for="fantasyTeam" class="control-label">Fantasquadra</label>
+        <ng-select
+          id="fantasyTeam"
+          name="fantasyTeam"
+          [items]="fantasyTeams"
+          bindLabel="name"
+          formControlName="fantasyTeam"
+          clearAllText="Elimina"
+        >
+        </ng-select>
+      </div>
+
+      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+        <label for="role" class="control-label">Ruolo</label>
+        <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina"> </ng-select>
+      </div>
+
+      <div fxFlex="49" fxFlex.xs="100">
+        <div class="form-check form-switch">
+          <input type="checkbox" class="form-check-input" id="freePlayer" formControlName="freePlayers" />
+          <label class="form-check-label" for="freePlayer">Giocatori liberi</label>
+        </div>
+      </div>
+      <div fxFlex="49" fxFlex.xs="100">
+        <button type="button" class="btn btn-primary float-end" (click)="reset()">
+          <fa-icon icon="undo" class="icon-padding"></fa-icon>Reset
+        </button>
+      </div>
+    </div>
+  </form>
+  <h6 *ngIf="playerStatisticList?.totalElements" class="text-end pt-3">Totale: {{ playerStatisticList.totalElements }}</h6>
+  <div class="table-responsive">
+    <table class="table table-hover" aria-label="Top Flop">
+      <thead class="table-dark">
+        <tr>
+          <th id="name">Nome</th>
+          <th id="nationality">Nazionalità</th>
+          <th id="number">#</th>
+          <th id="yearBirth">Anno di nascita</th>
+          <th id="height">Altezza</th>
+          <th id="weight">Peso</th>
+          <th id="role">Ruolo</th>
+          <th id="team">Squadra</th>
+          <th id="fantasyTeam">Fantasquadra</th>
+          <th id="status">Status</th>
+          <th id="avgRanking">Valutazione</th>
+          <th id="avgMinutes">Minuti</th>
+          <th id="avgGrade">Voto</th>
+          <th id="rankingMinutesRatio">Val/Min</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let stat of playerStatisticList?.content" class="table-secondary">
+          <td
+            [popover]="statsTooltip"
+            [popoverContext]="{
+              stats: tooltip.get(stat.player._id)
+            }"
+            triggers="mouseenter:mouseleave"
+            container="body"
+            containerClass="w-100"
+            placement="right"
+          >
+            {{ stat.player.name }}
+          </td>
+          <td>{{ stat.player.nationality }}</td>
+          <td>{{ stat.player.number }}</td>
+          <td>{{ stat.player.yearBirth }}</td>
+          <td>{{ stat.player.height }}</td>
+          <td>{{ stat.player.weight }}</td>
+          <td>{{ stat.player.role }}</td>
+          <td>{{ stat.team }}</td>
+          <td>{{ stat.fantasyTeam }}</td>
+          <td>{{ stat.status }}</td>
+          <td>{{ stat.avgRanking | number: '1.2-2' }}</td>
+          <td>{{ stat.avgMinutes | number: '1.2-2' }}</td>
+          <td>{{ stat.avgGrade | number: '1.2-2' }}</td>
+          <td>{{ stat.rankingMinutesRatio | number: '1.2-2' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div fxLayout="row" fxLayoutAlign="center" *ngIf="enablePagination()">
+    <div fxFlex="nogrow">
+      <pagination
+        [totalItems]="playerStatisticList.totalElements"
+        [(ngModel)]="page"
+        [itemsPerPage]="limit"
+        (pageChanged)="pageChange($event)"
+        [maxSize]="maxSize"
+        [boundaryLinks]="boundaryLinks"
+        firstText="<<"
+        previousText="<"
+        nextText=">"
+        lastText=">>"
+      ></pagination>
+    </div>
+  </div>
+</fieldset>
+
+<ng-template #statsTooltip let-stats="stats">
+  <table class="w-100" aria-label="Valutazioni">
+    <thead>
+      <tr>
+        <th id="realFixture" class="w-40">Giornata</th>
+        <th id="ranking" class="w-20">Val.</th>
+        <th id="minutes" class="w-20">Min.</th>
+        <th id="voto" class="w-20">Voto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="tooltip-height" *ngFor="let performance of stats.trend">
+        <td>{{ performance.realFixture.name }}</td>
+        <td>{{ performance.ranking }}</td>
+        <td>{{ performance.minutes }}</td>
+        <td>{{ performance.grade }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>

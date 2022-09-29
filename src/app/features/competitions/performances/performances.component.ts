@@ -9,7 +9,7 @@ import { PerformanceService } from '@app/shared/services/performance.service';
 import { ToastService } from '@app/shared/services/toast.service';
 
 @Component({
-  selector: 'app-performances',
+  selector: 'fbm-performances',
   templateUrl: './performances.component.html',
 })
 export class PerformancesComponent implements OnInit {
@@ -31,8 +31,8 @@ export class PerformancesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.teams = this.route.snapshot.data.teams;
-    this.realFixtures = this.route.snapshot.data.realFixtures;
+    this.teams = this.route.snapshot.data['teams'];
+    this.realFixtures = this.route.snapshot.data['realFixtures'];
   }
 
   createForm() {
@@ -106,7 +106,7 @@ export class PerformancesComponent implements OnInit {
     return `${performance.player.name} - ${performance.player.nationality} - ${performance.player.role}`;
   }
 
-  salva() {
+  save() {
     const performances = this.performanceArray.getRawValue() as Performance[];
     this.performanceService.save(performances).subscribe(() => {
       this.toastService.success('Valutazioni salvate', 'Le valutazioni sono state salvate correttamente');
@@ -166,8 +166,14 @@ export class PerformancesComponent implements OnInit {
   private applyBonusMalus() {
     const bonus = this.form.get('bonus').value;
     Object.keys(this.performanceArray.controls).forEach((key: string) => {
-      const formControl = this.performanceArray.controls[key];
-      formControl.get('grade').setValue(bonus ? AppConfig.WinBonus : AppConfig.DefeatMalus);
+      const formControl = this.performanceArray.get(key);
+      const minutes = formControl.get('minutes').value;
+      if (minutes != null && minutes > 0) {
+        // player played
+        formControl.get('grade').setValue(bonus ? AppConfig.WinBonus : AppConfig.DefeatMalus);
+      } else {
+        formControl.get('grade').reset();
+      }
     });
   }
 }

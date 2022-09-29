@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-standings',
+  selector: 'fbm-standings',
   templateUrl: './standings.component.html',
 })
 export class StandingsComponent implements OnInit {
@@ -27,7 +27,7 @@ export class StandingsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rounds = this.route.snapshot.data.rounds?.filter((round: Round) => round.roundRobin);
+    this.rounds = this.route.snapshot.data['rounds']?.filter((round: Round) => round.roundRobin);
   }
 
   onChange(round: Round) {
@@ -71,4 +71,8 @@ export class StandingsComponent implements OnInit {
       });
     }
   }
+
+  roundSearchFn = (term: string, round: Round) => {
+    return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
+  };
 }

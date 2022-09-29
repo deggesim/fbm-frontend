@@ -7,13 +7,13 @@ import { FixtureService } from '@app/shared/services/fixture.service';
 import { TeamService } from '@app/shared/services/team.service';
 
 @Component({
-  selector: 'app-real-fixture-form',
+  selector: 'fbm-real-fixture-form',
   templateUrl: './real-fixture-form.component.html',
 })
 export class RealFixtureFormComponent implements OnInit, OnChanges {
   @Input() realFixture: RealFixture;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 
@@ -39,7 +39,7 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const realFixture: RealFixture = changes.realFixture.currentValue;
+    const realFixture: RealFixture = changes['realFixture'].currentValue;
     if (realFixture != null) {
       const { name, prepared, fixtures, teamsWithNoGame } = realFixture;
       this.form.patchValue({
@@ -62,7 +62,7 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
     this.form.get('fixtures').disable();
   }
 
-  salvaEvent(): void {
+  onSubmit(): void {
     const { name, prepared, fixtures, teamsWithNoGame } = this.form.value;
     const realFixture: RealFixture = {
       _id: this.realFixture ? this.realFixture._id : null,
@@ -71,7 +71,7 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
       fixtures,
       teamsWithNoGame,
     };
-    this.salva.emit(realFixture);
+    this.save.emit(realFixture);
   }
 
   trackFixtureByFn(fixture: Fixture) {

@@ -1,15 +1,15 @@
-<div class="float manina" (click)="nuova()">
-  <fa-icon icon="plus" class="my-float"></fa-icon>
+<div class="float manina" (click)="newPlayer()">
+  <fa-icon icon="plus" class="float-icon"></fa-icon>
 </div>
-<div class="float-2 indent manina" (click)="apriPopupUpload()" *ngIf="leagueInfo?.preSeason">
-  <fa-icon icon="upload" class="my-float"></fa-icon>
+<div class="float-2 indent manina" (click)="openUploadPopup()" *ngIf="leagueInfo?.preSeason">
+  <fa-icon icon="upload" class="float-icon"></fa-icon>
 </div>
 
 <fieldset class="fieldset" *ngIf="percentage === 0; else uploadInProgress">
   <legend class="legend"><fa-icon icon="id-badge" class="icon-padding"></fa-icon>Giocatori</legend>
   <ng-container *ngIf="(rosterList?.content && rosterList?.totalElements > 0) || filter != null; else empty">
     <form #form="ngForm" class="form-inline pb-1">
-      <div class="input-group">
+      <div class="input-group mb-3">
         <input
           type="text"
           class="form-control"
@@ -20,24 +20,23 @@
           (ngModelChange)="this.filter$.next($event)"
           placeholder="Filtro"
         />
-        <div class="input-group-append manina" (click)="pulisciFiltro()">
-          <div class="input-group-text">x</div>
-        </div>
+        <span class="input-group-text manina" (click)="clearFilter()">x</span>
       </div>
     </form>
+    <h6 class="text-end">Numero totale di giocatori: {{rosterList?.totalElements}}</h6>
     <div class="table-responsive">
-      <table class="table table-hover">
-        <thead class="thead-dark">
+      <table class="table table-hover" aria-label="Giocatori">
+        <thead class="table-dark">
           <tr>
-            <th>Nome</th>
-            <th>Nazionalità</th>
-            <th>#</th>
-            <th>Anno di nascita</th>
-            <th>Altezza</th>
-            <th>Peso</th>
-            <th>Ruolo</th>
-            <th>Squadra</th>
-            <th>Azioni</th>
+            <th id="name">Nome</th>
+            <th id="nationality">Nazionalità</th>
+            <th id="number">#</th>
+            <th id="yearBirth">Anno di nascita</th>
+            <th id="height">Altezza</th>
+            <th id="weight">Peso</th>
+            <th id="role">Ruolo</th>
+            <th id="fullName">Squadra</th>
+            <th id="actions">Azioni</th>
           </tr>
         </thead>
 
@@ -53,13 +52,13 @@
             <td>{{ roster.team.fullName }}</td>
 
             <td class="text-nowrap">
-              <button type="button" class="btn btn-warning" (click)="modifica(roster)" tooltip="Modifica" placement="top">
+              <button type="button" class="btn btn-warning me-2" (click)="update(roster)" tooltip="Modifica" placement="top">
                 <fa-icon icon="pencil-alt"></fa-icon>
               </button>
-              <button type="button" class="btn btn-success" (click)="clona(roster)" tooltip="Clona" placement="top">
+              <button type="button" class="btn btn-success" (click)="clone(roster)" tooltip="Clona" placement="top">
                 <fa-icon icon="clone"></fa-icon>
               </button>
-              <button type="button" class="btn btn-danger" (click)="apriPopupElimina(roster)" tooltip="Elimina" placement="top">
+              <button type="button" class="btn btn-danger ms-2" (click)="openDeletePopup(roster)" tooltip="Elimina" placement="top">
                 <fa-icon icon="trash"></fa-icon>
               </button>
             </td>
@@ -68,7 +67,7 @@
       </table>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center" *ngIf="abilitaPaginazione()">
+    <div fxLayout="row" fxLayoutAlign="center" *ngIf="enablePagination()">
       <div fxFlex="nogrow">
         <pagination
           [totalItems]="rosterList.totalElements"
@@ -87,15 +86,15 @@
   </ng-container>
 
   <ng-template #empty>
-    <h4 class="padding">Nessun giocatore presente</h4>
+    <h4 class="p-3">Nessun giocatore presente</h4>
   </ng-template>
 </fieldset>
 
-<!--Progress bar -->
+<!-- progress bar -->
 <ng-template #uploadInProgress>
-  <div class="text-center padding">
+  <div class="text-center padding m-3">
     <h4>Percentuale di avanzamento del processo di upload</h4>
-    <progressbar [value]="percentage" [type]="progressbarType" [striped]="true" style="height: 50px"
+    <progressbar [value]="percentage" [type]="progressbarType" [striped]="true" style="height: 50px" class="mb-3"
       >{{ percentage | number: '1.0-0' }}%</progressbar
     >
     <button type="button" class="btn btn-primary" (click)="reloadPage()" *ngIf="percentage === 100">
@@ -104,27 +103,29 @@
   </div>
 </ng-template>
 
-<!-- popup elimina -->
-<app-popup-conferma
+<!-- popup delete -->
+<fbm-popup-confirm
   #popupConfermaElimina
-  titolo="Elimina giocatore"
-  btnConferma="Elimina"
-  btnAnnulla="Annulla"
-  (conferma)="confermaElimina()"
-  (annulla)="popupConfermaElimina.chiudiModale()"
+  title="Elimina giocatore"
+  btnConfirm="Elimina"
+  btnCancel="Annulla"
+  (confirm)="confirmDelete()"
+  (cancel)="popupConfermaElimina.closeModal()"
 >
-</app-popup-conferma>
+  Vuoi eliminare il giocatore? Attenzione, l'operazione è irreversibile!
+</fbm-popup-confirm>
 
-<!-- popup inserimento/modifica giocatore -->
+<!-- modal player form -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showModalPlayerForm"
   class="modal fade"
   bsModal
-  #modal="bs-modal"
+  #modalPlayerForm="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -133,11 +134,11 @@
       </div>
 
       <div class="modal-body">
-        <app-player-form [roster]="rosterSelected" (salva)="salva($event)" (annulla)="annulla()"></app-player-form>
+        <fbm-player-form [roster]="rosterSelected" [leagueInfo]="leagueInfo" (save)="save($event)" (cancel)="hideModal()"></fbm-player-form>
       </div>
     </div>
   </div>
 </div>
 
 <!-- popup upload -->
-<app-upload #popupUpload titolo="Upload giocatori" (upload)="confermaUpload($event)" (annulla)="popupUpload.chiudiModale()"></app-upload>
+<fbm-upload #popupUpload title="Upload giocatori" (upload)="confirmUpload($event)" (cancel)="popupUpload.closeModal()"></fbm-upload>

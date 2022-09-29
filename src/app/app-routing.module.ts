@@ -19,6 +19,11 @@ const routes: Routes = [
     loadChildren: () => import('./features/competitions/competitions.module').then((mod) => mod.CompetitionsModule),
   },
   {
+    path: 'statistics',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./features/statistics/statistics.module').then((mod) => mod.StatisticsModule),
+  },
+  {
     path: 'admin',
     canActivate: [AuthGuard],
     loadChildren: () => import('./features/admin/admin.module').then((mod) => mod.AdminModule),
@@ -29,7 +34,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -1,0 +1,50 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": ["/favicon.ico", "/index.html", "/manifest.webmanifest", "/*.css", "/*.js"]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": ["/assets/**", "/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"]
+      },
+      "cacheQueryOptions": { "ignoreSearch": true }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "fbm",
+      "urls": [
+        "http://localhost:5000/competitions",
+        "http://localhost:5000/fantasy-rosters",
+        "http://localhost:5000/fantasy-teams",
+        "http://localhost:5000/fixtures",
+        "http://localhost:5000/leagues",
+        "http://localhost:5000/lineups",
+        "http://localhost:5000/matches",
+        "http://localhost:5000/performances",
+        "http://localhost:5000/players",
+        "http://localhost:5000/real-fixtures",
+        "http://localhost:5000/rosters",
+        "http://localhost:5000/rounds",
+        "http://localhost:5000/statistics",
+        "http://localhost:5000/teams",
+        "http://localhost:5000/users"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 100,
+        "maxAge": "10d",
+        "timeout": "2s"
+      }
+    }
+  ]
+}

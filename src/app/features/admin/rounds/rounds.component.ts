@@ -8,7 +8,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { isEmpty } from 'lodash-es';
 
 @Component({
-  selector: 'app-rounds',
+  selector: 'fbm-rounds',
   templateUrl: './rounds.component.html',
   styleUrls: ['./rounds.component.scss'],
 })
@@ -29,8 +29,8 @@ export class RoundsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rounds = this.route.snapshot.data.rounds;
-    this.fantasyTeams = this.route.snapshot.data.fantasyTeams;
+    this.rounds = this.route.snapshot.data['rounds'];
+    this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.form.get('unsortedList').setValue(this.fantasyTeams);
   }
 
@@ -43,11 +43,13 @@ export class RoundsComponent implements OnInit {
   }
 
   checkLength(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl) => {
       if (this.form && this.form.value.round) {
         const lengthRequested = this.form.value.round.teams;
         const wrongValue = control.value.length !== lengthRequested;
         return wrongValue ? { wrongLength: { value: control.value.length } } : null;
+      } else {
+        return null;
       }
     };
   }
@@ -68,11 +70,15 @@ export class RoundsComponent implements OnInit {
     this.selectedRound = null;
   }
 
-  salva() {
+  save() {
     this.selectedRound.fantasyTeams = this.form.value.sortedList;
     this.roundService.matches(this.selectedRound).subscribe((round: Round) => {
       this.toastService.success('Generazione incontri', 'Il calendario del round è stato generato correttamente');
       this.selectedRound = round;
     });
   }
+
+  roundSearchFn = (term: string, round: Round) => {
+    return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
+  };
 }

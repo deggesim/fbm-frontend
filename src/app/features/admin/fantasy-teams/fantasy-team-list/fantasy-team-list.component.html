@@ -1,26 +1,27 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="user-shield" class="icon-padding"></fa-icon>Fantasquadre</legend>
   <div class="table-responsive" *ngIf="fantasyTeams && fantasyTeams.length > 0; else empty">
-    <table class="table table-hover">
-      <thead class="thead-dark">
+    <table class="table table-hover" aria-label="Fantasquadre">
+      <thead class="table-dark">
         <tr>
-          <th>Nome</th>
-          <th>Bilancio</th>
-          <th>Crediti spesi</th>
-          <th># Contratti</th>
-          <th># Giocatori</th>
-          <th>Visti spesi</th>
-          <th>Punti di penalità</th>
-          <th>Malus crediti</th>
-          <!-- <th>Azioni</th> -->
+          <th id="name">Nome</th>
+          <th id="initialBalance">Bilancio</th>
+          <th id="outgo">Crediti spesi</th>
+          <th id="remainingCredits">Crediti residui</th>
+          <th id="totalContracts"># Contratti</th>
+          <th id="playersInRoster"># Giocatori</th>
+          <th id="extraPlayers">Visti spesi</th>
+          <th id="pointsPenalty">Punti di penalità</th>
+          <th id="balancePenalty">Malus crediti</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let fantasyTeam of fantasyTeams" class="manina table-secondary" (click)="modifica(fantasyTeam)">
+        <tr *ngFor="let fantasyTeam of fantasyTeams" class="manina table-secondary" (click)="update(fantasyTeam)">
           <td>{{ fantasyTeam.name }}</td>
           <td>{{ fantasyTeam.initialBalance }}</td>
           <td>{{ fantasyTeam.outgo }}</td>
+          <td>{{ fantasyTeam.initialBalance - fantasyTeam.balancePenalty - fantasyTeam.outgo }}</td>
           <td>{{ fantasyTeam.totalContracts }}</td>
           <td>{{ fantasyTeam.playersInRoster }}</td>
           <td>{{ fantasyTeam.extraPlayers }}</td>
@@ -32,20 +33,21 @@
   </div>
 
   <ng-template #empty>
-    <h4 class="padding">Nessuna fantasquadra presente</h4>
+    <h4 class="p-3">Nessuna fantasquadra presente</h4>
   </ng-template>
 </fieldset>
 
-<!-- popup modifica fantasquadra -->
+<!-- modal update fantasyteam -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showPopupUpdate"
   class="modal fade"
   bsModal
-  #modal="bs-modal"
+  #modalUpdateFantasyTeam="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -54,7 +56,7 @@
       </div>
 
       <div class="modal-body">
-        <app-fantasy-team-form [fantasyTeam]="fantasyTeamSelected" (salva)="salva($event)" (annulla)="annulla()"></app-fantasy-team-form>
+        <fbm-fantasy-team-form [fantasyTeam]="fantasyTeamSelected" (save)="save($event)" (cancel)="hideModal()"></fbm-fantasy-team-form>
       </div>
     </div>
   </div>

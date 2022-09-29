@@ -1,27 +1,27 @@
-<app-login (login)="login($event)" *ngIf="!(isLoggedIn$ | async); else loggedInTemplate"></app-login>
+<fbm-login (login)="login($event)" *ngIf="!(isLoggedIn$ | async); else loggedInTemplate"></fbm-login>
 
 <ng-template #loggedInTemplate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="list-ul" class="icon-padding"></fa-icon>Lista leghe giocate</legend>
     <div class="table-responsive">
-      <table class="table table-hover">
-        <thead class="thead-dark">
+      <table class="table table-hover" aria-label="Lista leghe giocate">
+        <thead class="table-dark">
           <tr>
-            <th>Nome</th>
-            <th>Formato stagione regolare</th>
-            <th>Formato playoff</th>
-            <th>Formato coppa</th>
-            <th>Formato playout</th>
+            <th id="name">Nome</th>
+            <th id="regularSeasonFormat">Formato stagione regolare</th>
+            <th id="playoffFormat">Formato playoff</th>
+            <th id="playoutFormat">Formato coppa</th>
+            <th id="cupFormat">Formato playout</th>
           </tr>
         </thead>
 
         <tbody>
           <tr *ngFor="let item of (leagues$ | async)" class="manina table-secondary" (click)="selectLeague(item)">
-            <td width="20%">{{ item.name }}</td>
-            <td width="20%">{{ item.regularSeasonFormat.value.label }}</td>
-            <td width="20%">{{ item.playoffFormat.value.label }}</td>
-            <td width="20%">{{ item.playoutFormat.value.label }}</td>
-            <td width="20%">{{ item.cupFormat.value.label }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.regularSeasonFormat.value.label }}</td>
+            <td>{{ item.playoffFormat.value.label }}</td>
+            <td>{{ item.playoutFormat.value.label }}</td>
+            <td>{{ item.cupFormat.value.label }}</td>
           </tr>
         </tbody>
       </table>

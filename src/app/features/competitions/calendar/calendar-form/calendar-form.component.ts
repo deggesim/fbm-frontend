@@ -3,13 +3,13 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/for
 import { Match } from '@app/models/match';
 
 @Component({
-  selector: 'app-calendar-form',
+  selector: 'fbm-calendar-form',
   templateUrl: './calendar-form.component.html',
 })
 export class CalendarFormComponent implements OnChanges {
   @Input() matches: Match[];
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 
@@ -18,7 +18,7 @@ export class CalendarFormComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const matches: Match[] = changes.matches.currentValue;
+    const matches: Match[] = changes['matches'].currentValue;
     if (matches != null) {
       for (const match of matches) {
         this.matchArray.push(
@@ -52,7 +52,7 @@ export class CalendarFormComponent implements OnChanges {
     return (this.form.get('matchArray') as FormArray).at(index).get(controlName);
   }
 
-  salvaEvent(): void {
-    this.salva.emit(this.form.get('matchArray').value);
+  onSubmit(): void {
+    this.save.emit(this.form.get('matchArray').value);
   }
 }

@@ -1,50 +1,37 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@app/core/user/services/user.service';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { User } from '@app/models/user';
 import { atLeastOne } from '@app/shared/util/validations';
 
 @Component({
-  selector: 'app-fantasy-team-form',
+  selector: 'fbm-fantasy-team-form',
   templateUrl: './fantasy-team-form.component.html',
 })
 export class FantasyTeamFormComponent implements OnInit, OnChanges {
   @Input() fantasyTeam: FantasyTeam;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 
   users: User[];
-  usersLoading = false;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
     this.createForm();
   }
 
   ngOnInit() {
-    this.usersLoading = true;
-    this.userService.read().subscribe((users: User[]) => {
-      this.users = users;
-      this.usersLoading = false;
-    });
+    this.users = this.route.snapshot.data['users'];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const fantasyTeam: FantasyTeam = changes.fantasyTeam.currentValue;
+    const fantasyTeam: FantasyTeam = changes['fantasyTeam'].currentValue;
     if (fantasyTeam != null) {
-      const {
-        name,
-        initialBalance,
-        outgo,
-        totalContracts,
-        playersInRoster,
-        extraPlayers,
-        pointsPenalty,
-        balancePenalty,
-        owners,
-      } = fantasyTeam;
+      const { name, initialBalance, outgo, totalContracts, playersInRoster, extraPlayers, pointsPenalty, balancePenalty, owners } =
+        fantasyTeam;
       this.form.patchValue({
         name,
         initialBalance,
@@ -73,18 +60,9 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
     });
   }
 
-  salvaEvent(): void {
-    const {
-      name,
-      initialBalance,
-      outgo,
-      totalContracts,
-      playersInRoster,
-      extraPlayers,
-      pointsPenalty,
-      balancePenalty,
-      owners,
-    } = this.form.value;
+  onSubmit(): void {
+    const { name, initialBalance, outgo, totalContracts, playersInRoster, extraPlayers, pointsPenalty, balancePenalty, owners } =
+      this.form.value;
     const fantasyTeam: FantasyTeam = {
       _id: this.fantasyTeam ? this.fantasyTeam._id : null,
       name,
@@ -97,7 +75,7 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
       balancePenalty,
       owners,
     };
-    this.salva.emit(fantasyTeam);
+    this.save.emit(fantasyTeam);
   }
 
   trackUserByFn(user: User) {

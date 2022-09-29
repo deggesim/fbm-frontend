@@ -29,11 +29,11 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(ROOT_EFFECTS_INIT),
       // get token
-      mapTo([this.localStorageService.getToken(), this.localStorageService.getExpiresAt()]),
+      mapTo({ token: this.localStorageService.getToken(), expiresAt: this.localStorageService.getExpiresAt() }),
       // we want dispatch an action only when token and expiresAt are in localStorage
-      filter((auth: [string, moment.Moment]) => !!auth[0] && !!auth[1]),
-      switchMap((auth: [string, moment.Moment]) => [
-        AuthActions.setAuth({ auth: { token: auth[0], expiresAt: auth[1] } }),
+      filter((auth: { token: string; expiresAt: moment.Moment }) => !!auth.token && !!auth.expiresAt),
+      switchMap((auth: { token: string; expiresAt: moment.Moment }) => [
+        AuthActions.setAuth({ auth: { token: auth.token, expiresAt: auth.expiresAt } }),
         UserActions.loadUser(),
       ])
     )
@@ -74,21 +74,18 @@ export class AuthEffects {
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.logout),
-      switchMap(() =>
-        this.authService.logout().pipe(
-          tap(() => {
-            this.localStorageService.clearStorage();
-            this.toastService.warning('Logout', 'Logout effettuato correttamente');
-          }),
-          switchMapTo([
-            AuthActions.logoutSuccess(),
-            UserActions.setUser({ user: null }),
-            LeagueActions.setSelectedLeague({ league: null }),
-            LeagueInfoActions.setLeagueInfo({ leagueInfo: null }),
-            RouterActions.go({ path: ['home'] }),
-          ])
-        )
-      )
+      switchMapTo(this.authService.logout()),
+      tap(() => {
+        this.localStorageService.clearStorage();
+        this.toastService.warning('Logout', 'Logout effettuato correttamente');
+      }),
+      switchMapTo([
+        AuthActions.logoutSuccess(),
+        UserActions.setUser({ user: null }),
+        LeagueActions.setSelectedLeague({ league: null }),
+        LeagueInfoActions.setLeagueInfo({ leagueInfo: null }),
+        RouterActions.go({ path: ['home'] }),
+      ])
     )
   );
 }

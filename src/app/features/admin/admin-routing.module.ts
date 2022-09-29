@@ -76,6 +76,7 @@ const routes: Routes = [
         path: 'players',
         component: PlayerListComponent,
         resolve: {
+          teams: TeamResolverService,
           rosterList: RosterResolverService,
         },
       },
@@ -100,6 +101,7 @@ const routes: Routes = [
         path: 'players',
         component: PlayerListComponent,
         resolve: {
+          teams: TeamResolverService,
           rosterList: RosterResolverService,
         },
       },
@@ -107,6 +109,7 @@ const routes: Routes = [
         path: 'fantasy-teams',
         component: FantasyTeamListComponent,
         resolve: {
+          users: UsersResolverService,
           fantasyTeams: FantasyTeamResolverService,
         },
       },

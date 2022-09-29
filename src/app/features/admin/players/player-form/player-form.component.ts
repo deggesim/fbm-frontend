@@ -1,24 +1,22 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AppState } from '@app/core/app.state';
-import { leagueInfo } from '@app/core/league/store/league.selector';
+import { ActivatedRoute } from '@angular/router';
 import { LeagueInfo } from '@app/models/league';
 import { Role } from '@app/models/player';
 import { RealFixture } from '@app/models/real-fixture';
 import { Roster } from '@app/models/roster';
 import { Team } from '@app/models/team';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
-import { TeamService } from '@app/shared/services/team.service';
-import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-player-form',
+  selector: 'fbm-player-form',
   templateUrl: './player-form.component.html',
 })
 export class PlayerFormComponent implements OnInit, OnChanges {
   @Input() roster: Roster;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Input() leagueInfo: LeagueInfo;
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 
@@ -26,34 +24,28 @@ export class PlayerFormComponent implements OnInit, OnChanges {
   teams: Team[];
   preparedRealFixtures: RealFixture[];
 
-  constructor(
-    private fb: FormBuilder,
-    private teamService: TeamService,
-    private realFixtureService: RealFixtureService,
-    private store: Store<AppState>
-  ) {
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private realFixtureService: RealFixtureService) {
     this.createForm();
   }
 
   ngOnInit() {
     this.roles = [Role.Playmaker, Role.PlayGuardia, Role.Guardia, Role.GuardiaAla, Role.Ala, Role.AlaCentro, Role.Centro];
-    this.teamService.read().subscribe((teams: Team[]) => {
-      this.teams = teams;
-    });
-    this.realFixtureService.read(true).subscribe((realFixtures: RealFixture[]) => {
-      this.preparedRealFixtures = realFixtures;
-    });
+    this.teams = this.route.snapshot.data['teams'];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const roster: Roster = changes.roster.currentValue;
+    const roster: Roster = changes['roster'].currentValue;
+    const leagueInfo: LeagueInfo = changes['leagueInfo'].currentValue;
     if (roster != null) {
-      // tslint:disable-next-line: variable-name
       const { name, nationality, number, yearBirth, height, weight, role } = roster.player;
       this.form.patchValue({ name, nationality, number, yearBirth, height, weight, role });
       this.form.get('team').setValue(roster.team);
-      this.store.pipe(select(leagueInfo)).subscribe((leagueInfo: LeagueInfo) => {
-        this.form.get('realFixture').setValue(leagueInfo.nextRealFixture);
+    }
+    this.form.get('realFixture').setValue(leagueInfo.nextRealFixture);
+
+    if (!leagueInfo.preSeason) {
+      this.realFixtureService.read(true).subscribe((realFixtures: RealFixture[]) => {
+        this.preparedRealFixtures = realFixtures;
       });
     }
   }
@@ -72,8 +64,7 @@ export class PlayerFormComponent implements OnInit, OnChanges {
     });
   }
 
-  salvaGiocatore(): void {
-    // tslint:disable-next-line: variable-name
+  onSubmit(): void {
     const { name, nationality, number, yearBirth, height, weight, role } = this.form.value;
     let roster: Roster;
     if (this.roster && this.roster.player) {
@@ -83,6 +74,6 @@ export class PlayerFormComponent implements OnInit, OnChanges {
       const player = { name, nationality, number, yearBirth, height, weight, role };
       roster = { player, team: this.form.value.team, realFixture: this.form.value.realFixture };
     }
-    this.salva.emit(roster);
+    this.save.emit(roster);
   }
 }

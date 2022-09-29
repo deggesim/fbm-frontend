@@ -60,11 +60,11 @@ export class LeagueEffects {
       ofType(LeagueActions.createLeague),
       switchMap(({ league, fantasyTeams }) =>
         this.leagueService.create(league).pipe(
-          switchMap((league: League) => zip(of(league), this.fantasyTeamsService.create(fantasyTeams, league._id))),
-          switchMap((result: [League, FantasyTeam[]]) => this.leagueService.populate(result[0])),
-          switchMap((league: League) => {
-            this.toastService.success('Creazione lega', `La lega ${league.name} è stata create con successo`);
-            return [LeagueActions.createLeagueSuccess({ league }), RouterActions.go({ path: ['home'] })];
+          switchMap((value: League) => zip(of(value), this.fantasyTeamsService.create(fantasyTeams, value._id))),
+          switchMap((value: [League, FantasyTeam[]]) => this.leagueService.populate(value[0])),
+          switchMap((value: League) => {
+            this.toastService.success('Creazione lega', `La lega ${value.name} è stata create con successo`);
+            return [LeagueActions.createLeagueSuccess({ league: value }), RouterActions.go({ path: ['home'] })];
           }),
           catchError(() => {
             this.toastService.error('Creazione lega', 'Errore nella creazione della lega');
@@ -90,7 +90,7 @@ export class LeagueEffects {
       ofType(LeagueActions.editLeague),
       switchMap(({ league }) =>
         this.leagueService.update(league).pipe(
-          map((league: League) => LeagueActions.editLeagueSuccess({ league })),
+          map((value: League) => LeagueActions.editLeagueSuccess({ league: value })),
           tap(() => {
             this.toastService.success('Modifica lega', `Lega ${league.name} modificata con successo`);
           }),
@@ -119,7 +119,7 @@ export class LeagueEffects {
       withLatestFrom(this.store.pipe(select(selectedLeague))),
       switchMap(([action, league]) =>
         this.leagueService.completePreseason(league._id).pipe(
-          map((league: League) => LeagueActions.completePreseasonSuccess({ league })),
+          map((value: League) => LeagueActions.completePreseasonSuccess({ league: value })),
           tap(() => {
             this.toastService.success('Presason completata', 'Il torneo ora è nella fase "Stagione regolare"');
           }),
@@ -143,8 +143,8 @@ export class LeagueEffects {
     this.actions$.pipe(
       ofType(LeagueActions.editParameters),
       withLatestFrom(this.store.pipe(select(selectedLeague))),
-      switchMap(([action, selectedLeague]) =>
-        this.leagueService.setParameters(selectedLeague._id, action.parameters).pipe(
+      switchMap(([action, sl]) =>
+        this.leagueService.setParameters(sl._id, action.parameters).pipe(
           map((league: League) => LeagueActions.editParametersSuccess({ league })),
           tap(({ league }) => {
             this.toastService.success('Modifica parametri', `I parametri della lega ${league.name} sono stati modificati con successo`);
@@ -172,8 +172,8 @@ export class LeagueEffects {
     this.actions$.pipe(
       ofType(LeagueActions.editRoles),
       withLatestFrom(this.store.pipe(select(selectedLeague))),
-      switchMap(([action, selectedLeague]) =>
-        this.leagueService.setRoles(selectedLeague._id, action.roles).pipe(
+      switchMap(([action, sl]) =>
+        this.leagueService.setRoles(sl._id, action.roles).pipe(
           map((league: League) => LeagueActions.editRolesSuccess({ league })),
           tap(({ league }) => {
             this.toastService.success('Modifica ruoli', `I ruoli della lega ${league.name} sono stati modificati con successo`);

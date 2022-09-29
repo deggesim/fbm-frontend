@@ -1,0 +1,110 @@
+<ng-container *ngIf="match">
+  <div fxLayout="row wrap" fxLayoutAlign="space-between">
+    <!-- SQUADRA 1 -->
+    <div fxFlex="49" fxFlex.lt-md="100">
+      <div>
+        <h4 id="homeTeam">{{ match.homeTeam.name }} {{ match.homeScore }}</h4>
+      </div>
+      <div *ngIf="match.overtime != null">
+        <label>Overtime: {{ match.overtime }}</label>
+      </div>
+
+      <ng-container *ngIf="form; else noForm">
+        <form [formGroup]="form">
+          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" class="home-factor-div">
+            <div fxFlex="initial">
+              <label for="homeFactor">Fattore campo</label>
+            </div>
+            <div fxFlex="4rem">
+              <input type="number" class="form-control" id="homeFactor" formControlName="homeFactor" />
+            </div>
+            <fbm-error-message [form-control]="form.get('homeFactor')" name="Fattore campo"></fbm-error-message>
+          </div>
+        </form>
+      </ng-container>
+      <ng-template #noForm>
+        <div>
+          <label>Fattore campo: {{ match.homeFactor }}</label>
+        </div>
+      </ng-template>
+
+      <div class="pb-3">
+        <label>Valutazione: {{ match.homeRanking }} - Pagelle: {{ match.homeGrade }}</label>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover" aria-label="Squadra in casa">
+          <thead class="table-dark">
+            <tr>
+              <th id="name">Nome</th>
+              <th id="role">Ruolo</th>
+              <th fxHide.lt-sm id="benchOrder">Ordine panchina</th>
+              <th fxHide.lt-sm id="ranking">Val.</th>
+              <th fxHide.lt-sm id="minutes">Minuti</th>
+              <th fxHide.lt-sm id="grade">Voto</th>
+              <th *ngIf="match.overtime != null" fxHide.lt-sm id="ranking40Min" tooltip="Valutazione dopo 40 minuti">V. 40m</th>
+              <th id="rankingUsed">Val. usata</th>
+              <th id="minutesUsed">Minuti usati</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let player of homeTeamLineup; let i = index" class="table-secondary lineup-height">
+              <td class="text-nowrap">{{ player?.fantasyRoster.roster.player.name }}</td>
+              <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
+              <td fxHide.lt-sm>{{ player?.benchOrder }}</td>
+              <td fxHide.lt-sm>{{ player?.performance.ranking }}</td>
+              <td fxHide.lt-sm>{{ player?.performance.minutes }}</td>
+              <td fxHide.lt-sm>{{ player?.performance.grade }}</td>
+              <td *ngIf="match.overtime != null" fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
+              <td>{{ player?.matchReport?.realRanking }}</td>
+              <td>{{ player?.matchReport?.minutesUsed }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SQUADRA 2 -->
+    <div fxFlex="49" fxFlex.lt-md="100">
+      <div>
+        <h4 id="awayTeam" [ngClass.lt-md]="'space-above'">{{ match.awayTeam.name }} {{ match.awayScore }}</h4>
+      </div>
+      <div *ngIf="match.overtime != null"><label>&nbsp;</label></div>
+      <div [ngClass]="{ 'home-factor-div': form }" fxHide.lt-md><label>&nbsp;</label></div>
+      <div class="pb-3">
+        <label>Valutazione: {{ match.awayRanking }} - Pagelle: {{ match.awayGrade }}</label>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover" aria-label="Squadra in trasferta">
+          <thead class="table-dark">
+            <tr>
+              <th id="name">Nome</th>
+              <th id="role">Ruolo</th>
+              <th fxHide.lt-sm id="benchOrder">Ordine panchina</th>
+              <th fxHide.lt-sm id="ranking">Val.</th>
+              <th fxHide.lt-sm id="minutes">Minuti</th>
+              <th fxHide.lt-sm id="grade">Voto</th>
+              <th *ngIf="match.overtime != null" fxHide.lt-sm id="ranking40Min" tooltip="Valutazione dopo 40 minuti">V. 40m</th>
+              <th id="rankingUsed">Val. usata</th>
+              <th id="minutesUsed">Minuti usati</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let player of awayTeamLineup; let i = index" class="table-secondary lineup-height">
+              <td class="text-nowrap">{{ player?.fantasyRoster.roster.player.name }}</td>
+              <td>{{ player?.fantasyRoster.roster.player.role | roleShort }}</td>
+              <td fxHide.lt-sm>{{ player?.benchOrder }}</td>
+              <td fxHide.lt-sm>{{ player?.performance.ranking }}</td>
+              <td fxHide.lt-sm>{{ player?.performance.minutes }}</td>
+              <td fxHide.lt-sm>{{ player?.performance.grade }}</td>
+              <td *ngIf="match.overtime != null" fxHide.lt-sm>{{ player?.matchReport?.realRanking40Min }}</td>
+              <td>{{ player?.matchReport?.realRanking }}</td>
+              <td>{{ player?.matchReport?.minutesUsed }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</ng-container>

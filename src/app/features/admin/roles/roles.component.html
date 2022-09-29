@@ -1,9 +1,9 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="map-marked" class="icon-padding"></fa-icon>Ruoli</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="Playmaker" class="control-label">Playmaker</label>
           <ng-select
             id="Playmaker"
@@ -16,12 +16,12 @@
             [hideSelected]="true"
           >
           </ng-select>
-          <app-error-message [form-control]="form.get('Playmaker')" name="Playmaker"></app-error-message>
+          <fbm-error-message [form-control]="form.get('Playmaker')" name="Playmaker"></fbm-error-message>
         </div>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="Play/Guardia" class="control-label">Play/Guardia</label>
           <ng-select
             id="Play/Guardia"
@@ -34,12 +34,12 @@
             [hideSelected]="true"
           >
           </ng-select>
-          <app-error-message [form-control]="form.get('Play/Guardia')" name="Play/Guardia"></app-error-message>
+          <fbm-error-message [form-control]="form.get('Play/Guardia')" name="Play/Guardia"></fbm-error-message>
         </div>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="Guardia" class="control-label">Guardia</label>
           <ng-select
             id="Guardia"
@@ -52,12 +52,12 @@
             [hideSelected]="true"
           >
           </ng-select>
-          <app-error-message [form-control]="form.get('Guardia')" name="Guardia"></app-error-message>
+          <fbm-error-message [form-control]="form.get('Guardia')" name="Guardia"></fbm-error-message>
         </div>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="Guardia/Ala" class="control-label">Guardia/Ala</label>
           <ng-select
             id="Guardia/Ala"
@@ -70,12 +70,12 @@
             [hideSelected]="true"
           >
           </ng-select>
-          <app-error-message [form-control]="form.get('Guardia/Ala')" name="Guardia/Ala"></app-error-message>
+          <fbm-error-message [form-control]="form.get('Guardia/Ala')" name="Guardia/Ala"></fbm-error-message>
         </div>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="Ala" class="control-label">Ala</label>
           <ng-select
             id="Ala"
@@ -88,12 +88,12 @@
             [hideSelected]="true"
           >
           </ng-select>
-          <app-error-message [form-control]="form.get('Ala')" name="Ala"></app-error-message>
+          <fbm-error-message [form-control]="form.get('Ala')" name="Ala"></fbm-error-message>
         </div>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="Ala/Centro" class="control-label">Ala/Centro</label>
           <ng-select
             id="Ala/Centro"
@@ -106,12 +106,12 @@
             [hideSelected]="true"
           >
           </ng-select>
-          <app-error-message [form-control]="form.get('Ala/Centro')" name="Ala/Centro"></app-error-message>
+          <fbm-error-message [form-control]="form.get('Ala/Centro')" name="Ala/Centro"></fbm-error-message>
         </div>
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="Centro" class="control-label">Centro</label>
           <ng-select
             id="Centro"
@@ -124,13 +124,13 @@
             [hideSelected]="true"
           >
           </ng-select>
-          <app-error-message [form-control]="form.get('Centro')" name="Centro"></app-error-message>
+          <fbm-error-message [form-control]="form.get('Centro')" name="Centro"></fbm-error-message>
         </div>
       </div>
     </div>
   </fieldset>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

@@ -1,0 +1,228 @@
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
+  <fieldset class="fieldset">
+    <legend class="legend"><fa-icon icon="shopping-cart" class="icon-padding"></fa-icon>Asta fantamercato</legend>
+
+    <div class="mb-3">
+      <label for="roster" class="control-label">Giocatore</label>
+      <ng-select
+        id="roster"
+        [items]="rosters"
+        bindLabel="player.name"
+        formControlName="roster"
+        clearAllText="Elimina"
+        [typeahead]="typeahead$"
+        [minTermLength]="3"
+        (scrollToEnd)="loadMore()"
+        (change)="selectRoster($event)"
+      >
+        <ng-template ng-option-tmp let-item="item">
+          {{ item.player.name }} - {{ item.player.nationality }} - {{ item.player.role }} - {{ item.team.fullName }}
+        </ng-template>
+        <ng-template ng-label-tmp let-item="item">
+          {{ item.player.name }} - {{ item.player.nationality }} - {{ item.player.role }} - {{ item.team.fullName }}
+        </ng-template>
+      </ng-select>
+    </div>
+
+    <table class="table table-hover" aria-label="Fantasy roster">
+      <thead class="table-dark">
+        <tr>
+          <th *ngFor="let fantasyTeam of fantasyTeams" [id]="fantasyTeam.name">{{ fantasyTeam.name }}</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr class="table-secondary">
+          <td *ngFor="let fantasyTeam of fantasyTeams">
+            <div fxLayout="row wrap">
+              <div fxFlex="50" tooltip="Crediti spesi" class="text-nowrap">
+                <fa-icon icon="money-bill-wave" [fixedWidth]="true" class="icon-padding"></fa-icon>:
+                {{ fantasyTeam.outgo }}
+              </div>
+              <div fxFlex="50" tooltip="Crediti residui" class="text-nowrap">
+                <fa-icon icon="piggy-bank" [fixedWidth]="true" class="icon-padding"></fa-icon>:
+                {{ fantasyTeam.initialBalance - fantasyTeam.balancePenalty - fantasyTeam.outgo }}
+              </div>
+              <div fxFlex="50" tooltip="Giocatori nel roster" class="text-nowrap">
+                <fa-icon icon="users" [fixedWidth]="true" class="icon-padding"></fa-icon>: {{ fantasyTeam.playersInRoster }}
+              </div>
+              <div fxFlex="50" tooltip="Visti spesi" class="text-nowrap">
+                <fa-icon icon="globe-americas" [fixedWidth]="true" class="icon-padding"></fa-icon>: {{ fantasyTeam.extraPlayers }}
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- players-->
+        <tr class="manina table-secondary" *ngFor="let i of playersInRoster">
+          <td *ngFor="let fantasyTeam of fantasyTeams" [appPlayerStatus]="fantasyTeam.fantasyRosters[i]">
+            <ng-container *ngIf="fantasyTeam.fantasyRosters[i]">
+              <div>
+                {{ fantasyTeam.fantasyRosters[i].roster?.player?.name }}
+                ({{ fantasyTeam.fantasyRosters[i].roster?.player?.role | roleShort }}) -
+                {{ fantasyTeam.fantasyRosters[i].contract }}
+                ({{ fantasyTeam.fantasyRosters[i].yearContract }})
+              </div>
+              <span role="button" tooltip="Modifica tesseramento">
+                <fa-icon
+                  icon="pencil-alt"
+                  [fixedWidth]="true"
+                  class="icon-padding"
+                  (click)="update(fantasyTeam, fantasyTeam.fantasyRosters[i])"
+                ></fa-icon>
+              </span>
+              <span role="button" tooltip="Elimina tesseramento">
+                <fa-icon
+                  icon="trash"
+                  [fixedWidth]="true"
+                  class="icon-padding"
+                  (click)="openRemovePopup(fantasyTeam.fantasyRosters[i])"
+                ></fa-icon>
+              </span>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </fieldset>
+
+  <!-- modal transaction-->
+  <div
+    *ngIf="showModalTransaction"
+    class="modal fade"
+    bsModal
+    #modalTransaction="bs-modal"
+    [config]="{ backdrop: 'static', keyboard: false, show: true }"
+    tabindex="-1"
+    status="dialog"
+    aria-hidden="true"
+    (onHidden)="onHidden()"
+  >
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header titolo">
+          <h4 class="modal-title">{{ rosterSelected ? 'Acquista giocatore' : 'Modifica giocatore' }}</h4>
+        </div>
+
+        <div class="modal-body">
+          <div fxLayout="row wrap" fxLayoutAlign="space-between">
+            <ng-container *ngIf="rosterSelected; else modifiyFantasyRoster">
+              <div fxFlex="100">
+                <h6>{{ rosterSelected.player.name }} - {{ rosterSelected.player.nationality }} - {{ rosterSelected.player.role }}</h6>
+              </div>
+              <div fxFlex="100">
+                <h6>{{ rosterSelected.team.fullName }}</h6>
+              </div>
+            </ng-container>
+            <ng-template #modifiyFantasyRoster>
+              <div fxFlex="100">
+                <h6>
+                  {{ fantasyRosterSelected?.roster.player.name }} - {{ fantasyRosterSelected?.roster.player.nationality }} -
+                  {{ fantasyRosterSelected?.roster.player.role }}
+                </h6>
+              </div>
+              <div fxFlex="100">
+                <h6>{{ fantasyRosterSelected?.roster.team.fullName }}</h6>
+              </div>
+            </ng-template>
+
+            <div fxFlex="100">
+              <div class="mb-3">
+                <label for="fantasyTeam" class="control-label">Fantasquadra</label>
+                <ng-select
+                  id="fantasyTeam"
+                  name="fantasyTeam"
+                  [items]="fantasyTeams"
+                  bindLabel="name"
+                  formControlName="fantasyTeam"
+                  clearAllText="Elimina"
+                >
+                </ng-select>
+                <fbm-error-message [form-control]="form.get('status')" name="Status"></fbm-error-message>
+              </div>
+            </div>
+
+            <div fxFlex="100">
+              <div class="mb-3">
+                <label for="status" class="control-label">Status</label>
+                <ng-select
+                  id="status"
+                  name="status"
+                  [items]="statusList"
+                  bindLabel="status"
+                  formControlName="status"
+                  clearAllText="Elimina"
+                >
+                </ng-select>
+                <fbm-error-message [form-control]="form.get('status')" name="Status"></fbm-error-message>
+              </div>
+            </div>
+
+            <div fxFlex="100">
+              <div class="mb-3">
+                <div class="form-check form-switch">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    id="draft"
+                    name="draft"
+                    formControlName="draft"
+                    [ngClass]="{ 'is-invalid': form.get('draft').invalid && form.get('draft').dirty }"
+                  />
+                  <label class="form-check-label" for="draft">Draft</label>
+                  <fbm-error-message [form-control]="form.get('draft')" name="Draft"></fbm-error-message>
+                </div>
+              </div>
+            </div>
+
+            <div fxFlex="49">
+              <div class="mb-3">
+                <label for="contract" class="control-label">Costo</label>
+                <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200" />
+                <fbm-error-message [form-control]="form.get('contract')" name="Costo"></fbm-error-message>
+              </div>
+            </div>
+
+            <div fxFlex="49">
+              <div class="mb-3">
+                <label for="yearContract" class="control-label">Anno di contratto</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="yearContract"
+                  name="yearContract"
+                  formControlName="yearContract"
+                  min="1"
+                  max="3"
+                />
+                <fbm-error-message [form-control]="form.get('yearContract')" name="Anno di contratto"></fbm-error-message>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+            <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+              <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
+            </button>
+            <button type="button" class="btn btn-primary" (click)="hideModal()">
+              <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- popup remove -->
+<fbm-popup-confirm
+  #popupRemove
+  title="Rimuovi giocatore"
+  btnConfirm="Rimuovi"
+  btnCancel="Annulla"
+  (confirm)="remove()"
+  (cancel)="popupRemove.closeModal()"
+>
+  Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, mentre i visti spesi ed il numero di contratti firmati
+  diminuiranno di uno.
+</fbm-popup-confirm>

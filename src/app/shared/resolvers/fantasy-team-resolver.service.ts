@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/r
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +14,6 @@ export class FantasyTeamResolverService implements Resolve<FantasyTeam[]> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): FantasyTeam[] | Observable<FantasyTeam[]> | Promise<FantasyTeam[]> {
     return this.fantasyTeamService
       .read()
-      .pipe(tap((fantasyTeams: FantasyTeam[]) => fantasyTeams.sort((a, b) => a.name.localeCompare(b.name))));
+      .pipe(map((fantasyTeams: FantasyTeam[]) => [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name))));
   }
 }

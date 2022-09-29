@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FantasyRoster, sort } from '@app/models/fantasy-roster';
-import { tap } from 'rxjs/operators';
+import { FantasyRoster, sortFantasyRoster } from '@app/models/fantasy-roster';
+import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class FantasyRosterService {
   public read(fantasyTeamId: string, realFixtureId: string) {
     return this.http
       .get<FantasyRoster[]>(`${this.endpoint}/fantasy-rosters/fantasy-team/${fantasyTeamId}/real-fixture/${realFixtureId}`)
-      .pipe(tap((fantasyRosters: FantasyRoster[]) => fantasyRosters.sort(sort)));
+      .pipe(map((fantasyRosters: FantasyRoster[]) => [...fantasyRosters].sort(sortFantasyRoster)));
   }
 
   public create(fantasyRoster: FantasyRoster) {
@@ -26,8 +26,8 @@ export class FantasyRosterService {
     return this.http.patch<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${fantasyRoster._id}`, fantasyRoster);
   }
 
-  public delete(id: string) {
-    return this.http.delete<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${id}`);
+  public switch(fantasyRoster: FantasyRoster) {
+    return this.http.patch<FantasyRoster>(`${this.endpoint}/fantasy-rosters/${fantasyRoster._id}/switch`, fantasyRoster);
   }
 
   public release(id: string) {

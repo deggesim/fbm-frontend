@@ -6,13 +6,13 @@ import { iif, Observable, of } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-user-form',
+  selector: 'fbm-user-form',
   templateUrl: './user-form.component.html',
 })
 export class UserFormComponent implements OnInit, OnChanges {
   @Input() user: User;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
   roleList$: Observable<string[]>;
@@ -29,7 +29,7 @@ export class UserFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const user: User = changes.user.currentValue;
+    const user: User = changes['user'].currentValue;
     if (user != null) {
       const { name, email, role } = user;
       this.form.patchValue({ name, email, role });
@@ -45,9 +45,9 @@ export class UserFormComponent implements OnInit, OnChanges {
     });
   }
 
-  salvaEvent(): void {
+  onSubmit(): void {
     const { name, email, password, role } = this.form.value;
     const user: User = { _id: this.user ? this.user._id : null, name, email, password, role };
-    this.salva.emit(user);
+    this.save.emit(user);
   }
 }

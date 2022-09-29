@@ -1,5 +1,6 @@
-export interface Player {
-  _id?: string;
+import { FbmModel } from './fbm.model';
+import { Performance } from './performance';
+export interface Player extends FbmModel {
   name: string;
   nationality: string;
   number: string;

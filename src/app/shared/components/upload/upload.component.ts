@@ -3,13 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
-  selector: 'app-upload',
+  selector: 'fbm-upload',
   templateUrl: './upload.component.html',
 })
 export class UploadComponent {
-  @Input() titolo: string;
-  @Output() upload: EventEmitter<any> = new EventEmitter();
-  @Output() annulla: EventEmitter<any> = new EventEmitter();
+  @Input() title: string;
+  @Output() upload: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
   @ViewChild('uploadElement', { static: false }) uploadElement: ElementRef;
@@ -21,11 +21,11 @@ export class UploadComponent {
     this.createForm();
   }
 
-  apriModale() {
+  openModal() {
     this.modal.show();
   }
 
-  chiudiModale() {
+  closeModal() {
     this.form.reset();
     this.uploadElement.nativeElement.value = '';
     this.modal.hide();
@@ -37,7 +37,7 @@ export class UploadComponent {
     });
   }
 
-  onFileChange(event) {
+  onFileChange(event: any) {
     const reader = new FileReader();
 
     if (event.target.files && event.target.files.length) {

@@ -1,10 +1,11 @@
+import * as moment from 'moment';
 import { FantasyTeam } from './fantasy-team';
+import { FbmModel } from './fbm.model';
 import { Role } from './player';
 import { RealFixture } from './real-fixture';
 import { Roster } from './roster';
 
-export interface FantasyRoster {
-  _id?: string;
+export interface FantasyRoster extends FbmModel {
   roster: Roster;
   fantasyTeam: FantasyTeam;
   status: string;
@@ -21,10 +22,10 @@ export enum PlayerStatus {
   'Ita' = 'ITA',
 }
 
-export const sort = (a: FantasyRoster, b: FantasyRoster): number => {
+export const sortFantasyRoster = (a: FantasyRoster, b: FantasyRoster): number => {
   const aRole = getRole(a);
   const bRole = getRole(b);
-  const map = {};
+  const map: { [x: string]: number } = {};
   map[Role.Playmaker] = 1;
   map[Role.PlayGuardia] = 2;
   map[Role.Guardia] = 3;
@@ -38,7 +39,8 @@ export const sort = (a: FantasyRoster, b: FantasyRoster): number => {
   } else if (map[aRole] > map[bRole]) {
     return 1;
   } else {
-    return a.roster.player.name.localeCompare(b.roster.player.name);
+    const isBefore = moment(a.createdAt).isBefore(b.createdAt);
+    return isBefore ? -1 : 1;
   }
 };
 

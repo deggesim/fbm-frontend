@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -12,19 +12,19 @@ import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { fantasyTeamMustBeDifferent } from '@app/shared/util/validations';
 import { select, Store } from '@ngrx/store';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMap, take, tap } from 'rxjs/operators';
+import { switchMapTo, take, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-trade',
+  selector: 'fbm-trade',
   templateUrl: './trade.component.html',
   styleUrls: ['./trade.component.scss'],
 })
 export class TradeComponent implements OnInit {
   form: FormGroup;
   nextRealFixture: RealFixture;
-  fantasyTeams1: FantasyTeam[];
-  fantasyTeams2: FantasyTeam[];
+  fantasyTeams: FantasyTeam[];
   fantasyTeam1Selected: FantasyTeam;
   fantasyTeam2Selected: FantasyTeam;
   fantasyRosters1: FantasyRoster[];
@@ -32,7 +32,8 @@ export class TradeComponent implements OnInit {
   fantasyRosters2: FantasyRoster[];
   fantasyRosters2Selected: FantasyRoster[] = [];
 
-  mostraPopupTradeBlock: boolean;
+  @ViewChild('modalTradeBlock', { static: false }) modalTradeBlock: ModalDirective;
+  showModalTradeBlock: boolean;
 
   constructor(
     private fb: FormBuilder,
@@ -46,23 +47,22 @@ export class TradeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fantasyTeams1 = this.route.snapshot.data.fantasyTeams;
-    this.fantasyTeams2 = this.route.snapshot.data.fantasyTeams;
-    this.store.pipe(select(leagueInfo), take(1)).subscribe((leagueInfo: LeagueInfo) => {
-      this.nextRealFixture = leagueInfo.nextRealFixture;
+    this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
+    this.store.pipe(select(leagueInfo), take(1)).subscribe((li: LeagueInfo) => {
+      this.nextRealFixture = li.nextRealFixture;
     });
   }
 
   createForm() {
     this.form = this.fb.group(
       {
-        fantasyTeam1: [undefined, Validators.required],
-        fantasyTeam2: [undefined, [Validators.required]],
+        fantasyTeam1: [null, Validators.required],
+        fantasyTeam2: [null, [Validators.required]],
         outPlayers: [[], Validators.required],
         inPlayers: [[], Validators.required],
-        buyout: [undefined],
+        buyout: [null],
       },
-      { validator: fantasyTeamMustBeDifferent }
+      { validators: fantasyTeamMustBeDifferent }
     );
   }
 
@@ -115,58 +115,82 @@ export class TradeComponent implements OnInit {
     this.form.get('inPlayers').setValue(this.fantasyRosters2Selected);
   }
 
-  abilitaRiepilogo() {
+  enableRecap() {
     return this.fantasyRosters1Selected.length > 0;
   }
 
-  riepilogo() {
-    this.mostraPopupTradeBlock = true;
+  recap() {
+    this.showModalTradeBlock = true;
   }
 
-  salva() {
+  save() {
     for (const fr of this.fantasyRosters1Selected) {
       fr.fantasyTeam = this.fantasyTeam2Selected;
     }
     for (const fr of this.fantasyRosters2Selected) {
       fr.fantasyTeam = this.fantasyTeam1Selected;
     }
-    this.fantasyTeam1Selected.outgo -= this.form.value.buyout;
-    this.fantasyTeam2Selected.outgo += this.form.value.buyout;
+
+    const buyout = this.form.value.buyout ? this.form.value.buyout : 0;
+    this.fantasyTeam1Selected.outgo += buyout;
+    this.fantasyTeam2Selected.outgo -= buyout;
+    this.fantasyTeam1Selected.playersInRoster += this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length;
+    this.fantasyTeam2Selected.playersInRoster += this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length;
+    this.fantasyTeam1Selected.totalContracts +=
+      this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length > 0
+        ? this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length
+        : 0;
+
+    this.fantasyTeam2Selected.totalContracts +=
+      this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length > 0
+        ? this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length
+        : 0;
 
     const allTradedPlayers = this.fantasyRosters1Selected.concat(this.fantasyRosters2Selected);
-    const allTradedPlayers$ = allTradedPlayers.map((fr: FantasyRoster) => this.fantasyRosterService.update(fr));
-    const all$: Observable<any>[] = []
+    const allTradedPlayers$ = allTradedPlayers.map((fr: FantasyRoster) => this.fantasyRosterService.switch(fr));
+    const all$: Observable<FantasyRoster | FantasyTeam>[] = []
       .concat(allTradedPlayers$)
       .concat(this.fantasyTeamService.update(this.fantasyTeam1Selected), this.fantasyTeamService.update(this.fantasyTeam2Selected));
 
     forkJoin(all$)
       .pipe(
-        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
+        tap(() => {
+          this.hideModal();
+        }),
+        switchMapTo(this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters1 = fantasyRosters;
         }),
-        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
+        switchMapTo(this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters2 = fantasyRosters;
+        }),
+        switchMapTo(this.fantasyTeamService.read()),
+        tap((fantasyTeams: FantasyTeam[]) => {
+          this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
+          this.fantasyTeam1Selected = this.fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeam1Selected._id === ft._id);
+          this.fantasyTeam2Selected = this.fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeam2Selected._id === ft._id);
         })
       )
       .subscribe(() => {
+        this.form.patchValue({
+          outPlayers: [],
+          inPlayers: [],
+          buyout: undefined,
+        });
+        this.fantasyRosters1Selected = [];
+        this.fantasyRosters2Selected = [];
+        this.form.markAsPristine();
         this.toastService.success('Scambio completato', 'I giocatori sono stati scambiati con successo');
       });
-
-    this.mostraPopupTradeBlock = false;
-    this.form.patchValue({
-      outPlayers: [],
-      inPlayers: [],
-      buyout: undefined,
-    });
-    this.fantasyRosters1Selected = [];
-    this.fantasyRosters2Selected = [];
-    this.form.markAsPristine();
   }
 
-  annulla() {
-    this.mostraPopupTradeBlock = false;
+  hideModal(): void {
+    this.modalTradeBlock.hide();
+  }
+
+  onHidden(): void {
+    this.showModalTradeBlock = false;
   }
 
   reset() {

@@ -1,19 +1,21 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="clipboard-list" class="icon-padding"></fa-icon>Gestione turni</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="round" class="control-label">Round *</label>
           <ng-select
             id="round"
             name="round"
             [items]="rounds"
-            bindLabel="name"
             formControlName="round"
             clearAllText="Elimina"
             (change)="onChange($event)"
+            [searchFn]="roundSearchFn"
           >
+            <ng-template ng-label-tmp let-item="item"> {{ item.competition.name }} - {{ item.name }} </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index"> {{ item.competition.name }} - {{ item.name }} </ng-template>
           </ng-select>
         </div>
       </div>
@@ -26,10 +28,9 @@
       >
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <bs-sortable
             formControlName="unsortedList"
-            items="fantasyTeams"
             [itemTemplate]="unsortedListTemplate"
             itemClass="sortable-item"
             itemActiveClass="sortable-item-active"
@@ -40,10 +41,9 @@
         </div>
       </div>
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <bs-sortable
             formControlName="sortedList"
-            items="fantasyTeams"
             [itemTemplate]="sortedListTemplate"
             itemClass="sortable-item"
             itemActiveClass="sortable-item-active"
@@ -56,13 +56,11 @@
     </div>
   </fieldset>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
-    <button type="button" class="btn btn-primary" (click)="reset()">
-      <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
-    </button>
+    <button type="button" class="btn btn-primary" (click)="reset()"><fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla</button>
   </div>
 </form>
 
@@ -70,7 +68,7 @@
   <fieldset class="fieldset-calendar">
     <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Calendario</legend>
     <accordion [isAnimated]="true">
-      <accordion-group *ngFor="let fixture of selectedRound.fixtures" [heading]="fixture.name" isOpen="true">
+      <accordion-group *ngFor="let fixture of selectedRound.fixtures" [heading]="fixture.name" [isOpen]="true">
         <div *ngIf="fixture.matches && fixture.matches.length > 0; else fixtureNotDefined">
           <p *ngFor="let match of fixture.matches">{{ match.homeTeam.name }} - {{ match.awayTeam.name }}</p>
         </div>

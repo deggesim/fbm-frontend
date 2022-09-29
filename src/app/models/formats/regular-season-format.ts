@@ -1,4 +1,3 @@
-// tslint:disable-next-line: interface-over-type-literal
 type RoundRobinType = {
   label: string;
   rounds: number;

@@ -3,13 +3,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Team } from '@app/models/team';
 
 @Component({
-  selector: 'app-team-form',
+  selector: 'fbm-team-form',
   templateUrl: './team-form.component.html',
 })
 export class TeamFormComponent implements OnChanges {
   @Input() team: Team;
-  @Output() salva: EventEmitter<any> = new EventEmitter(true);
-  @Output() annulla: EventEmitter<any> = new EventEmitter(true);
+  @Output() save: EventEmitter<any> = new EventEmitter(true);
+  @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
   form: FormGroup;
 
@@ -18,7 +18,7 @@ export class TeamFormComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const team: Team = changes.team.currentValue;
+    const team: Team = changes['team'].currentValue;
     if (team != null) {
       const { fullName, sponsor, name, city, abbreviation } = team;
       this.form.patchValue({ fullName, sponsor, name, city, abbreviation });
@@ -35,9 +35,9 @@ export class TeamFormComponent implements OnChanges {
     });
   }
 
-  salvaEvent(): void {
+  onSubmit(): void {
     const { fullName, sponsor, name, city, abbreviation } = this.form.value;
     const team: Team = { _id: this.team ? this.team._id : null, fullName, sponsor, name, city, abbreviation, real: true };
-    this.salva.emit(team);
+    this.save.emit(team);
   }
 }

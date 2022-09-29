@@ -1,18 +1,18 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="list" class="icon-padding"></fa-icon>Gestione giornate</legend>
   <div class="table-responsive" *ngIf="realFixtures && realFixtures.length > 0; else empty">
-    <table class="table table-hover">
-      <thead class="thead-dark">
+    <table class="table table-hover" aria-label="Gestione giornate">
+      <thead class="table-dark">
         <tr>
-          <th>Nome</th>
-          <th>Preparata</th>
-          <th>Turni</th>
-          <th>Squadre senza partita</th>
+          <th id="name">Nome</th>
+          <th id="prepared">Preparata</th>
+          <th id="fixtures">Turni</th>
+          <th id="teamsWithNoGame">Squadre senza partita</th>
         </tr>
       </thead>
 
       <tbody>
-        <tr *ngFor="let realFixture of realFixtures" class="table-secondary manina" (click)="modifica(realFixture)">
+        <tr *ngFor="let realFixture of realFixtures" class="table-secondary manina" (click)="openModal(realFixture)">
           <td>{{ realFixture.name }}</td>
           <td>
             <fa-icon icon="check" *ngIf="realFixture.prepared"></fa-icon>
@@ -25,20 +25,21 @@
   </div>
 
   <ng-template #empty>
-    <h4 class="padding">Nessuna giornata presente</h4>
+    <h4 class="p-3">Nessuna giornata presente</h4>
   </ng-template>
 </fieldset>
 
-<!-- popup modifica giornata -->
+<!-- modal real fixture form -->
 <div
-  *ngIf="mostraPopupModifica"
+  *ngIf="showModalRealFixtureForm"
   class="modal fade"
   bsModal
-  #modal="bs-modal"
+  #modalRealFixtureForm="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-md">
     <div class="modal-content">
@@ -47,7 +48,7 @@
       </div>
 
       <div class="modal-body">
-        <app-real-fixture-form [realFixture]="realFixtureSelected" (salva)="salva($event)" (annulla)="annulla()"></app-real-fixture-form>
+        <fbm-real-fixture-form [realFixture]="realFixtureSelected" (save)="save($event)" (cancel)="hideModal()"></fbm-real-fixture-form>
       </div>
     </div>
   </div>

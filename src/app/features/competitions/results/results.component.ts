@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -12,13 +12,13 @@ import { Round } from '@app/models/round';
 import { LineupService } from '@app/shared/services/lineup.service';
 import { MatchService } from '@app/shared/services/match.service';
 import { ToastService } from '@app/shared/services/toast.service';
+import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
-import { select, Store } from '@ngrx/store';
 import { forkJoin, Observable } from 'rxjs';
 import { switchMap, switchMapTo, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-results',
+  selector: 'fbm-results',
   templateUrl: './results.component.html',
 })
 export class ResultsComponent implements OnInit {
@@ -27,6 +27,7 @@ export class ResultsComponent implements OnInit {
   rounds: Round[];
   fixtures: Fixture[];
   matches: Match[];
+  selectedFixture: Fixture;
   selectedMatch: Match;
   homeTeamLineup: Lineup[];
   awayTeamLineup: Lineup[];
@@ -43,14 +44,39 @@ export class ResultsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.rounds = this.route.snapshot.data.rounds;
+    this.rounds = this.route.snapshot.data['rounds'];
+
+    const round = this.route.snapshot.queryParams['round'];
+    const fixture = this.route.snapshot.queryParams['fixture'];
+    const match = this.route.snapshot.queryParams['match'];
+
+    if (round && fixture && match) {
+      const selectedRound = this.rounds.find((value: Round) => value._id === round);
+      if (selectedRound) {
+        this.fixtures = selectedRound.fixtures;
+        this.selectedFixture = this.fixtures?.find((value: Fixture) => value._id === fixture);
+        this.matches = this.selectedFixture.matches;
+        const selectedMatch = this.matches?.find((value: Match) => value._id === match);
+        this.form.patchValue({
+          round: selectedRound,
+          fixture: this.selectedFixture,
+          match: selectedMatch,
+        });
+        if (this.selectedFixture && selectedMatch) {
+          this.form.get('fixture').enable();
+          this.form.get('match').enable();
+          this.onChangeMatch(selectedMatch);
+        }
+      }
+    }
   }
 
   createForm() {
     this.form = this.fb.group({
-      round: [undefined, Validators.required],
-      fixture: [undefined, Validators.required],
-      match: [undefined, Validators.required],
+      round: [null, Validators.required],
+      fixture: [null, Validators.required],
+      match: [null, Validators.required],
+      homeFactor: [null, Validators.min(0)],
     });
     this.form.get('fixture').disable();
     this.form.get('match').disable();
@@ -68,12 +94,15 @@ export class ResultsComponent implements OnInit {
   }
 
   onChangeFixture(fixture: Fixture) {
-    this.form.get('match').reset();
-    if (fixture != null && fixture.matches != null && !isEmpty(fixture.matches)) {
-      this.matches = fixture.matches;
-      this.form.get('match').enable();
-    } else {
-      this.form.get('match').disable();
+    if (fixture != null) {
+      this.selectedFixture = fixture;
+      this.form.get('match').reset();
+      if (fixture != null && fixture.matches != null && !isEmpty(fixture.matches)) {
+        this.matches = fixture.matches;
+        this.form.get('match').enable();
+      } else {
+        this.form.get('match').disable();
+      }
     }
   }
 
@@ -87,23 +116,23 @@ export class ResultsComponent implements OnInit {
     }
   }
 
-  calcolaRisultato() {
-    const { round, fixture, match } = this.form.value;
+  computeScore() {
+    const { round, fixture, match, homeFactor } = this.form.value;
     this.matchService
-      .compute(round._id, fixture._id, match._id)
+      .compute(round._id, fixture._id, match._id, homeFactor)
       .pipe(
-        tap((matchComputed) => {
+        switchMap((matchComputed: Match) => {
           this.selectedMatch = matchComputed;
+          return this.matchService.read(fixture._id);
         }),
-        switchMapTo(this.matchService.read(fixture._id)),
-        tap((matches: Match[]) => {
+        switchMap((matches: Match[]) => {
           this.matches = matches;
+          return this.store.select(selectedLeague);
         }),
-        switchMapTo(this.store.select(selectedLeague)),
-        tap((league: League) => {
+        switchMap((league: League) => {
           this.store.dispatch(LeagueInfoActions.refresh({ league }));
-        }),
-        switchMapTo(this.loadLineups(this.selectedMatch))
+          return this.loadLineups(this.selectedMatch);
+        })
       )
       .subscribe((lineups) => {
         this.homeTeamLineup = lineups[0];
@@ -112,7 +141,12 @@ export class ResultsComponent implements OnInit {
       });
   }
 
+  roundSearchFn = (term: string, round: Round) => {
+    return round.name.toLowerCase().includes(term.toLowerCase()) || round.competition?.name.toLowerCase().includes(term.toLowerCase());
+  };
+
   private loadLineups(match: Match): Observable<[Lineup[], Lineup[]]> {
+    this.form.get('homeFactor').setValue(match.homeFactor);
     const homeTeam = match.homeTeam;
     const awayTeam = match.awayTeam;
     const $homeTeamLineup = this.lineupService.lineupByTeam(homeTeam._id, this.form.value.fixture._id);

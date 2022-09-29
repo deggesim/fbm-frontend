@@ -18,6 +18,8 @@ export interface User {
   tokens?: string[];
   fantasyTeams?: FantasyTeam[];
   leagues?: League[];
+  createdAt?: moment.Moment;
+  updatedAt?: moment.Moment;
 }
 
 export enum Role {

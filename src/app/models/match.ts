@@ -1,7 +1,7 @@
 import { FantasyTeam } from './fantasy-team';
+import { FbmModel } from './fbm.model';
 
-export interface Match {
-  _id: string;
+export interface Match extends FbmModel {
   homeTeam: FantasyTeam;
   awayTeam: FantasyTeam;
   homeRanking: number;

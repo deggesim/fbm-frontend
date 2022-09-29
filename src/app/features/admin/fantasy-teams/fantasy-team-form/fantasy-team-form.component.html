@@ -1,14 +1,14 @@
-<form [formGroup]="form" (ngSubmit)="salvaEvent()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="name" class="control-label">Nome</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name" />
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="initialBalance" class="control-label">Bilancio</label>
         <input
           type="number"
@@ -18,12 +18,12 @@
           formControlName="initialBalance"
           [ngClass]="{ 'is-invalid': form.get('initialBalance').invalid && form.get('initialBalance').dirty }"
         />
-        <app-error-message [form-control]="form.get('initialBalance')" name="Bilancio"></app-error-message>
+        <fbm-error-message [form-control]="form.get('initialBalance')" name="Bilancio"></fbm-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="outgo" class="control-label">Crediti spesi</label>
         <input
           type="number"
@@ -33,12 +33,12 @@
           formControlName="outgo"
           [ngClass]="{ 'is-invalid': form.get('outgo').invalid && form.get('outgo').dirty }"
         />
-        <app-error-message [form-control]="form.get('outgo')" name="Crediti spesi"></app-error-message>
+        <fbm-error-message [form-control]="form.get('outgo')" name="Crediti spesi"></fbm-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="totalContracts" class="control-label"># Contratti</label>
         <input
           type="number"
@@ -48,12 +48,12 @@
           formControlName="totalContracts"
           [ngClass]="{ 'is-invalid': form.get('totalContracts').invalid && form.get('totalContracts').dirty }"
         />
-        <app-error-message [form-control]="form.get('totalContracts')" name="# Contratti"></app-error-message>
+        <fbm-error-message [form-control]="form.get('totalContracts')" name="# Contratti"></fbm-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="playersInRoster" class="control-label"># Giocatori</label>
         <input
           type="number"
@@ -63,12 +63,12 @@
           formControlName="playersInRoster"
           [ngClass]="{ 'is-invalid': form.get('playersInRoster').invalid && form.get('playersInRoster').dirty }"
         />
-        <app-error-message [form-control]="form.get('playersInRoster')" name="# Giocatori"></app-error-message>
+        <fbm-error-message [form-control]="form.get('playersInRoster')" name="# Giocatori"></fbm-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="extraPlayers" class="control-label">Visti spesi</label>
         <input
           type="number"
@@ -78,12 +78,12 @@
           formControlName="extraPlayers"
           [ngClass]="{ 'is-invalid': form.get('extraPlayers').invalid && form.get('extraPlayers').dirty }"
         />
-        <app-error-message [form-control]="form.get('extraPlayers')" name="Visti spesi"></app-error-message>
+        <fbm-error-message [form-control]="form.get('extraPlayers')" name="Visti spesi"></fbm-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="pointsPenalty" class="control-label">Punti di penalità</label>
         <input
           type="number"
@@ -93,12 +93,12 @@
           formControlName="pointsPenalty"
           [ngClass]="{ 'is-invalid': form.get('pointsPenalty').invalid && form.get('pointsPenalty').dirty }"
         />
-        <app-error-message [form-control]="form.get('pointsPenalty')" name="Punti di penalità"></app-error-message>
+        <fbm-error-message [form-control]="form.get('pointsPenalty')" name="Punti di penalità"></fbm-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="balancePenalty" class="control-label">Malus crediti</label>
         <input
           type="number"
@@ -108,19 +108,18 @@
           formControlName="balancePenalty"
           [ngClass]="{ 'is-invalid': form.get('balancePenalty').invalid && form.get('balancePenalty').dirty }"
         />
-        <app-error-message [form-control]="form.get('balancePenalty')" name="Malus crediti"></app-error-message>
+        <fbm-error-message [form-control]="form.get('balancePenalty')" name="Malus crediti"></fbm-error-message>
       </div>
     </div>
 
     <div fxFlex="49" fxFlex.xs="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="owners" class="control-label">Proprietari</label>
         <ng-select
           id="owners"
           [items]="users"
           [multiple]="true"
           [trackByFn]="trackUserByFn"
-          [loading]="usersLoading"
           typeToSearchText="Inserisci almeno due caratteri"
           bindLabel="email"
           formControlName="owners"
@@ -131,11 +130,11 @@
     </div>
   </div>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
-    <button type="button" class="btn btn-primary" (click)="annulla.emit()">
+    <button type="button" class="btn btn-primary" (click)="cancel.emit()">
       <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
     </button>
   </div>

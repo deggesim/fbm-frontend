@@ -1,25 +1,28 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="address-card" class="icon-padding"></fa-icon>Formazioni</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="round" class="control-label">Round</label>
           <ng-select
             id="round"
             name="round"
             [items]="rounds"
-            bindLabel="name"
             formControlName="round"
             clearAllText="Elimina"
             (change)="onChangeRound($event)"
+            [searchFn]="roundSearchFn"
+            (clear)="allFieldsSelected = false; changeAllowed = false"
           >
+            <ng-template ng-label-tmp let-item="item"> {{ item.competition.name }} - {{ item.name }} </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index"> {{ item.competition.name }} - {{ item.name }} </ng-template>
           </ng-select>
         </div>
       </div>
 
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fixture" class="control-label">Giornata</label>
           <ng-select
             id="fixture"
@@ -29,13 +32,14 @@
             formControlName="fixture"
             clearAllText="Elimina"
             (change)="onChangeFixture($event)"
+            (clear)="allFieldsSelected = false; changeAllowed = false"
           >
           </ng-select>
         </div>
       </div>
 
       <div fxFlex="33" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
             id="fantasyTeam"
@@ -45,6 +49,7 @@
             formControlName="fantasyTeam"
             clearAllText="Elimina"
             (change)="onChangeFantasyTeam($event)"
+            (clear)="allFieldsSelected = false; changeAllowed = false"
           >
           </ng-select>
         </div>
@@ -60,7 +65,7 @@
           <label id="roster">Roster</label>
           <div class="table-responsive">
             <table class="table table-hover" aria-label="Roster">
-              <thead class="thead-dark">
+              <thead class="table-dark">
                 <tr>
                   <th id="name">Nome</th>
                   <th id="nationality">Naz.</th>
@@ -75,14 +80,17 @@
                   class="table-secondary lineup-height"
                   [ngClass]="{ chosen: playerChoosen(fantasyRoster), manina: changeAllowed }"
                   (click)="addPlayer(fantasyRoster)"
-                  [popover]="statsTooltip"
-                  [popoverContext]="{
-                    stats: tooltip.get(fantasyRoster.roster.player._id)
-                  }"
-                  triggers="mouseenter:mouseleave"
-                  container="body"
                 >
-                  <td [appPlayerStatus]="fantasyRoster">
+                  <td
+                    [appPlayerStatus]="fantasyRoster"
+                    [popover]="statsTooltip"
+                    [popoverContext]="{
+                      stats: tooltip.get(fantasyRoster.roster.player._id)
+                    }"
+                    triggers="mouseenter:mouseleave"
+                    container="body"
+                    placement="right"
+                  >
                     {{ fantasyRoster.roster.player.name }}
                   </td>
                   <td [appPlayerStatus]="fantasyRoster">
@@ -109,14 +117,18 @@
             </caption>
             <thead>
               <tr>
-                <th id="ranking" class="w-50">Val.</th>
-                <th id="minutes" class="w-50">Min.</th>
+                <th id="realFixture" class="w-40">Giornata</th>
+                <th id="ranking" class="w-20">Val.</th>
+                <th id="minutes" class="w-20">Min.</th>
+                <th id="voto" class="w-20">Voto</th>
               </tr>
             </thead>
             <tbody>
               <tr class="tooltip-height" *ngFor="let performance of stats.trend">
+                <td>{{ performance.realFixture.name }}</td>
                 <td>{{ performance.ranking }}</td>
                 <td>{{ performance.minutes }}</td>
+                <td>{{ performance.grade }}</td>
               </tr>
             </tbody>
           </table>
@@ -127,7 +139,7 @@
           <label id="formazione">Formazione</label>
           <div class="table-responsive">
             <table class="table table-hover" aria-label="Formazione">
-              <thead class="thead-dark">
+              <thead class="table-dark">
                 <tr>
                   <th id="spot">Spot</th>
                   <th id="name">Nome</th>
@@ -163,10 +175,10 @@
               </tbody>
             </table>
           </div>
-          <div class="padding text-center">
-            <app-error-message [form-control]="form.get('lineup')" name="Formazione"></app-error-message>
+          <div class="p-3 text-center">
+            <fbm-error-message [form-control]="form.get('lineup')" name="Formazione"></fbm-error-message>
           </div>
-          <div class="padding text-center" *ngIf="changeAllowed">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3" *ngIf="changeAllowed">
             <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="openModalBenchOrder()">
               <fa-icon icon="sort" class="icon-padding"></fa-icon>Ordine panchina
             </button>
@@ -180,38 +192,42 @@
     </div>
   </fieldset>
 
-  <div class="text-center padding">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid" *ngIf="changeAllowed">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
-    <button type="button" class="btn btn-primary" (click)="ripristina()" *ngIf="changeAllowed">
+    <button type="button" class="btn btn-primary" (click)="restore()" *ngIf="changeAllowed">
       <fa-icon icon="window-restore" class="icon-padding"></fa-icon>Ripristina
     </button>
-    <button type="button" class="btn btn-primary" (click)="svuota()" *ngIf="changeAllowed">
+    <button type="button" class="btn btn-primary" (click)="empty()" *ngIf="changeAllowed">
       <fa-icon icon="undo" class="icon-padding"></fa-icon>Svuota
     </button>
-    <!-- <button type="button" class="btn btn-primary" (click)="importa()" *ngIf="changeAllowed">
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="import()"
+      *ngIf="changeAllowed"
+      [disabled]="!fantasyRostersPresent || !allFieldsSelected"
+    >
       <fa-icon icon="file-import" class="icon-padding"></fa-icon>Importa
-    </button> -->
-    <!-- <button type="button" class="btn btn-primary" (click)="inviaEmail()">
-      <fa-icon icon="envelope" class="icon-padding"></fa-icon>Invia mail
-    </button> -->
-    <button type="button" class="btn btn-primary" [disabled]="disableCopyLineup" (click)="formazioneForum()">
+    </button>
+    <button type="button" class="btn btn-primary" [disabled]="disableCopyLineup" (click)="htmlLineup()">
       <fa-icon icon="copy" class="icon-padding"></fa-icon>Formazione forum
     </button>
   </div>
 </form>
 
-<!-- popup modifica panchina -->
+<!-- modal bench form -->
 <div
-  *ngIf="mostraPopupPanchina"
+  *ngIf="showModalBenchForm"
   class="modal fade"
   bsModal
-  #modal="bs-modal"
+  #modalBenchForm="bs-modal"
   [config]="{ backdrop: 'static', keyboard: false, show: true }"
   tabindex="-1"
   role="dialog"
   aria-hidden="true"
+  (onHidden)="onHidden()"
 >
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -220,15 +236,25 @@
       </div>
 
       <div class="modal-body">
-        <form [formGroup]="benchForm" (ngSubmit)="salvaPanchina()" class="needs-validation" novalidate>
-          <ng-template #sortedListTemplate let-item="item" let-index="index"
-            ><span>{{ index + 1 }}: {{ item.value.fantasyRoster.roster.player.name }}</span></ng-template
-          >
+        <form [formGroup]="benchForm" (ngSubmit)="onSubmitBenchForm()" class="needs-validation" novalidate>
+          <ng-template #sortedListTemplate let-item="item" let-index="index">
+            <div class="text-center">
+              {{ index + 1 }}: {{ item.value.fantasyRoster.roster.player.name }}
+              <div class="float-end">
+                <fa-icon icon="chevron-circle-up" *ngIf="index > 0" class="icon-padding bench-icon" (click)="movePlayerUp(index)"></fa-icon>
+                <fa-icon
+                  icon="chevron-circle-down"
+                  *ngIf="index < benchForm.get('sortedList').value.length - 1"
+                  class="icon-padding bench-icon"
+                  (click)="movePlayerDown(index)"
+                ></fa-icon>
+              </div>
+            </div>
+          </ng-template>
 
-          <div class="form-group">
+          <div class="mb-3">
             <bs-sortable
               formControlName="sortedList"
-              items="benchPlayers"
               [itemTemplate]="sortedListTemplate"
               itemClass="sortable-item"
               itemActiveClass="sortable-item-active"
@@ -236,11 +262,11 @@
               wrapperClass="sortable-wrapper"
             ></bs-sortable>
           </div>
-          <div class="text-center">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>
-            <button type="button" class="btn btn-primary" (click)="annulla()">
+            <button type="button" class="btn btn-primary" (click)="hideModal()">
               <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
             </button>
           </div>

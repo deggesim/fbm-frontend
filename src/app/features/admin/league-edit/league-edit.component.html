@@ -1,9 +1,9 @@
-<form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="openEditLeaguePopup()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="tools" class="icon-padding"></fa-icon>Impostazioni lega</legend>
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="name" class="control-label">Nome *</label>
           <input
             type="text"
@@ -20,7 +20,7 @@
       </div>
 
       <div fxFlex="49" fxFlex.xs="100">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="realGames" class="control-label">Partite reali *</label>
           <input
             type="number"
@@ -39,10 +39,7 @@
       </div>
 
       <div fxFlex="69" fxFlex.xs="49">
-        <div
-          class="form-group"
-          [ngClass]="{ 'is-invalid': form.get('regularSeasonFormat').invalid && form.get('regularSeasonFormat').dirty }"
-        >
+        <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('regularSeasonFormat').invalid && form.get('regularSeasonFormat').dirty }">
           <label for="regularSeasonFormat" class="control-label">Stagione regolare *</label>
           <ng-select
             id="regularSeasonFormat"
@@ -63,7 +60,7 @@
       </div>
 
       <div fxFlex="29" fxFlex.xs="49">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="roundRobinFirstRealFixture" class="control-label">Prima giornata reale *</label>
           <input
             type="number"
@@ -85,7 +82,7 @@
       </div>
 
       <div fxFlex="69" fxFlex.xs="49">
-        <div class="form-group" [ngClass]="{ 'is-invalid': form.get('playoffFormat').invalid && form.get('playoffFormat').dirty }">
+        <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('playoffFormat').invalid && form.get('playoffFormat').dirty }">
           <label for="playoffFormat" class="control-label">Playoff *</label>
           <ng-select
             id="playoffFormat"
@@ -103,7 +100,7 @@
       </div>
 
       <div fxFlex="29" fxFlex.xs="49">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="playoffFirstRealFixture" class="control-label">Prima giornata reale *</label>
           <input
             type="number"
@@ -125,7 +122,7 @@
       </div>
 
       <div fxFlex="69" fxFlex.xs="49">
-        <div class="form-group" [ngClass]="{ 'is-invalid': form.get('playoutFormat').invalid && form.get('playoutFormat').dirty }">
+        <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('playoutFormat').invalid && form.get('playoutFormat').dirty }">
           <label for="playoutFormat" class="control-label">Playout *</label>
           <ng-select
             id="playoutFormat"
@@ -143,7 +140,7 @@
       </div>
 
       <div fxFlex="29" fxFlex.xs="49">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="playoutFirstRealFixture" class="control-label">Prima giornata reale *</label>
           <input
             type="number"
@@ -165,7 +162,7 @@
       </div>
 
       <div fxFlex="69" fxFlex.xs="49">
-        <div class="form-group" [ngClass]="{ 'is-invalid': form.get('cupFormat').invalid && form.get('cupFormat').dirty }">
+        <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('cupFormat').invalid && form.get('cupFormat').dirty }">
           <label for="cupFormat" class="control-label">Coppa di lega *</label>
           <ng-select
             id="cupFormat"
@@ -183,7 +180,7 @@
       </div>
 
       <div fxFlex="29" fxFlex.xs="49">
-        <div class="form-group">
+        <div class="mb-3">
           <label for="cupFirstRealFixture" class="control-label">Prima giornata reale *</label>
           <input
             type="number"
@@ -206,9 +203,23 @@
     </div>
   </fieldset>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
   </div>
 </form>
+
+<!-- popup confirm edit league -->
+<fbm-popup-confirm
+  #popupConfirmEditLeague
+  title="Modifica impostazioni"
+  [textContent]=""
+  btnConfirm="Ok"
+  btnCancel="Annulla"
+  (confirm)="confirm()"
+  (cancel)="popupConfirmEditLeague.closeModal()"
+>
+  <h5 class="text-center text-warning">Attenzione! <fa-icon icon="exclamation-triangle" class="icon-padding"></fa-icon></h5>
+  <p class="text-center">La modifica eliminerà tutte le transazioni, le squadre ed i giocatori inseriti fino adesso!</p>
+</fbm-popup-confirm>

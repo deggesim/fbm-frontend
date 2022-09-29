@@ -8,7 +8,7 @@ import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-roles',
+  selector: 'fbm-roles',
   templateUrl: './roles.component.html',
 })
 export class RolesComponent implements OnInit {
@@ -40,8 +40,8 @@ export class RolesComponent implements OnInit {
     });
   }
 
-  salva() {
-    const roles = [];
+  save() {
+    const roles: { role: string; spots: any }[] = [];
     Object.keys(this.form.controls).forEach((key) => {
       roles.push({ role: key, spots: this.form.controls[key].value });
     });

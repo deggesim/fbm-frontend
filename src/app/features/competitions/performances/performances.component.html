@@ -1,9 +1,9 @@
-<form [formGroup]="form" (ngSubmit)="salva()" class="needs-validation" novalidate>
+<form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="pencil-alt" class="icon-padding"></fa-icon>Valutazioni</legend>
 
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="49" fxFlex.xs="100" class="form-group">
+      <div fxFlex="49" fxFlex.xs="100" class="mb-3">
         <ng-select
           id="team"
           name="team"
@@ -17,7 +17,7 @@
         </ng-select>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100" class="form-group">
+      <div fxFlex="49" fxFlex.xs="100" class="mb-3">
         <ng-select
           id="realFixture"
           name="realFixture"
@@ -46,7 +46,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div fxFlex="49" fxFlex.xs="100" class="text-end pb-3">
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" id="vittoria" [value]="true" formControlName="bonus" />
           <label class="form-check-label" for="vittoria">Vittoria</label>
@@ -56,23 +56,20 @@
           <label class="form-check-label" for="sconfitta">Sconfitta</label>
         </div>
       </div>
-    </div>
-
-    <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-      <div fxFlex="74" fxFlex.xs="49">
-        <input type="text" class="form-control" id="url" formControlName="url" placeholder="Url valutazioni" />
-      </div>
-
-      <div fxFlex="26" fxFlex.xs="49">
-        <button
-          type="button"
-          class="btn btn-primary"
-          [disabled]="form.get('url').pristine || form.get('url').invalid || selectedTeam == null || selectedRealFixture == null"
-          (click)="retrievePerformances()"
-        >
-          <fa-icon icon="cloud-download-alt" class="icon-padding"></fa-icon>
-          Recupero valutazioni
-        </button>
+      
+      <div fxFlex="100">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="url" formControlName="url" placeholder="Url valutazioni" />
+          <button
+            type="button"
+            class="btn btn-primary input-group-text"
+            [disabled]="form.get('url').pristine || form.get('url').invalid || selectedTeam == null || selectedRealFixture == null"
+            (click)="retrievePerformances()"
+          >
+            <fa-icon icon="cloud-download-alt" class="icon-padding"></fa-icon>
+            Recupero valutazioni
+          </button>
+        </div>
       </div>
     </div>
 
@@ -83,19 +80,19 @@
         </div>
 
         <div fxFlex="9" fxFlex.xs="33">
-          <div class="form-group">
+          <div class="mb-3">
             <input type="number" class="form-control" id="ranking-{{ i }}" formControlName="ranking" placeholder="Valutazione" />
           </div>
         </div>
 
         <div fxFlex="9" fxFlex.xs="33">
-          <div class="form-group">
+          <div class="mb-3">
             <input type="number" class="form-control" id="minutes-{{ i }}" formControlName="minutes" placeholder="Minuti" />
           </div>
         </div>
 
         <div fxFlex="9" fxFlex.xs="33">
-          <div class="form-group">
+          <div class="mb-3">
             <input type="number" class="form-control" id="grade-{{ i }}" formControlName="grade" placeholder="Buonus/malus" />
           </div>
         </div>
@@ -103,7 +100,7 @@
     </ng-container>
   </fieldset>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

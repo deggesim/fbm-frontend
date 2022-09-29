@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
   <div fxLayout="row wrap" fxLayoutAlign="space-between">
     <div fxFlex="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="name" class="control-label">Nome</label>
         <input
           type="text"
@@ -18,7 +18,7 @@
     </div>
 
     <div fxFlex="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="email" class="control-label">Email</label>
         <input
           type="text"
@@ -35,7 +35,7 @@
     </div>
 
     <div fxFlex="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="newPassword" class="control-label">Nuova password</label>
         <input
           type="password"
@@ -52,7 +52,7 @@
     </div>
 
     <div fxFlex="100">
-      <div class="form-group">
+      <div class="mb-3">
         <label for="confirmPassword" class="control-label">Conferma password</label>
         <input
           type="password"
@@ -69,11 +69,11 @@
     </div>
   </div>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
-    <button type="button" class="btn btn-primary" (click)="annulla.emit()">
+    <button type="button" class="btn btn-primary" (click)="cancel.emit()">
       <fa-icon icon="undo" class="icon-padding"></fa-icon>Annulla
     </button>
   </div>

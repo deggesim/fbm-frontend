@@ -1,21 +1,24 @@
-<nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top">
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark fixed-top" aria-label="navbar">
   <a class="navbar-brand" routerLink="/home">
-    <fa-icon icon="basketball-ball" size="2x"></fa-icon>
+    <img src="/assets/icons/icon-96x96.png" alt="logo" width="35px">
   </a>
   <button class="navbar-toggler" type="button" aria-expanded="false" aria-controls="collapseExample" (click)="isCollapsed = !isCollapsed">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" [collapse]="isCollapsed" *ngIf="!isEmpty(user)">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav me-auto">
       <!-- SQUADRE -->
       <li class="nav-item dropdown" dropdown *ngIf="!isEmpty(selectedLeague)">
         <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
           <fa-icon icon="shield-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Squadre
         </a>
         <ul *dropdownMenu class="dropdown-menu">
-          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true">
-            <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>{{ transactionLabel }}
+          <a class="dropdown-item" routerLink="/teams/draft-board" routerLinkActive="active" (click)="isCollapsed = true" *ngIf="leagueInfo?.preSeason">
+            <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>Asta fantamercato
+          </a>
+          <a class="dropdown-item" routerLink="/teams/transactions" routerLinkActive="active" (click)="isCollapsed = true" *ngIf="!leagueInfo?.preSeason">
+            <fa-icon icon="shopping-cart" [fixedWidth]="true" class="icon-padding"></fa-icon>Mercato libero
           </a>
           <a class="dropdown-item" routerLink="/teams/trades" routerLinkActive="active" (click)="isCollapsed = true">
             <fa-icon icon="exchange-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Scambi
@@ -46,6 +49,18 @@
           </a>
           <a class="dropdown-item" routerLink="/competitions/results" routerLinkActive="active" (click)="isCollapsed = true">
             <fa-icon icon="poll-h" [fixedWidth]="true" class="icon-padding"></fa-icon>Risultati
+          </a>
+        </ul>
+      </li>
+
+      <!-- STATISTICHE -->
+      <li class="nav-item dropdown" dropdown *ngIf="!isEmpty(selectedLeague) && !leagueInfo?.preSeason">
+        <a href class="nav-link dropdown-toggle" dropdownToggle (click)="(false)">
+          <fa-icon icon="chart-line" [fixedWidth]="true" class="icon-padding"></fa-icon>Statistiche
+        </a>
+        <ul *dropdownMenu class="dropdown-menu">
+          <a class="dropdown-item" routerLink="/statistics/top-flop" routerLinkActive="active" (click)="isCollapsed = true">
+            <fa-icon icon="chart-bar" [fixedWidth]="true" class="icon-padding"></fa-icon>Top Flop
           </a>
         </ul>
       </li>
@@ -145,19 +160,19 @@
 
     <ul class="navbar-nav" *ngIf="isLoggedIn$ | async">
       <li class="nav-item">
-        <a class="nav-link manina nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
+        <a class="nav-link manina text-nowrap" (click)="logout.emit()"> <fa-icon icon="sign-out-alt" class="icon-padding"></fa-icon>Logout </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link manina nowrap" (click)="profile.emit()">
-          <app-user-role-icon [role]="user.role"></app-user-role-icon>{{ user.name }}
+        <a class="nav-link manina text-nowrap" (click)="profile.emit()">
+          <fbm-user-role-icon [role]="user.role"></fbm-user-role-icon>{{ user.name }}
         </a>
       </li>
     </ul>
   </div>
 </nav>
 
-<nav aria-label="breadcrumb" class="d-none d-sm-block fixed-breadcrumb">
+<nav aria-label="breadcrumb" class="d-none d-sm-block" *ngIf="leagueInfo && leagueInfo.info">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active" *ngIf="leagueInfo">{{ leagueInfo.info }}</li>
+    <li class="breadcrumb-item active">{{ leagueInfo.info }}</li>
   </ol>
 </nav>

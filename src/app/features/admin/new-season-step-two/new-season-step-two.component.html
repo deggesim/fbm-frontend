@@ -4,25 +4,25 @@
 
     <div>
       <button type="button" class="btn btn-success" (click)="addItem()" tooltip="Aggiungi squadra" placement="top">
-        <fa-icon icon="plus-circle" class="icon-padding"></fa-icon>
+        <fa-icon icon="plus-circle"></fa-icon>
       </button>
-      <label class="padding">{{ teams }}</label>
+      <label class="p-3">{{ teams }}</label>
       <button type="button" class="btn btn-success" (click)="removeItem()" tooltip="Rimuovi squadra" placement="top">
-        <fa-icon icon="minus-circle" class="icon-padding"></fa-icon>
+        <fa-icon icon="minus-circle"></fa-icon>
       </button>
     </div>
 
     <div fxLayout="row wrap" fxLayoutAlign="space-between">
       <ng-container formArrayName="teamsArray" *ngFor="let arrayItem of arrayItems; let i = index">
         <div fxFlex="49" fxFlex.xs="100" [formGroupName]="i">
-          <div class="form-group">
+          <div class="mb-3">
             <label for="{{ arrayItem.id }}" class="control-label">{{ arrayItem.title }}</label>
             <input type="text" class="form-control" id="{{ arrayItem.id }}" name="{{ arrayItem.id }}" formControlName="name" />
           </div>
         </div>
 
         <div fxFlex="49" fxFlex.xs="100" [formGroupName]="i">
-          <div class="form-group">
+          <div class="mb-3">
             <label for="proprietario-{{ arrayItem.id }}" class="control-label">Proprietario</label>
             <ng-select
               id="proprietario-{{ arrayItem.id }}"
@@ -41,7 +41,7 @@
     </div>
   </fieldset>
 
-  <div class="text-center">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
