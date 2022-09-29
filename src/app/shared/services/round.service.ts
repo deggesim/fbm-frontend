@@ -15,6 +15,10 @@ export class RoundService {
     return this.http.get<Round[]>(`${this.endpoint}/rounds`);
   }
 
+  public get(round: Round) {
+    return this.http.get<Round>(`${this.endpoint}/rounds/${round._id}`);
+  }
+
   public create(round: Round) {
     return this.http.post<Round>(`${this.endpoint}/rounds`, round);
   }
