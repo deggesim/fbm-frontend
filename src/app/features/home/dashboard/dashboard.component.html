@@ -1,7 +1,7 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifica {{ activeRound?.name }}</legend>
 
-  <div class="table-responsive" *ngIf="activeRound; else empty">
+  <div class="table-responsive" *ngIf="atLeastOneFixtureCompleted; else empty">
     <table class="table table-hover" aria-label="Classifica">
       <thead class="table-dark">
         <tr>
@@ -59,13 +59,13 @@
   </div>
 
   <ng-template #empty>
-    <h4 class="p-3">Nessun turno selezionato</h4>
+    <h4 class="p-3">Nessuna classifica presente</h4>
   </ng-template>
 </fieldset>
 
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata</legend>
-  <div *ngIf="lastFixture.matches && lastFixture.matches.length > 0; else fixtureNotDefined">
+  <div *ngIf="atLeastOneFixtureCompleted; else fixtureNotDefined">
     <div class="table-responsive">
       <table class="table table-hover" [attr.aria-label]="lastFixture.name">
         <thead class="table-dark">
@@ -96,6 +96,6 @@
   </div>
 
   <ng-template #fixtureNotDefined>
-    <p>Giornata non definita</p>
+    <h4 class="p-3">Giornata non definita</h4>
   </ng-template>
 </fieldset>

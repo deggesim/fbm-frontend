@@ -9,6 +9,7 @@ import { TableItem } from '@app/models/table-item';
 import { RoundService } from '@app/shared/services/round.service';
 import { calculator } from '@app/shared/util/standings';
 import { select, Store } from '@ngrx/store';
+import { isEmpty } from 'lodash-es';
 import { EMPTY, switchMap, take } from 'rxjs';
 
 @Component({
@@ -21,6 +22,7 @@ export class DashboardComponent implements OnInit {
   trend: Parameter;
   leagueInfo: LeagueInfo;
   lastFixture: Fixture;
+  atLeastOneFixtureCompleted = false;
 
   constructor(private store: Store<AppState>, private roundService: RoundService) {}
 
@@ -38,15 +40,12 @@ export class DashboardComponent implements OnInit {
           this.activeRound = value;
 
           const fixtures = value.fixtures;
-          const allCompleted = fixtures.every((fixture) => fixture.completed);
-          let nextFixture = null;
-          if (allCompleted) {
-            nextFixture = [...fixtures].sort((a, b) => b._id.localeCompare(a._id))[0];
-          } else {
-            nextFixture = fixtures.filter((fixture) => !fixture.completed).sort((a, b) => a._id.localeCompare(b._id))[0];
+          const fixturesCompleted = fixtures.filter((fixture) => fixture.completed);
+          if (fixturesCompleted != null && !isEmpty(fixturesCompleted)) {
+            this.atLeastOneFixtureCompleted = true;
+            this.lastFixture = [...fixturesCompleted].sort((a, b) => b._id.localeCompare(a._id))[0];
+            this.loadTable();
           }
-          this.lastFixture = nextFixture;
-          this.loadTable();
         }
       });
   }
