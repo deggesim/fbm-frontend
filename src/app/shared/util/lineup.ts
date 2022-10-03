@@ -1,8 +1,8 @@
-import { AppConfig } from '@app/shared/constants/globals';
 import { PlayerStatus } from '@app/models/fantasy-roster';
 import { League, Role } from '@app/models/league';
 import { Lineup } from '@app/models/lineup';
-import { isEmpty, isNil } from 'lodash-es';
+import { AppConfig } from '@app/shared/constants/globals';
+import { isEmpty } from 'lodash-es';
 
 export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
   if (fullLineup == null || isEmpty(fullLineup)) {
@@ -56,8 +56,10 @@ export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
 
     // formation still valid: check roles for bench, one exception allowed
     let roleException = 0;
+    let bench: Lineup[] = [];
     for (let i = AppConfig.FirstBenchPlayerIndex; i <= AppConfig.LastBenchPlayerIndex; i++) {
       const benchPlayer = lineup[i];
+      bench.push(benchPlayer);
       const role = benchPlayer.fantasyRoster.roster.player.role;
       const spot = benchPlayer.spot;
       const leagueRole: Role = league.roles.find((r) => r.role === role);
@@ -78,11 +80,13 @@ export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
         }
       }
     }
+
     if (roleException > 1) {
       return false;
     }
+
+    return benchValid(bench);
   }
-  return true;
 };
 
 export const count = (lineup: Lineup[], status: PlayerStatus) => {
@@ -93,4 +97,14 @@ export const count = (lineup: Lineup[], status: PlayerStatus) => {
     }
   }
   return countPlayers;
+};
+
+const benchValid = (bench: Lineup[]): boolean => {
+  for (let i = 1; i <= AppConfig.PlayersInBench; i++) {
+    const numOccurencies = bench.reduce((el, val) => el + (val.benchOrder === i ? 1 : 0), 0);
+    if (numOccurencies !== 1) {
+      return false;
+    }
+  }
+  return true;
 };
