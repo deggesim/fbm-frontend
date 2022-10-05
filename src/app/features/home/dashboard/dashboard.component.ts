@@ -56,9 +56,6 @@ export class DashboardComponent implements OnInit {
         })
       )
       .subscribe((value: Round[]) => {
-        console.log(value);
-
-        // this.activeRounds = value;
         for (const round of value) {
           const fixtures = round.fixtures;
           const fixturesCompleted = fixtures.filter((fixture) => fixture.completed);
@@ -68,7 +65,9 @@ export class DashboardComponent implements OnInit {
           if (fixturesCompleted != null && !isEmpty(fixturesCompleted)) {
             atLeastOneFixtureCompleted = true;
             lastFixture = [...fixturesCompleted].sort((a, b) => b._id.localeCompare(a._id))[0];
-            table = this.loadTable(round);
+            if (round.roundRobin) {
+              table = this.loadTable(round);
+            }
           }
           this.dashBoardItems.push({ round, table, lastFixture, atLeastOneFixtureCompleted });
         }
