@@ -1,6 +1,6 @@
 <ng-container *ngFor="let dashBoardItem of dashBoardItems; let i = index">
   <hr *ngIf="i !== 0" />
-  <h4>{{ dashBoardItem.round.competition.name }}</h4>
+  <h4>{{ dashBoardItem.round.competition.name }} - {{dashBoardItem.round.name}}</h4>
   <fieldset class="fieldset" *ngIf="dashBoardItem.round.roundRobin">
     <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifica {{ dashBoardItem.round.name }}</legend>
 
