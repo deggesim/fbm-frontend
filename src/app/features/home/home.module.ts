@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '@app/shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AccordionModule } from 'ngx-bootstrap/accordion';
@@ -17,19 +16,13 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 
-const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-    data: { title: 'Home', breadcrumb: 'Home' },
-  },
-];
-
 @NgModule({
-  declarations: [HomeComponent, LoginComponent],
+  declarations: [HomeComponent, LoginComponent, DashboardComponent],
   imports: [
     ReactiveFormsModule,
     CommonModule,
@@ -48,7 +41,7 @@ const routes: Routes = [
     ProgressbarModule,
     FontAwesomeModule,
     SharedModule,
-    RouterModule.forChild(routes),
+    HomeRoutingModule,
   ],
 })
 export class HomeModule {}
