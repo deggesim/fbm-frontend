@@ -85,7 +85,7 @@ export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
       return false;
     }
 
-    return benchValid(bench);
+    return benchOrderValid(bench);
   }
 };
 
@@ -99,7 +99,12 @@ export const count = (lineup: Lineup[], status: PlayerStatus) => {
   return countPlayers;
 };
 
-const benchValid = (bench: Lineup[]): boolean => {
+/**
+ * Check the bench order: no duplicates and ho holes are allowed
+ * @param bench the lineup bench
+ * @returns true if the order is valid, false otherwise
+ */
+const benchOrderValid = (bench: Lineup[]): boolean => {
   for (let i = 1; i <= AppConfig.PlayersInBench; i++) {
     const numOccurencies = bench.reduce((el, val) => el + (val.benchOrder === i ? 1 : 0), 0);
     if (numOccurencies !== 1) {
