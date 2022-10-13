@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Match } from '@app/models/match';
 
 @Component({
@@ -11,9 +11,9 @@ export class CalendarFormComponent implements OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: UntypedFormBuilder) {
     this.createForm();
   }
 
@@ -44,12 +44,12 @@ export class CalendarFormComponent implements OnChanges {
     });
   }
 
-  get matchArray(): FormArray {
-    return this.form.get('matchArray') as FormArray;
+  get matchArray(): UntypedFormArray {
+    return this.form.get('matchArray') as UntypedFormArray;
   }
 
   getFormControl(index: number, controlName: string): AbstractControl {
-    return (this.form.get('matchArray') as FormArray).at(index).get(controlName);
+    return (this.form.get('matchArray') as UntypedFormArray).at(index).get(controlName);
   }
 
   onSubmit(): void {

@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -20,21 +20,21 @@ import { switchMap, switchMapTo, tap } from 'rxjs/operators';
   styleUrls: ['./fantasy-rosters.component.scss'],
 })
 export class FantasyRostersComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   fantasyTeams: FantasyTeam[];
   fantasyTeamSelected: FantasyTeam;
   fantasyRosters: FantasyRoster[];
   history: History[] = [];
 
-  private fb: FormBuilder;
+  private fb: UntypedFormBuilder;
   private route: ActivatedRoute;
   private fantasyRosterService: FantasyRosterService;
   private historyService: HistoryService;
   private store: Store<AppState>;
 
   constructor(injector: Injector) {
-    this.fb = injector.get(FormBuilder);
+    this.fb = injector.get(UntypedFormBuilder);
     this.route = injector.get(ActivatedRoute);
     this.fantasyRosterService = injector.get(FantasyRosterService);
     this.historyService = injector.get(HistoryService);

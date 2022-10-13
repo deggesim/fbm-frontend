@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '@app/core/user/services/user.service';
 import { FantasyTeam } from '@app/models/fantasy-team';
@@ -15,11 +15,11 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   users: User[];
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
+  constructor(private fb: UntypedFormBuilder, private route: ActivatedRoute) {
     this.createForm();
   }
 

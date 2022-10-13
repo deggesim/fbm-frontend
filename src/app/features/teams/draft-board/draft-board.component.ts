@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -23,7 +23,7 @@ import { debounceTime, distinctUntilChanged, iif, noop, of, Subject, switchMap, 
   templateUrl: './draft-board.component.html',
 })
 export class DraftBoardComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   fantasyTeams: FantasyTeam[];
   rosters: Roster[];
@@ -41,7 +41,7 @@ export class DraftBoardComponent implements OnInit {
   @ViewChild('modalTransaction', { static: false }) private modalTransaction: ModalDirective;
   showModalTransaction: boolean;
 
-  private fb: FormBuilder;
+  private fb: UntypedFormBuilder;
   private route: ActivatedRoute;
   private toastService: ToastService;
   private rosterService: RosterService;
@@ -52,7 +52,7 @@ export class DraftBoardComponent implements OnInit {
   playersInRoster: number[];
 
   constructor(injector: Injector) {
-    this.fb = injector.get(FormBuilder);
+    this.fb = injector.get(UntypedFormBuilder);
     this.route = injector.get(ActivatedRoute);
     this.toastService = injector.get(ToastService);
     this.rosterService = injector.get(RosterService);

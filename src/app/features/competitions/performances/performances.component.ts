@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Performance } from '@app/models/performance';
 import { RealFixture } from '@app/models/real-fixture';
@@ -13,7 +13,7 @@ import { ToastService } from '@app/shared/services/toast.service';
   templateUrl: './performances.component.html',
 })
 export class PerformancesComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   teams: Team[];
   realFixtures: RealFixture[];
   selectedTeam: Team;
@@ -22,7 +22,7 @@ export class PerformancesComponent implements OnInit {
   disableRetrieve = true;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private performanceService: PerformanceService
@@ -55,8 +55,8 @@ export class PerformancesComponent implements OnInit {
     });
   }
 
-  get performanceArray(): FormArray {
-    return this.form.get('performanceArray') as FormArray;
+  get performanceArray(): UntypedFormArray {
+    return this.form.get('performanceArray') as UntypedFormArray;
   }
 
   onChangeTeam(team: Team) {

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ModalDirective } from 'ngx-bootstrap/modal/public_api';
 
 @Component({
@@ -14,10 +14,10 @@ export class UploadComponent {
   @ViewChild('modal', { static: false }) private modal: ModalDirective;
   @ViewChild('uploadElement', { static: false }) uploadElement: ElementRef;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   fileName = 'Scelta file';
 
-  constructor(private cd: ChangeDetectorRef, private fb: FormBuilder) {
+  constructor(private cd: ChangeDetectorRef, private fb: UntypedFormBuilder) {
     this.createForm();
   }
 

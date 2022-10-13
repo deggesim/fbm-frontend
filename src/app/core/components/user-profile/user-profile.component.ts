@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AppState } from '@app/core/app.state';
 import { user } from '@app/core/user/store/user.selector';
 import { Role, User } from '@app/models/user';
@@ -15,11 +15,11 @@ export class UserProfileComponent implements OnInit {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   user: User;
   superAdmin: boolean;
 
-  constructor(private fb: FormBuilder, private toastService: ToastService, private store: Store<AppState>) {}
+  constructor(private fb: UntypedFormBuilder, private toastService: ToastService, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.store.pipe(select(user), take(1)).subscribe((user: User) => {

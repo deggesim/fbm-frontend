@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { UserService } from '@app/core/user/services/user.service';
 import { User } from '@app/models/user';
 import { iif, Observable, of } from 'rxjs';
@@ -14,10 +14,10 @@ export class UserFormComponent implements OnInit, OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   roleList$: Observable<string[]>;
 
-  constructor(private fb: FormBuilder, private authService: UserService) {
+  constructor(private fb: UntypedFormBuilder, private authService: UserService) {
     this.createForm();
   }
 

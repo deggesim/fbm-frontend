@@ -4,8 +4,8 @@ import { RouterReducerState } from '@ngrx/router-store';
 import * as moment from 'moment';
 
 export interface AuthState {
-  token: string;
-  expiresAt: moment.Moment;
+  token: string | null | undefined;
+  expiresAt: moment.Moment | null | undefined;
 }
 export interface AppState {
   auth: AuthState;

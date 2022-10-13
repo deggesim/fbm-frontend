@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
@@ -22,7 +22,7 @@ import { switchMap, switchMapTo, tap } from 'rxjs/operators';
   templateUrl: './results.component.html',
 })
 export class ResultsComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   rounds: Round[];
   fixtures: Fixture[];
@@ -33,7 +33,7 @@ export class ResultsComponent implements OnInit {
   awayTeamLineup: Lineup[];
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private lineupService: LineupService,

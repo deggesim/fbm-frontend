@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AppState } from '@app/core/app.state';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { selectedLeague } from '@app/core/league/store/league.selector';
@@ -12,11 +12,11 @@ import { take } from 'rxjs/operators';
   templateUrl: './roles.component.html',
 })
 export class RolesComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   spots = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-  constructor(private fb: FormBuilder, private store: Store<AppState>) {
+  constructor(private fb: UntypedFormBuilder, private store: Store<AppState>) {
     this.createForm();
   }
 

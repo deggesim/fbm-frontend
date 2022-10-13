@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -22,7 +22,7 @@ import { switchMapTo, take, tap } from 'rxjs/operators';
   styleUrls: ['./trade.component.scss'],
 })
 export class TradeComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   nextRealFixture: RealFixture;
   fantasyTeams: FantasyTeam[];
   fantasyTeam1Selected: FantasyTeam;
@@ -36,7 +36,7 @@ export class TradeComponent implements OnInit {
   showModalTradeBlock: boolean;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private fantasyRosterService: FantasyRosterService,

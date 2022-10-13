@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo, selectedLeague } from '@app/core/league/store/league.selector';
@@ -39,8 +39,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
   styleUrls: ['./lineups.component.scss'],
 })
 export class LineupsComponent implements OnInit {
-  form: FormGroup;
-  benchForm: FormGroup;
+  form: UntypedFormGroup;
+  benchForm: UntypedFormGroup;
   
   rounds: Round[];
   fixtures: Fixture[];
@@ -66,7 +66,7 @@ export class LineupsComponent implements OnInit {
   @ViewChild('modalBenchForm', { static: false }) modalBenchForm: ModalDirective;
   showModalBenchForm: boolean;
 
-  private fb: FormBuilder;
+  private fb: UntypedFormBuilder;
   private route: ActivatedRoute;
   private toastService: ToastService;
   private userService: UserService;
@@ -79,7 +79,7 @@ export class LineupsComponent implements OnInit {
   private spinnerService: SpinnerService;
 
   constructor(injector: Injector) {
-    this.fb = injector.get(FormBuilder);
+    this.fb = injector.get(UntypedFormBuilder);
     this.route = injector.get(ActivatedRoute);
     this.toastService = injector.get(ToastService);
     this.userService = injector.get(UserService);

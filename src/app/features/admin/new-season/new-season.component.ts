@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CupFormat } from '@app/models/formats/cup-format';
 import { PlayoffFormat } from '@app/models/formats/playoff-format';
@@ -12,7 +12,7 @@ import { League } from '@app/models/league';
   templateUrl: './new-season.component.html',
 })
 export class NewSeasonComponent {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   regularSeasonFormatList: RegularSeasonFormat[] = [
     RegularSeasonFormat.SINGLE,
@@ -48,7 +48,7 @@ export class NewSeasonComponent {
 
   cupFormatList: CupFormat[] = [CupFormat.F8, CupFormat.QF2_F4, CupFormat.QF2_SF2_F, CupFormat.QF2_SF2_F2];
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
+  constructor(private fb: UntypedFormBuilder, private router: Router, private route: ActivatedRoute) {
     this.createForm();
   }
 

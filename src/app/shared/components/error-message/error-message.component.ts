@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'fbm-error-message',
@@ -7,7 +7,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
   styleUrls: ['./error-message.component.scss'],
 })
 export class ErrorMessageComponent {
-  @Input('form-group') fg: FormGroup;
+  @Input('form-group') fg: UntypedFormGroup;
   @Input('form-control') formControl: AbstractControl;
   @Input('name') formControlName: string;
 }

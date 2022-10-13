@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Optional } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
+import { UntypedFormGroup, FormGroupDirective } from '@angular/forms';
 import { Fixture } from '@app/models/fixture';
 import { Lineup } from '@app/models/lineup';
 import { Match } from '@app/models/match';
@@ -15,7 +15,7 @@ export class MatchResultComponent implements OnInit {
   @Input() homeTeamLineup: Lineup[];
   @Input() awayTeamLineup: Lineup[];
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   constructor(@Optional() private rootFormGroup: FormGroupDirective) {}
 

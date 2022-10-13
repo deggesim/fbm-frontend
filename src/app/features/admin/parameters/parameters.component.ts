@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AppState } from '@app/core/app.state';
 import * as LeagueActions from '@app/core/league/store/league.actions';
 import { selectedLeague } from '@app/core/league/store/league.selector';
@@ -12,9 +12,9 @@ import { take } from 'rxjs/operators';
   templateUrl: './parameters.component.html',
 })
 export class ParametersComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
-  constructor(private fb: FormBuilder, private store: Store<AppState>) {
+  constructor(private fb: UntypedFormBuilder, private store: Store<AppState>) {
     this.createForm();
   }
 

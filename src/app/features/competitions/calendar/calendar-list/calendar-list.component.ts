@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
@@ -25,7 +25,7 @@ import { switchMapTo, tap } from 'rxjs/operators';
   styleUrls: ['./calendar-list.component.scss'],
 })
 export class CalendarListComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
   rounds: Round[];
   selectedRound: Round;
   selectedFixture: Fixture;
@@ -40,7 +40,7 @@ export class CalendarListComponent implements OnInit {
   showModalCalendarForm: boolean;
   showModalMatchResult: boolean;
 
-  private fb: FormBuilder;
+  private fb: UntypedFormBuilder;
   private route: ActivatedRoute;
   private userService: UserService;
   private toastService: ToastService;
@@ -50,7 +50,7 @@ export class CalendarListComponent implements OnInit {
   private lineupService: LineupService;
 
   constructor(injector: Injector) {
-    this.fb = injector.get(FormBuilder);
+    this.fb = injector.get(UntypedFormBuilder);
     this.route = injector.get(ActivatedRoute);
     this.userService = injector.get(UserService);
     this.toastService = injector.get(ToastService);

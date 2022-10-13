@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueActions from '@app/core/league/store/league.actions';
@@ -15,13 +15,13 @@ import { Store } from '@ngrx/store';
 export class NewSeasonStepTwoComponent implements OnInit {
   league: League;
 
-  form: FormGroup;
+  form: UntypedFormGroup;
   teams = 0;
   users: User[];
   usersLoading = false;
   arrayItems: { id: number; title: string }[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private store: Store<AppState>) {
+  constructor(private route: ActivatedRoute, private router: Router, private fb: UntypedFormBuilder, private store: Store<AppState>) {
     this.league = this.router.getCurrentNavigation().extras.state?.['data'];
     this.createForm();
   }
@@ -47,7 +47,7 @@ export class NewSeasonStepTwoComponent implements OnInit {
   }
 
   get teamsArray() {
-    return this.form.get('teamsArray') as FormArray;
+    return this.form.get('teamsArray') as UntypedFormArray;
   }
 
   addItem() {

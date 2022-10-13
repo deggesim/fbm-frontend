@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { Round } from '@app/models/round';
@@ -13,14 +13,14 @@ import { isEmpty } from 'lodash-es';
   styleUrls: ['./rounds.component.scss'],
 })
 export class RoundsComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   rounds: Round[];
   selectedRound: Round;
   fantasyTeams: FantasyTeam[];
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private roundService: RoundService

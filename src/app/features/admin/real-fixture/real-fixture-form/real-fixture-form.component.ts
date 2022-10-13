@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Fixture } from '@app/models/fixture';
 import { RealFixture } from '@app/models/real-fixture';
 import { Team } from '@app/models/team';
@@ -15,14 +15,14 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   fixtures: Fixture[];
   fixturesLoading = false;
   teamsWithNoGame: Team[];
   teamsWithNoGameLoading = false;
 
-  constructor(private fb: FormBuilder, private teamService: TeamService, private fixtureService: FixtureService) {
+  constructor(private fb: UntypedFormBuilder, private teamService: TeamService, private fixtureService: FixtureService) {
     this.createForm();
   }
 

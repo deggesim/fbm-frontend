@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -30,7 +30,7 @@ export class TopFlopComponent implements OnInit {
   nextRealFixture: RealFixture;
   tooltip = new Map<string, PlayerStats>();
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   // paginazione
   page = 1;
@@ -40,7 +40,7 @@ export class TopFlopComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private store: Store<AppState>,
     private playerStatisticService: PlayerStatisticService,
     private performanceService: PerformanceService

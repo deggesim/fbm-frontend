@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueActions from '@app/core/league/store/league.actions';
@@ -16,7 +16,7 @@ import { Store } from '@ngrx/store';
   templateUrl: './league-edit.component.html',
 })
 export class EditLeagueComponent implements OnInit {
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   league: League;
 
@@ -56,7 +56,7 @@ export class EditLeagueComponent implements OnInit {
 
   cupFormatList: CupFormat[] = [CupFormat.F8, CupFormat.QF2_F4, CupFormat.QF2_SF2_F, CupFormat.QF2_SF2_F2];
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {
+  constructor(private fb: UntypedFormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {
     this.createForm();
   }
 

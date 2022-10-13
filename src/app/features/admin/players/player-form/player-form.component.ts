@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LeagueInfo } from '@app/models/league';
 import { Role } from '@app/models/player';
@@ -18,13 +18,13 @@ export class PlayerFormComponent implements OnInit, OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form: UntypedFormGroup;
 
   roles: Role[];
   teams: Team[];
   preparedRealFixtures: RealFixture[];
 
-  constructor(private route: ActivatedRoute, private fb: FormBuilder, private realFixtureService: RealFixtureService) {
+  constructor(private route: ActivatedRoute, private fb: UntypedFormBuilder, private realFixtureService: RealFixtureService) {
     this.createForm();
   }
 
