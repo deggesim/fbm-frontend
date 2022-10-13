@@ -81,11 +81,6 @@
                 <thead class="table-dark">
                   <tr>
                     <th id="game">Partita</th>
-                    <!-- <th id="homeRanking">Valutazione casa</th>
-                    <th id="awayRanking">Valutazione trasferta</th>
-                    <th id="homeFactor">Fattore campo</th>
-                    <th id="homeGrade">Voti casa</th>
-                    <th id="awayGrade">Voti trasferta</th> -->
                     <th id="result">Risultato</th>
                   </tr>
                 </thead>
@@ -93,11 +88,6 @@
                 <tbody>
                   <tr *ngFor="let match of fixture.matches" class="table-secondary manina" (click)="openModalMatchResult(fixture, match)">
                     <td class="text-nowrap">{{ match.homeTeam.name }} - {{ match.awayTeam.name }}</td>
-                    <!-- <td>{{ match.homeRanking }}</td>
-                    <td>{{ match.awayRanking }}</td>
-                    <td>{{ match.homeFactor }}</td>
-                    <td>{{ match.homeGrade }}</td>
-                    <td>{{ match.awayGrade }}</td> -->
                     <td class="text-nowrap">{{ match.homeScore }} - {{ match.awayScore }}</td>
                   </tr>
                 </tbody>
