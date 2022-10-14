@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
 import { Match } from '@app/models/match';
 
 @Component({
@@ -11,11 +11,11 @@ export class CalendarFormComponent implements OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    matchArray: this.fb.array([] as Match[]),
+  });
 
-  constructor(private fb: UntypedFormBuilder) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const matches: Match[] = changes['matches'].currentValue;
@@ -38,18 +38,12 @@ export class CalendarFormComponent implements OnChanges {
     }
   }
 
-  createForm() {
-    this.form = this.fb.group({
-      matchArray: this.fb.array([]),
-    });
-  }
-
-  get matchArray(): UntypedFormArray {
-    return this.form.get('matchArray') as UntypedFormArray;
+  get matchArray(): FormArray {
+    return this.form.get('matchArray') as FormArray;
   }
 
   getFormControl(index: number, controlName: string): AbstractControl {
-    return (this.form.get('matchArray') as UntypedFormArray).at(index).get(controlName);
+    return (this.form.get('matchArray') as FormArray).at(index).get(controlName);
   }
 
   onSubmit(): void {

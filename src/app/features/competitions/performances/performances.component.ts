@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Performance } from '@app/models/performance';
 import { RealFixture } from '@app/models/real-fixture';
@@ -13,7 +13,15 @@ import { ToastService } from '@app/shared/services/toast.service';
   templateUrl: './performances.component.html',
 })
 export class PerformancesComponent implements OnInit {
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    team: [null as Team, Validators.required],
+    realFixture: [null as RealFixture, Validators.required],
+    url: [null as string, [Validators.pattern(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/)]],
+    filter: [0],
+    bonus: [null as boolean],
+    performanceArray: this.fb.array([] as Performance[]),
+  });
+
   teams: Team[];
   realFixtures: RealFixture[];
   selectedTeam: Team;
@@ -22,30 +30,13 @@ export class PerformancesComponent implements OnInit {
   disableRetrieve = true;
 
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private performanceService: PerformanceService
-  ) {
-    this.createForm();
-  }
+  ) {}
 
   ngOnInit() {
-    this.teams = this.route.snapshot.data['teams'];
-    this.realFixtures = this.route.snapshot.data['realFixtures'];
-  }
-
-  createForm() {
-    const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/;
-    this.form = this.fb.group({
-      team: [undefined, Validators.required],
-      realFixture: [undefined, Validators.required],
-      url: [undefined, [Validators.pattern(urlRegex)]],
-      filter: [0],
-      bonus: [undefined],
-      performanceArray: this.fb.array([]),
-    });
-
     this.form.get('filter').valueChanges.subscribe((value: number) => {
       this.getPerformances(value);
     });
@@ -53,10 +44,13 @@ export class PerformancesComponent implements OnInit {
     this.form.get('bonus').valueChanges.subscribe((value: boolean) => {
       this.applyBonusMalus();
     });
+
+    this.teams = this.route.snapshot.data['teams'];
+    this.realFixtures = this.route.snapshot.data['realFixtures'];
   }
 
-  get performanceArray(): UntypedFormArray {
-    return this.form.get('performanceArray') as UntypedFormArray;
+  get performanceArray(): FormArray {
+    return this.form.get('performanceArray') as FormArray;
   }
 
   onChangeTeam(team: Team) {
@@ -91,7 +85,7 @@ export class PerformancesComponent implements OnInit {
         for (const performance of performances) {
           this.performanceArray.push(
             this.fb.group({
-              _id: performance._id,
+              _id: [performance._id],
               ranking: [performance.ranking],
               minutes: [performance.minutes],
               grade: [performance.grade],
@@ -130,7 +124,7 @@ export class PerformancesComponent implements OnInit {
             _id: performance._id,
             ranking: [performance.ranking],
             minutes: [performance.minutes, [Validators.min(0)]],
-            grade: [performance.grade, [Validators.min(0), Validators.max]],
+            grade: [performance.grade, [Validators.min(0), Validators.max(10)]],
           });
           this.performanceArray.push(performanceFG);
           if (performance.minutes == null || performance.minutes === 0) {
@@ -138,7 +132,7 @@ export class PerformancesComponent implements OnInit {
             performanceFG.get('ranking').disable();
           }
 
-          performanceFG.valueChanges.subscribe((perf: Performance) => {
+          performanceFG.valueChanges.subscribe((perf: Partial<Performance>) => {
             if (perf.minutes == null || perf.minutes === 0) {
               performanceFG.get('grade').disable({ emitEvent: false });
               performanceFG.get('grade').setValue(null, { emitEvent: false });

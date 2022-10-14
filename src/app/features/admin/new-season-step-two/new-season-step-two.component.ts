@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueActions from '@app/core/league/store/league.actions';
@@ -13,17 +13,18 @@ import { Store } from '@ngrx/store';
   templateUrl: './new-season-step-two.component.html',
 })
 export class NewSeasonStepTwoComponent implements OnInit {
-  league: League;
+  form = this.fb.group({
+    teamsArray: this.fb.array([] as FantasyTeam[]),
+  });
 
-  form: UntypedFormGroup;
+  league: League;
   teams = 0;
   users: User[];
   usersLoading = false;
   arrayItems: { id: number; title: string }[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router, private fb: UntypedFormBuilder, private store: Store<AppState>) {
+  constructor(private route: ActivatedRoute, private router: Router, private fb: FormBuilder, private store: Store<AppState>) {
     this.league = this.router.getCurrentNavigation().extras.state?.['data'];
-    this.createForm();
   }
 
   ngOnInit() {
@@ -35,19 +36,13 @@ export class NewSeasonStepTwoComponent implements OnInit {
     }
   }
 
-  createForm() {
-    this.form = this.fb.group({
-      teamsArray: this.fb.array([]),
-    });
-  }
-
   confirm() {
-    const fantasyTeams = this.form.get('teamsArray').value as FantasyTeam[];
+    const fantasyTeams = this.form.get('teamsArray').value;
     this.store.dispatch(LeagueActions.createLeague({ league: this.league, fantasyTeams }));
   }
 
   get teamsArray() {
-    return this.form.get('teamsArray') as UntypedFormArray;
+    return this.form.get('teamsArray') as FormArray;
   }
 
   addItem() {

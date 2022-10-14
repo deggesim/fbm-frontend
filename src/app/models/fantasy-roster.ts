@@ -12,7 +12,7 @@ export interface FantasyRoster extends FbmModel {
   draft: boolean;
   contract: number;
   yearContract: number;
-  realFixture: RealFixture;
+  realFixture?: RealFixture;
 }
 
 export enum PlayerStatus {

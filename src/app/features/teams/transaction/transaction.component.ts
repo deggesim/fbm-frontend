@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -17,14 +17,21 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, of, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-transaction',
   templateUrl: './transaction.component.html',
 })
 export class TransactionComponent implements OnInit {
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    fantasyTeam: [null as FantasyTeam, [Validators.required]],
+    roster: [null as Roster],
+    status: [null as string, [Validators.required]],
+    draft: [null as boolean, [Validators.required]],
+    contract: [1, [Validators.required]],
+    yearContract: [1, [Validators.required]],
+  });
 
   fantasyTeams: FantasyTeam[];
   fantasyTeamSelected: FantasyTeam;
@@ -43,7 +50,6 @@ export class TransactionComponent implements OnInit {
   @ViewChild('modalTransaction', { static: false }) private modalTransaction: ModalDirective;
   showModalTransaction: boolean;
 
-  private fb: UntypedFormBuilder;
   private route: ActivatedRoute;
   private toastService: ToastService;
   private rosterService: RosterService;
@@ -51,8 +57,7 @@ export class TransactionComponent implements OnInit {
   private fantasyTeamService: FantasyTeamService;
   private store: Store<AppState>;
 
-  constructor(injector: Injector) {
-    this.fb = injector.get(UntypedFormBuilder);
+  constructor(injector: Injector, private fb: FormBuilder) {
     this.route = injector.get(ActivatedRoute);
     this.toastService = injector.get(ToastService);
     this.rosterService = injector.get(RosterService);
@@ -60,7 +65,16 @@ export class TransactionComponent implements OnInit {
     this.fantasyTeamService = injector.get(FantasyTeamService);
     this.store = injector.get(Store);
 
-    this.createForm();
+    this.form.get('draft').valueChanges.subscribe((draft: boolean) => {
+      if (draft) {
+        this.form.get('contract').disable();
+        this.form.get('yearContract').disable();
+        this.form.get('yearContract').setValue(1);
+      } else {
+        this.form.get('contract').enable();
+        this.form.get('yearContract').enable();
+      }
+    });
   }
 
   ngOnInit() {
@@ -94,28 +108,6 @@ export class TransactionComponent implements OnInit {
       .subscribe((rosterList: RosterList) => {
         this.rosters = rosterList.content;
       });
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      fantasyTeam: [undefined, Validators.required],
-      roster: [undefined],
-      status: [undefined, Validators.required],
-      draft: [false, Validators.required],
-      contract: [1, Validators.required],
-      yearContract: [1, Validators.required],
-    });
-
-    this.form.get('draft').valueChanges.subscribe((draft: boolean) => {
-      if (draft) {
-        this.form.get('contract').disable();
-        this.form.get('yearContract').disable();
-        this.form.get('yearContract').setValue(1);
-      } else {
-        this.form.get('contract').enable();
-        this.form.get('yearContract').enable();
-      }
-    });
   }
 
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
@@ -172,16 +164,16 @@ export class TransactionComponent implements OnInit {
           tap(() => {
             this.hideModal();
           }),
-          switchMapTo(this.fantasyTeamService.read()),
+          switchMap(() => this.fantasyTeamService.read()),
           tap((fantasyTeams: FantasyTeam[]) => {
             this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
             this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
           }),
-          switchMapTo(this.rosterService.freePlayers(1, this.limit)),
+          switchMap(() => this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
-          switchMapTo(this.store.select(leagueInfo)),
+          switchMap(() => this.store.select(leagueInfo)),
           take(1),
           switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
         )
@@ -196,25 +188,23 @@ export class TransactionComponent implements OnInit {
           this.fantasyRosterSelected = null;
         });
     } else {
-      const fantasyRoster: FantasyRoster = {
-        ...this.form.value,
-      };
+      const fantasyRoster = { ...this.form.value };
       this.fantasyRosterService
-        .create(fantasyRoster)
+        .create(fantasyRoster as FantasyRoster)
         .pipe(
           tap(() => {
             this.hideModal();
           }),
-          switchMapTo(this.fantasyTeamService.read()),
+          switchMap(() => this.fantasyTeamService.read()),
           tap((fantasyTeams: FantasyTeam[]) => {
             this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
             this.fantasyTeamSelected = fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeamSelected._id === ft._id);
           }),
-          switchMapTo(this.rosterService.freePlayers(1, this.limit)),
+          switchMap(() => this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
-          switchMapTo(this.store.select(leagueInfo)),
+          switchMap(() => this.store.select(leagueInfo)),
           take(1),
           switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
         )
@@ -268,11 +258,11 @@ export class TransactionComponent implements OnInit {
     this.fantasyRosterService
       .remove(this.fantasyRosterSelected._id)
       .pipe(
-        switchMapTo(this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
         }),
-        switchMapTo(this.store.select(leagueInfo)),
+        switchMap(() => this.store.select(leagueInfo)),
         take(1),
         switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
       )
@@ -291,11 +281,11 @@ export class TransactionComponent implements OnInit {
     this.fantasyRosterService
       .release(this.fantasyRosterSelected._id)
       .pipe(
-        switchMapTo(this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
+        switchMap(() => this.fantasyTeamService.get(this.fantasyTeamSelected._id)),
         tap((fantasyTeam: FantasyTeam) => {
           this.fantasyTeamSelected = fantasyTeam;
         }),
-        switchMapTo(this.store.select(leagueInfo)),
+        switchMap(() => this.store.select(leagueInfo)),
         switchMap((value: LeagueInfo) => this.fantasyRosterService.read(this.fantasyTeamSelected._id, value.nextRealFixture._id))
       )
       .subscribe((fantasyRosters: FantasyRoster[]) => {

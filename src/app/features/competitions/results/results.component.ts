@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
@@ -15,14 +15,19 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-results',
   templateUrl: './results.component.html',
 })
 export class ResultsComponent implements OnInit {
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    round: [null as Round, [Validators.required]],
+    fixture: [{ value: null as Fixture, disabled: true }, [Validators.required]],
+    match: [{ value: null as Match, disabled: true }, [Validators.required]],
+    homeFactor: [null as number, [Validators.min(0)]],
+  });
 
   rounds: Round[];
   fixtures: Fixture[];
@@ -33,15 +38,13 @@ export class ResultsComponent implements OnInit {
   awayTeamLineup: Lineup[];
 
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private lineupService: LineupService,
     private matchService: MatchService,
     private store: Store<AppState>
-  ) {
-    this.createForm();
-  }
+  ) {}
 
   ngOnInit() {
     this.rounds = this.route.snapshot.data['rounds'];
@@ -69,17 +72,6 @@ export class ResultsComponent implements OnInit {
         }
       }
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      round: [null, Validators.required],
-      fixture: [null, Validators.required],
-      match: [null, Validators.required],
-      homeFactor: [null, Validators.min(0)],
-    });
-    this.form.get('fixture').disable();
-    this.form.get('match').disable();
   }
 
   onChangeRound(round: Round) {

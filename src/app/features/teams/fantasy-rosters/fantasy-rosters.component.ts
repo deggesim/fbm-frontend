@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -20,27 +20,25 @@ import { switchMap, switchMapTo, tap } from 'rxjs/operators';
   styleUrls: ['./fantasy-rosters.component.scss'],
 })
 export class FantasyRostersComponent implements OnInit {
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    fantasyTeam: [null as FantasyTeam, [Validators.required]],
+  });
 
   fantasyTeams: FantasyTeam[];
   fantasyTeamSelected: FantasyTeam;
   fantasyRosters: FantasyRoster[];
   history: History[] = [];
 
-  private fb: UntypedFormBuilder;
   private route: ActivatedRoute;
   private fantasyRosterService: FantasyRosterService;
   private historyService: HistoryService;
   private store: Store<AppState>;
 
-  constructor(injector: Injector) {
-    this.fb = injector.get(UntypedFormBuilder);
+  constructor(injector: Injector, private fb: FormBuilder) {
     this.route = injector.get(ActivatedRoute);
     this.fantasyRosterService = injector.get(FantasyRosterService);
     this.historyService = injector.get(HistoryService);
     this.store = injector.get(Store);
-
-    this.createForm();
   }
 
   ngOnInit() {
@@ -52,12 +50,6 @@ export class FantasyRostersComponent implements OnInit {
       this.form.get('fantasyTeam').setValue(fantasyTeamSelected);
       this.selectFantasyTeam(fantasyTeamSelected);
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      fantasyTeam: [undefined, Validators.required],
-    });
   }
 
   selectFantasyTeam(fantasyTeam: FantasyTeam) {

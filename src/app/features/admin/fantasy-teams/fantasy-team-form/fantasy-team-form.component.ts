@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '@app/core/user/services/user.service';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { User } from '@app/models/user';
 import { atLeastOne } from '@app/shared/util/validations';
@@ -15,13 +14,21 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    name: [null as string, Validators.required],
+    initialBalance: [null as number, [Validators.required, Validators.min(0)]],
+    outgo: [null as number, [Validators.required, Validators.min(0)]],
+    totalContracts: [null as number, [Validators.required, Validators.min(0)]],
+    playersInRoster: [null as number, [Validators.required, Validators.min(0)]],
+    extraPlayers: [null as number, [Validators.required, Validators.min(0)]],
+    pointsPenalty: [null as number, [Validators.required, Validators.min(0)]],
+    balancePenalty: [null as number, [Validators.required, Validators.min(0)]],
+    owners: [null as User[], atLeastOne],
+  });
 
   users: User[];
 
-  constructor(private fb: UntypedFormBuilder, private route: ActivatedRoute) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.users = this.route.snapshot.data['users'];
@@ -44,20 +51,6 @@ export class FantasyTeamFormComponent implements OnInit, OnChanges {
         owners,
       });
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      name: [undefined, Validators.required],
-      initialBalance: [undefined, [Validators.required, Validators.min(0)]],
-      outgo: [undefined, [Validators.required, Validators.min(0)]],
-      totalContracts: [undefined, [Validators.required, Validators.min(0)]],
-      playersInRoster: [undefined, [Validators.required, Validators.min(0)]],
-      extraPlayers: [undefined, [Validators.required, Validators.min(0)]],
-      pointsPenalty: [undefined, [Validators.required, Validators.min(0)]],
-      balancePenalty: [undefined, [Validators.required, Validators.min(0)]],
-      owners: [undefined, atLeastOne],
-    });
   }
 
   onSubmit(): void {

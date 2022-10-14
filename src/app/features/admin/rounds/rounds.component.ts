@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { Round } from '@app/models/round';
@@ -13,33 +13,27 @@ import { isEmpty } from 'lodash-es';
   styleUrls: ['./rounds.component.scss'],
 })
 export class RoundsComponent implements OnInit {
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    round: [null as Round, Validators.required],
+    unsortedList: [null as FantasyTeam[]],
+    sortedList: [null as FantasyTeam[], this.checkLength()],
+  });
 
   rounds: Round[];
   selectedRound: Round;
   fantasyTeams: FantasyTeam[];
 
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private roundService: RoundService
-  ) {
-    this.createForm();
-  }
+  ) {}
 
   ngOnInit() {
     this.rounds = this.route.snapshot.data['rounds'];
     this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.form.get('unsortedList').setValue(this.fantasyTeams);
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      round: [undefined, Validators.required],
-      unsortedList: [undefined],
-      sortedList: [undefined, this.checkLength()],
-    });
   }
 
   checkLength(): ValidatorFn {

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -22,7 +22,17 @@ import { switchMapTo, take, tap } from 'rxjs/operators';
   styleUrls: ['./trade.component.scss'],
 })
 export class TradeComponent implements OnInit {
-  form: UntypedFormGroup;
+  form = this.fb.group(
+    {
+      fantasyTeam1: [null as FantasyTeam, [Validators.required]],
+      fantasyTeam2: [null as FantasyTeam, [Validators.required]],
+      outPlayers: [[] as FantasyRoster[], [Validators.required]],
+      inPlayers: [[] as FantasyRoster[], [Validators.required]],
+      buyout: [null as number],
+    },
+    { validators: fantasyTeamMustBeDifferent }
+  );
+
   nextRealFixture: RealFixture;
   fantasyTeams: FantasyTeam[];
   fantasyTeam1Selected: FantasyTeam;
@@ -36,34 +46,19 @@ export class TradeComponent implements OnInit {
   showModalTradeBlock: boolean;
 
   constructor(
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private route: ActivatedRoute,
     private toastService: ToastService,
     private fantasyRosterService: FantasyRosterService,
     private fantasyTeamService: FantasyTeamService,
     private store: Store<AppState>
-  ) {
-    this.createForm();
-  }
+  ) {}
 
   ngOnInit() {
     this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.store.pipe(select(leagueInfo), take(1)).subscribe((li: LeagueInfo) => {
       this.nextRealFixture = li.nextRealFixture;
     });
-  }
-
-  createForm() {
-    this.form = this.fb.group(
-      {
-        fantasyTeam1: [null, Validators.required],
-        fantasyTeam2: [null, [Validators.required]],
-        outPlayers: [[], Validators.required],
-        inPlayers: [[], Validators.required],
-        buyout: [null],
-      },
-      { validators: fantasyTeamMustBeDifferent }
-    );
   }
 
   selectFantasyTeam1(fantasyTeam: FantasyTeam) {

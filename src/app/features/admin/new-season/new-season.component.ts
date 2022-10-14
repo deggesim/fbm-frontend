@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CupFormat } from '@app/models/formats/cup-format';
 import { PlayoffFormat } from '@app/models/formats/playoff-format';
@@ -12,7 +12,18 @@ import { League } from '@app/models/league';
   templateUrl: './new-season.component.html',
 })
 export class NewSeasonComponent {
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    name: [null as string, Validators.required],
+    realGames: [30, Validators.required],
+    regularSeasonFormat: [null as RegularSeasonFormat, Validators.required],
+    playoffFormat: [null as PlayoffFormat, Validators.required],
+    playoutFormat: [null as PlayoutFormat, Validators.required],
+    cupFormat: [null as CupFormat, Validators.required],
+    roundRobinFirstRealFixture: [1, Validators.required],
+    playoffFirstRealFixture: [19, Validators.required],
+    playoutFirstRealFixture: [19, Validators.required],
+    cupFirstRealFixture: [10, Validators.required],
+  });
 
   regularSeasonFormatList: RegularSeasonFormat[] = [
     RegularSeasonFormat.SINGLE,
@@ -48,24 +59,7 @@ export class NewSeasonComponent {
 
   cupFormatList: CupFormat[] = [CupFormat.F8, CupFormat.QF2_F4, CupFormat.QF2_SF2_F, CupFormat.QF2_SF2_F2];
 
-  constructor(private fb: UntypedFormBuilder, private router: Router, private route: ActivatedRoute) {
-    this.createForm();
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      name: [null, Validators.required],
-      realGames: [34, Validators.required],
-      regularSeasonFormat: [null, Validators.required],
-      playoffFormat: [null, Validators.required],
-      playoutFormat: [null, Validators.required],
-      cupFormat: [null, Validators.required],
-      roundRobinFirstRealFixture: [1, Validators.required],
-      playoffFirstRealFixture: [19, Validators.required],
-      playoutFirstRealFixture: [19, Validators.required],
-      cupFirstRealFixture: [10, Validators.required],
-    });
-  }
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {}
 
   step2(): void {
     const league: League = {

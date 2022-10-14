@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '@app/core/user/services/user.service';
-import { User } from '@app/models/user';
+import { Role, User } from '@app/models/user';
 import { iif, Observable, of } from 'rxjs';
 import { mergeMap, take } from 'rxjs/operators';
 
@@ -14,12 +14,16 @@ export class UserFormComponent implements OnInit, OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    name: [null as string, Validators.required],
+    email: [null as string, Validators.required],
+    password: [null as string],
+    role: [null as Role, Validators.required],
+  });
+
   roleList$: Observable<string[]>;
 
-  constructor(private fb: UntypedFormBuilder, private authService: UserService) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder, private authService: UserService) {}
 
   ngOnInit() {
     this.roleList$ = this.authService.isSuperAdmin$().pipe(
@@ -34,15 +38,6 @@ export class UserFormComponent implements OnInit, OnChanges {
       const { name, email, role } = user;
       this.form.patchValue({ name, email, role });
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      name: [undefined, Validators.required],
-      email: [undefined, Validators.required],
-      password: [undefined],
-      role: [undefined, Validators.required],
-    });
   }
 
   onSubmit(): void {

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { LeagueInfo } from '@app/models/league';
 import { Role } from '@app/models/player';
@@ -18,15 +18,23 @@ export class PlayerFormComponent implements OnInit, OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: UntypedFormGroup;
+  form = this.fb.group({
+    name: [null as string, Validators.required],
+    nationality: [null as string, Validators.required],
+    number: [null as string],
+    yearBirth: [null as number],
+    height: [null as number],
+    weight: [null as number],
+    role: [null as string, Validators.required],
+    team: [null as Team, Validators.required],
+    realFixture: [null as RealFixture, Validators.required],
+  });
 
   roles: Role[];
   teams: Team[];
   preparedRealFixtures: RealFixture[];
 
-  constructor(private route: ActivatedRoute, private fb: UntypedFormBuilder, private realFixtureService: RealFixtureService) {
-    this.createForm();
-  }
+  constructor(private route: ActivatedRoute, private fb: FormBuilder, private realFixtureService: RealFixtureService) {}
 
   ngOnInit() {
     this.roles = [Role.Playmaker, Role.PlayGuardia, Role.Guardia, Role.GuardiaAla, Role.Ala, Role.AlaCentro, Role.Centro];
@@ -48,20 +56,6 @@ export class PlayerFormComponent implements OnInit, OnChanges {
         this.preparedRealFixtures = realFixtures;
       });
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      name: [undefined, Validators.required],
-      nationality: [undefined, Validators.required],
-      number: [undefined],
-      yearBirth: [undefined],
-      height: [undefined],
-      weight: [undefined],
-      role: [undefined, Validators.required],
-      team: [undefined, Validators.required],
-      realFixture: [undefined, Validators.required],
-    });
   }
 
   onSubmit(): void {

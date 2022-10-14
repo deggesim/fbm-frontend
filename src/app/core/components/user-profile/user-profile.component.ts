@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { AppState } from '@app/core/app.state';
 import { user } from '@app/core/user/store/user.selector';
 import { Role, User } from '@app/models/user';
@@ -15,27 +15,28 @@ export class UserProfileComponent implements OnInit {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: UntypedFormGroup;
   user: User;
+  form = this.fb.group({
+    _id: [null as string],
+    name: [null as string, [Validators.required]],
+    email: [null as string, [Validators.required]],
+    newPassword: [null as string, [Validators.required]],
+    confirmPassword: [null as string, [Validators.required]],
+  });
+
   superAdmin: boolean;
 
-  constructor(private fb: UntypedFormBuilder, private toastService: ToastService, private store: Store<AppState>) {}
+  constructor(private fb: FormBuilder, private toastService: ToastService, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.store.pipe(select(user), take(1)).subscribe((user: User) => {
       this.user = user;
       this.superAdmin = user && Role.SuperAdmin === user.role;
-      this.createForm();
-    });
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      _id: this.user._id,
-      name: [this.user.name, Validators.required],
-      email: [this.user.email, Validators.required],
-      newPassword: [undefined, Validators.required],
-      confirmPassword: [undefined, Validators.required],
+      this.form.patchValue({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      });
     });
   }
 
