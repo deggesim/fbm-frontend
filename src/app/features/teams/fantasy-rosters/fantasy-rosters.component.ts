@@ -11,8 +11,8 @@ import { FantasyRosterService } from '@app/shared/services/fantasy-roster.servic
 import { HistoryService } from '@app/shared/services/history.service';
 import { select, Store } from '@ngrx/store';
 import { memoize } from 'lodash-es';
-import * as moment from 'moment';
-import { switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { DateTime } from 'luxon';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-fantasy-rosters',
@@ -62,7 +62,7 @@ export class FantasyRostersComponent implements OnInit {
           tap((fantasyRosters: FantasyRoster[]) => {
             this.fantasyRosters = fantasyRosters;
           }),
-          switchMapTo(this.historyService.read(fantasyTeam._id))
+          switchMap(() => this.historyService.read(fantasyTeam._id))
         )
         .subscribe((history: History[]) => {
           this.history = [...history].sort(this.sortHistory);
@@ -83,9 +83,9 @@ export class FantasyRostersComponent implements OnInit {
 
   sortHistory = (a: History, b: History): number => {
     if (a.realFixture.order === b.realFixture.order) {
-      const updatedAtA = moment(a.updatedAt);
-      const updatedAtB = moment(b.updatedAt);
-      return updatedAtA.diff(updatedAtB);
+      const updatedAtA = DateTime.fromISO(a.updatedAt as string);
+      const updatedAtB = DateTime.fromISO(b.updatedAt as string);
+      return updatedAtA.diff(updatedAtB).milliseconds;
     } else {
       return a.realFixture.order - b.realFixture.order;
     }

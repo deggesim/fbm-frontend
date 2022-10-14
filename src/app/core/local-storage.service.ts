@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { League } from '@app/models/league';
-import * as moment from 'moment';
-
+import { DateTime } from 'luxon';
 @Injectable()
 export class LocalStorageService {
   public clearStorage() {
@@ -18,13 +17,13 @@ export class LocalStorageService {
     localStorage.setItem('token', token);
   }
 
-  public getExpiresAt(): moment.Moment {
+  public getExpiresAt(): DateTime {
     const expiration = localStorage.getItem('expires_at');
-    return expiration ? moment(JSON.parse(expiration)) : null;
+    return expiration ? DateTime.fromJSDate(JSON.parse(expiration)) : null;
   }
 
-  public setExpiresAt(expiresAt: moment.Moment) {
-    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+  public setExpiresAt(expiresAt: DateTime) {
+    localStorage.setItem('expires_at', JSON.stringify(expiresAt.toMillis()));
   }
 
   public getSelectedLeague(): League {

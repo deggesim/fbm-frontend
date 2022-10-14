@@ -28,7 +28,7 @@ import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { EMPTY, forkJoin, Observable } from 'rxjs';
 import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
@@ -358,7 +358,7 @@ export class LineupsComponent implements OnInit {
   private move = (arr: Lineup[], prevIndex: number, newIndex: number): Lineup[] => {
     let newArr = [...arr];
     if (newIndex >= newArr.length) {
-      var k = newIndex - newArr.length + 1;
+      let k = newIndex - newArr.length + 1;
       while (k--) {
         newArr.push(undefined);
       }
@@ -439,7 +439,7 @@ export class LineupsComponent implements OnInit {
                       );
                       return matchPlayedBySelectedFantasyTeam != null;
                     })
-                    .sort((f1: Fixture, f2: Fixture) => moment(f2.updatedAt).diff(moment(f1.updatedAt)))
+                    .sort((f1: Fixture, f2: Fixture) => DateTime.fromISO(f2.updatedAt as string).diff(DateTime.fromISO(f1.updatedAt as string)).milliseconds)
                 : null;
             prevFixture = orderedFixtures?.length > 0 ? orderedFixtures[0] : null;
           }

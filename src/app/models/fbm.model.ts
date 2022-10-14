@@ -1,9 +1,9 @@
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { League } from './league';
 
 export interface FbmModel {
   _id?: string;
-  createdAt?: string | moment.Moment;
-  updatedAt?: string | moment.Moment;
+  createdAt?: string | DateTime;
+  updatedAt?: string | DateTime;
   league?: League;
 }

@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { FantasyTeam } from './fantasy-team';
 import { League } from './league';
 
@@ -18,8 +19,8 @@ export interface User {
   tokens?: string[];
   fantasyTeams?: FantasyTeam[];
   leagues?: League[];
-  createdAt?: moment.Moment;
-  updatedAt?: moment.Moment;
+  createdAt?: DateTime;
+  updatedAt?: DateTime;
 }
 
 export enum Role {

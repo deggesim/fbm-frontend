@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { FantasyTeam } from './fantasy-team';
 import { FbmModel } from './fbm.model';
 import { Role } from './player';
@@ -39,7 +39,7 @@ export const sortFantasyRoster = (a: FantasyRoster, b: FantasyRoster): number =>
   } else if (map[aRole] > map[bRole]) {
     return 1;
   } else {
-    const isBefore = moment(a.createdAt).isBefore(b.createdAt);
+    const isBefore = DateTime.fromISO(a.createdAt as string) < DateTime.fromISO(b.createdAt as string);
     return isBefore ? -1 : 1;
   }
 };
