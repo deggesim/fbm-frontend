@@ -1,9 +1,12 @@
+import { registerLocaleData } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import localeIt from '@angular/common/locales/it';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
 import { AuthInterceptor } from '@app/core/auth/service/auth-interceptor.service';
@@ -27,9 +30,9 @@ import { ToastContainerModule, ToastrModule } from 'ngx-toastr';
 import { CoreModule } from './core/core.module';
 import { GlobalInterceptor } from './core/global-interceptor.service';
 import { TenantInterceptor } from './core/league/services/tenant-interceptor.service';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { AppUpdateService } from './shared/services/app-update.service';
+
+registerLocaleData(localeIt);
 
 @NgModule({
   declarations: [AppComponent],
@@ -64,14 +67,15 @@ import { AppUpdateService } from './shared/services/app-update.service';
     ServiceWorkerModule.register('ngsw-worker.js', {
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TenantInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: GlobalInterceptor, multi: true },
-    AppUpdateService
+    { provide: LOCALE_ID, useValue: 'it' },
+    AppUpdateService,
   ],
   bootstrap: [AppComponent],
 })

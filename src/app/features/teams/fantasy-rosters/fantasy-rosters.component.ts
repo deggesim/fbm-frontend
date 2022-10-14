@@ -28,6 +28,9 @@ export class FantasyRostersComponent implements OnInit {
   fantasyTeamSelected: FantasyTeam;
   fantasyRosters: FantasyRoster[];
   history: History[] = [];
+  // for date pipe in template
+  DateTime = DateTime;
+  String = String;
 
   private route: ActivatedRoute;
   private fantasyRosterService: FantasyRosterService;
@@ -85,7 +88,7 @@ export class FantasyRostersComponent implements OnInit {
     if (a.realFixture.order === b.realFixture.order) {
       const updatedAtA = DateTime.fromISO(a.updatedAt as string);
       const updatedAtB = DateTime.fromISO(b.updatedAt as string);
-      return updatedAtA.diff(updatedAtB).milliseconds;
+      return updatedAtA < updatedAtB ? -1 : 1;
     } else {
       return a.realFixture.order - b.realFixture.order;
     }

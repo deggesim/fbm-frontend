@@ -19,11 +19,11 @@ export class LocalStorageService {
 
   public getExpiresAt(): DateTime {
     const expiration = localStorage.getItem('expires_at');
-    return expiration ? DateTime.fromJSDate(JSON.parse(expiration)) : null;
+    return expiration ? DateTime.fromMillis(+expiration) : null;
   }
 
   public setExpiresAt(expiresAt: DateTime) {
-    localStorage.setItem('expires_at', JSON.stringify(expiresAt.toMillis()));
+    localStorage.setItem('expires_at', String(expiresAt.toMillis()));
   }
 
   public getSelectedLeague(): League {
