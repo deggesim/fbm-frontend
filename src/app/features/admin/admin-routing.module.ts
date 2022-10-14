@@ -28,6 +28,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'step-one',
+        pathMatch: 'full',
       },
       {
         path: 'step-one',
@@ -49,6 +50,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'edit-league',
+        pathMatch: 'full',
       },
       {
         path: 'edit-league',
@@ -89,6 +91,7 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'teams',
+        pathMatch: 'full',
       },
       {
         path: 'teams',
