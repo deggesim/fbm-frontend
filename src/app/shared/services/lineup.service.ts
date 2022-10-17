@@ -20,7 +20,7 @@ export class LineupService {
   }
 
   public save(fantasyTeamId: string, fixtureId: string, lineup: Lineup[]) {
-    return this.http.post<Lineup>(`${this.endpoint}/lineups/fantasy-team/${fantasyTeamId}/fixture/${fixtureId}`, lineup);
+    return this.http.post<Lineup[]>(`${this.endpoint}/lineups/fantasy-team/${fantasyTeamId}/fixture/${fixtureId}`, lineup);
   }
 
   public update(lineup: Lineup) {
