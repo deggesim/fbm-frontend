@@ -70,8 +70,9 @@
             <div fxLayout="row wrap" class="w-100">
               <!-- player and team -->
               <div fxFlex="66" fxFlex.lt-md="100" class="fw-bold">
-                {{ item.realFixture.name }} - {{ item.operation | decodeHistory }}:
-                {{ item.name }}
+                {{ item.realFixture.name }} - {{ item.operation | decodeHistory }}: {{ item.name }} ({{
+                  DateTime.fromISO(String(item.updatedAt)).toJSDate() | date: 'dd/MM/YYYY'
+                }})
               </div>
               <div fxFlex="33" fxFlex.lt-md="100" class="badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
               <!-- player -->

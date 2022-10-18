@@ -5,7 +5,7 @@ import { getExpiresAt } from '@app/core/auth/store/auth.selectors';
 import { Auth, Login } from '@app/models/user';
 import { environment } from '@env/environment';
 import { select, Store } from '@ngrx/store';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -26,7 +26,7 @@ export class AuthService {
   public isLoggedIn$ = (): Observable<boolean> => {
     return this.store.pipe(
       select(getExpiresAt),
-      map((expiresAt: moment.Moment) => moment().isBefore(expiresAt))
+      map((expiresAt: DateTime) => DateTime.now() < expiresAt)
     );
   };
 }

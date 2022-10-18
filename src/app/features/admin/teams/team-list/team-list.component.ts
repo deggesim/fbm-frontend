@@ -5,7 +5,7 @@ import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popu
 import { TeamService } from '@app/shared/services/team.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-team-list',
@@ -56,7 +56,7 @@ export class TeamListComponent implements OnInit {
           tap(() => {
             this.hideModal();
           }),
-          switchMapTo(this.teamService.read())
+          switchMap(() => this.teamService.read())
         )
         .subscribe((teams: Team[]) => {
           this.teams = teams;
@@ -70,7 +70,7 @@ export class TeamListComponent implements OnInit {
           tap(() => {
             this.hideModal();
           }),
-          switchMapTo(this.teamService.read())
+          switchMap(() => this.teamService.read())
         )
         .subscribe((teams: Team[]) => {
           this.teams = teams;
@@ -103,7 +103,7 @@ export class TeamListComponent implements OnInit {
             this.toastService.success('Squadra eliminata', `La squadra ${this.teamSelected.fullName} è stata modificata correttamente`);
             this.teamSelected = undefined;
           }),
-          switchMapTo(this.teamService.read())
+          switchMap(() => this.teamService.read())
         )
         .subscribe((teams: Team[]) => {
           this.teams = teams;

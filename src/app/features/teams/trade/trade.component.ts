@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -14,7 +14,7 @@ import { fantasyTeamMustBeDifferent } from '@app/shared/util/validations';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMapTo, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-trade',
@@ -22,7 +22,17 @@ import { switchMapTo, take, tap } from 'rxjs/operators';
   styleUrls: ['./trade.component.scss'],
 })
 export class TradeComponent implements OnInit {
-  form: FormGroup;
+  form = this.fb.group(
+    {
+      fantasyTeam1: [null as FantasyTeam, [Validators.required]],
+      fantasyTeam2: [null as FantasyTeam, [Validators.required]],
+      outPlayers: [[] as FantasyRoster[], [Validators.required]],
+      inPlayers: [[] as FantasyRoster[], [Validators.required]],
+      buyout: [null as number],
+    },
+    { validators: fantasyTeamMustBeDifferent }
+  );
+
   nextRealFixture: RealFixture;
   fantasyTeams: FantasyTeam[];
   fantasyTeam1Selected: FantasyTeam;
@@ -42,28 +52,13 @@ export class TradeComponent implements OnInit {
     private fantasyRosterService: FantasyRosterService,
     private fantasyTeamService: FantasyTeamService,
     private store: Store<AppState>
-  ) {
-    this.createForm();
-  }
+  ) {}
 
   ngOnInit() {
     this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.store.pipe(select(leagueInfo), take(1)).subscribe((li: LeagueInfo) => {
       this.nextRealFixture = li.nextRealFixture;
     });
-  }
-
-  createForm() {
-    this.form = this.fb.group(
-      {
-        fantasyTeam1: [null, Validators.required],
-        fantasyTeam2: [null, [Validators.required]],
-        outPlayers: [[], Validators.required],
-        inPlayers: [[], Validators.required],
-        buyout: [null],
-      },
-      { validators: fantasyTeamMustBeDifferent }
-    );
   }
 
   selectFantasyTeam1(fantasyTeam: FantasyTeam) {
@@ -157,15 +152,15 @@ export class TradeComponent implements OnInit {
         tap(() => {
           this.hideModal();
         }),
-        switchMapTo(this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
+        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters1 = fantasyRosters;
         }),
-        switchMapTo(this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
+        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters2 = fantasyRosters;
         }),
-        switchMapTo(this.fantasyTeamService.read()),
+        switchMap(() => this.fantasyTeamService.read()),
         tap((fantasyTeams: FantasyTeam[]) => {
           this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
           this.fantasyTeam1Selected = this.fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeam1Selected._id === ft._id);

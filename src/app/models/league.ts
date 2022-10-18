@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { Fixture } from './fixture';
 import { CupFormat } from './formats/cup-format';
 import { PlayoffFormat } from './formats/playoff-format';
@@ -19,8 +20,8 @@ export interface League {
   cupFirstRealFixture: number;
   parameters?: Parameter[];
   roles?: Role[];
-  createdAt?: moment.Moment;
-  updatedAt?: moment.Moment;
+  createdAt?: DateTime;
+  updatedAt?: DateTime;
 }
 
 export interface Role {

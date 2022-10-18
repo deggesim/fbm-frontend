@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueActions from '@app/core/league/store/league.actions';
@@ -16,7 +16,18 @@ import { Store } from '@ngrx/store';
   templateUrl: './league-edit.component.html',
 })
 export class EditLeagueComponent implements OnInit {
-  form: FormGroup;
+  form = this.fb.group({
+    name: [null as string, Validators.required],
+    realGames: [null as number, Validators.required],
+    regularSeasonFormat: [null as RegularSeasonFormat, Validators.required],
+    playoffFormat: [null as PlayoffFormat, Validators.required],
+    playoutFormat: [null as PlayoutFormat, Validators.required],
+    cupFormat: [null as CupFormat, Validators.required],
+    roundRobinFirstRealFixture: [null as number, Validators.required],
+    playoffFirstRealFixture: [null as number, Validators.required],
+    playoutFirstRealFixture: [null as number, Validators.required],
+    cupFirstRealFixture: [null as number, Validators.required],
+  });
 
   league: League;
 
@@ -56,9 +67,7 @@ export class EditLeagueComponent implements OnInit {
 
   cupFormatList: CupFormat[] = [CupFormat.F8, CupFormat.QF2_F4, CupFormat.QF2_SF2_F, CupFormat.QF2_SF2_F2];
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.league = this.route.snapshot.data['league'];
@@ -85,21 +94,6 @@ export class EditLeagueComponent implements OnInit {
       playoffFirstRealFixture,
       playoutFirstRealFixture,
       cupFirstRealFixture,
-    });
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      name: [undefined, Validators.required],
-      realGames: [undefined, Validators.required],
-      regularSeasonFormat: [undefined, Validators.required],
-      playoffFormat: [undefined, Validators.required],
-      playoutFormat: [undefined, Validators.required],
-      cupFormat: [undefined, Validators.required],
-      roundRobinFirstRealFixture: [undefined, Validators.required],
-      playoffFirstRealFixture: [undefined, Validators.required],
-      playoutFirstRealFixture: [undefined, Validators.required],
-      cupFirstRealFixture: [undefined, Validators.required],
     });
   }
 

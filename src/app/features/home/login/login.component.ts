@@ -1,5 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Login } from '@app/models/user';
 
 @Component({
@@ -10,18 +10,12 @@ import { Login } from '@app/models/user';
 export class LoginComponent {
   @Output() login: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form = this.fb.group({
+    email: [null as string, [Validators.required]],
+    password: [null as string, [Validators.required]],
+  });
 
-  constructor(private fb: FormBuilder) {
-    this.createForm();
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      email: [undefined, Validators.required],
-      password: [undefined, Validators.required],
-    });
-  }
+  constructor(private fb: FormBuilder) {}
 
   confirm(): void {
     const user: Login = {

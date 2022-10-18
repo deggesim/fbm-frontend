@@ -1,6 +1,6 @@
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo, selectedLeague } from '@app/core/league/store/league.selector';
@@ -28,10 +28,10 @@ import { count, lineUpValid } from '@app/shared/util/lineup';
 import { statistics } from '@app/shared/util/statistics';
 import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { EMPTY, forkJoin, iif, Observable, of } from 'rxjs';
-import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-lineups',
@@ -39,8 +39,55 @@ import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
   styleUrls: ['./lineups.component.scss'],
 })
 export class LineupsComponent implements OnInit {
-  form: FormGroup;
-  benchForm: FormGroup;
+  lineupValidator = (control: AbstractControl) => {
+    const lineup: Lineup[] = control.value;
+
+    const lineupValid = lineUpValid(lineup, this.selectedLeague);
+    if (!lineupValid) {
+      return { lineupInvalid: true };
+    }
+
+    // count EXT, COM, STR, ITA
+    const MAX_STR = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_STR');
+    if (MAX_STR) {
+      const totalStr = count(lineup, PlayerStatus.Str) || count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com);
+      if (totalStr > MAX_STR.value) {
+        return { lineupInvalid: true };
+      }
+
+      if (count(lineup, PlayerStatus.Ita) < totalStr) {
+        return { lineupInvalid: true };
+      }
+    } else {
+      const MAX_EXT_OPT_345 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
+      if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
+        return { lineupInvalid: true };
+      }
+
+      const MAX_STRANGERS_OPT_55 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
+      if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
+        return { lineupInvalid: true };
+      }
+
+      const MIN_NAT_PLAYERS = this.selectedLeague.parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
+      if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
+        return { lineupInvalid: true };
+      }
+    }
+
+    return null;
+  };
+
+  form = this.fb.group({
+    round: [null as Round, Validators.required],
+    fixture: [null as Fixture, Validators.required],
+    fantasyTeam: [null as FantasyTeam, Validators.required],
+    lineup: [null as Lineup[], [Validators.required, this.lineupValidator]],
+  });
+
+  benchForm = this.fb.group({
+    sortedList: [null as Lineup[]],
+  });
 
   rounds: Round[];
   fixtures: Fixture[];
@@ -66,7 +113,6 @@ export class LineupsComponent implements OnInit {
   @ViewChild('modalBenchForm', { static: false }) modalBenchForm: ModalDirective;
   showModalBenchForm: boolean;
 
-  private fb: FormBuilder;
   private route: ActivatedRoute;
   private toastService: ToastService;
   private userService: UserService;
@@ -78,8 +124,7 @@ export class LineupsComponent implements OnInit {
   private clipboard: Clipboard;
   private spinnerService: SpinnerService;
 
-  constructor(injector: Injector) {
-    this.fb = injector.get(FormBuilder);
+  constructor(injector: Injector, private fb: FormBuilder) {
     this.route = injector.get(ActivatedRoute);
     this.toastService = injector.get(ToastService);
     this.userService = injector.get(UserService);
@@ -91,8 +136,6 @@ export class LineupsComponent implements OnInit {
     this.clipboard = injector.get(Clipboard);
     this.spinnerService = injector.get(SpinnerService);
 
-    this.createForm();
-    this.createBenchForm();
     this.lineup = this.initLineup();
   }
 
@@ -138,62 +181,6 @@ export class LineupsComponent implements OnInit {
       }
     }
   }
-
-  createForm() {
-    this.form = this.fb.group({
-      round: [undefined, Validators.required],
-      fixture: [undefined, Validators.required],
-      fantasyTeam: [undefined, Validators.required],
-      lineup: [undefined, [Validators.required, this.lineupValidator]],
-    });
-    this.form.get('fixture').disable();
-    this.form.get('fantasyTeam').disable();
-  }
-
-  createBenchForm() {
-    this.benchForm = this.fb.group({
-      sortedList: [undefined],
-    });
-  }
-
-  lineupValidator = (control: AbstractControl) => {
-    const lineup: Lineup[] = control.value;
-
-    const lineupValid = lineUpValid(lineup, this.selectedLeague);
-    if (!lineupValid) {
-      return { lineupInvalid: true };
-    }
-
-    // count EXT, COM, STR, ITA
-    const MAX_STR = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_STR');
-    if (MAX_STR) {
-      const totalStr = count(lineup, PlayerStatus.Str) || count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com);
-      if (totalStr > MAX_STR.value) {
-        return { lineupInvalid: true };
-      }
-
-      if (count(lineup, PlayerStatus.Ita) < totalStr) {
-        return { lineupInvalid: true };
-      }
-    } else {
-      const MAX_EXT_OPT_345 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_EXT_OPT_345');
-      if (count(lineup, PlayerStatus.Ext) > MAX_EXT_OPT_345.value) {
-        return { lineupInvalid: true };
-      }
-
-      const MAX_STRANGERS_OPT_55 = this.selectedLeague.parameters.find((param) => param.parameter === 'MAX_STRANGERS_OPT_55');
-      if (count(lineup, PlayerStatus.Ext) + count(lineup, PlayerStatus.Com) > MAX_STRANGERS_OPT_55.value) {
-        return { lineupInvalid: true };
-      }
-
-      const MIN_NAT_PLAYERS = this.selectedLeague.parameters.find((param) => param.parameter === 'MIN_NAT_PLAYERS');
-      if (count(lineup, PlayerStatus.Ita) < MIN_NAT_PLAYERS.value) {
-        return { lineupInvalid: true };
-      }
-    }
-
-    return null;
-  };
 
   onChangeRound(round: Round) {
     this.selectedRound = round;
@@ -260,7 +247,7 @@ export class LineupsComponent implements OnInit {
             }
           }),
           switchMap((fantasyRosters: FantasyRoster[]) => this.buildStatistics(fantasyRosters)),
-          switchMapTo(this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id))
+          switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id))
         )
         .subscribe((lineup: Lineup[]) => {
           this.form.get('lineup').reset();
@@ -452,7 +439,10 @@ export class LineupsComponent implements OnInit {
                       );
                       return matchPlayedBySelectedFantasyTeam != null;
                     })
-                    .sort((f1: Fixture, f2: Fixture) => moment(f2.updatedAt).diff(moment(f1.updatedAt)))
+                    .sort(
+                      (f1: Fixture, f2: Fixture) =>
+                        DateTime.fromISO(f2.updatedAt as string).diff(DateTime.fromISO(f1.updatedAt as string)).milliseconds
+                    )
                 : null;
             prevFixture = orderedFixtures?.length > 0 ? orderedFixtures[0] : null;
           }

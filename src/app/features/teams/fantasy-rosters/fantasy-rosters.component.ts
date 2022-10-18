@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -11,8 +11,8 @@ import { FantasyRosterService } from '@app/shared/services/fantasy-roster.servic
 import { HistoryService } from '@app/shared/services/history.service';
 import { select, Store } from '@ngrx/store';
 import { memoize } from 'lodash-es';
-import * as moment from 'moment';
-import { switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { DateTime } from 'luxon';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-fantasy-rosters',
@@ -20,27 +20,28 @@ import { switchMap, switchMapTo, tap } from 'rxjs/operators';
   styleUrls: ['./fantasy-rosters.component.scss'],
 })
 export class FantasyRostersComponent implements OnInit {
-  form: FormGroup;
+  form = this.fb.group({
+    fantasyTeam: [null as FantasyTeam, [Validators.required]],
+  });
 
   fantasyTeams: FantasyTeam[];
   fantasyTeamSelected: FantasyTeam;
   fantasyRosters: FantasyRoster[];
   history: History[] = [];
+  // for date pipe in template
+  DateTime = DateTime;
+  String = String;
 
-  private fb: FormBuilder;
   private route: ActivatedRoute;
   private fantasyRosterService: FantasyRosterService;
   private historyService: HistoryService;
   private store: Store<AppState>;
 
-  constructor(injector: Injector) {
-    this.fb = injector.get(FormBuilder);
+  constructor(injector: Injector, private fb: FormBuilder) {
     this.route = injector.get(ActivatedRoute);
     this.fantasyRosterService = injector.get(FantasyRosterService);
     this.historyService = injector.get(HistoryService);
     this.store = injector.get(Store);
-
-    this.createForm();
   }
 
   ngOnInit() {
@@ -54,12 +55,6 @@ export class FantasyRostersComponent implements OnInit {
     }
   }
 
-  createForm() {
-    this.form = this.fb.group({
-      fantasyTeam: [undefined, Validators.required],
-    });
-  }
-
   selectFantasyTeam(fantasyTeam: FantasyTeam) {
     this.fantasyTeamSelected = fantasyTeam;
     if (fantasyTeam != null) {
@@ -70,7 +65,7 @@ export class FantasyRostersComponent implements OnInit {
           tap((fantasyRosters: FantasyRoster[]) => {
             this.fantasyRosters = fantasyRosters;
           }),
-          switchMapTo(this.historyService.read(fantasyTeam._id))
+          switchMap(() => this.historyService.read(fantasyTeam._id))
         )
         .subscribe((history: History[]) => {
           this.history = [...history].sort(this.sortHistory);
@@ -91,9 +86,9 @@ export class FantasyRostersComponent implements OnInit {
 
   sortHistory = (a: History, b: History): number => {
     if (a.realFixture.order === b.realFixture.order) {
-      const updatedAtA = moment(a.updatedAt);
-      const updatedAtB = moment(b.updatedAt);
-      return updatedAtA.diff(updatedAtB);
+      const updatedAtA = DateTime.fromISO(a.updatedAt as string);
+      const updatedAtB = DateTime.fromISO(b.updatedAt as string);
+      return updatedAtA < updatedAtB ? -1 : 1;
     } else {
       return a.realFixture.order - b.realFixture.order;
     }

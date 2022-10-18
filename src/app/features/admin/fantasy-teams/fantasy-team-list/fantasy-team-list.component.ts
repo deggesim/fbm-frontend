@@ -4,7 +4,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { switchMapTo, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-fantasy-team-list',
@@ -51,7 +51,7 @@ export class FantasyTeamListComponent implements OnInit {
           this.toastService.success('Modifica squadra', `Squadra ${fantasyTeam.name} modificata correttamente`);
           this.fantasyTeamSelected = undefined;
         }),
-        switchMapTo(this.fantasyTeamService.read())
+        switchMap(() => this.fantasyTeamService.read())
       )
       .subscribe((fantasyTeams: FantasyTeam[]) => {
         this.fantasyTeams = fantasyTeams;

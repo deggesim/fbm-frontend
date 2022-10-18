@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Fixture } from '@app/models/fixture';
 import { RealFixture } from '@app/models/real-fixture';
 import { Team } from '@app/models/team';
@@ -15,18 +15,23 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form = this.fb.group({
+    name: [null as string, Validators.required],
+    prepared: [null as boolean, [Validators.requiredTrue]],
+    fixtures: [null as Fixture[]],
+    teamsWithNoGame: [null as Team[]],
+  });
 
   fixtures: Fixture[];
   fixturesLoading = false;
   teamsWithNoGame: Team[];
   teamsWithNoGameLoading = false;
 
-  constructor(private fb: FormBuilder, private teamService: TeamService, private fixtureService: FixtureService) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder, private teamService: TeamService, private fixtureService: FixtureService) {}
 
   ngOnInit() {
+    this.form.get('prepared').disable();
+    this.form.get('fixtures').disable();
     this.fixturesLoading = this.teamsWithNoGameLoading = true;
     this.teamService.read().subscribe((teamsWithNoGame: Team[]) => {
       this.teamsWithNoGame = teamsWithNoGame;
@@ -49,17 +54,6 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
         teamsWithNoGame,
       });
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      name: [undefined, Validators.required],
-      prepared: [undefined, [Validators.requiredTrue]],
-      fixtures: [undefined],
-      teamsWithNoGame: [undefined],
-    });
-    this.form.get('prepared').disable();
-    this.form.get('fixtures').disable();
   }
 
   onSubmit(): void {

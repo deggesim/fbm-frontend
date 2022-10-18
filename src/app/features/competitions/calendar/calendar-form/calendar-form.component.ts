@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
 import { Match } from '@app/models/match';
 
 @Component({
@@ -11,11 +11,11 @@ export class CalendarFormComponent implements OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form = this.fb.group({
+    matchArray: this.fb.array([] as Match[]),
+  });
 
-  constructor(private fb: FormBuilder) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const matches: Match[] = changes['matches'].currentValue;
@@ -36,12 +36,6 @@ export class CalendarFormComponent implements OnChanges {
         );
       }
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      matchArray: this.fb.array([]),
-    });
   }
 
   get matchArray(): FormArray {

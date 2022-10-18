@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { selectedLeague } from '@app/core/league/store/league.selector';
@@ -16,15 +16,16 @@ import { take } from 'rxjs/operators';
   templateUrl: './standings.component.html',
 })
 export class StandingsComponent implements OnInit {
-  form: FormGroup;
+  form = this.fb.group({
+    round: [null as Round, [Validators.required]],
+  });
+
   rounds: Round[];
   selectedRound: Round;
   table: TableItem[] = [];
   trend: Parameter;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.rounds = this.route.snapshot.data['rounds']?.filter((round: Round) => round.roundRobin);
@@ -34,12 +35,6 @@ export class StandingsComponent implements OnInit {
     this.selectedRound = round;
     this.table = [];
     this.loadTable();
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      round: [undefined, Validators.required],
-    });
   }
 
   reset() {

@@ -1,5 +1,5 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import * as LeagueInfoActions from '@app/core/league/store/league-info.actions';
@@ -17,7 +17,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMapTo, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-calendar-list',
@@ -25,7 +25,10 @@ import { switchMapTo, tap } from 'rxjs/operators';
   styleUrls: ['./calendar-list.component.scss'],
 })
 export class CalendarListComponent implements OnInit {
-  form: FormGroup;
+  form = this.fb.group({
+    round: [null as Round, Validators.required],
+  });
+
   rounds: Round[];
   selectedRound: Round;
   selectedFixture: Fixture;
@@ -40,7 +43,6 @@ export class CalendarListComponent implements OnInit {
   showModalCalendarForm: boolean;
   showModalMatchResult: boolean;
 
-  private fb: FormBuilder;
   private route: ActivatedRoute;
   private userService: UserService;
   private toastService: ToastService;
@@ -49,8 +51,7 @@ export class CalendarListComponent implements OnInit {
   private store: Store<AppState>;
   private lineupService: LineupService;
 
-  constructor(injector: Injector) {
-    this.fb = injector.get(FormBuilder);
+  constructor(injector: Injector, private fb: FormBuilder) {
     this.route = injector.get(ActivatedRoute);
     this.userService = injector.get(UserService);
     this.toastService = injector.get(ToastService);
@@ -58,7 +59,6 @@ export class CalendarListComponent implements OnInit {
     this.matchService = injector.get(MatchService);
     this.store = injector.get(Store);
     this.lineupService = injector.get(LineupService);
-    this.createForm();
   }
 
   ngOnInit() {
@@ -70,12 +70,6 @@ export class CalendarListComponent implements OnInit {
       this.selectedRound = this.rounds.find((value: Round) => value._id === round);
       this.form.get('round').setValue(this.selectedRound);
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      round: [undefined, Validators.required],
-    });
   }
 
   onChange(round: Round) {
@@ -113,11 +107,11 @@ export class CalendarListComponent implements OnInit {
         tap(() => {
           this.hideModalCalendarForm();
         }),
-        switchMapTo(this.store.select(selectedLeague)),
+        switchMap(() => this.store.select(selectedLeague)),
         tap((league: League) => {
           this.store.dispatch(LeagueInfoActions.refresh({ league }));
         }),
-        switchMapTo(this.roundService.read())
+        switchMap(() => this.roundService.read())
       )
       .subscribe((rounds: Round[]) => {
         this.matches = undefined;

@@ -13,6 +13,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'transactions',
+    pathMatch: 'full',
   },
   {
     path: 'draft-board',

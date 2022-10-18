@@ -10,9 +10,9 @@ import { Auth } from '@app/models/user';
 import { ToastService } from '@app/shared/services/toast.service';
 import { Actions, createEffect, ofType, ROOT_EFFECTS_INIT } from '@ngrx/effects';
 import jwtDecode from 'jwt-decode';
-import * as moment from 'moment';
+import { DateTime } from 'luxon';
 import { of } from 'rxjs';
-import { catchError, filter, map, mapTo, switchMap, switchMapTo, tap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import * as AuthActions from './auth.actions';
 
 @Injectable()
@@ -29,10 +29,10 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(ROOT_EFFECTS_INIT),
       // get token
-      mapTo({ token: this.localStorageService.getToken(), expiresAt: this.localStorageService.getExpiresAt() }),
+      map(() => ({ token: this.localStorageService.getToken(), expiresAt: this.localStorageService.getExpiresAt() })),
       // we want dispatch an action only when token and expiresAt are in localStorage
-      filter((auth: { token: string; expiresAt: moment.Moment }) => !!auth.token && !!auth.expiresAt),
-      switchMap((auth: { token: string; expiresAt: moment.Moment }) => [
+      filter((auth: { token: string; expiresAt: DateTime }) => !!auth.token && !!auth.expiresAt),
+      switchMap((auth: { token: string; expiresAt: DateTime }) => [
         AuthActions.setAuth({ auth: { token: auth.token, expiresAt: auth.expiresAt } }),
         UserActions.loadUser(),
       ])
@@ -48,7 +48,7 @@ export class AuthEffects {
             const token = authResult.token;
             const decoded: any = jwtDecode(token);
             const exp = decoded.exp;
-            const expiresAt = moment().add(exp);
+            const expiresAt = DateTime.now().plus({ milliseconds: exp });
             this.localStorageService.setToken(token);
             this.localStorageService.setExpiresAt(expiresAt);
             this.toastService.success('Login', 'Login effettuato correttamente');
@@ -66,7 +66,7 @@ export class AuthEffects {
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
-      switchMapTo(this.userService.loadProfile()),
+      switchMap(() => this.userService.loadProfile()),
       map((auth: Auth) => UserActions.setUser({ user: auth.user }))
     )
   );
@@ -74,12 +74,12 @@ export class AuthEffects {
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.logout),
-      switchMapTo(this.authService.logout()),
+      switchMap(() => this.authService.logout()),
       tap(() => {
         this.localStorageService.clearStorage();
         this.toastService.warning('Logout', 'Logout effettuato correttamente');
       }),
-      switchMapTo([
+      switchMap(() => [
         AuthActions.logoutSuccess(),
         UserActions.setUser({ user: null }),
         LeagueActions.setSelectedLeague({ league: null }),

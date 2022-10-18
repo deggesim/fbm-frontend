@@ -1,14 +1,12 @@
 import { Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
-import { user } from '@app/core/user/store/user.selector';
 import { FantasyRoster, sortFantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
 import { LeagueInfo, Status } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
-import { Role, User } from '@app/models/user';
 import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
@@ -16,14 +14,21 @@ import { RosterService } from '@app/shared/services/roster.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { debounceTime, distinctUntilChanged, iif, noop, of, Subject, switchMap, switchMapTo, take, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, iif, noop, of, Subject, switchMap, take, tap } from 'rxjs';
 
 @Component({
   selector: 'fbm-draft-board',
   templateUrl: './draft-board.component.html',
 })
 export class DraftBoardComponent implements OnInit {
-  form: FormGroup;
+  form = this.fb.group({
+    fantasyTeam: [null as FantasyTeam, Validators.required],
+    roster: [null as Roster],
+    status: [null as string, Validators.required],
+    draft: [null as boolean, Validators.required],
+    contract: [1, Validators.required],
+    yearContract: [1, Validators.required],
+  });
 
   fantasyTeams: FantasyTeam[];
   rosters: Roster[];
@@ -41,7 +46,6 @@ export class DraftBoardComponent implements OnInit {
   @ViewChild('modalTransaction', { static: false }) private modalTransaction: ModalDirective;
   showModalTransaction: boolean;
 
-  private fb: FormBuilder;
   private route: ActivatedRoute;
   private toastService: ToastService;
   private rosterService: RosterService;
@@ -51,18 +55,25 @@ export class DraftBoardComponent implements OnInit {
 
   playersInRoster: number[];
 
-  constructor(injector: Injector) {
-    this.fb = injector.get(FormBuilder);
+  constructor(injector: Injector, private fb: FormBuilder) {
     this.route = injector.get(ActivatedRoute);
     this.toastService = injector.get(ToastService);
     this.rosterService = injector.get(RosterService);
     this.fantasyRosterService = injector.get(FantasyRosterService);
     this.fantasyTeamService = injector.get(FantasyTeamService);
     this.store = injector.get(Store);
-
     this.playersInRoster = Array.from(Array(16).keys());
 
-    this.createForm();
+    this.form.get('draft').valueChanges.subscribe((draft: boolean) => {
+      if (draft) {
+        this.form.get('contract').disable();
+        this.form.get('yearContract').disable();
+        this.form.get('yearContract').setValue(1);
+      } else {
+        this.form.get('contract').enable();
+        this.form.get('yearContract').enable();
+      }
+    });
   }
 
   ngOnInit() {
@@ -87,28 +98,6 @@ export class DraftBoardComponent implements OnInit {
       .subscribe((rosterList: RosterList) => {
         this.rosters = rosterList.content;
       });
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      fantasyTeam: [undefined, Validators.required],
-      roster: [undefined],
-      status: [undefined, Validators.required],
-      draft: [false, Validators.required],
-      contract: [1, Validators.required],
-      yearContract: [1, Validators.required],
-    });
-
-    this.form.get('draft').valueChanges.subscribe((draft: boolean) => {
-      if (draft) {
-        this.form.get('contract').disable();
-        this.form.get('yearContract').disable();
-        this.form.get('yearContract').setValue(1);
-      } else {
-        this.form.get('contract').enable();
-        this.form.get('yearContract').enable();
-      }
-    });
   }
 
   loadMore() {
@@ -150,13 +139,13 @@ export class DraftBoardComponent implements OnInit {
             this.form.get('roster').reset();
             this.fantasyRosterSelected = null;
           }),
-          switchMapTo(this.rosterService.freePlayers(1, this.limit)),
+          switchMap(() => this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
-          switchMapTo(this.store.select(leagueInfo)),
+          switchMap(() => this.store.select(leagueInfo)),
           take(1),
-          switchMapTo(this.fantasyTeamService.draftBoard(true)),
+          switchMap(() => this.fantasyTeamService.draftBoard(true)),
           tap((fantasyTeams: FantasyTeam[]) => {
             this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
             for (const ft of this.fantasyTeams) {
@@ -166,11 +155,9 @@ export class DraftBoardComponent implements OnInit {
         )
         .subscribe(noop);
     } else {
-      const fantasyRoster: FantasyRoster = {
-        ...this.form.value,
-      };
+      const fantasyRoster = { ...this.form.value };
       this.fantasyRosterService
-        .create(fantasyRoster)
+        .create(fantasyRoster as FantasyRoster)
         .pipe(
           tap(() => {
             this.hideModal();
@@ -181,13 +168,13 @@ export class DraftBoardComponent implements OnInit {
             this.rosterSelected = null;
             this.form.get('roster').reset();
           }),
-          switchMapTo(this.rosterService.freePlayers(1, this.limit)),
+          switchMap(() => this.rosterService.freePlayers(1, this.limit)),
           tap((rosterList: RosterList) => {
             this.rosters = rosterList.content;
           }),
-          switchMapTo(this.store.select(leagueInfo)),
+          switchMap(() => this.store.select(leagueInfo)),
           take(1),
-          switchMapTo(this.fantasyTeamService.draftBoard(true)),
+          switchMap(() => this.fantasyTeamService.draftBoard(true)),
           tap((fantasyTeams: FantasyTeam[]) => {
             this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
             for (const ft of this.fantasyTeams) {
@@ -241,13 +228,13 @@ export class DraftBoardComponent implements OnInit {
           );
           this.fantasyRosterSelected = null;
         }),
-        switchMapTo(this.rosterService.freePlayers(1, this.limit)),
+        switchMap(() => this.rosterService.freePlayers(1, this.limit)),
         tap((rosterList: RosterList) => {
           this.rosters = rosterList.content;
         }),
-        switchMapTo(this.store.select(leagueInfo)),
+        switchMap(() => this.store.select(leagueInfo)),
         take(1),
-        switchMapTo(this.fantasyTeamService.draftBoard(true)),
+        switchMap(() => this.fantasyTeamService.draftBoard(true)),
         tap((fantasyTeams: FantasyTeam[]) => {
           this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
           for (const ft of this.fantasyTeams) {

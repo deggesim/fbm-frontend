@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Team } from '@app/models/team';
 
 @Component({
@@ -11,11 +11,15 @@ export class TeamFormComponent implements OnChanges {
   @Output() save: EventEmitter<any> = new EventEmitter(true);
   @Output() cancel: EventEmitter<any> = new EventEmitter(true);
 
-  form: FormGroup;
+  form = this.fb.group({
+    fullName: [null as string, Validators.required],
+    sponsor: [null as string],
+    name: [null as string],
+    city: [null as string],
+    abbreviation: [null as string],
+  });
 
-  constructor(private fb: FormBuilder) {
-    this.createForm();
-  }
+  constructor(private fb: FormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const team: Team = changes['team'].currentValue;
@@ -23,16 +27,6 @@ export class TeamFormComponent implements OnChanges {
       const { fullName, sponsor, name, city, abbreviation } = team;
       this.form.patchValue({ fullName, sponsor, name, city, abbreviation });
     }
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      fullName: [undefined, Validators.required],
-      sponsor: [undefined],
-      name: [undefined],
-      city: [undefined],
-      abbreviation: [undefined],
-    });
   }
 
   onSubmit(): void {

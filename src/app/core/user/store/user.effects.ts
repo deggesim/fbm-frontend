@@ -4,7 +4,7 @@ import { UserService } from '@app/core/user/services/user.service';
 import { Auth, User } from '@app/models/user';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, switchMapTo } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import * as UserActions from './user.actions';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class UserEffects {
   load$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UserActions.loadUser),
-      switchMapTo(
+      switchMap(() =>
         this.userService.loadProfile().pipe(
           map((auth: Auth) => UserActions.loadUserSuccess({ user: auth.user })),
           catchError(() => of(UserActions.loadUserFailed()))

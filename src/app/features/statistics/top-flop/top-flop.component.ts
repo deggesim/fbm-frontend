@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
@@ -30,7 +30,12 @@ export class TopFlopComponent implements OnInit {
   nextRealFixture: RealFixture;
   tooltip = new Map<string, PlayerStats>();
 
-  form: FormGroup;
+  form = this.fb.group({
+    team: [null as Team],
+    fantasyTeam: [null as FantasyTeam],
+    role: [null as Role],
+    freePlayers: [null as boolean],
+  });
 
   // paginazione
   page = 1;
@@ -45,7 +50,12 @@ export class TopFlopComponent implements OnInit {
     private playerStatisticService: PlayerStatisticService,
     private performanceService: PerformanceService
   ) {
-    this.createForm();
+    this.form.valueChanges.subscribe((value) => {
+      const { team, fantasyTeam, role, freePlayers } = value;
+      this.page = 1;
+      this.loadStatistics(team, fantasyTeam, role, freePlayers);
+    });
+
     this.form.get('freePlayers').valueChanges.subscribe((value) => {
       if (value) {
         this.form.get('fantasyTeam').reset();
@@ -64,21 +74,6 @@ export class TopFlopComponent implements OnInit {
       this.nextRealFixture = value.nextRealFixture;
     });
     this.loadStatistics();
-  }
-
-  createForm() {
-    this.form = this.fb.group({
-      team: [],
-      fantasyTeam: [],
-      role: [],
-      freePlayers: [],
-    });
-
-    this.form.valueChanges.subscribe((value) => {
-      const { team, fantasyTeam, role, freePlayers } = value;
-      this.page = 1;
-      this.loadStatistics(team, fantasyTeam, role, freePlayers);
-    });
   }
 
   enablePagination() {
