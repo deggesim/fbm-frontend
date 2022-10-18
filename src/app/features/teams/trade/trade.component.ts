@@ -14,7 +14,7 @@ import { fantasyTeamMustBeDifferent } from '@app/shared/util/validations';
 import { select, Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMapTo, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-trade',
@@ -152,15 +152,15 @@ export class TradeComponent implements OnInit {
         tap(() => {
           this.hideModal();
         }),
-        switchMapTo(this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
+        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam1Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters1 = fantasyRosters;
         }),
-        switchMapTo(this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
+        switchMap(() => this.fantasyRosterService.read(this.fantasyTeam2Selected._id, this.nextRealFixture._id)),
         tap((fantasyRosters: FantasyRoster[]) => {
           this.fantasyRosters2 = fantasyRosters;
         }),
-        switchMapTo(this.fantasyTeamService.read()),
+        switchMap(() => this.fantasyTeamService.read()),
         tap((fantasyTeams: FantasyTeam[]) => {
           this.fantasyTeams = [...fantasyTeams].sort((a, b) => a.name.localeCompare(b.name));
           this.fantasyTeam1Selected = this.fantasyTeams.find((ft: FantasyTeam) => this.fantasyTeam1Selected._id === ft._id);

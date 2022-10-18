@@ -13,7 +13,7 @@ import { select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { iif, Observable, of, Subject, timer } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, switchMapTo, takeWhile, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, takeWhile, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-player-list',
@@ -128,8 +128,8 @@ export class PlayerListComponent implements OnInit {
           this.hideModal();
           roster.player = player;
         }),
-        switchMapTo(this.rosterService.create(roster)),
-        switchMapTo(this.filterPlayer()),
+        switchMap(() => this.rosterService.create(roster)),
+        switchMap(() => this.filterPlayer()),
         tap(() => {
           this.rosterSelected = undefined;
           this.toastService.success('Nuovo giocatore', `Il giocatore ${roster.player.name} è stato inserito correttamente`);
@@ -141,8 +141,8 @@ export class PlayerListComponent implements OnInit {
           this.hideModal();
           roster.player = player;
         }),
-        switchMapTo(this.rosterService.update(roster)),
-        switchMapTo(this.filterPlayer()),
+        switchMap(() => this.rosterService.update(roster)),
+        switchMap(() => this.filterPlayer()),
         tap(() => {
           this.rosterSelected = undefined;
           this.toastService.success('Modifica giocatore', `Il giocatore ${roster.player.name} è stato modificato correttamente`);
@@ -181,7 +181,7 @@ export class PlayerListComponent implements OnInit {
       this.popupConfermaElimina.closeModal();
       this.rosterService
         .delete(this.rosterSelected._id)
-        .pipe(switchMapTo(this.rosterService.read(this.page, this.limit)))
+        .pipe(switchMap(() => this.rosterService.read(this.page, this.limit)))
         .subscribe((rosterList: RosterList) => {
           this.toastService.success(
             'Giocatore eliminato',
@@ -207,7 +207,7 @@ export class PlayerListComponent implements OnInit {
   uploadPercentage() {
     timer(0, 1000)
       .pipe(
-        switchMapTo(this.playerService.uploadPercentage()),
+        switchMap(() => this.playerService.uploadPercentage()),
         tap((percentage: number) => {
           this.percentage = percentage;
           this.progressbarType = percentage >= 100 ? 'success' : 'warning';

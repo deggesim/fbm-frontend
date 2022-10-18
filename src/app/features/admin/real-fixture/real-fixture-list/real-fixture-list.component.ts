@@ -4,7 +4,7 @@ import { RealFixture } from '@app/models/real-fixture';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { switchMapTo, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-real-fixture-list',
@@ -38,7 +38,7 @@ export class RealFixtureListComponent implements OnInit {
           tap(() => {
             this.hideModal();
           }),
-          switchMapTo(this.realFixtureService.read())
+          switchMap(() => this.realFixtureService.read())
         )
         .subscribe((realFixtures: RealFixture[]) => {
           this.realFixtures = realFixtures;

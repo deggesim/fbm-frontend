@@ -31,7 +31,7 @@ import { isEmpty } from 'lodash-es';
 import { DateTime } from 'luxon';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { EMPTY, forkJoin, iif, Observable, of } from 'rxjs';
-import { map, switchMap, switchMapTo, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-lineups',
@@ -247,7 +247,7 @@ export class LineupsComponent implements OnInit {
             }
           }),
           switchMap((fantasyRosters: FantasyRoster[]) => this.buildStatistics(fantasyRosters)),
-          switchMapTo(this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id))
+          switchMap(() => this.lineupService.lineupByTeam(fantasyTeam._id, this.form.value.fixture._id))
         )
         .subscribe((lineup: Lineup[]) => {
           this.form.get('lineup').reset();
@@ -439,7 +439,10 @@ export class LineupsComponent implements OnInit {
                       );
                       return matchPlayedBySelectedFantasyTeam != null;
                     })
-                    .sort((f1: Fixture, f2: Fixture) => DateTime.fromISO(f2.updatedAt as string).diff(DateTime.fromISO(f1.updatedAt as string)).milliseconds)
+                    .sort(
+                      (f1: Fixture, f2: Fixture) =>
+                        DateTime.fromISO(f2.updatedAt as string).diff(DateTime.fromISO(f1.updatedAt as string)).milliseconds
+                    )
                 : null;
             prevFixture = orderedFixtures?.length > 0 ? orderedFixtures[0] : null;
           }

@@ -17,7 +17,7 @@ import { ToastService } from '@app/shared/services/toast.service';
 import { Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { forkJoin, Observable } from 'rxjs';
-import { switchMapTo, tap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-calendar-list',
@@ -107,11 +107,11 @@ export class CalendarListComponent implements OnInit {
         tap(() => {
           this.hideModalCalendarForm();
         }),
-        switchMapTo(this.store.select(selectedLeague)),
+        switchMap(() => this.store.select(selectedLeague)),
         tap((league: League) => {
           this.store.dispatch(LeagueInfoActions.refresh({ league }));
         }),
-        switchMapTo(this.roundService.read())
+        switchMap(() => this.roundService.read())
       )
       .subscribe((rounds: Round[]) => {
         this.matches = undefined;

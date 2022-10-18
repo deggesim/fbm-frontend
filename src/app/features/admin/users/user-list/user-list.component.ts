@@ -5,7 +5,7 @@ import { Role, User } from '@app/models/user';
 import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { ToastService } from '@app/shared/services/toast.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { map, switchMapTo, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-user-list',
@@ -52,7 +52,7 @@ export class UserListComponent implements OnInit {
           tap(() => {
             this.hideModal();
           }),
-          switchMapTo(this.userService.read()),
+          switchMap(() => this.userService.read()),
           map((users: User[]) => [...users].sort((a, b) => a.email.localeCompare(b.email)))
         )
         .subscribe((users: User[]) => {
@@ -67,7 +67,7 @@ export class UserListComponent implements OnInit {
           tap(() => {
             this.hideModal();
           }),
-          switchMapTo(this.userService.read()),
+          switchMap(() => this.userService.read()),
           map((users: User[]) => [...users].sort((a, b) => a.email.localeCompare(b.email)))
         )
         .subscribe((users: User[]) => {
@@ -101,7 +101,7 @@ export class UserListComponent implements OnInit {
             this.toastService.success('Utente eliminato', "L'utente è stato eliminato correttamente");
             this.userSelected = undefined;
           }),
-          switchMapTo(this.userService.read()),
+          switchMap(() => this.userService.read()),
           map((users: User[]) => [...users].sort((a, b) => a.email.localeCompare(b.email)))
         )
         .subscribe((users: User[]) => {
@@ -118,7 +118,7 @@ export class UserListComponent implements OnInit {
     this.userService
       .upload(file)
       .pipe(
-        switchMapTo(this.userService.read()),
+        switchMap(() => this.userService.read()),
         map((users: User[]) => [...users].sort((a, b) => a.email.localeCompare(b.email)))
       )
       .subscribe((users: User[]) => {
