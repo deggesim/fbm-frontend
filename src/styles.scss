@@ -162,3 +162,22 @@ button:disabled {
   cursor: not-allowed;
   pointer-events: all !important;
 }
+
+// workaround https://github.com/valor-software/ngx-bootstrap/issues/6490
+.popover {
+  position: absolute;
+  top: 0;
+  left: 0 #{'/* rtl:ignore */'};
+}
+
+.popover-arrow {
+  position: absolute;
+}
+
+.tooltip {
+  position: absolute;
+}
+
+.tooltip-arrow {
+  position: absolute;
+}
