@@ -296,6 +296,14 @@ export class LineupsComponent implements OnInit {
       this.disableCopyLineup = true;
       this.form.get('lineup').markAsDirty();
       this.lineup[index] = null;
+      if (index > AppConfig.Starters - 1 && index < AppConfig.MinPlayersInLineup) {
+        for (let i = AppConfig.FirstBenchPlayerIndex; i <= AppConfig.LastBenchPlayerIndex; i++) {
+          const benchPlayer = this.lineup[i];
+          if (benchPlayer) {
+            benchPlayer.benchOrder = i + 1 - AppConfig.Starters;
+          }
+        }
+      }
       this.form.get('lineup').setValue(this.lineup);
     }
   }
