@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
           let atLeastOneFixtureCompleted = false;
           if (fixturesCompleted != null && !isEmpty(fixturesCompleted)) {
             atLeastOneFixtureCompleted = true;
-            lastFixture = [...fixturesCompleted].sort((a, b) => b._id.localeCompare(a._id))[0];
+            lastFixture = [...fixturesCompleted].sort((a, b) => b.realFixture?.order - a.realFixture?.order)[0];
             if (round.roundRobin) {
               table = this.loadTable(round);
             }

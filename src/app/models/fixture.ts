@@ -1,5 +1,6 @@
 import { FbmModel } from './fbm.model';
 import { Match } from './match';
+import { RealFixture } from './real-fixture';
 import { Round } from './round';
 
 export interface Fixture extends FbmModel {
@@ -8,4 +9,5 @@ export interface Fixture extends FbmModel {
   completed: boolean;
   matches: Match[];
   round: Round;
+  realFixture?: RealFixture;
 }

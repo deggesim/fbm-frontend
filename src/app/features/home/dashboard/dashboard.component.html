@@ -37,7 +37,7 @@
 
     <div fxFlex="49" fxFlex.lt-md="100">
       <fieldset class="fieldset">
-        <legend class="legend"><fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata</legend>
+        <legend class="legend"><fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata ({{dashBoardItem.lastFixture.name}})</legend>
         <div *ngIf="dashBoardItem.atLeastOneFixtureCompleted; else fixtureNotDefined">
           <div class="table-responsive">
             <table class="table table-hover" [attr.aria-label]="dashBoardItem.lastFixture.name">
