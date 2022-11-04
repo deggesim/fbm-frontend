@@ -62,6 +62,8 @@ export class TradeComponent implements OnInit {
   }
 
   selectFantasyTeam1(fantasyTeam: FantasyTeam) {
+    this.fantasyRosters1Selected = [];
+    this.fantasyRosters2Selected = [];
     this.fantasyTeam1Selected = fantasyTeam;
     if (fantasyTeam != null) {
       this.fantasyRosterService.read(fantasyTeam._id, this.nextRealFixture._id).subscribe((fantasyRosters: FantasyRoster[]) => {
@@ -71,6 +73,8 @@ export class TradeComponent implements OnInit {
   }
 
   selectFantasyTeam2(fantasyTeam: FantasyTeam) {
+    this.fantasyRosters1Selected = [];
+    this.fantasyRosters2Selected = [];
     this.fantasyTeam2Selected = fantasyTeam;
     if (fantasyTeam != null) {
       this.fantasyRosterService.read(fantasyTeam._id, this.nextRealFixture._id).subscribe((fantasyRosters: FantasyRoster[]) => {
@@ -85,8 +89,7 @@ export class TradeComponent implements OnInit {
   }
 
   player2Choosen(fantasyRoster: FantasyRoster): boolean {
-    const fantasyRosters: FantasyRoster[] = this.form.get('inPlayers').value;
-    const found = fantasyRosters.find((fr: FantasyRoster) => fr._id === fantasyRoster._id);
+    const found = this.fantasyRosters2Selected.find((fr: FantasyRoster) => fr._id === fantasyRoster._id);
     return found != null;
   }
 
