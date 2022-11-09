@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Match } from '@app/models/match';
 
 @Component({
@@ -21,19 +21,22 @@ export class CalendarFormComponent implements OnChanges {
     const matches: Match[] = changes['matches'].currentValue;
     if (matches != null) {
       for (const match of matches) {
-        this.matchArray.push(
-          this.fb.group({
-            _id: match._id,
-            homeRanking: [match.homeRanking],
-            awayRanking: [match.awayRanking],
-            homeGrade: [match.homeGrade],
-            awayGrade: [match.awayGrade],
-            homeScore: [match.homeScore],
-            awayScore: [match.awayScore],
-            overtime: [match.overtime],
-            completed: [match.completed],
-          })
-        );
+        const fbGroup = this.fb.group({
+          _id: match._id,
+          homeRanking: [match.homeRanking],
+          awayRanking: [match.awayRanking],
+          homeGrade: [match.homeGrade],
+          awayGrade: [match.awayGrade],
+          homeScore: [match.homeScore],
+          awayScore: [match.awayScore],
+          overtime: [match.overtime],
+          completed: [match.completed],
+        });
+        if (fbGroup.get('completed').value) {
+          fbGroup.get('homeScore').setValidators(Validators.required);
+          fbGroup.get('awayScore').setValidators(Validators.required);
+        }
+        this.matchArray.push(fbGroup);
       }
     }
   }
@@ -48,5 +51,16 @@ export class CalendarFormComponent implements OnChanges {
 
   onSubmit(): void {
     this.save.emit(this.form.get('matchArray').value);
+  }
+
+  manageCompleted(index: number) {
+    this.getFormControl(index, 'homeScore').clearValidators();
+    this.getFormControl(index, 'awayScore').clearValidators();
+    if (this.getFormControl(index, 'completed').value) {
+      this.getFormControl(index, 'homeScore').setValidators(Validators.required);
+      this.getFormControl(index, 'awayScore').setValidators(Validators.required);
+    }
+    this.getFormControl(index, 'homeScore').updateValueAndValidity();
+    this.getFormControl(index, 'awayScore').updateValueAndValidity();
   }
 }

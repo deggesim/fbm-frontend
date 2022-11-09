@@ -126,8 +126,8 @@
           clearAllText="Elimina"
           [ngClass]="{ 'is-invalid': form.get('team').invalid && form.get('team').dirty }"
         >
-          <fbm-error-message [form-control]="form.get('team')" name="Squadra"></fbm-error-message>
         </ng-select>
+        <fbm-error-message [form-control]="form.get('team')" name="Squadra"></fbm-error-message>
       </div>
     </div>
 
@@ -143,8 +143,8 @@
           clearAllText="Elimina"
           [ngClass]="{ 'is-invalid': form.get('realFixture').invalid && form.get('realFixture').dirty }"
         >
-          <fbm-error-message [form-control]="form.get('team')" name="Squadra"></fbm-error-message>
         </ng-select>
+        <fbm-error-message [form-control]="form.get('realFixture')" name="Giornata"></fbm-error-message>
       </div>
     </div>
   </div>

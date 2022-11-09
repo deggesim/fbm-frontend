@@ -10,4 +10,5 @@ export class ErrorMessageComponent {
   @Input('form-group') fg: FormGroup;
   @Input('form-control') formControl: AbstractControl;
   @Input('name') formControlName: string;
+  @Input('custom-message') customMessage: string;
 }

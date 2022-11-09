@@ -13,9 +13,7 @@
             formControlName="email"
             [ngClass]="{ 'is-invalid': form.get('email').invalid && form.get('email').dirty }"
           />
-          <div *ngIf="form.get('email').hasError('required') && form.get('email').dirty" class="invalid-feedback">
-            Il campo email è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('email')" name="Email"></fbm-error-message>
         </div>
       </div>
 
@@ -30,9 +28,7 @@
             formControlName="password"
             [ngClass]="{ 'is-invalid': form.get('password').invalid && form.get('password').dirty }"
           />
-          <div *ngIf="form.get('password').hasError('required') && form.get('password').dirty" class="invalid-feedback">
-            Il campo password è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('password')" name="Password"></fbm-error-message>
         </div>
       </div>
     </div>

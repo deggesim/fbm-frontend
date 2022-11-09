@@ -13,9 +13,7 @@
             formControlName="name"
             [ngClass]="{ 'is-invalid': form.get('name').invalid && form.get('name').dirty }"
           />
-          <div *ngIf="form.get('name').hasError('required') && form.get('name').dirty" class="invalid-feedback">
-            Il campo nome è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('name')" name="Nome"></fbm-error-message>
         </div>
       </div>
 
@@ -32,17 +30,12 @@
             formControlName="realGames"
             [ngClass]="{ 'is-invalid': form.get('realGames').invalid && form.get('realGames').dirty }"
           />
-          <div *ngIf="form.get('realGames').hasError('required') && form.get('realGames').dirty" class="invalid-feedback">
-            Il campo Partite reali è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('realGames')" name="Partite reali"></fbm-error-message>
         </div>
       </div>
 
       <div fxFlex="69" fxFlex.xs="49">
-        <div
-          class="mb-3"
-          [ngClass]="{ 'is-invalid': form.get('regularSeasonFormat').invalid && form.get('regularSeasonFormat').dirty }"
-        >
+        <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('regularSeasonFormat').invalid && form.get('regularSeasonFormat').dirty }">
           <label for="regularSeasonFormat" class="control-label">Stagione regolare *</label>
           <ng-select
             id="regularSeasonFormat"
@@ -53,12 +46,7 @@
             clearAllText="Elimina"
           >
           </ng-select>
-        </div>
-        <div
-          *ngIf="form.get('regularSeasonFormat').hasError('required') && form.get('regularSeasonFormat').dirty"
-          class="ng-select-invalid-feedback"
-        >
-          Il campo Stagione regolare è obbligatorio
+          <fbm-error-message [form-control]="form.get('regularSeasonFormat')" name="Stagione regolare"></fbm-error-message>
         </div>
       </div>
 
@@ -75,12 +63,7 @@
             formControlName="roundRobinFirstRealFixture"
             [ngClass]="{ 'is-invalid': form.get('roundRobinFirstRealFixture').invalid && form.get('roundRobinFirstRealFixture').dirty }"
           />
-          <div
-            *ngIf="form.get('roundRobinFirstRealFixture').hasError('required') && form.get('roundRobinFirstRealFixture').dirty"
-            class="invalid-feedback"
-          >
-            Il campo Prima giornata reale è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('roundRobinFirstRealFixture')" name="Prima giornata reale"></fbm-error-message>
         </div>
       </div>
 
@@ -96,9 +79,7 @@
             clearAllText="Elimina"
           >
           </ng-select>
-          <div *ngIf="form.get('playoffFormat').hasError('required') && form.get('playoffFormat').dirty" class="ng-select-invalid-feedback">
-            Il campo Playoff è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('playoffFormat')" name="Playoff"></fbm-error-message>
         </div>
       </div>
 
@@ -115,12 +96,7 @@
             formControlName="playoffFirstRealFixture"
             [ngClass]="{ 'is-invalid': form.get('playoffFirstRealFixture').invalid && form.get('playoffFirstRealFixture').dirty }"
           />
-          <div
-            *ngIf="form.get('playoffFirstRealFixture').hasError('required') && form.get('playoffFirstRealFixture').dirty"
-            class="invalid-feedback"
-          >
-            Il campo Prima giornata reale è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('playoffFirstRealFixture')" name="Prima giornata reale"></fbm-error-message>
         </div>
       </div>
 
@@ -136,9 +112,7 @@
             clearAllText="Elimina"
           >
           </ng-select>
-          <div *ngIf="form.get('playoutFormat').hasError('required') && form.get('playoutFormat').dirty" class="ng-select-invalid-feedback">
-            Il campo Playout è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('playoutFormat')" name="Playout"></fbm-error-message>
         </div>
       </div>
 
@@ -155,12 +129,7 @@
             formControlName="playoutFirstRealFixture"
             [ngClass]="{ 'is-invalid': form.get('playoutFirstRealFixture').invalid && form.get('playoutFirstRealFixture').dirty }"
           />
-          <div
-            *ngIf="form.get('playoutFirstRealFixture').hasError('required') && form.get('playoutFirstRealFixture').dirty"
-            class="invalid-feedback"
-          >
-            Il campo Prima giornata reale è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('playoutFirstRealFixture')" name="Prima giornata reale"></fbm-error-message>
         </div>
       </div>
 
@@ -176,9 +145,7 @@
             clearAllText="Elimina"
           >
           </ng-select>
-          <div *ngIf="form.get('cupFormat').hasError('required') && form.get('cupFormat').dirty" class="ng-select-invalid-feedback">
-            Il campo Coppa di lega è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('cupFormat')" name="Coppa di lega"></fbm-error-message>
         </div>
       </div>
 
@@ -195,12 +162,7 @@
             formControlName="cupFirstRealFixture"
             [ngClass]="{ 'is-invalid': form.get('cupFirstRealFixture').invalid && form.get('cupFirstRealFixture').dirty }"
           />
-          <div
-            *ngIf="form.get('cupFirstRealFixture').hasError('required') && form.get('cupFirstRealFixture').dirty"
-            class="invalid-feedback"
-          >
-            Il campo Prima giornata reale è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('cupFirstRealFixture')" name="Prima giornata reale"></fbm-error-message>
         </div>
       </div>
     </div>

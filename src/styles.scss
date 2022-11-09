@@ -25,15 +25,32 @@ body {
 }
 
 // ng-select
-.ng-select.ng-invalid.ng-touched .ng-select-container {
-  border-color: $danger;
+.ng-select {
+  .ng-select-container {
+    .ng-value-container {
+      .ng-input {
+        > input {
+          color: $gray-800;
+        }
+      }
+    }
+  }
 }
-.ng-select.ng-invalid.ng-touched .ng-arrow-wrapper .ng-arrow {
-  border-color: $danger transparent transparent;
+
+.ng-select.ng-invalid.ng-touched {
+  .ng-select-container {
+    border-color: $danger;
+    .ng-placeholder {
+      color: $danger;
+    }
+  }
+  .ng-arrow-wrapper {
+    .ng-arrow {
+      border-color: $danger transparent transparent;
+    }
+  }
 }
-.ng-select.ng-invalid.ng-touched .ng-select-container .ng-placeholder {
-  color: $danger;
-}
+
 .ng-select-invalid-feedback {
   width: 100%;
   margin-top: 0.25rem;

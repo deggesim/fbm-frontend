@@ -11,9 +11,7 @@
           formControlName="name"
           [ngClass]="{ 'is-invalid': form.get('name').invalid && form.get('name').dirty }"
         />
-        <div *ngIf="form.get('name').hasError('required') && form.get('name').dirty" class="invalid-feedback">
-          Il campo Nome è obbligatorio
-        </div>
+        <fbm-error-message [form-control]="form.get('name')" name="Nome"></fbm-error-message>
       </div>
     </div>
 
@@ -28,9 +26,7 @@
           formControlName="email"
           [ngClass]="{ 'is-invalid': form.get('email').invalid && form.get('email').dirty }"
         />
-        <div *ngIf="form.get('email').hasError('required') && form.get('email').dirty" class="invalid-feedback">
-          Il campo Email è obbligatorio
-        </div>
+        <fbm-error-message [form-control]="form.get('email')" name="Email"></fbm-error-message>
       </div>
     </div>
 
@@ -45,9 +41,7 @@
           formControlName="newPassword"
           [ngClass]="{ 'is-invalid': form.get('newPassword').invalid && form.get('newPassword').dirty }"
         />
-        <div *ngIf="form.get('newPassword').hasError('required') && form.get('newPassword').dirty" class="invalid-feedback">
-          Il campo Nuova password è obbligatorio
-        </div>
+        <fbm-error-message [form-control]="form.get('newPassword')" name="Nuova password"></fbm-error-message>
       </div>
     </div>
 
@@ -62,9 +56,7 @@
           formControlName="confirmPassword"
           [ngClass]="{ 'is-invalid': form.get('confirmPassword').invalid && form.get('confirmPassword').dirty }"
         />
-        <div *ngIf="form.get('confirmPassword').hasError('required') && form.get('confirmPassword').dirty" class="invalid-feedback">
-          Il campo Conferma password è obbligatorio
-        </div>
+        <fbm-error-message [form-control]="form.get('confirmPassword')" name="Conferma password"></fbm-error-message>
       </div>
     </div>
   </div>

@@ -43,12 +43,7 @@
               formControlName="homeScore"
               [ngClass]="{ 'is-invalid': getFormControl(i, 'homeScore').invalid && getFormControl(i, 'homeScore').dirty }"
             />
-            <div
-              *ngIf="getFormControl(i, 'homeScore').hasError('required') && getFormControl(i, 'homeScore').dirty"
-              class="invalid-feedback"
-            >
-              Il campo Punteggio casa è obbligatorio
-            </div>
+            <fbm-error-message [form-control]="getFormControl(i, 'homeScore')" name="Punteggio casa"></fbm-error-message>
           </div>
         </div>
 
@@ -62,12 +57,7 @@
               formControlName="awayScore"
               [ngClass]="{ 'is-invalid': getFormControl(i, 'awayScore').invalid && getFormControl(i, 'awayScore').dirty }"
             />
-            <div
-              *ngIf="getFormControl(i, 'awayScore').hasError('required') && getFormControl(i, 'awayScore').dirty"
-              class="invalid-feedback"
-            >
-              Il campo Punteggio trasferta è obbligatorio
-            </div>
+            <fbm-error-message [form-control]="getFormControl(i, 'awayScore')" name="Punteggio trasferta"></fbm-error-message>
           </div>
         </div>
 
@@ -81,7 +71,13 @@
         <div fxFlex="100">
           <div class="mb-3">
             <div class="form-check form-switch">
-              <input type="checkbox" class="form-check-input" id="completed-{{ i }}" formControlName="completed" />
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="completed-{{ i }}"
+                formControlName="completed"
+                (change)="manageCompleted(i)"
+              />
               <label class="form-check-label" for="completed-{{ i }}">Completata</label>
             </div>
           </div>

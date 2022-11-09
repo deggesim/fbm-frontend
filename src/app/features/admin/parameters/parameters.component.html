@@ -13,9 +13,7 @@
             formControlName="DRAFT"
             [ngClass]="{ 'is-invalid': form.get('DRAFT').invalid && form.get('DRAFT').dirty }"
           />
-          <div *ngIf="form.get('DRAFT').hasError('required') && form.get('DRAFT').dirty" class="invalid-feedback">
-            Il campo DRAFT è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('DRAFT')" name="DRAFT"></fbm-error-message>
         </div>
       </div>
 
@@ -30,9 +28,7 @@
             formControlName="MAX_CONTRACTS"
             [ngClass]="{ 'is-invalid': form.get('MAX_CONTRACTS').invalid && form.get('MAX_CONTRACTS').dirty }"
           />
-          <div *ngIf="form.get('MAX_CONTRACTS').hasError('required') && form.get('MAX_CONTRACTS').dirty" class="invalid-feedback">
-            Il campo MAX_CONTRACTS è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('MAX_CONTRACTS')" name="MAX_CONTRACTS"></fbm-error-message>
         </div>
       </div>
 
@@ -47,9 +43,7 @@
             formControlName="MAX_STR"
             [ngClass]="{ 'is-invalid': form.get('MAX_STR').invalid && form.get('MAX_STR').dirty }"
           />
-          <div *ngIf="form.get('MAX_STR').hasError('required') && form.get('MAX_STR').dirty" class="invalid-feedback">
-            Il campo MAX_STR è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('MAX_STR')" name="MAX_STR"></fbm-error-message>
         </div>
       </div>
 
@@ -64,9 +58,7 @@
             formControlName="MAX_EXT_OPT_345"
             [ngClass]="{ 'is-invalid': form.get('MAX_EXT_OPT_345').invalid && form.get('MAX_EXT_OPT_345').dirty }"
           />
-          <div *ngIf="form.get('MAX_EXT_OPT_345').hasError('required') && form.get('MAX_EXT_OPT_345').dirty" class="invalid-feedback">
-            Il campo MAX_EXT_OPT_345 è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('MAX_EXT_OPT_345')" name="MAX_EXT_OPT_345"></fbm-error-message>
         </div>
       </div>
 
@@ -81,12 +73,7 @@
             formControlName="MAX_PLAYERS_IN_ROSTER"
             [ngClass]="{ 'is-invalid': form.get('MAX_PLAYERS_IN_ROSTER').invalid && form.get('MAX_PLAYERS_IN_ROSTER').dirty }"
           />
-          <div
-            *ngIf="form.get('MAX_PLAYERS_IN_ROSTER').hasError('required') && form.get('MAX_PLAYERS_IN_ROSTER').dirty"
-            class="invalid-feedback"
-          >
-            Il campo MAX_PLAYERS_IN_ROSTER è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('MAX_PLAYERS_IN_ROSTER')" name="MAX_PLAYERS_IN_ROSTER"></fbm-error-message>
         </div>
       </div>
 
@@ -101,12 +88,7 @@
             formControlName="MAX_STRANGERS_OPT_55"
             [ngClass]="{ 'is-invalid': form.get('MAX_STRANGERS_OPT_55').invalid && form.get('MAX_STRANGERS_OPT_55').dirty }"
           />
-          <div
-            *ngIf="form.get('MAX_STRANGERS_OPT_55').hasError('required') && form.get('MAX_STRANGERS_OPT_55').dirty"
-            class="invalid-feedback"
-          >
-            Il campo MAX_STRANGERS_OPT_55 è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('MAX_STRANGERS_OPT_55')" name="MAX_STRANGERS_OPT_55"></fbm-error-message>
         </div>
       </div>
 
@@ -121,9 +103,7 @@
             formControlName="MIN_NAT_PLAYERS"
             [ngClass]="{ 'is-invalid': form.get('MIN_NAT_PLAYERS').invalid && form.get('MIN_NAT_PLAYERS').dirty }"
           />
-          <div *ngIf="form.get('MIN_NAT_PLAYERS').hasError('required') && form.get('MIN_NAT_PLAYERS').dirty" class="invalid-feedback">
-            Il campo MIN_NAT_PLAYERS è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('MIN_NAT_PLAYERS')" name="MIN_NAT_PLAYERS"></fbm-error-message>
         </div>
       </div>
 
@@ -138,9 +118,7 @@
             formControlName="RESULT_DIVISOR"
             [ngClass]="{ 'is-invalid': form.get('RESULT_DIVISOR').invalid && form.get('RESULT_DIVISOR').dirty }"
           />
-          <div *ngIf="form.get('RESULT_DIVISOR').hasError('required') && form.get('RESULT_DIVISOR').dirty" class="invalid-feedback">
-            Il campo RESULT_DIVISOR è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('RESULT_DIVISOR')" name="RESULT_DIVISOR"></fbm-error-message>
         </div>
       </div>
 
@@ -155,9 +133,7 @@
             formControlName="RESULT_WITH_GRADE"
             [ngClass]="{ 'is-invalid': form.get('RESULT_WITH_GRADE').invalid && form.get('RESULT_WITH_GRADE').dirty }"
           />
-          <div *ngIf="form.get('RESULT_WITH_GRADE').hasError('required') && form.get('RESULT_WITH_GRADE').dirty" class="invalid-feedback">
-            Il campo RESULT_WITH_GRADE è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('RESULT_WITH_GRADE')" name="RESULT_WITH_GRADE"></fbm-error-message>
         </div>
       </div>
 
@@ -172,9 +148,7 @@
             formControlName="RESULT_WITH_OER"
             [ngClass]="{ 'is-invalid': form.get('RESULT_WITH_OER').invalid && form.get('RESULT_WITH_OER').dirty }"
           />
-          <div *ngIf="form.get('RESULT_WITH_OER').hasError('required') && form.get('RESULT_WITH_OER').dirty" class="invalid-feedback">
-            Il campo RESULT_WITH_OER è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('RESULT_WITH_OER')" name="RESULT_WITH_OER"></fbm-error-message>
         </div>
       </div>
 
@@ -189,12 +163,7 @@
             formControlName="RESULT_WITH_PLUS_MINUS"
             [ngClass]="{ 'is-invalid': form.get('RESULT_WITH_PLUS_MINUS').invalid && form.get('RESULT_WITH_PLUS_MINUS').dirty }"
           />
-          <div
-            *ngIf="form.get('RESULT_WITH_PLUS_MINUS').hasError('required') && form.get('RESULT_WITH_PLUS_MINUS').dirty"
-            class="invalid-feedback"
-          >
-            Il campo RESULT_WITH_PLUS_MINUS è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('RESULT_WITH_PLUS_MINUS')" name="RESULT_WITH_PLUS_MINUS"></fbm-error-message>
         </div>
       </div>
 
@@ -209,9 +178,7 @@
             formControlName="TREND"
             [ngClass]="{ 'is-invalid': form.get('TREND').invalid && form.get('TREND').dirty }"
           />
-          <div *ngIf="form.get('TREND').hasError('required') && form.get('TREND').dirty" class="invalid-feedback">
-            Il campo TREND è obbligatorio
-          </div>
+          <fbm-error-message [form-control]="form.get('TREND')" name="TREND"></fbm-error-message>
         </div>
       </div>
     </div>
