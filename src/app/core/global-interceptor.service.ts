@@ -51,17 +51,21 @@ export class GlobalInterceptor implements HttpInterceptor {
               titolo = 'Utente non autorizzato';
               descrizione = "L'utente non è autorizzato ad eseguire l'operazione richiesta";
               break;
+            case 404:
+              titolo = 'Non trovato';
+              descrizione = response.error || response.message || 'Risorsa non trovata';
+              break;
             case 422:
               titolo = 'Errore nella richiesta';
-              descrizione = response.error || response.message;
+              descrizione = response.error || response.message || 'Validazione fallita';
               break;
             case 500:
               titolo = 'Errore server';
-              descrizione = 'Si è verificato un errore imprevisto';
+              descrizione = response.error || response.message || 'Si è verificato un errore imprevisto';
               break;
             default:
-              titolo = 'Problema generico';
-              descrizione = 'Si è verificato un errore imprevisto';
+              titolo = response.statusText || 'Problema generico';
+              descrizione = response.error || response.message || 'Si è verificato un errore imprevisto';
               break;
           }
           this.toastService.error(titolo, descrizione);
