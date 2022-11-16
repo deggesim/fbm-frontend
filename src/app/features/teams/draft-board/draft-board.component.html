@@ -56,7 +56,7 @@
         <!-- players-->
         <tr class="manina table-secondary" *ngFor="let i of playersInRoster">
           <td *ngFor="let fantasyTeam of fantasyTeams" [appPlayerStatus]="fantasyTeam.fantasyRosters[i]">
-            <ng-container *ngIf="fantasyTeam.fantasyRosters[i]">
+            <ng-container *ngIf="fantasyTeam.fantasyRosters[i]; else emptyCell">
               <div>
                 {{ fantasyTeam.fantasyRosters[i].roster?.player?.name }}
                 ({{ fantasyTeam.fantasyRosters[i].roster?.player?.role | roleShort }}) -
@@ -80,6 +80,9 @@
                 ></fa-icon>
               </span>
             </ng-container>
+            <ng-template #emptyCell>
+              <div>&nbsp;</div>
+            </ng-template>
           </td>
         </tr>
       </tbody>
