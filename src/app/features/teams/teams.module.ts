@@ -22,9 +22,10 @@ import { TeamsRoutingModule } from './teams-routing.module';
 import { TradeComponent } from './trade/trade.component';
 import { TransactionComponent } from './transaction/transaction.component';
 import { DraftBoardComponent } from './draft-board/draft-board.component';
+import { RostersComponent } from './rosters/rosters.component';
 
 @NgModule({
-  declarations: [TransactionComponent, TradeComponent, FantasyRostersComponent, DraftBoardComponent],
+  declarations: [TransactionComponent, TradeComponent, FantasyRostersComponent, DraftBoardComponent, RostersComponent],
   imports: [
     ReactiveFormsModule,
     CommonModule,

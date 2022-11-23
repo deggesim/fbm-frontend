@@ -44,6 +44,15 @@
           <a class="dropdown-item" routerLink="/teams/fantasy-rosters" routerLinkActive="active" (click)="isCollapsed = true">
             <fa-icon icon="list" [fixedWidth]="true" class="icon-padding"></fa-icon>Fantasquadre
           </a>
+          <a
+            class="dropdown-item"
+            routerLink="/teams/rosters"
+            routerLinkActive="active"
+            (click)="isCollapsed = true"
+            *ngIf="!leagueInfo?.preSeason"
+          >
+            <fa-icon icon="table" [fixedWidth]="true" class="icon-padding"></fa-icon>Rosters
+          </a>
         </ul>
       </li>
 
@@ -126,7 +135,6 @@
           >
             <fa-icon icon="list" [fixedWidth]="true" class="icon-padding"></fa-icon>Gestione giornate
           </a>
-          <!-- <a class="dropdown-item" (click)="isCollapsed = true;">Gestione giornate</a> -->
         </ul>
       </li>
 

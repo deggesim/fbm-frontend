@@ -6,7 +6,7 @@ import { leagueInfo } from '@app/core/league/store/league.selector';
 import { user } from '@app/core/user/store/user.selector';
 import { FantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
-import { LeagueInfo, Status } from '@app/models/league';
+import { LeagueInfo } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
 import { Role, User } from '@app/models/user';
 import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
@@ -40,7 +40,6 @@ export class TransactionComponent implements OnInit {
   fantasyRosters: FantasyRoster[];
   fantasyRosterSelected: FantasyRoster;
   statusList = ['EXT', 'COM', 'ITA'];
-  leagueStatus: Status;
 
   limit = 10;
   typeahead$ = new Subject<string>();
@@ -88,9 +87,6 @@ export class TransactionComponent implements OnInit {
           (fantasyTeam: FantasyTeam) => fantasyTeam.owners.find((owner: User) => owner._id === value._id) != null
         );
       }
-    });
-    this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
-      this.leagueStatus = value?.status;
     });
 
     this.typeahead$

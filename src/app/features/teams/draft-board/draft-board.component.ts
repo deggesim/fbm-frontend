@@ -5,14 +5,13 @@ import { AppState } from '@app/core/app.state';
 import { leagueInfo } from '@app/core/league/store/league.selector';
 import { FantasyRoster, sortFantasyRoster } from '@app/models/fantasy-roster';
 import { FantasyTeam } from '@app/models/fantasy-team';
-import { LeagueInfo, Status } from '@app/models/league';
 import { Roster, RosterList } from '@app/models/roster';
 import { PopupConfirmComponent } from '@app/shared/components/popup-confirm/popup-confirm.component';
 import { FantasyRosterService } from '@app/shared/services/fantasy-roster.service';
 import { FantasyTeamService } from '@app/shared/services/fantasy-team.service';
 import { RosterService } from '@app/shared/services/roster.service';
 import { ToastService } from '@app/shared/services/toast.service';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { debounceTime, distinctUntilChanged, iif, noop, of, Subject, switchMap, take, tap } from 'rxjs';
 
@@ -33,10 +32,8 @@ export class DraftBoardComponent implements OnInit {
   fantasyTeams: FantasyTeam[];
   rosters: Roster[];
   rosterSelected: Roster;
-  fantasyRosters: FantasyRoster[];
   fantasyRosterSelected: FantasyRoster;
   statusList = ['EXT', 'COM', 'ITA'];
-  leagueStatus: Status;
 
   limit = 10;
   typeahead$ = new Subject<string>();
@@ -53,8 +50,6 @@ export class DraftBoardComponent implements OnInit {
   private fantasyTeamService: FantasyTeamService;
   private store: Store<AppState>;
 
-  playersInRoster: number[];
-
   constructor(injector: Injector, private fb: FormBuilder) {
     this.route = injector.get(ActivatedRoute);
     this.toastService = injector.get(ToastService);
@@ -62,7 +57,6 @@ export class DraftBoardComponent implements OnInit {
     this.fantasyRosterService = injector.get(FantasyRosterService);
     this.fantasyTeamService = injector.get(FantasyTeamService);
     this.store = injector.get(Store);
-    this.playersInRoster = Array.from(Array(16).keys());
 
     this.form.get('draft').valueChanges.subscribe((draft: boolean) => {
       if (draft) {
@@ -79,9 +73,6 @@ export class DraftBoardComponent implements OnInit {
   ngOnInit() {
     this.fantasyTeams = this.route.snapshot.data['fantasyTeams'];
     this.rosters = this.route.snapshot.data['rosterList'].content;
-    this.store.pipe(select(leagueInfo), take(1)).subscribe((value: LeagueInfo) => {
-      this.leagueStatus = value?.status;
-    });
 
     this.typeahead$
       .pipe(
@@ -197,7 +188,8 @@ export class DraftBoardComponent implements OnInit {
     this.showModalTransaction = false;
   }
 
-  update(fantasyTeam: FantasyTeam, fantasyRoster: FantasyRoster) {
+  update(event: { fantasyTeam: FantasyTeam; fantasyRoster: FantasyRoster }) {
+    const { fantasyTeam, fantasyRoster } = event;
     this.fantasyRosterSelected = fantasyRoster;
     this.form.patchValue({
       fantasyTeam,
