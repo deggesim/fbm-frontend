@@ -6,6 +6,7 @@ import { FantasyTeamResolverService } from '@app/shared/resolvers/fantasy-team-r
 import { FreePlayersResolverService } from '@app/shared/resolvers/free-players-resolver.service';
 import { DraftBoardComponent } from './draft-board/draft-board.component';
 import { FantasyRostersComponent } from './fantasy-rosters/fantasy-rosters.component';
+import { RostersComponent } from './rosters/rosters.component';
 import { TradeComponent } from './trade/trade.component';
 import { TransactionComponent } from './transaction/transaction.component';
 
@@ -46,6 +47,14 @@ const routes: Routes = [
     component: FantasyRostersComponent,
     resolve: {
       fantasyTeams: FantasyTeamResolverService,
+    },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'rosters',
+    component: RostersComponent,
+    resolve: {
+      fantasyTeams: DraftBoardResolverService,
     },
     canActivate: [AuthGuard],
   },

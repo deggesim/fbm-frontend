@@ -24,69 +24,12 @@
       </ng-select>
     </div>
 
-    <table class="table table-hover" aria-label="Fantasy roster">
-      <thead class="table-dark">
-        <tr>
-          <th *ngFor="let fantasyTeam of fantasyTeams" [id]="fantasyTeam.name">{{ fantasyTeam.name }}</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr class="table-secondary">
-          <td *ngFor="let fantasyTeam of fantasyTeams">
-            <div fxLayout="row wrap">
-              <div fxFlex="50" tooltip="Crediti spesi" class="text-nowrap">
-                <fa-icon icon="money-bill-wave" [fixedWidth]="true" class="icon-padding"></fa-icon>:
-                {{ fantasyTeam.outgo }}
-              </div>
-              <div fxFlex="50" tooltip="Crediti residui" class="text-nowrap">
-                <fa-icon icon="piggy-bank" [fixedWidth]="true" class="icon-padding"></fa-icon>:
-                {{ fantasyTeam.initialBalance - fantasyTeam.balancePenalty - fantasyTeam.outgo }}
-              </div>
-              <div fxFlex="50" tooltip="Giocatori nel roster" class="text-nowrap">
-                <fa-icon icon="users" [fixedWidth]="true" class="icon-padding"></fa-icon>: {{ fantasyTeam.playersInRoster }}
-              </div>
-              <div fxFlex="50" tooltip="Visti spesi" class="text-nowrap">
-                <fa-icon icon="globe-americas" [fixedWidth]="true" class="icon-padding"></fa-icon>: {{ fantasyTeam.extraPlayers }}
-              </div>
-            </div>
-          </td>
-        </tr>
-
-        <!-- players-->
-        <tr class="manina table-secondary" *ngFor="let i of playersInRoster">
-          <td *ngFor="let fantasyTeam of fantasyTeams" [appPlayerStatus]="fantasyTeam.fantasyRosters[i]">
-            <ng-container *ngIf="fantasyTeam.fantasyRosters[i]; else emptyCell">
-              <div>
-                {{ fantasyTeam.fantasyRosters[i].roster?.player?.name }}
-                ({{ fantasyTeam.fantasyRosters[i].roster?.player?.role | roleShort }}) -
-                {{ fantasyTeam.fantasyRosters[i].contract }}
-                ({{ fantasyTeam.fantasyRosters[i].yearContract }})
-              </div>
-              <span role="button" tooltip="Modifica tesseramento">
-                <fa-icon
-                  icon="pencil-alt"
-                  [fixedWidth]="true"
-                  class="icon-padding"
-                  (click)="update(fantasyTeam, fantasyTeam.fantasyRosters[i])"
-                ></fa-icon>
-              </span>
-              <span role="button" tooltip="Elimina tesseramento">
-                <fa-icon
-                  icon="trash"
-                  [fixedWidth]="true"
-                  class="icon-padding"
-                  (click)="openRemovePopup(fantasyTeam.fantasyRosters[i])"
-                ></fa-icon>
-              </span>
-            </ng-container>
-            <ng-template #emptyCell>
-              <div>&nbsp;</div>
-            </ng-template>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <fbm-rosters-table
+      [fantasyTeams]="fantasyTeams"
+      [readOnly]="false"
+      (update)="update($event)"
+      (openRemovePopup)="openRemovePopup($event)"
+    ></fbm-rosters-table>
   </fieldset>
 
   <!-- modal transaction-->

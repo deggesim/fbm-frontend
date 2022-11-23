@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { MatchResultComponent } from './components/match-result/match-result.component';
+import { RostersTableComponent } from './components/rosters-table/rosters-table.component';
 import { DecodeHistoryPipe } from './pipes/decode-history.pipe';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { DecodeHistoryPipe } from './pipes/decode-history.pipe';
     ToStringPipe,
     PlayerStatusDirective,
     DecodeHistoryPipe,
+    RostersTableComponent,
   ],
   imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule, FlexLayoutModule],
   exports: [
@@ -38,6 +40,7 @@ import { DecodeHistoryPipe } from './pipes/decode-history.pipe';
     ToStringPipe,
     PlayerStatusDirective,
     DecodeHistoryPipe,
+    RostersTableComponent,
   ],
 })
 export class SharedModule {
