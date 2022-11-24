@@ -39,7 +39,8 @@
     </div>
   </form>
   <h6 *ngIf="playerStatisticList?.totalElements" class="text-end pt-3">Totale: {{ playerStatisticList.totalElements }}</h6>
-  <div class="table-responsive">
+
+  <div class="table-responsive" *ngIf="playerStatisticList?.totalElements > 0; else empty">
     <table class="table table-hover" aria-label="Top Flop">
       <thead class="table-dark">
         <tr>
@@ -91,6 +92,10 @@
       </tbody>
     </table>
   </div>
+
+  <ng-template #empty>
+    <h4 class="p-3">Nessun giocatore trovato con i filtri inseriti</h4>
+  </ng-template>
 
   <div fxLayout="row" fxLayoutAlign="center" *ngIf="enablePagination()">
     <div fxFlex="nogrow">
