@@ -29,15 +29,19 @@
 
     <!-- players-->
     <tr class="manina table-secondary" [ngClass]="{ manina: !readOnly }" *ngFor="let i of playersInRoster">
-      <td *ngFor="let fantasyTeam of fantasyTeams" [appPlayerStatus]="fantasyTeam.fantasyRosters[i]">
+      <td
+        *ngFor="let fantasyTeam of fantasyTeams"
+        [appPlayerStatus]="fantasyTeam.fantasyRosters[i]"
+        [ngClass]="{ darker: fantasyTeam.fantasyRosters[i]?.draft }"
+      >
         <ng-container *ngIf="fantasyTeam.fantasyRosters[i]; else emptyCell">
-          <div>
-            {{ fantasyTeam.fantasyRosters[i].roster?.player?.name }}
-            ({{ fantasyTeam.fantasyRosters[i].roster?.player?.role | roleShort }}) -
-            {{ fantasyTeam.fantasyRosters[i].contract }}
-            ({{ fantasyTeam.fantasyRosters[i].yearContract }})
-          </div>
+          {{ fantasyTeam.fantasyRosters[i].roster?.player?.name }}
+          ({{ fantasyTeam.fantasyRosters[i].roster?.player?.role | roleShort }}) -
+          {{ fantasyTeam.fantasyRosters[i].draft ? 'D' : fantasyTeam.fantasyRosters[i].contract }}
+          ({{ fantasyTeam.fantasyRosters[i].yearContract }})
+
           <ng-container *ngIf="!readOnly">
+            <br />
             <span role="button" tooltip="Modifica tesseramento">
               <fa-icon
                 icon="pencil-alt"

@@ -5,6 +5,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 @Component({
   selector: 'fbm-rosters-table',
   templateUrl: './rosters-table.component.html',
+  styleUrls: ['./rosters-table.component.scss'],
 })
 export class RostersTableComponent {
   @Input() fantasyTeams: FantasyTeam[];
