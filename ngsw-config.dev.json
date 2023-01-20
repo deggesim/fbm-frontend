@@ -24,13 +24,9 @@
       "name": "fbm",
       "urls": [
         "http://localhost:5000/competitions",
-        "http://localhost:5000/fantasy-teams",
         "http://localhost:5000/fixtures",
         "http://localhost:5000/leagues",
-        "http://localhost:5000/lineups",
         "http://localhost:5000/matches",
-        "http://localhost:5000/performances",
-        "http://localhost:5000/players",
         "http://localhost:5000/real-fixtures",
         "http://localhost:5000/rounds",
         "http://localhost:5000/statistics",
