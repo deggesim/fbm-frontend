@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="sign-in-alt" class="icon-padding"></fa-icon>Login</legend>
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="49" fxFlex.xs="100">
+    <div class="row">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="email" class="control-label">Email</label>
           <input
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="password" class="control-label">Password</label>
           <input

@@ -2,9 +2,9 @@
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="exchange-alt" class="icon-padding"></fa-icon>Scambi</legend>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+    <div class="row">
       <!-- FANTASYTEAM #1-->
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra #1</label>
           <ng-select
@@ -20,13 +20,13 @@
           <fbm-error-message [form-control]="form.get('fantasyTeam1')"></fbm-error-message>
         </div>
 
-        <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeam1Selected">
-          <div fxFlex="50" fxFlex.sm="100">
+        <div class="row" *ngIf="fantasyTeam1Selected">
+          <div class="col-sm-6">
             Crediti residui: {{ fantasyTeam1Selected.initialBalance - fantasyTeam1Selected.balancePenalty - fantasyTeam1Selected.outgo }}
           </div>
-          <div fxFlex="50" fxFlex.sm="100">Contratti stipulati: {{ fantasyTeam1Selected.totalContracts }}</div>
-          <div fxFlex="50" fxFlex.sm="100">Giocatori nel roster: {{ fantasyTeam1Selected.playersInRoster }}</div>
-          <div fxFlex="50" fxFlex.sm="100">Visti spesi: {{ fantasyTeam1Selected.extraPlayers }}</div>
+          <div class="col-sm-6">Contratti stipulati: {{ fantasyTeam1Selected.totalContracts }}</div>
+          <div class="col-sm-6">Giocatori nel roster: {{ fantasyTeam1Selected.playersInRoster }}</div>
+          <div class="col-sm-6">Visti spesi: {{ fantasyTeam1Selected.extraPlayers }}</div>
         </div>
         <hr />
 
@@ -63,7 +63,7 @@
       </div>
 
       <!-- FANTASYTEAM #2-->
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra #2</label>
           <ng-select
@@ -79,13 +79,13 @@
           <fbm-error-message [form-group]="form" name="Fantasquadra #2"></fbm-error-message>
         </div>
 
-        <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeam2Selected">
-          <div fxFlex="50" fxFlex.sm="100">
+        <div class="row" *ngIf="fantasyTeam2Selected">
+          <div class="col-sm-6">
             Crediti residui: {{ fantasyTeam2Selected.initialBalance - fantasyTeam2Selected.balancePenalty - fantasyTeam2Selected.outgo }}
           </div>
-          <div fxFlex="50" fxFlex.sm="100">Contratti stipulati: {{ fantasyTeam2Selected.totalContracts }}</div>
-          <div fxFlex="50" fxFlex.sm="100">Giocatori nel roster: {{ fantasyTeam2Selected.playersInRoster }}</div>
-          <div fxFlex="50" fxFlex.sm="100">Visti spesi: {{ fantasyTeam2Selected.extraPlayers }}</div>
+          <div class="col-sm-6">Contratti stipulati: {{ fantasyTeam2Selected.totalContracts }}</div>
+          <div class="col-sm-6">Giocatori nel roster: {{ fantasyTeam2Selected.playersInRoster }}</div>
+          <div class="col-sm-6">Visti spesi: {{ fantasyTeam2Selected.extraPlayers }}</div>
         </div>
         <hr />
 

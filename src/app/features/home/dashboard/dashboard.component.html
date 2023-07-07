@@ -2,8 +2,8 @@
   <hr *ngIf="i !== 0" />
   <h4>{{ dashBoardItem.round.competition.name }} - {{ dashBoardItem.round.name }}</h4>
 
-  <div fxLayout="row wrap" fxLayoutAlign="space-between" *ngIf="dashBoardItem.round.roundRobin; else noRoundRobin">
-    <div fxFlex="49" fxFlex.lt-md="100">
+  <div class="row" *ngIf="dashBoardItem.round.roundRobin; else noRoundRobin">
+    <div class="col-md-6">
       <fieldset class="fieldset">
         <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifica {{ dashBoardItem.round.name }}</legend>
 
@@ -35,9 +35,11 @@
       </fieldset>
     </div>
 
-    <div fxFlex="49" fxFlex.lt-md="100">
+    <div class="col-md-6">
       <fieldset class="fieldset">
-        <legend class="legend"><fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata ({{dashBoardItem.lastFixture.name}})</legend>
+        <legend class="legend">
+          <fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata ({{ dashBoardItem.lastFixture.name }})
+        </legend>
         <div *ngIf="dashBoardItem.atLeastOneFixtureCompleted; else fixtureNotDefined">
           <div class="table-responsive">
             <table class="table table-hover" [attr.aria-label]="dashBoardItem.lastFixture.name">

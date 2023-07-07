@@ -23,7 +23,7 @@
         <span class="input-group-text manina" (click)="clearFilter()">x</span>
       </div>
     </form>
-    <h6 class="text-end">Numero totale di giocatori: {{rosterList?.totalElements}}</h6>
+    <h6 class="text-end">Numero totale di giocatori: {{ rosterList?.totalElements }}</h6>
     <div class="table-responsive">
       <table class="table table-hover" aria-label="Giocatori">
         <thead class="table-dark">
@@ -67,22 +67,20 @@
       </table>
     </div>
 
-    <div fxLayout="row" fxLayoutAlign="center" *ngIf="enablePagination()">
-      <div fxFlex="nogrow">
-        <pagination
-          [totalItems]="rosterList.totalElements"
-          [(ngModel)]="page"
-          [itemsPerPage]="limit"
-          (pageChanged)="pageChange($event)"
-          [maxSize]="maxSize"
-          [boundaryLinks]="boundaryLinks"
-          firstText="<<"
-          previousText="<"
-          nextText=">"
-          lastText=">>"
-        ></pagination>
-      </div>
-    </div>
+    <pagination
+      *ngIf="enablePagination()"
+      class="justify-content-center"
+      [totalItems]="rosterList.totalElements"
+      [(ngModel)]="page"
+      [itemsPerPage]="limit"
+      (pageChanged)="pageChange($event)"
+      [maxSize]="maxSize"
+      [boundaryLinks]="boundaryLinks"
+      firstText="<<"
+      previousText="<"
+      nextText=">"
+      lastText=">>"
+    ></pagination>
   </ng-container>
 
   <ng-template #empty>

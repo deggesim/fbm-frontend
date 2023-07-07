@@ -1,13 +1,13 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="chart-bar" class="icon-padding"></fa-icon>Top Flop</legend>
   <form [formGroup]="form" class="needs-validation" novalidate>
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+    <div class="row">
+      <div class="col-sm-4 mb-3">
         <label for="team" class="control-label">Squadra</label>
         <ng-select id="team" name="team" [items]="teams" bindLabel="fullName" formControlName="team" clearAllText="Elimina"> </ng-select>
       </div>
 
-      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+      <div class="col-sm-4 mb-3">
         <label for="fantasyTeam" class="control-label">Fantasquadra</label>
         <ng-select
           id="fantasyTeam"
@@ -20,18 +20,18 @@
         </ng-select>
       </div>
 
-      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+      <div class="col-sm-4 mb-3">
         <label for="role" class="control-label">Ruolo</label>
         <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina"> </ng-select>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="form-check form-switch">
           <input type="checkbox" class="form-check-input" id="freePlayer" formControlName="freePlayers" />
           <label class="form-check-label" for="freePlayer">Giocatori liberi</label>
         </div>
       </div>
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <button type="button" class="btn btn-primary float-end" (click)="reset()">
           <fa-icon icon="undo" class="icon-padding"></fa-icon>Reset
         </button>
@@ -97,22 +97,20 @@
     <h4 class="p-3">Nessun giocatore trovato con i filtri inseriti</h4>
   </ng-template>
 
-  <div fxLayout="row" fxLayoutAlign="center" *ngIf="enablePagination()">
-    <div fxFlex="nogrow">
-      <pagination
-        [totalItems]="playerStatisticList.totalElements"
-        [(ngModel)]="page"
-        [itemsPerPage]="limit"
-        (pageChanged)="pageChange($event)"
-        [maxSize]="maxSize"
-        [boundaryLinks]="boundaryLinks"
-        firstText="<<"
-        previousText="<"
-        nextText=">"
-        lastText=">>"
-      ></pagination>
-    </div>
-  </div>
+  <pagination
+    *ngIf="enablePagination()"
+    class="justify-content-center"
+    [totalItems]="playerStatisticList.totalElements"
+    [(ngModel)]="page"
+    [itemsPerPage]="limit"
+    (pageChanged)="pageChange($event)"
+    [maxSize]="maxSize"
+    [boundaryLinks]="boundaryLinks"
+    firstText="<<"
+    previousText="<"
+    nextText=">"
+    lastText=">>"
+  ></pagination>
 </fieldset>
 
 <ng-template #statsTooltip let-stats="stats">

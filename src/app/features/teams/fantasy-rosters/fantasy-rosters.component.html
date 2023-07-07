@@ -2,29 +2,25 @@
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="list" class="icon-padding"></fa-icon>Fantasquadra</legend>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="100">
-        <div class="mb-3">
-          <label for="fantasyTeam" class="control-label">Fantasquadra</label>
-          <ng-select
-            id="fantasyTeam"
-            [items]="fantasyTeams"
-            bindLabel="name"
-            formControlName="fantasyTeam"
-            clearAllText="Elimina"
-            (change)="selectFantasyTeam($event)"
-          >
-          </ng-select>
-        </div>
-      </div>
+    <div class="mb-3">
+      <label for="fantasyTeam" class="control-label">Fantasquadra</label>
+      <ng-select
+        id="fantasyTeam"
+        [items]="fantasyTeams"
+        bindLabel="name"
+        formControlName="fantasyTeam"
+        clearAllText="Elimina"
+        (change)="selectFantasyTeam($event)"
+      >
+      </ng-select>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeamSelected">
+    <ng-container *ngIf="fantasyTeamSelected">
       <div>Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}</div>
       <div>Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
       <div>Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
       <div>Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
-    </div>
+    </ng-container>
 
     <ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
       <hr />
@@ -67,16 +63,16 @@
       <ul class="list-group">
         <li class="list-group-item d-flex justify-content-between align-items-start p-4" *ngFor="let item of history">
           <ng-container *ngIf="isPlayer(item); else fantasyTeamTemplate">
-            <div fxLayout="row wrap" class="w-100">
+            <div class="row w-100">
               <!-- player and team -->
-              <div fxFlex="66" fxFlex.lt-md="100" class="fw-bold">
+              <div class="col-md-8 fw-bold">
                 {{ item.realFixture.name }} - {{ item.operation | decodeHistory }}: {{ item.name }} ({{
                   DateTime.fromISO(String(item.updatedAt)).toJSDate() | date: 'dd/MM/YYYY'
                 }})
               </div>
-              <div fxFlex="33" fxFlex.lt-md="100" class="badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
+              <div class="col-md-4 badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
               <!-- player -->
-              <div fxFlex="100" class="table-responsive">
+              <div class="table-responsive">
                 <table class="table table-hover" aria-label="Storico">
                   <thead class="table-dark">
                     <tr>
@@ -98,7 +94,7 @@
                 </table>
               </div>
               <!-- team -->
-              <div fxFlex="100" class="table-responsive">
+              <div class="table-responsive">
                 <table class="table table-hover" aria-label="Storico">
                   <thead class="table-dark">
                     <tr>
@@ -130,14 +126,14 @@
             </div>
           </ng-container>
           <ng-template #fantasyTeamTemplate>
-            <div fxLayout="row wrap" class="w-100">
+            <div class="row w-100">
               <!-- team -->
-              <div fxFlex="66" fxFlex.lt-md="100" class="fw-bold">
+              <div class="col-md-8 fw-bold">
                 {{ item.realFixture.name }} -
                 {{ item.operation | decodeHistory }}
               </div>
-              <div fxFlex="33" fxFlex.lt-md="100" class="badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
-              <div fxFlex="100" class="table-responsive">
+              <div class="col-md-4 badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
+              <div class="table-responsive">
                 <table class="table table-hover" aria-label="Storico">
                   <thead class="table-dark">
                     <tr>

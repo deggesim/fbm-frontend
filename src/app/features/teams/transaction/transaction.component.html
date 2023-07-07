@@ -2,8 +2,8 @@
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="shopping-cart" class="icon-padding"></fa-icon>Mercato libero</legend>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="49" fxFlex.xs="100">
+    <div class="row">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="roster" class="control-label">Giocatore</label>
           <ng-select
@@ -43,12 +43,12 @@
       </div>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeamSelected">
+    <ng-container *ngIf="fantasyTeamSelected">
       <div>Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}</div>
       <div>Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
       <div>Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
       <div>Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
-    </div>
+    </ng-container>
 
     <ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
       <hr />
@@ -121,61 +121,42 @@
         </div>
 
         <div class="modal-body">
-          <div fxLayout="row wrap" fxLayoutAlign="space-between">
+          <div class="row">
             <ng-container *ngIf="rosterSelected; else modifiyFantasyRoster">
-              <div fxFlex="100">
-                <h6>{{ rosterSelected.player.name }} - {{ rosterSelected.player.nationality }} - {{ rosterSelected.player.role }}</h6>
-              </div>
-              <div fxFlex="100">
-                <h6>{{ rosterSelected.team.fullName }}</h6>
-              </div>
+              <h6>{{ rosterSelected.player.name }} - {{ rosterSelected.player.nationality }} - {{ rosterSelected.player.role }}</h6>
+              <h6>{{ rosterSelected.team.fullName }}</h6>
             </ng-container>
             <ng-template #modifiyFantasyRoster>
-              <div fxFlex="100">
-                <h6>
-                  {{ fantasyRosterSelected?.roster.player.name }} - {{ fantasyRosterSelected?.roster.player.nationality }} -
-                  {{ fantasyRosterSelected?.roster.player.role }}
-                </h6>
-              </div>
-              <div fxFlex="100">
-                <h6>{{ fantasyRosterSelected?.roster.team.fullName }}</h6>
-              </div>
+              <h6>
+                {{ fantasyRosterSelected?.roster.player.name }} - {{ fantasyRosterSelected?.roster.player.nationality }} -
+                {{ fantasyRosterSelected?.roster.player.role }}
+              </h6>
+              <h6>{{ fantasyRosterSelected?.roster.team.fullName }}</h6>
             </ng-template>
 
-            <div fxFlex="100">
-              <div class="mb-3">
-                <label for="status" class="control-label">Status</label>
-                <ng-select
-                  id="status"
-                  name="status"
-                  [items]="statusList"
-                  bindLabel="status"
-                  formControlName="status"
-                  clearAllText="Elimina"
-                >
-                </ng-select>
-                <fbm-error-message [form-control]="form.get('status')" name="Status"></fbm-error-message>
+            <div class="mb-3">
+              <label for="status" class="control-label">Status</label>
+              <ng-select id="status" name="status" [items]="statusList" bindLabel="status" formControlName="status" clearAllText="Elimina">
+              </ng-select>
+              <fbm-error-message [form-control]="form.get('status')" name="Status"></fbm-error-message>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="draft"
+                  name="draft"
+                  formControlName="draft"
+                  [ngClass]="{ 'is-invalid': form.get('draft').invalid && form.get('draft').dirty }"
+                />
+                <label class="form-check-label" for="draft">Draft</label>
+                <fbm-error-message [form-control]="form.get('draft')" name="Draft"></fbm-error-message>
               </div>
             </div>
 
-            <div fxFlex="100">
-              <div class="mb-3">
-                <div class="form-check form-switch">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="draft"
-                    name="draft"
-                    formControlName="draft"
-                    [ngClass]="{ 'is-invalid': form.get('draft').invalid && form.get('draft').dirty }"
-                  />
-                  <label class="form-check-label" for="draft">Draft</label>
-                  <fbm-error-message [form-control]="form.get('draft')" name="Draft"></fbm-error-message>
-                </div>
-              </div>
-            </div>
-
-            <div fxFlex="49">
+            <div class="col-6">
               <div class="mb-3">
                 <label for="contract" class="control-label">Costo</label>
                 <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200" />
@@ -183,7 +164,7 @@
               </div>
             </div>
 
-            <div fxFlex="49">
+            <div class="col-6">
               <div class="mb-3">
                 <label for="yearContract" class="control-label">Anno di contratto</label>
                 <input

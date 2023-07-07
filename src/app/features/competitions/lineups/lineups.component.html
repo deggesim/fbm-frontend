@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="address-card" class="icon-padding"></fa-icon>Formazioni</legend>
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="33" fxFlex.xs="100">
+    <div class="row">
+      <div class="col-4">
         <div class="mb-3">
           <label for="round" class="control-label">Round</label>
           <ng-select
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div fxFlex="33" fxFlex.xs="100">
+      <div class="col-4">
         <div class="mb-3">
           <label for="fixture" class="control-label">Giornata</label>
           <ng-select
@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div fxFlex="33" fxFlex.xs="100">
+      <div class="col-4">
         <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
@@ -56,12 +56,10 @@
       </div>
 
       <ng-container *ngIf="fantasyRostersPresent && allFieldsSelected">
-        <div fxFlex="100">
-          <hr />
-        </div>
+        <hr />
 
         <!-- PLAYERS-->
-        <div fxFlex="49" fxFlex.lt-md="100">
+        <div class="col-md-6">
           <label id="roster">Roster</label>
           <div class="table-responsive">
             <table class="table table-hover" aria-label="Roster">
@@ -135,7 +133,7 @@
         </ng-template>
 
         <!-- LINEUP-->
-        <div fxFlex="49" fxFlex.lt-md="100">
+        <div class="col-md-6">
           <label id="formazione">Formazione</label>
           <div class="table-responsive">
             <table class="table table-hover" aria-label="Formazione">

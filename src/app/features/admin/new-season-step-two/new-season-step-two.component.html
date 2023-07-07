@@ -12,16 +12,16 @@
       </button>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
+    <div class="row">
       <ng-container formArrayName="teamsArray" *ngFor="let arrayItem of arrayItems; let i = index">
-        <div fxFlex="49" fxFlex.xs="100" [formGroupName]="i">
+        <div class="col-sm-6" [formGroupName]="i">
           <div class="mb-3">
             <label for="{{ arrayItem.id }}" class="control-label">{{ arrayItem.title }}</label>
             <input type="text" class="form-control" id="{{ arrayItem.id }}" name="{{ arrayItem.id }}" formControlName="name" />
           </div>
         </div>
 
-        <div fxFlex="49" fxFlex.xs="100" [formGroupName]="i">
+        <div class="col-sm-6" [formGroupName]="i">
           <div class="mb-3">
             <label for="proprietario-{{ arrayItem.id }}" class="control-label">Proprietario</label>
             <ng-select
