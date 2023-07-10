@@ -68,7 +68,7 @@
                   <th id="name">Nome</th>
                   <th id="nationality">Naz.</th>
                   <th id="role">Ruolo</th>
-                  <th id="team" fxHide.md fxHide.xs>Squadra</th>
+                  <th id="team" class="d-none d-sm-block">Squadra</th>
                 </tr>
               </thead>
 
@@ -97,7 +97,7 @@
                   <td [appPlayerStatus]="fantasyRoster">
                     {{ fantasyRoster.roster.player.role | roleShort }}
                   </td>
-                  <td [appPlayerStatus]="fantasyRoster" fxHide.md fxHide.xs>
+                  <td [appPlayerStatus]="fantasyRoster" class="d-none d-sm-block">
                     {{ fantasyRoster.roster.team.fullName }}
                   </td>
                 </tr>

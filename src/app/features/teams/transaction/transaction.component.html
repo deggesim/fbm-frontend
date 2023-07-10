@@ -58,12 +58,12 @@
           <thead class="table-dark">
             <tr>
               <th id="name">Nome</th>
-              <th fxHide.lt-sm id="status">Status</th>
-              <th fxHide.lt-sm id="contract">Contratto</th>
-              <th fxHide.lt-sm id="yearContract">Anno di contratto</th>
-              <th fxHide.lt-sm id="role">Ruolo</th>
-              <th fxHide.gt-sm id="role">R.</th>
-              <th fxHide.lt-sm id="team">Squadra</th>
+              <th class="d-nome d-sm-block" id="status">Status</th>
+              <th class="d-nome d-sm-block" id="contract">Contratto</th>
+              <th class="d-nome d-sm-block" id="yearContract">Anno di contratto</th>
+              <th class="d-nome d-sm-block" id="role">Ruolo</th>
+              <th class="d-block d-sm-none" id="role">R.</th>
+              <th class="d-nome d-sm-block" id="team">Squadra</th>
               <th id="actions">Azioni</th>
             </tr>
           </thead>
@@ -71,12 +71,12 @@
           <tbody>
             <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
               <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.status }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
-              <td fxHide.gt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
+              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.status }}</td>
+              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
+              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
+              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
+              <td class="d-block d-sm-none" [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
+              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
 
               <td class="text-nowrap">
                 <button type="button" class="btn btn-success me-2" (click)="update(fr)" tooltip="Modifica" placement="top">

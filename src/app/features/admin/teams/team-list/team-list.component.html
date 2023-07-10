@@ -12,10 +12,10 @@
       <thead class="table-dark">
         <tr>
           <th id="fullName">Nome completo</th>
-          <th fxHide.lt-sm id="sponsor">Sponsor</th>
-          <th fxHide.lt-sm id="name">Nome</th>
-          <th fxHide.lt-sm id="city">Nome città</th>
-          <th fxHide.lt-sm id="abbreviation">Sigla</th>
+          <th class="d-none d-sm-block" id="sponsor">Sponsor</th>
+          <th class="d-none d-sm-block" id="name">Nome</th>
+          <th class="d-none d-sm-block" id="city">Nome città</th>
+          <th class="d-none d-sm-block" id="abbreviation">Sigla</th>
           <th id="actions">Azioni</th>
         </tr>
       </thead>
@@ -23,10 +23,10 @@
       <tbody>
         <tr *ngFor="let team of teams" class="table-secondary">
           <td>{{ team.fullName }}</td>
-          <td fxHide.lt-sm>{{ team.sponsor }}</td>
-          <td fxHide.lt-sm>{{ team.name }}</td>
-          <td fxHide.lt-sm>{{ team.city }}</td>
-          <td fxHide.lt-sm>{{ team.abbreviation }}</td>
+          <td class="d-none d-sm-block">{{ team.sponsor }}</td>
+          <td class="d-none d-sm-block">{{ team.name }}</td>
+          <td class="d-none d-sm-block">{{ team.city }}</td>
+          <td class="d-none d-sm-block">{{ team.abbreviation }}</td>
 
           <td class="text-nowrap">
             <button type="button" class="btn btn-warning me-2" (click)="update(team)" tooltip="Modifica" placement="top">

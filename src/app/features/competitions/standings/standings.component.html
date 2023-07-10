@@ -27,18 +27,18 @@
             <th id="games" tooltip="Partite">G</th>
             <th id="wins" tooltip="Vinte">V</th>
             <th id="defeats" tooltip="Perse">P</th>
-            <th fxHide.lt-sm id="rankingMade">Val. fatta</th>
-            <th fxHide.lt-sm id="rankingAgainst">Val. subita</th>
-            <th fxHide.lt-md id="avarageRankingMade" tooltip="Media valutazione fatta">Media val. f.</th>
-            <th fxHide.lt-md id="avarageRankingAgainst" tooltip="Media valutazione subita">Media val. s.</th>
-            <th fxHide.lt-md id="pointsMade" tooltip="Punti fatti">P. Fatti</th>
-            <th fxHide.lt-md id="pointsAgainst" tooltip="Punti subiti">P. subiti</th>
-            <th fxHide.lt-md id="avaragePointsMade" tooltip="Media punti fatti">Media f.</th>
-            <th fxHide.lt-md id="avaragePointsAgainst" tooltip="Media punti subiti">Media s.</th>
-            <th fxHide.lt-md id="difference" tooltip="Differenza canestri">Diff.</th>
-            <th fxHide.lt-lg id="trend">Trend</th>
+            <th class="d-none d-sm-block" id="rankingMade">Val. fatta</th>
+            <th class="d-none d-sm-block" id="rankingAgainst">Val. subita</th>
+            <th class="d-none d-md-block" id="avarageRankingMade" tooltip="Media valutazione fatta">Media val. f.</th>
+            <th class="d-none d-md-block" id="avarageRankingAgainst" tooltip="Media valutazione subita">Media val. s.</th>
+            <th class="d-none d-md-block" id="pointsMade" tooltip="Punti fatti">P. Fatti</th>
+            <th class="d-none d-md-block" id="pointsAgainst" tooltip="Punti subiti">P. subiti</th>
+            <th class="d-none d-md-block" id="avaragePointsMade" tooltip="Media punti fatti">Media f.</th>
+            <th class="d-none d-md-block" id="avaragePointsAgainst" tooltip="Media punti subiti">Media s.</th>
+            <th class="d-none d-md-block" id="difference" tooltip="Differenza canestri">Diff.</th>
+            <th class="d-none d-lg-block" id="trend">Trend</th>
             <th
-              fxHide.lt-lg
+              class="d-none d-lg-block"
               id="trendAvaragePointsMade"
               tooltip="Media punti fatti nelle ultime {{ trend?.value }} partite"
               placement="left"
@@ -46,7 +46,7 @@
               Tr. media f.
             </th>
             <th
-              fxHide.lt-lg
+              class="d-none d-lg-block"
               id="trendAvaragePointsAgainst"
               tooltip="Media punti subiti nelle ultime {{ trend?.value }} partite"
               placement="left"
@@ -63,18 +63,18 @@
             <td>{{ tableItem.games }}</td>
             <td>{{ tableItem.won }}</td>
             <td>{{ tableItem.lost }}</td>
-            <td fxHide.lt-sm>{{ tableItem.rankingMade }}</td>
-            <td fxHide.lt-sm>{{ tableItem.rankingAgainst }}</td>
-            <td fxHide.lt-md>{{ tableItem.avarageRankingMade | number: '1.1-1' }}</td>
-            <td fxHide.lt-md>{{ tableItem.avarageRankingAgainst | number: '1.1-1' }}</td>
-            <td fxHide.lt-md>{{ tableItem.pointsMade }}</td>
-            <td fxHide.lt-md>{{ tableItem.pointsAgainst }}</td>
-            <td fxHide.lt-md>{{ tableItem.avaragePointsMade | number: '1.1-1' }}</td>
-            <td fxHide.lt-md>{{ tableItem.avaragePointsAgainst | number: '1.1-1' }}</td>
-            <td fxHide.lt-md>{{ tableItem.difference }}</td>
-            <td fxHide.lt-lg>{{ tableItem.trend }}</td>
-            <td fxHide.lt-lg>{{ tableItem.trendAvaragePointsMade | number: '1.1-1' }}</td>
-            <td fxHide.lt-lg>{{ tableItem.trendAvaragePointsAgainst | number: '1.1-1' }}</td>
+            <td class="d-none d-sm-block">{{ tableItem.rankingMade }}</td>
+            <td class="d-none d-sm-block">{{ tableItem.rankingAgainst }}</td>
+            <td class="d-none d-md-block">{{ tableItem.avarageRankingMade | number: '1.1-1' }}</td>
+            <td class="d-none d-md-block">{{ tableItem.avarageRankingAgainst | number: '1.1-1' }}</td>
+            <td class="d-none d-md-block">{{ tableItem.pointsMade }}</td>
+            <td class="d-none d-md-block">{{ tableItem.pointsAgainst }}</td>
+            <td class="d-none d-md-block">{{ tableItem.avaragePointsMade | number: '1.1-1' }}</td>
+            <td class="d-none d-md-block">{{ tableItem.avaragePointsAgainst | number: '1.1-1' }}</td>
+            <td class="d-none d-md-block">{{ tableItem.difference }}</td>
+            <td class="d-none d-lg-block">{{ tableItem.trend }}</td>
+            <td class="d-none d-lg-block">{{ tableItem.trendAvaragePointsMade | number: '1.1-1' }}</td>
+            <td class="d-none d-lg-block">{{ tableItem.trendAvaragePointsAgainst | number: '1.1-1' }}</td>
           </tr>
         </tbody>
       </table>

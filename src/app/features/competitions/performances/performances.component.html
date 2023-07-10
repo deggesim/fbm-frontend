@@ -73,23 +73,23 @@
 
     <ng-container formArrayName="performanceArray" *ngFor="let performance of performances; let i = index">
       <div class="row" [formGroupName]="i">
-        <div fxFlex="69" fxFlex.xs="100">
+        <div class="col-sm-9">
           {{ getPlayer(performance) }}
         </div>
 
-        <div fxFlex="9" fxFlex.xs="33">
+        <div class="col-4 col-sm-1">
           <div class="mb-3">
             <input type="number" class="form-control" id="ranking-{{ i }}" formControlName="ranking" placeholder="Valutazione" />
           </div>
         </div>
 
-        <div fxFlex="9" fxFlex.xs="33">
+        <div class="col-4 col-sm-1">
           <div class="mb-3">
             <input type="number" class="form-control" id="minutes-{{ i }}" formControlName="minutes" placeholder="Minuti" />
           </div>
         </div>
 
-        <div fxFlex="9" fxFlex.xs="33">
+        <div class="col-4 col-sm-1">
           <div class="mb-3">
             <input type="number" class="form-control" id="grade-{{ i }}" formControlName="grade" placeholder="Buonus/malus" />
           </div>

@@ -13,8 +13,8 @@
               <tr>
                 <th id="name">Nome</th>
                 <th id="points">Punti</th>
-                <th fxHide.lt-sm id="rankingMade">Val. fatta</th>
-                <th fxHide.lt-sm id="rankingAgainst">Val. subita</th>
+                <th class="d-none d-sm-block" id="rankingMade">Val. fatta</th>
+                <th class="d-none d-sm-block" id="rankingAgainst">Val. subita</th>
               </tr>
             </thead>
 
@@ -22,8 +22,8 @@
               <tr *ngFor="let tableItem of dashBoardItem.table" class="table-secondary">
                 <td class="text-nowrap">{{ tableItem.fantasyTeam.name }}</td>
                 <td>{{ tableItem.points }}</td>
-                <td fxHide.lt-sm>{{ tableItem.rankingMade }}</td>
-                <td fxHide.lt-sm>{{ tableItem.rankingAgainst }}</td>
+                <td class="d-none d-sm-block">{{ tableItem.rankingMade }}</td>
+                <td class="d-none d-sm-block">{{ tableItem.rankingAgainst }}</td>
               </tr>
             </tbody>
           </table>
