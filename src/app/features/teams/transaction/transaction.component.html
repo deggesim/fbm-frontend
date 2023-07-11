@@ -43,12 +43,14 @@
       </div>
     </div>
 
-    <ng-container *ngIf="fantasyTeamSelected">
-      <div>Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}</div>
-      <div>Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
-      <div>Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
-      <div>Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
-    </ng-container>
+    <div class="row text-center" *ngIf="fantasyTeamSelected">
+      <div class="col-sm-3">
+        Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}
+      </div>
+      <div class="col-sm-3">Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
+      <div class="col-sm-3">Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
+      <div class="col-sm-3">Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
+    </div>
 
     <ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
       <hr />
@@ -58,12 +60,12 @@
           <thead class="table-dark">
             <tr>
               <th id="name">Nome</th>
-              <th class="d-nome d-sm-block" id="status">Status</th>
-              <th class="d-nome d-sm-block" id="contract">Contratto</th>
-              <th class="d-nome d-sm-block" id="yearContract">Anno di contratto</th>
-              <th class="d-nome d-sm-block" id="role">Ruolo</th>
-              <th class="d-block d-sm-none" id="role">R.</th>
-              <th class="d-nome d-sm-block" id="team">Squadra</th>
+              <th class="d-none d-sm-table-cell" id="status">Status</th>
+              <th class="d-none d-sm-table-cell" id="contract">Contratto</th>
+              <th class="d-none d-sm-table-cell" id="yearContract">Anno di contratto</th>
+              <th class="d-none d-md-table-cell" id="role">Ruolo</th>
+              <th class="d-table-cell d-md-none" id="role">R.</th>
+              <th class="d-none d-sm-table-cell" id="team">Squadra</th>
               <th id="actions">Azioni</th>
             </tr>
           </thead>
@@ -71,12 +73,12 @@
           <tbody>
             <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
               <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
-              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.status }}</td>
-              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
-              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
-              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
-              <td class="d-block d-sm-none" [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
-              <td class="d-nome d-sm-block" [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
+              <td class="d-none d-sm-table-cell" [appPlayerStatus]="fr">{{ fr.status }}</td>
+              <td class="d-none d-sm-table-cell" [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
+              <td class="d-none d-sm-table-cell" [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
+              <td class="d-none d-md-table-cell" [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
+              <td class="d-table-cell d-md-none" [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
+              <td class="d-none d-sm-table-cell text-nowrap" [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
 
               <td class="text-nowrap">
                 <button type="button" class="btn btn-success me-2" (click)="update(fr)" tooltip="Modifica" placement="top">
@@ -114,7 +116,7 @@
     aria-hidden="true"
     (onHidden)="onHidden()"
   >
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header titolo">
           <h4 class="modal-title">{{ rosterSelected ? 'Acquista giocatore' : 'Modifica giocatore' }}</h4>
@@ -156,7 +158,7 @@
               </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-sm-6">
               <div class="mb-3">
                 <label for="contract" class="control-label">Costo</label>
                 <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200" />
@@ -164,7 +166,7 @@
               </div>
             </div>
 
-            <div class="col-6">
+            <div class="col-sm-6">
               <div class="mb-3">
                 <label for="yearContract" class="control-label">Anno di contratto</label>
                 <input

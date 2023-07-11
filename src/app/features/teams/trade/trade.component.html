@@ -4,7 +4,7 @@
 
     <div class="row">
       <!-- FANTASYTEAM #1-->
-      <div class="col-sm-6">
+      <div class="col-lg-6">
         <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra #1</label>
           <ng-select
@@ -38,7 +38,8 @@
                 <th id="status">Status</th>
                 <th id="contract">Contratto</th>
                 <th id="yearContract">Anno di contratto</th>
-                <th id="role">Ruolo</th>
+                <th class="d-none d-sm-table-cell" id="role">Ruolo</th>
+                <th class="d-table-cell d-sm-none" id="role">R.</th>
                 <th id="team">Squadra</th>
               </tr>
             </thead>
@@ -50,12 +51,13 @@
                 (click)="switchOutPlayerToTradeBlock(fr)"
                 [ngClass]="{ chosen: player1Choosen(fr) }"
               >
-                <td [appPlayerStatus]="fr">{{ fr.roster.player.name }}</td>
+                <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
                 <td [appPlayerStatus]="fr">{{ fr.status }}</td>
                 <td [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
                 <td [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
-                <td [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
-                <td [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
+                <td [appPlayerStatus]="fr" class="d-none d-sm-table-cell">{{ fr.roster.player.role }}</td>
+                <td [appPlayerStatus]="fr" class="d-table-cell d-sm-none">{{ fr.roster.player.role | roleShort }}</td>
+                <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.team.fullName }}</td>
               </tr>
             </tbody>
           </table>
@@ -63,7 +65,7 @@
       </div>
 
       <!-- FANTASYTEAM #2-->
-      <div class="col-sm-6">
+      <div class="col-lg-6">
         <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra #2</label>
           <ng-select
@@ -97,7 +99,8 @@
                 <th id="status">Status</th>
                 <th id="contract">Contratto</th>
                 <th id="yearContract">Anno di contratto</th>
-                <th id="role">Ruolo</th>
+                <th class="d-none d-md-table-cell" id="role">Ruolo</th>
+                <th class="d-table-cell d-md-none" id="role">R.</th>
                 <th id="team">Squadra</th>
               </tr>
             </thead>
@@ -109,12 +112,13 @@
                 (click)="switchInPlayerToTradeBlock(fr)"
                 [ngClass]="{ chosen: player2Choosen(fr) }"
               >
-                <td [appPlayerStatus]="fr">{{ fr.roster.player.name }}</td>
+                <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
                 <td [appPlayerStatus]="fr">{{ fr.status }}</td>
                 <td [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
                 <td [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
-                <td [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
-                <td [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
+                <td [appPlayerStatus]="fr" class="d-none d-md-table-cell">{{ fr.roster.player.role }}</td>
+                <td [appPlayerStatus]="fr" class="d-table-cell d-md-none">{{ fr.roster.player.role | roleShort }}</td>
+                <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.team.fullName }}</td>
               </tr>
             </tbody>
           </table>
@@ -157,7 +161,7 @@
           <ul>
             <li *ngFor="let fr of form.value.outPlayers">{{ fr.roster.player.name }}</li>
           </ul>
-          <div class="form-row">
+          <div class="row row-cols-auto g-3 align-items-start">
             <div class="col-auto">
               <label class="col-form-label">La squadra {{ fantasyTeam1Selected.name }} inoltre riconosce un conguaglio pari a</label>
             </div>
