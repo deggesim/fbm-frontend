@@ -12,8 +12,8 @@
   },
   "homepage": "https://github.com/deggesim/fbm-frontend#readme",
   "engines": {
-    "node": "16.x",
-    "npm": "8.x"
+    "node": "18.x",
+    "npm": "9.x"
   },
   "scripts": {
     "ng": "ng",
