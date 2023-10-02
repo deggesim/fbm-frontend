@@ -10,7 +10,7 @@ import { FantasyTeam } from '@app/models/fantasy-team';
 export class RostersTableComponent {
   @Input() fantasyTeams: FantasyTeam[];
   @Input() readOnly = true;
-  playersInRoster = Array.from(Array(16).keys());
+  playersInRoster = Array.from(Array(20).keys());
 
   @Output() update: EventEmitter<{ fantasyTeam: FantasyTeam; fantasyRoster: FantasyRoster }> = new EventEmitter();
   @Output() openRemovePopup: EventEmitter<FantasyRoster> = new EventEmitter();
