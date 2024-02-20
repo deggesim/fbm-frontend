@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AppState } from '@app/core/app.state';
@@ -13,10 +13,10 @@ import { RealFixture } from '@app/models/real-fixture';
 import { Team } from '@app/models/team';
 import { PerformanceService } from '@app/shared/services/performance.service';
 import { PlayerStatisticService } from '@app/shared/services/player-statistics.service';
-import { select, Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { isEmpty } from 'lodash-es';
-import { forkJoin, iif, Observable, of, zip } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { map, take } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-top-flop',
@@ -29,6 +29,10 @@ export class TopFlopComponent implements OnInit {
   playerStatisticList: PlayerStatisticList;
   nextRealFixture: RealFixture;
   tooltip = new Map<string, PlayerStats>();
+  selectedPlayerStatistics: PlayerStats;
+
+  @ViewChild('modalPlayerStatistics', { static: false }) modalPlayerStatistics: ModalDirective;
+  showPlayerStatistics: boolean;
 
   form = this.fb.group({
     team: [null as Team],
@@ -86,32 +90,30 @@ export class TopFlopComponent implements OnInit {
     this.loadStatistics(team, fantasyTeam, role, freePlayers);
   }
 
-  buildStatistics(players: Player[]): Observable<PlayerStats[]> {
-    const obs: Observable<PlayerStats>[] = [];
-    for (const player of players) {
-      obs.push(this.loadPlayerStatistics(player));
-    }
-    return forkJoin(obs);
+  buildStatistics(player: Player) {
+    this.loadPlayerStatistics(player).subscribe((playerStats: PlayerStats) => {
+      this.selectedPlayerStatistics = playerStats;
+      this.showPlayerStatistics = true;
+    });
   }
 
   reset() {
     this.form.reset();
   }
 
+  hideModal(): void {
+    this.modalPlayerStatistics?.hide();
+  }
+
+  onHidden(): void {
+    this.showPlayerStatistics = false;
+  }
+
   private loadStatistics(team?: Team, fantasyTeam?: FantasyTeam, role?: Role, freePlayers?: boolean) {
     this.playerStatisticService
       .read(this.page, this.limit, team, fantasyTeam, role, freePlayers)
-      .pipe(
-        switchMap((value: PlayerStatisticList) =>
-          iif(
-            () => value.content && value.content.length > 0,
-            zip(of(value), value.content && this.buildStatistics(value.content.map((stat) => stat.player))),
-            zip(of(value), of([]))
-          )
-        )
-      )
-      .subscribe((value: [PlayerStatisticList, PlayerStats[]]) => {
-        this.playerStatisticList = value[0];
+      .subscribe((value: PlayerStatisticList) => {
+        this.playerStatisticList = value;
       });
   }
 
@@ -122,10 +124,7 @@ export class TopFlopComponent implements OnInit {
           .filter((value) => value.realFixture.prepared && value.realFixture._id !== this.nextRealFixture._id)
           .sort((a, b) => a.realFixture.order - b.realFixture.order);
       }),
-      map((performances: Performance[]) => ({ player, trend: performances })),
-      tap((playerStats: PlayerStats) => {
-        this.tooltip.set(player._id, playerStats);
-      })
+      map((performances: Performance[]) => ({ player, trend: performances }))
     );
   }
 }
