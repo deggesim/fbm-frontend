@@ -1,51 +1,53 @@
 <form [formGroup]="form" (ngSubmit)="confirm()" class="needs-validation" novalidate>
-  <div class="mb-3">
-    <label for="name" class="control-label">Nome</label>
-    <input
-      type="text"
-      class="form-control"
-      id="name"
-      name="name"
-      formControlName="name"
-      [ngClass]="{ 'is-invalid': form.get('name').invalid && form.get('name').dirty }"
-    />
-    <fbm-error-message [form-control]="form.get('name')" name="Nome"></fbm-error-message>
-  </div>
-  <div class="mb-3">
-    <label for="email" class="control-label">Email</label>
-    <input
-      type="text"
-      class="form-control"
-      id="email"
-      name="email"
-      formControlName="email"
-      [ngClass]="{ 'is-invalid': form.get('email').invalid && form.get('email').dirty }"
-    />
-    <fbm-error-message [form-control]="form.get('email')" name="Email"></fbm-error-message>
-  </div>
-  <div class="mb-3">
-    <label for="newPassword" class="control-label">Nuova password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="newPassword"
-      name="newPassword"
-      formControlName="newPassword"
-      [ngClass]="{ 'is-invalid': form.get('newPassword').invalid && form.get('newPassword').dirty }"
-    />
-    <fbm-error-message [form-control]="form.get('newPassword')" name="Nuova password"></fbm-error-message>
-  </div>
-  <div class="mb-3">
-    <label for="confirmPassword" class="control-label">Conferma password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="confirmPassword"
-      name="confirmPassword"
-      formControlName="confirmPassword"
-      [ngClass]="{ 'is-invalid': form.get('confirmPassword').invalid && form.get('confirmPassword').dirty }"
-    />
-    <fbm-error-message [form-control]="form.get('confirmPassword')" name="Conferma password"></fbm-error-message>
+  <div class="row px-3">
+    <div class="mb-3">
+      <label for="name" class="control-label">Nome</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        formControlName="name"
+        [ngClass]="{ 'is-invalid': form.get('name').invalid && form.get('name').dirty }"
+      />
+      <fbm-error-message [form-control]="form.get('name')" name="Nome"></fbm-error-message>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="control-label">Email</label>
+      <input
+        type="text"
+        class="form-control"
+        id="email"
+        name="email"
+        formControlName="email"
+        [ngClass]="{ 'is-invalid': form.get('email').invalid && form.get('email').dirty }"
+      />
+      <fbm-error-message [form-control]="form.get('email')" name="Email"></fbm-error-message>
+    </div>
+    <div class="mb-3">
+      <label for="newPassword" class="control-label">Nuova password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="newPassword"
+        name="newPassword"
+        formControlName="newPassword"
+        [ngClass]="{ 'is-invalid': form.get('newPassword').invalid && form.get('newPassword').dirty }"
+      />
+      <fbm-error-message [form-control]="form.get('newPassword')" name="Nuova password"></fbm-error-message>
+    </div>
+    <div class="mb-3">
+      <label for="confirmPassword" class="control-label">Conferma password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="confirmPassword"
+        name="confirmPassword"
+        formControlName="confirmPassword"
+        [ngClass]="{ 'is-invalid': form.get('confirmPassword').invalid && form.get('confirmPassword').dirty }"
+      />
+      <fbm-error-message [form-control]="form.get('confirmPassword')" name="Conferma password"></fbm-error-message>
+    </div>
   </div>
 
   <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
