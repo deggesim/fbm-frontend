@@ -93,7 +93,7 @@
   <div class="text-center padding m-3">
     <h4>Percentuale di avanzamento del processo di upload</h4>
     <progressbar [value]="percentage" [type]="progressbarType" [striped]="true" style="height: 50px" class="mb-3"
-      >{{ percentage | number: '1.0-0' }}%</progressbar
+      >{{ percentage | number : '1.0-0' }}%</progressbar
     >
     <button type="button" class="btn btn-primary" (click)="reloadPage()" *ngIf="percentage === 100">
       <fa-icon icon="sync" class="icon-padding"></fa-icon>Ricarica lista
@@ -125,7 +125,7 @@
   aria-hidden="true"
   (onHidden)="onHidden()"
 >
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg modal-fullscreen-md-down">
     <div class="modal-content">
       <div class="modal-header titolo">
         <h4 class="modal-title">{{ titoloModale }}</h4>

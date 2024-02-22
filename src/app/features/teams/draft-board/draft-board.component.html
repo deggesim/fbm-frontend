@@ -44,7 +44,7 @@
     aria-hidden="true"
     (onHidden)="onHidden()"
   >
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-sm modal-fullscreen-md-down">
       <div class="modal-content">
         <div class="modal-header titolo">
           <h4 class="modal-title">{{ rosterSelected ? 'Acquista giocatore' : 'Modifica giocatore' }}</h4>
@@ -146,7 +146,7 @@
             </div>
           </div>
 
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>

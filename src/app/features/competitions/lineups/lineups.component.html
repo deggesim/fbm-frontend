@@ -2,7 +2,7 @@
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="address-card" class="icon-padding"></fa-icon>Formazioni</legend>
     <div class="row">
-      <div class="col-4">
+      <div class="col-12 col-md-4">
         <div class="mb-3">
           <label for="round" class="control-label">Round</label>
           <ng-select
@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div class="col-4">
+      <div class="col-12 col-md-4">
         <div class="mb-3">
           <label for="fixture" class="control-label">Giornata</label>
           <ng-select
@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <div class="col-4">
+      <div class="col-12 col-md-4">
         <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
@@ -68,7 +68,7 @@
                   <th id="name">Nome</th>
                   <th id="nationality">Naz.</th>
                   <th id="role">Ruolo</th>
-                  <th id="team" class="d-none d-sm-block">Squadra</th>
+                  <th id="team" class="d-none d-sm-table-cell">Squadra</th>
                 </tr>
               </thead>
 
@@ -97,7 +97,7 @@
                   <td [appPlayerStatus]="fantasyRoster">
                     {{ fantasyRoster.roster.player.role | roleShort }}
                   </td>
-                  <td [appPlayerStatus]="fantasyRoster" class="d-none d-sm-block">
+                  <td [appPlayerStatus]="fantasyRoster" class="d-none d-sm-table-cell">
                     {{ fantasyRoster.roster.team.fullName }}
                   </td>
                 </tr>
@@ -107,7 +107,7 @@
         </div>
 
         <ng-template #statsTooltip let-stats="stats">
-          <h5>Valutazione media: {{ stats.performanceAvg | number: '1.1-1' }}</h5>
+          <h5>Valutazione media: {{ stats.performanceAvg | number : '1.1-1' }}</h5>
           <p>Ultime performance:</p>
           <table class="w-100">
             <caption>
@@ -176,7 +176,7 @@
           <div class="p-3 text-center">
             <fbm-error-message [form-control]="form.get('lineup')" name="Formazione"></fbm-error-message>
           </div>
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3" *ngIf="changeAllowed">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3" *ngIf="changeAllowed">
             <button type="button" class="btn btn-primary" [disabled]="form.invalid" (click)="openModalBenchOrder()">
               <fa-icon icon="sort" class="icon-padding"></fa-icon>Ordine panchina
             </button>
@@ -190,7 +190,7 @@
     </div>
   </fieldset>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid" *ngIf="changeAllowed">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
@@ -227,7 +227,7 @@
   aria-hidden="true"
   (onHidden)="onHidden()"
 >
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-lg modal-fullscreen-md-down">
     <div class="modal-content">
       <div class="modal-header titolo">
         <h4 class="modal-title">Ordine panchinari</h4>

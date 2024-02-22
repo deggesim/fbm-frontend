@@ -5,35 +5,35 @@
         <fa-icon icon="basketball-ball" class="icon-padding"></fa-icon>{{ match.homeTeam.name }} - {{ match.awayTeam.name }}
       </legend>
       <div class="row">
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="mb-3">
             <label for="homeRanking-{{ i }}" class="control-label">Valutazione casa</label>
             <input type="number" class="form-control" id="homeRanking-{{ i }}" formControlName="homeRanking" />
           </div>
         </div>
 
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="mb-3">
             <label for="awayRanking-{{ i }}" class="control-label">Valutazione trasferta</label>
             <input type="number" class="form-control" id="awayRanking-{{ i }}" formControlName="awayRanking" />
           </div>
         </div>
 
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="mb-3">
             <label for="homeGrade-{{ i }}" class="control-label">Voti casa</label>
             <input type="number" class="form-control" id="homeGrade-{{ i }}" formControlName="homeGrade" />
           </div>
         </div>
 
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="mb-3">
             <label for="awayGrade-{{ i }}" class="control-label">Voti trasferta</label>
             <input type="number" class="form-control" id="awayGrade-{{ i }}" formControlName="awayGrade" />
           </div>
         </div>
 
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="mb-3">
             <label for="homeScore-{{ i }}" class="control-label">Punteggio casa *</label>
             <input
@@ -47,7 +47,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="mb-3">
             <label for="awayScore-{{ i }}" class="control-label">Punteggio trasferta *</label>
             <input
@@ -61,7 +61,7 @@
           </div>
         </div>
 
-        <div class="col-md-3 col-sm-6">
+        <div class="col-12 col-md-6">
           <div class="mb-3">
             <label for="overtime-{{ i }}" class="control-label">Overtime</label>
             <input type="number" class="form-control" id="overtime-{{ i }}" formControlName="overtime" />
@@ -84,7 +84,7 @@
     </fieldset>
   </ng-container>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

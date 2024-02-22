@@ -127,7 +127,7 @@
     </div>
   </fieldset>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="button" class="btn btn-primary" (click)="reset()"><fa-icon icon="undo" class="icon-padding"></fa-icon>Reset</button>
     <button type="button" class="btn btn-primary" (click)="recap()" [disabled]="!enableRecap()">
       <fa-icon icon="list" class="icon-padding"></fa-icon>Riepilogo
@@ -146,7 +146,7 @@
     aria-hidden="true"
     (onHidden)="onHidden()"
   >
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-fullscreen-md-down">
       <div class="modal-content">
         <div class="modal-header titolo">
           <h4 class="modal-title">Completa scambio</h4>
@@ -172,7 +172,7 @@
               <label class="col-form-label">crediti</label>
             </div>
           </div>
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>

@@ -3,7 +3,7 @@
   <h4>{{ dashBoardItem.round.competition.name }} - {{ dashBoardItem.round.name }}</h4>
 
   <div class="row" *ngIf="dashBoardItem.round.roundRobin; else noRoundRobin">
-    <div class="col-md-6">
+    <div class="col-lg-6">
       <fieldset class="fieldset">
         <legend class="legend"><fa-icon icon="list-ol" class="icon-padding"></fa-icon>Classifica {{ dashBoardItem.round.name }}</legend>
 
@@ -13,8 +13,8 @@
               <tr>
                 <th id="name">Nome</th>
                 <th id="points">Punti</th>
-                <th class="d-none d-sm-block" id="rankingMade">Val. fatta</th>
-                <th class="d-none d-sm-block" id="rankingAgainst">Val. subita</th>
+                <th class="d-none d-sm-table-cell" id="rankingMade">Val. fatta</th>
+                <th class="d-none d-sm-table-cell" id="rankingAgainst">Val. subita</th>
               </tr>
             </thead>
 
@@ -22,8 +22,8 @@
               <tr *ngFor="let tableItem of dashBoardItem.table" class="table-secondary">
                 <td class="text-nowrap">{{ tableItem.fantasyTeam.name }}</td>
                 <td>{{ tableItem.points }}</td>
-                <td class="d-none d-sm-block">{{ tableItem.rankingMade }}</td>
-                <td class="d-none d-sm-block">{{ tableItem.rankingAgainst }}</td>
+                <td class="d-none d-sm-table-cell">{{ tableItem.rankingMade }}</td>
+                <td class="d-none d-sm-table-cell">{{ tableItem.rankingAgainst }}</td>
               </tr>
             </tbody>
           </table>
@@ -35,7 +35,7 @@
       </fieldset>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-lg-6">
       <fieldset class="fieldset">
         <legend class="legend">
           <fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata ({{ dashBoardItem.lastFixture.name }})
@@ -116,7 +116,7 @@
     aria-hidden="true"
     (onHidden)="onHiddenMatchResult()"
   >
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-fullscreen-md-down">
       <div class="modal-content">
         <div class="modal-header titolo">
           <h4 class="modal-title">Risultato</h4>

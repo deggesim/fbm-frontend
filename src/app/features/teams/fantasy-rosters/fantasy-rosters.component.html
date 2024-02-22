@@ -67,12 +67,11 @@
           <ng-container *ngIf="isPlayer(item); else fantasyTeamTemplate">
             <div class="row w-100">
               <!-- player and team -->
-              <div class="col-md-8 fw-bold">
-                {{ item.realFixture.name }} - {{ item.operation | decodeHistory }}: {{ item.name }} ({{
-                  DateTime.fromISO(String(item.updatedAt)).toJSDate() | date: 'dd/MM/YYYY'
-                }})
+              <div class="col-12 col-md-12 fw-bold">{{ item.operation | decodeHistory }}: {{ item.name }}</div>
+              <div class="col-12 col-md-8 fw-bold">
+                {{ item.realFixture.name }} - {{ DateTime.fromISO(String(item.updatedAt)).toJSDate() | date : 'dd/MM/YYYY' }}
               </div>
-              <div class="col-md-4 badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
+              <div class="col-12 col-md-4 badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
               <!-- player -->
               <div class="table-responsive">
                 <table class="table table-hover" aria-label="Storico">

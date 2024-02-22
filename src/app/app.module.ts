@@ -1,8 +1,7 @@
 import { registerLocaleData } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import localeIt from '@angular/common/locales/it';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,7 +41,6 @@ registerLocaleData(localeIt);
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    FlexLayoutModule,
     // ngx-bootstrap
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),

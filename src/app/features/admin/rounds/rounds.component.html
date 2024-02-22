@@ -25,35 +25,37 @@
       ><span>{{ item.value.name }}</span></ng-template
     >
 
-    <div class="col-sm-6">
-      <div class="mb-3">
-        <bs-sortable
-          formControlName="unsortedList"
-          [itemTemplate]="unsortedListTemplate"
-          itemClass="sortable-item"
-          itemActiveClass="sortable-item-active"
-          placeholderItem="Squadre da ordinare"
-          placeholderClass="placeholderStyle"
-          wrapperClass="sortable-wrapper"
-        ></bs-sortable>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="mb-3">
+          <bs-sortable
+            formControlName="unsortedList"
+            [itemTemplate]="unsortedListTemplate"
+            itemClass="sortable-item"
+            itemActiveClass="sortable-item-active"
+            placeholderItem="Squadre da ordinare"
+            placeholderClass="placeholderStyle"
+            wrapperClass="sortable-wrapper"
+          ></bs-sortable>
+        </div>
       </div>
-    </div>
-    <div class="col-sm-6">
-      <div class="mb-3">
-        <bs-sortable
-          formControlName="sortedList"
-          [itemTemplate]="sortedListTemplate"
-          itemClass="sortable-item"
-          itemActiveClass="sortable-item-active"
-          placeholderItem="Squadre ordinate"
-          placeholderClass="placeholderStyle"
-          wrapperClass="sortable-wrapper"
-        ></bs-sortable>
+      <div class="col-sm-6 mb-3">
+        <div class="border border-light border-2 rounded p-2 h-100">
+          <bs-sortable
+            formControlName="sortedList"
+            [itemTemplate]="sortedListTemplate"
+            itemClass="sortable-item"
+            itemActiveClass="sortable-item-active"
+            placeholderItem="Squadre ordinate"
+            placeholderClass="placeholderStyle"
+            wrapperClass="sortable-wrapper"
+          ></bs-sortable>
+        </div>
       </div>
     </div>
   </fieldset>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>
