@@ -62,19 +62,8 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let stat of playerStatisticList?.content" class="table-secondary">
-          <td
-            [popover]="statsTooltip"
-            [popoverContext]="{
-              stats: tooltip.get(stat.player._id)
-            }"
-            triggers="mouseenter:mouseleave"
-            container="body"
-            containerClass="w-100"
-            placement="right"
-          >
-            {{ stat.player.name }}
-          </td>
+        <tr *ngFor="let stat of playerStatisticList?.content" class="table-secondary manina" (click)="buildStatistics(stat.player)">
+          <td>{{ stat.player.name }}</td>
           <td>{{ stat.player.nationality }}</td>
           <td>{{ stat.player.number }}</td>
           <td>{{ stat.player.yearBirth }}</td>
@@ -84,10 +73,10 @@
           <td>{{ stat.team }}</td>
           <td>{{ stat.fantasyTeam }}</td>
           <td>{{ stat.status }}</td>
-          <td>{{ stat.avgRanking | number: '1.2-2' }}</td>
-          <td>{{ stat.avgMinutes | number: '1.2-2' }}</td>
-          <td>{{ stat.avgGrade | number: '1.2-2' }}</td>
-          <td>{{ stat.rankingMinutesRatio | number: '1.2-2' }}</td>
+          <td>{{ stat.avgRanking | number : '1.2-2' }}</td>
+          <td>{{ stat.avgMinutes | number : '1.2-2' }}</td>
+          <td>{{ stat.avgGrade | number : '1.2-2' }}</td>
+          <td>{{ stat.rankingMinutesRatio | number : '1.2-2' }}</td>
         </tr>
       </tbody>
     </table>
@@ -113,23 +102,50 @@
   ></pagination>
 </fieldset>
 
-<ng-template #statsTooltip let-stats="stats">
-  <table class="w-100" aria-label="Valutazioni">
-    <thead>
-      <tr>
-        <th id="realFixture" class="w-40">Giornata</th>
-        <th id="ranking" class="w-20">Val.</th>
-        <th id="minutes" class="w-20">Min.</th>
-        <th id="voto" class="w-20">Voto</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="tooltip-height" *ngFor="let performance of stats.trend">
-        <td>{{ performance.realFixture.name }}</td>
-        <td>{{ performance.ranking }}</td>
-        <td>{{ performance.minutes }}</td>
-        <td>{{ performance.grade }}</td>
-      </tr>
-    </tbody>
-  </table>
-</ng-template>
+<!-- modal statistics -->
+<div
+  *ngIf="showPlayerStatistics"
+  class="modal fade"
+  bsModal
+  #modalPlayerStatistics="bs-modal"
+  [config]="{ backdrop: 'static', show: true }"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+  (onHidden)="onHidden()"
+>
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header titolo">
+        <h4 class="modal-title">{{ selectedPlayerStatistics.player.name }}</h4>
+      </div>
+
+      <div class="modal-body">
+        <table class="w-100" aria-label="Valutazioni">
+          <thead>
+            <tr>
+              <th id="realFixture" class="w-40">Giornata</th>
+              <th id="ranking" class="w-20">Val.</th>
+              <th id="minutes" class="w-20">Min.</th>
+              <th id="voto" class="w-20">Voto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="tooltip-height" *ngFor="let performance of selectedPlayerStatistics.trend">
+              <td>{{ performance.realFixture.name }}</td>
+              <td>{{ performance.ranking }}</td>
+              <td>{{ performance.minutes }}</td>
+              <td>{{ performance.grade }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+          <button type="button" class="btn btn-primary" (click)="hideModal()">
+            <fa-icon icon="undo" class="icon-padding"></fa-icon>Chiudi
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

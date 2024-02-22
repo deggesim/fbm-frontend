@@ -206,8 +206,8 @@
   (confirm)="release()"
   (cancel)="popupRelease.closeModal()"
 >
-  Il giocatore selezionato verrà rilasciato. La squadra recupererà metà dei crediti, mentre i visti spesi ed il numero di contratti firmati
-  non diminuiranno.
+  Il giocatore {{ fantasyRosterSelected?.roster.player.name }} verrà rilasciato. La squadra recupererà metà dei crediti, mentre i visti
+  spesi ed il numero di contratti firmati non diminuiranno.
 </fbm-popup-confirm>
 
 <!-- popup remove -->
@@ -219,6 +219,6 @@
   (confirm)="remove()"
   (cancel)="popupRemove.closeModal()"
 >
-  Il giocatore selezionato verrà rimosso. La squadra recupererà tutti i crediti, mentre i visti spesi ed il numero di contratti firmati
-  diminuiranno di uno.
+  Il giocatore {{ fantasyRosterSelected?.roster.player.name }} verrà rimosso. La squadra recupererà tutti i crediti, mentre i visti spesi ed
+  il numero di contratti firmati diminuiranno di uno.
 </fbm-popup-confirm>

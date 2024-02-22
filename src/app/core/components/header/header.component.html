@@ -8,8 +8,8 @@
 
   <div class="collapse navbar-collapse" [collapse]="isCollapsed" *ngIf="!isEmpty(user)">
     <ul class="navbar-nav me-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/home/dash-board" *ngIf="!leagueInfo?.preSeason">
+      <li class="nav-item" *ngIf="!isEmpty(selectedLeague) && !leagueInfo?.preSeason">
+        <a class="nav-link" routerLink="/home/dash-board">
           <fa-icon icon="tachometer-alt" [fixedWidth]="true" class="icon-padding"></fa-icon>Dashboard
         </a>
       </li>
