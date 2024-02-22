@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="screwdriver" class="icon-padding"></fa-icon>Parametri</legend>
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="49" fxFlex.xs="100">
+    <div class="row">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="DRAFT" class="control-label">DRAFT</label>
           <input
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="MAX_CONTRACTS" class="control-label">MAX_CONTRACTS</label>
           <input
@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="MAX_STR" class="control-label">MAX_STR</label>
           <input
@@ -47,7 +47,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="MAX_EXT_OPT_345" class="control-label">MAX_EXT_OPT_345</label>
           <input
@@ -62,7 +62,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="MAX_PLAYERS_IN_ROSTER" class="control-label">MAX_PLAYERS_IN_ROSTER</label>
           <input
@@ -77,7 +77,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="MAX_STRANGERS_OPT_55" class="control-label">MAX_STRANGERS_OPT_55</label>
           <input
@@ -92,7 +92,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="MIN_NAT_PLAYERS" class="control-label">MIN_NAT_PLAYERS</label>
           <input
@@ -107,7 +107,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="RESULT_DIVISOR" class="control-label">RESULT_DIVISOR</label>
           <input
@@ -122,7 +122,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="RESULT_WITH_GRADE" class="control-label">RESULT_WITH_GRADE</label>
           <input
@@ -137,7 +137,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="RESULT_WITH_OER" class="control-label">RESULT_WITH_OER</label>
           <input
@@ -152,7 +152,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="RESULT_WITH_PLUS_MINUS" class="control-label">RESULT_WITH_PLUS_MINUS</label>
           <input
@@ -167,7 +167,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="TREND" class="control-label">TREND</label>
           <input
@@ -184,7 +184,7 @@
     </div>
   </fieldset>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

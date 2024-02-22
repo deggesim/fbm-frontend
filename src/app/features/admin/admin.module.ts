@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@app/shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -59,7 +58,6 @@ import { UserListComponent } from './users/user-list/user-list.component';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
-    FlexLayoutModule,
     CollapseModule,
     BsDropdownModule,
     PaginationModule,

@@ -1,13 +1,13 @@
 <fieldset class="fieldset">
   <legend class="legend"><fa-icon icon="chart-bar" class="icon-padding"></fa-icon>Top Flop</legend>
   <form [formGroup]="form" class="needs-validation" novalidate>
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+    <div class="row">
+      <div class="col-sm-4 mb-3">
         <label for="team" class="control-label">Squadra</label>
         <ng-select id="team" name="team" [items]="teams" bindLabel="fullName" formControlName="team" clearAllText="Elimina"> </ng-select>
       </div>
 
-      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+      <div class="col-sm-4 mb-3">
         <label for="fantasyTeam" class="control-label">Fantasquadra</label>
         <ng-select
           id="fantasyTeam"
@@ -20,18 +20,18 @@
         </ng-select>
       </div>
 
-      <div fxFlex="32" fxFlex.xs="100" class="mb-3">
+      <div class="col-sm-4 mb-3">
         <label for="role" class="control-label">Ruolo</label>
         <ng-select id="role" name="role" [items]="roles" bindLabel="roles[role]" formControlName="role" clearAllText="Elimina"> </ng-select>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="form-check form-switch">
           <input type="checkbox" class="form-check-input" id="freePlayer" formControlName="freePlayers" />
           <label class="form-check-label" for="freePlayer">Giocatori liberi</label>
         </div>
       </div>
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <button type="button" class="btn btn-primary float-end" (click)="reset()">
           <fa-icon icon="undo" class="icon-padding"></fa-icon>Reset
         </button>
@@ -86,22 +86,20 @@
     <h4 class="p-3">Nessun giocatore trovato con i filtri inseriti</h4>
   </ng-template>
 
-  <div fxLayout="row" fxLayoutAlign="center" *ngIf="enablePagination()">
-    <div fxFlex="nogrow">
-      <pagination
-        [totalItems]="playerStatisticList.totalElements"
-        [(ngModel)]="page"
-        [itemsPerPage]="limit"
-        (pageChanged)="pageChange($event)"
-        [maxSize]="maxSize"
-        [boundaryLinks]="boundaryLinks"
-        firstText="<<"
-        previousText="<"
-        nextText=">"
-        lastText=">>"
-      ></pagination>
-    </div>
-  </div>
+  <pagination
+    *ngIf="enablePagination()"
+    class="justify-content-center"
+    [totalItems]="playerStatisticList.totalElements"
+    [(ngModel)]="page"
+    [itemsPerPage]="limit"
+    (pageChanged)="pageChange($event)"
+    [maxSize]="maxSize"
+    [boundaryLinks]="boundaryLinks"
+    firstText="<<"
+    previousText="<"
+    nextText=">"
+    lastText=">>"
+  ></pagination>
 </fieldset>
 
 <!-- modal statistics -->
@@ -116,24 +114,24 @@
   aria-hidden="true"
   (onHidden)="onHidden()"
 >
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog modal-md modal-fullscreen-md-down">
     <div class="modal-content">
       <div class="modal-header titolo">
         <h4 class="modal-title">{{ selectedPlayerStatistics.player.name }}</h4>
       </div>
 
       <div class="modal-body">
-        <table class="w-100" aria-label="Valutazioni">
-          <thead>
+        <table class="table table-hover" aria-label="Valutazioni">
+          <thead class="table-dark">
             <tr>
-              <th id="realFixture" class="w-40">Giornata</th>
-              <th id="ranking" class="w-20">Val.</th>
-              <th id="minutes" class="w-20">Min.</th>
-              <th id="voto" class="w-20">Voto</th>
+              <th id="realFixture" class="th-lg">Giornata</th>
+              <th id="ranking" class="th-sm">Val.</th>
+              <th id="minutes" class="th-sm">Min.</th>
+              <th id="voto" class="th-sm">Voto</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="tooltip-height" *ngFor="let performance of selectedPlayerStatistics.trend">
+            <tr *ngFor="let performance of selectedPlayerStatistics.trend" class="table-secondary">
               <td>{{ performance.realFixture.name }}</td>
               <td>{{ performance.ranking }}</td>
               <td>{{ performance.minutes }}</td>
@@ -142,7 +140,7 @@
           </tbody>
         </table>
 
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
           <button type="button" class="btn btn-primary" (click)="hideModal()">
             <fa-icon icon="undo" class="icon-padding"></fa-icon>Chiudi
           </button>

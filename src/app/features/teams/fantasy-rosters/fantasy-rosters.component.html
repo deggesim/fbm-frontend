@@ -2,28 +2,26 @@
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="list" class="icon-padding"></fa-icon>Fantasquadra</legend>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="100">
-        <div class="mb-3">
-          <label for="fantasyTeam" class="control-label">Fantasquadra</label>
-          <ng-select
-            id="fantasyTeam"
-            [items]="fantasyTeams"
-            bindLabel="name"
-            formControlName="fantasyTeam"
-            clearAllText="Elimina"
-            (change)="selectFantasyTeam($event)"
-          >
-          </ng-select>
-        </div>
-      </div>
+    <div class="mb-3">
+      <label for="fantasyTeam" class="control-label">Fantasquadra</label>
+      <ng-select
+        id="fantasyTeam"
+        [items]="fantasyTeams"
+        bindLabel="name"
+        formControlName="fantasyTeam"
+        clearAllText="Elimina"
+        (change)="selectFantasyTeam($event)"
+      >
+      </ng-select>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeamSelected">
-      <div>Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}</div>
-      <div>Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
-      <div>Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
-      <div>Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
+    <div class="row text-center" *ngIf="fantasyTeamSelected">
+      <div class="col-sm-3">
+        Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}
+      </div>
+      <div class="col-sm-3">Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
+      <div class="col-sm-3">Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
+      <div class="col-sm-3">Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
     </div>
 
     <ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
@@ -35,24 +33,24 @@
           <thead class="table-dark">
             <tr>
               <th id="name">Nome</th>
-              <th fxHide.lt-sm id="status">Status</th>
-              <th fxHide.lt-sm id="contract">Contratto</th>
-              <th fxHide.lt-sm id="yearContract">Anno di contratto</th>
-              <th fxHide.lt-sm id="role">Ruolo</th>
-              <th fxHide.gt-sm id="role">R.</th>
-              <th fxHide.lt-sm id="team">Squadra</th>
+              <th class="d-none d-sm-table-cell" id="status">Status</th>
+              <th id="contract">Contratto</th>
+              <th id="yearContract">Anno di contratto</th>
+              <th class="d-none d-sm-table-cell" id="role">Ruolo</th>
+              <th class="d-table-cell d-sm-none" id="role">R.</th>
+              <th class="d-none d-sm-table-cell" id="team">Squadra</th>
             </tr>
           </thead>
 
           <tbody>
             <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
               <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.status }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
-              <td fxHide.gt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
+              <td class="d-none d-sm-table-cell" [appPlayerStatus]="fr">{{ fr.status }}</td>
+              <td [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
+              <td [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
+              <td class="d-none d-sm-table-cell" [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
+              <td class="d-table-cell d-sm-none" [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
+              <td class="d-none d-sm-table-cell text-nowrap" [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
             </tr>
           </tbody>
         </table>
@@ -67,38 +65,37 @@
       <ul class="list-group">
         <li class="list-group-item d-flex justify-content-between align-items-start p-4" *ngFor="let item of history">
           <ng-container *ngIf="isPlayer(item); else fantasyTeamTemplate">
-            <div fxLayout="row wrap" class="w-100">
+            <div class="row w-100">
               <!-- player and team -->
-              <div fxFlex="66" fxFlex.lt-md="100" class="fw-bold">
-                {{ item.realFixture.name }} - {{ item.operation | decodeHistory }}: {{ item.name }} ({{
-                  DateTime.fromISO(String(item.updatedAt)).toJSDate() | date: 'dd/MM/YYYY'
-                }})
+              <div class="col-12 col-md-12 fw-bold">{{ item.operation | decodeHistory }}: {{ item.name }}</div>
+              <div class="col-12 col-md-8 fw-bold">
+                {{ item.realFixture.name }} - {{ DateTime.fromISO(String(item.updatedAt)).toJSDate() | date : 'dd/MM/YYYY' }}
               </div>
-              <div fxFlex="33" fxFlex.lt-md="100" class="badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
+              <div class="col-12 col-md-4 badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
               <!-- player -->
-              <div fxFlex="100" class="table-responsive">
+              <div class="table-responsive">
                 <table class="table table-hover" aria-label="Storico">
                   <thead class="table-dark">
                     <tr>
-                      <th fxHide.lt-sm id="status">Status</th>
-                      <th fxHide.lt-sm id="contract">Contratto</th>
-                      <th fxHide.lt-sm id="yearContract">Anno di contratto</th>
-                      <th fxHide.lt-sm id="role">Ruolo</th>
+                      <th id="status">Status</th>
+                      <th id="contract">Contratto</th>
+                      <th id="yearContract">Anno di contratto</th>
+                      <th id="role">Ruolo</th>
                     </tr>
                   </thead>
 
                   <tbody>
                     <tr class="table-secondary">
-                      <td fxHide.lt-sm>{{ item.status }}</td>
-                      <td fxHide.lt-sm>{{ item.contract != null ? item.contract : 'D' }}</td>
-                      <td fxHide.lt-sm>{{ item.yearContract }}</td>
-                      <td fxHide.lt-sm>{{ item.role }}</td>
+                      <td>{{ item.status }}</td>
+                      <td>{{ item.contract != null ? item.contract : 'D' }}</td>
+                      <td>{{ item.yearContract }}</td>
+                      <td>{{ item.role }}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <!-- team -->
-              <div fxFlex="100" class="table-responsive">
+              <div class="table-responsive">
                 <table class="table table-hover" aria-label="Storico">
                   <thead class="table-dark">
                     <tr>
@@ -130,14 +127,14 @@
             </div>
           </ng-container>
           <ng-template #fantasyTeamTemplate>
-            <div fxLayout="row wrap" class="w-100">
+            <div class="row w-100">
               <!-- team -->
-              <div fxFlex="66" fxFlex.lt-md="100" class="fw-bold">
+              <div class="col-md-8 fw-bold">
                 {{ item.realFixture.name }} -
                 {{ item.operation | decodeHistory }}
               </div>
-              <div fxFlex="33" fxFlex.lt-md="100" class="badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
-              <div fxFlex="100" class="table-responsive">
+              <div class="col-md-4 badge bg-primary rounded-pill pill">Saldo operazione: {{ item.balance }}</div>
+              <div class="table-responsive">
                 <table class="table table-hover" aria-label="Storico">
                   <thead class="table-dark">
                     <tr>

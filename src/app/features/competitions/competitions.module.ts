@@ -1,7 +1,6 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '@app/shared/shared.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -38,7 +37,6 @@ import { StandingsComponent } from './standings/standings.component';
   imports: [
     ReactiveFormsModule,
     CommonModule,
-    FlexLayoutModule,
     CollapseModule,
     BsDropdownModule,
     PaginationModule,

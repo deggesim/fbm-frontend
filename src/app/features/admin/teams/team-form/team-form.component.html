@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
-  <div fxLayout="row wrap" fxLayoutAlign="space-between">
-    <div fxFlex="49" fxFlex.xs="100">
+  <div class="row px-3">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="fullName" class="control-label">Nome completo *</label>
         <input
@@ -15,28 +15,28 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="sponsor" class="control-label">Sponsor</label>
         <input type="text" class="form-control" id="sponsor" name="sponsor" formControlName="sponsor" />
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="city" class="control-label">Città</label>
         <input type="text" class="form-control" id="city" name="city" formControlName="city" />
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="abbreviation" class="control-label">Sigla</label>
         <input type="text" class="form-control" id="abbreviation" name="abbreviation" formControlName="abbreviation" />
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="name" class="control-label">Nome</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name" />
@@ -44,7 +44,7 @@
     </div>
   </div>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

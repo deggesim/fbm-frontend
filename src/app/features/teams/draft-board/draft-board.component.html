@@ -44,35 +44,35 @@
     aria-hidden="true"
     (onHidden)="onHidden()"
   >
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-sm modal-fullscreen-md-down">
       <div class="modal-content">
         <div class="modal-header titolo">
           <h4 class="modal-title">{{ rosterSelected ? 'Acquista giocatore' : 'Modifica giocatore' }}</h4>
         </div>
 
         <div class="modal-body">
-          <div fxLayout="row wrap" fxLayoutAlign="space-between">
+          <div class="row">
             <ng-container *ngIf="rosterSelected; else modifiyFantasyRoster">
-              <div fxFlex="100">
+              <div>
                 <h6>{{ rosterSelected.player.name }} - {{ rosterSelected.player.nationality }} - {{ rosterSelected.player.role }}</h6>
               </div>
-              <div fxFlex="100">
+              <div>
                 <h6>{{ rosterSelected.team.fullName }}</h6>
               </div>
             </ng-container>
             <ng-template #modifiyFantasyRoster>
-              <div fxFlex="100">
+              <div>
                 <h6>
                   {{ fantasyRosterSelected?.roster.player.name }} - {{ fantasyRosterSelected?.roster.player.nationality }} -
                   {{ fantasyRosterSelected?.roster.player.role }}
                 </h6>
               </div>
-              <div fxFlex="100">
+              <div>
                 <h6>{{ fantasyRosterSelected?.roster.team.fullName }}</h6>
               </div>
             </ng-template>
 
-            <div fxFlex="100">
+            <div>
               <div class="mb-3">
                 <label for="fantasyTeam" class="control-label">Fantasquadra</label>
                 <ng-select
@@ -88,7 +88,7 @@
               </div>
             </div>
 
-            <div fxFlex="100">
+            <div>
               <div class="mb-3">
                 <label for="status" class="control-label">Status</label>
                 <ng-select
@@ -104,7 +104,7 @@
               </div>
             </div>
 
-            <div fxFlex="100">
+            <div>
               <div class="mb-3">
                 <div class="form-check form-switch">
                   <input
@@ -121,7 +121,7 @@
               </div>
             </div>
 
-            <div fxFlex="49">
+            <div class="col-6">
               <div class="mb-3">
                 <label for="contract" class="control-label">Costo</label>
                 <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200" />
@@ -129,7 +129,7 @@
               </div>
             </div>
 
-            <div fxFlex="49">
+            <div class="col-6">
               <div class="mb-3">
                 <label for="yearContract" class="control-label">Anno di contratto</label>
                 <input
@@ -146,7 +146,7 @@
             </div>
           </div>
 
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>

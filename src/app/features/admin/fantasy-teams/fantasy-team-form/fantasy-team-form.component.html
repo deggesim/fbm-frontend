@@ -1,13 +1,13 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
-  <div fxLayout="row wrap" fxLayoutAlign="space-between">
-    <div fxFlex="49" fxFlex.xs="100">
+  <div class="row px-3">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="name" class="control-label">Nome</label>
         <input type="text" class="form-control" id="name" name="name" formControlName="name" />
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="initialBalance" class="control-label">Bilancio</label>
         <input
@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="outgo" class="control-label">Crediti spesi</label>
         <input
@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="totalContracts" class="control-label"># Contratti</label>
         <input
@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="playersInRoster" class="control-label"># Giocatori</label>
         <input
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="extraPlayers" class="control-label">Visti spesi</label>
         <input
@@ -82,7 +82,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="pointsPenalty" class="control-label">Punti di penalità</label>
         <input
@@ -97,7 +97,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="balancePenalty" class="control-label">Malus crediti</label>
         <input
@@ -112,7 +112,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="owners" class="control-label">Proprietari</label>
         <ng-select
@@ -130,7 +130,7 @@
     </div>
   </div>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

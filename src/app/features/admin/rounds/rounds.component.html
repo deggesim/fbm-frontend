@@ -1,33 +1,32 @@
 <form [formGroup]="form" (ngSubmit)="save()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="clipboard-list" class="icon-padding"></fa-icon>Gestione turni</legend>
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="100">
-        <div class="mb-3">
-          <label for="round" class="control-label">Round *</label>
-          <ng-select
-            id="round"
-            name="round"
-            [items]="rounds"
-            formControlName="round"
-            clearAllText="Elimina"
-            (change)="onChange($event)"
-            [searchFn]="roundSearchFn"
-          >
-            <ng-template ng-label-tmp let-item="item"> {{ item.competition.name }} - {{ item.name }} </ng-template>
-            <ng-template ng-option-tmp let-item="item" let-index="index"> {{ item.competition.name }} - {{ item.name }} </ng-template>
-          </ng-select>
-        </div>
-      </div>
 
-      <ng-template #sortedListTemplate let-item="item" let-index="index"
-        ><span>#{{ index + 1 }}: {{ item.value.name }}</span></ng-template
+    <div class="mb-3">
+      <label for="round" class="control-label">Round *</label>
+      <ng-select
+        id="round"
+        name="round"
+        [items]="rounds"
+        formControlName="round"
+        clearAllText="Elimina"
+        (change)="onChange($event)"
+        [searchFn]="roundSearchFn"
       >
-      <ng-template #unsortedListTemplate let-item="item" let-index="index"
-        ><span>{{ item.value.name }}</span></ng-template
-      >
+        <ng-template ng-label-tmp let-item="item"> {{ item.competition.name }} - {{ item.name }} </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-index="index"> {{ item.competition.name }} - {{ item.name }} </ng-template>
+      </ng-select>
+    </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+    <ng-template #sortedListTemplate let-item="item" let-index="index"
+      ><span>#{{ index + 1 }}: {{ item.value.name }}</span></ng-template
+    >
+    <ng-template #unsortedListTemplate let-item="item" let-index="index"
+      ><span>{{ item.value.name }}</span></ng-template
+    >
+
+    <div class="row">
+      <div class="col-sm-6">
         <div class="mb-3">
           <bs-sortable
             formControlName="unsortedList"
@@ -40,8 +39,8 @@
           ></bs-sortable>
         </div>
       </div>
-      <div fxFlex="49" fxFlex.xs="100">
-        <div class="mb-3">
+      <div class="col-sm-6 mb-3">
+        <div class="border border-light border-2 rounded p-2 h-100">
           <bs-sortable
             formControlName="sortedList"
             [itemTemplate]="sortedListTemplate"
@@ -56,7 +55,7 @@
     </div>
   </fieldset>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

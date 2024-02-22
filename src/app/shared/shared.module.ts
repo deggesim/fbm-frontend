@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PlayerStatusDirective } from '@app/shared//directives/player-status.directive';
 import { ErrorMessageComponent } from '@app/shared/components/error-message/error-message.component';
@@ -29,7 +28,7 @@ import { DecodeHistoryPipe } from './pipes/decode-history.pipe';
     DecodeHistoryPipe,
     RostersTableComponent,
   ],
-  imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule, FlexLayoutModule],
+  imports: [CommonModule, FontAwesomeModule, ModalModule, TooltipModule, ReactiveFormsModule],
   exports: [
     ErrorMessageComponent,
     MatchResultComponent,

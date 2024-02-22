@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()" class="needs-validation" novalidate>
-  <div fxLayout="row wrap" fxLayoutAlign="space-between">
-    <div fxFlex="49" fxFlex.xs="100">
+  <div class="row px-3">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="name" class="control-label">Nome *</label>
         <input
@@ -15,7 +15,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="nationality" class="control-label">Nazionalità *</label>
         <input
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="number" class="control-label">Numero</label>
         <input
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="yearBirth" class="control-label">Anno di nascita</label>
         <input
@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="height" class="control-label">Altezza</label>
         <input
@@ -80,7 +80,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="weight" class="control-label">Peso</label>
         <input
@@ -97,7 +97,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="role" class="control-label">Ruolo *</label>
         <ng-select
@@ -114,7 +114,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100">
+    <div class="col-sm-6">
       <div class="mb-3">
         <label for="team" class="control-label">Squadra *</label>
         <ng-select
@@ -131,7 +131,7 @@
       </div>
     </div>
 
-    <div fxFlex="49" fxFlex.xs="100" *ngIf="roster == null && !leagueInfo?.preSeason">
+    <div class="col-sm-6" *ngIf="roster == null && !leagueInfo?.preSeason">
       <div class="mb-3">
         <label for="realFixture" class="control-label">Giornata *</label>
         <ng-select
@@ -149,7 +149,7 @@
     </div>
   </div>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="save" class="icon-padding"></fa-icon>Salva
     </button>

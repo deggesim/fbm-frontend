@@ -8,19 +8,19 @@
   <tbody>
     <tr class="table-secondary">
       <td *ngFor="let fantasyTeam of fantasyTeams">
-        <div fxLayout="row wrap">
-          <div fxFlex="50" tooltip="Crediti spesi" class="text-nowrap">
+        <div class="row">
+          <div class="col-6 text-nowrap" tooltip="Crediti spesi">
             <fa-icon icon="money-bill-wave" [fixedWidth]="true" class="icon-padding"></fa-icon>:
             {{ fantasyTeam.outgo }}
           </div>
-          <div fxFlex="50" tooltip="Crediti residui" class="text-nowrap">
+          <div class="col-6 text-nowrap" tooltip="Crediti residui">
             <fa-icon icon="piggy-bank" [fixedWidth]="true" class="icon-padding"></fa-icon>:
             {{ fantasyTeam.initialBalance - fantasyTeam.balancePenalty - fantasyTeam.outgo }}
           </div>
-          <div fxFlex="50" tooltip="Giocatori nel roster" class="text-nowrap">
+          <div class="col-6 text-nowrap" tooltip="Giocatori nel roster">
             <fa-icon icon="users" [fixedWidth]="true" class="icon-padding"></fa-icon>: {{ fantasyTeam.playersInRoster }}
           </div>
-          <div fxFlex="50" tooltip="Visti spesi" class="text-nowrap">
+          <div class="col-6 text-nowrap" tooltip="Visti spesi">
             <fa-icon icon="globe-americas" [fixedWidth]="true" class="icon-padding"></fa-icon>: {{ fantasyTeam.extraPlayers }}
           </div>
         </div>

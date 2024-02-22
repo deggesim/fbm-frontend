@@ -2,8 +2,8 @@
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="shopping-cart" class="icon-padding"></fa-icon>Mercato libero</legend>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="49" fxFlex.xs="100">
+    <div class="row">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="fantasyTeam" class="control-label">Fantasquadra</label>
           <ng-select
@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="roster" class="control-label">Giocatore</label>
           <ng-select
@@ -43,11 +43,13 @@
       </div>
     </div>
 
-    <div fxLayout="row wrap" fxLayoutAlign="space-around" *ngIf="fantasyTeamSelected">
-      <div>Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}</div>
-      <div>Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
-      <div>Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
-      <div>Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
+    <div class="row text-center" *ngIf="fantasyTeamSelected">
+      <div class="col-sm-3">
+        Crediti residui: {{ fantasyTeamSelected.initialBalance - fantasyTeamSelected.balancePenalty - fantasyTeamSelected.outgo }}
+      </div>
+      <div class="col-sm-3">Contratti stipulati: {{ fantasyTeamSelected.totalContracts }}</div>
+      <div class="col-sm-3">Giocatori nel roster: {{ fantasyTeamSelected.playersInRoster }}</div>
+      <div class="col-sm-3">Visti spesi: {{ fantasyTeamSelected.extraPlayers }}</div>
     </div>
 
     <ng-container *ngIf="fantasyRosters && fantasyRosters.length > 0; else empty">
@@ -58,12 +60,12 @@
           <thead class="table-dark">
             <tr>
               <th id="name">Nome</th>
-              <th fxHide.lt-sm id="status">Status</th>
-              <th fxHide.lt-sm id="contract">Contratto</th>
-              <th fxHide.lt-sm id="yearContract">Anno di contratto</th>
-              <th fxHide.lt-sm id="role">Ruolo</th>
-              <th fxHide.gt-sm id="role">R.</th>
-              <th fxHide.lt-sm id="team">Squadra</th>
+              <th class="d-none d-sm-table-cell" id="status">Status</th>
+              <th class="d-none d-sm-table-cell" id="contract">Contratto</th>
+              <th class="d-none d-sm-table-cell" id="yearContract">Anno di contratto</th>
+              <th class="d-none d-md-table-cell" id="role">Ruolo</th>
+              <th class="d-table-cell d-md-none" id="role">R.</th>
+              <th class="d-none d-sm-table-cell" id="team">Squadra</th>
               <th id="actions">Azioni</th>
             </tr>
           </thead>
@@ -71,12 +73,12 @@
           <tbody>
             <tr *ngFor="let fr of fantasyRosters" class="table-secondary">
               <td [appPlayerStatus]="fr" class="text-nowrap">{{ fr.roster.player.name }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.status }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
-              <td fxHide.gt-sm [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
-              <td fxHide.lt-sm [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
+              <td class="d-none d-sm-table-cell" [appPlayerStatus]="fr">{{ fr.status }}</td>
+              <td class="d-none d-sm-table-cell" [appPlayerStatus]="fr">{{ fr.contract != null ? fr.contract : 'D' }}</td>
+              <td class="d-none d-sm-table-cell" [appPlayerStatus]="fr">{{ fr.yearContract }}</td>
+              <td class="d-none d-md-table-cell" [appPlayerStatus]="fr">{{ fr.roster.player.role }}</td>
+              <td class="d-table-cell d-md-none" [appPlayerStatus]="fr">{{ fr.roster.player.role | roleShort }}</td>
+              <td class="d-none d-sm-table-cell text-nowrap" [appPlayerStatus]="fr">{{ fr.roster.team.fullName }}</td>
 
               <td class="text-nowrap">
                 <button type="button" class="btn btn-success me-2" (click)="update(fr)" tooltip="Modifica" placement="top">
@@ -114,68 +116,49 @@
     aria-hidden="true"
     (onHidden)="onHidden()"
   >
-    <div class="modal-dialog modal-sm">
+    <div class="modal-dialog modal-md modal-fullscreen-md-down">
       <div class="modal-content">
         <div class="modal-header titolo">
           <h4 class="modal-title">{{ rosterSelected ? 'Acquista giocatore' : 'Modifica giocatore' }}</h4>
         </div>
 
         <div class="modal-body">
-          <div fxLayout="row wrap" fxLayoutAlign="space-between">
+          <div class="row px-3">
             <ng-container *ngIf="rosterSelected; else modifiyFantasyRoster">
-              <div fxFlex="100">
-                <h6>{{ rosterSelected.player.name }} - {{ rosterSelected.player.nationality }} - {{ rosterSelected.player.role }}</h6>
-              </div>
-              <div fxFlex="100">
-                <h6>{{ rosterSelected.team.fullName }}</h6>
-              </div>
+              <h6>{{ rosterSelected.player.name }} - {{ rosterSelected.player.nationality }} - {{ rosterSelected.player.role }}</h6>
+              <h6>{{ rosterSelected.team.fullName }}</h6>
             </ng-container>
             <ng-template #modifiyFantasyRoster>
-              <div fxFlex="100">
-                <h6>
-                  {{ fantasyRosterSelected?.roster.player.name }} - {{ fantasyRosterSelected?.roster.player.nationality }} -
-                  {{ fantasyRosterSelected?.roster.player.role }}
-                </h6>
-              </div>
-              <div fxFlex="100">
-                <h6>{{ fantasyRosterSelected?.roster.team.fullName }}</h6>
-              </div>
+              <h6>
+                {{ fantasyRosterSelected?.roster.player.name }} - {{ fantasyRosterSelected?.roster.player.nationality }} -
+                {{ fantasyRosterSelected?.roster.player.role }}
+              </h6>
+              <h6>{{ fantasyRosterSelected?.roster.team.fullName }}</h6>
             </ng-template>
 
-            <div fxFlex="100">
-              <div class="mb-3">
-                <label for="status" class="control-label">Status</label>
-                <ng-select
-                  id="status"
-                  name="status"
-                  [items]="statusList"
-                  bindLabel="status"
-                  formControlName="status"
-                  clearAllText="Elimina"
-                >
-                </ng-select>
-                <fbm-error-message [form-control]="form.get('status')" name="Status"></fbm-error-message>
+            <div class="mb-3">
+              <label for="status" class="control-label">Status</label>
+              <ng-select id="status" name="status" [items]="statusList" bindLabel="status" formControlName="status" clearAllText="Elimina">
+              </ng-select>
+              <fbm-error-message [form-control]="form.get('status')" name="Status"></fbm-error-message>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="draft"
+                  name="draft"
+                  formControlName="draft"
+                  [ngClass]="{ 'is-invalid': form.get('draft').invalid && form.get('draft').dirty }"
+                />
+                <label class="form-check-label" for="draft">Draft</label>
+                <fbm-error-message [form-control]="form.get('draft')" name="Draft"></fbm-error-message>
               </div>
             </div>
 
-            <div fxFlex="100">
-              <div class="mb-3">
-                <div class="form-check form-switch">
-                  <input
-                    type="checkbox"
-                    class="form-check-input"
-                    id="draft"
-                    name="draft"
-                    formControlName="draft"
-                    [ngClass]="{ 'is-invalid': form.get('draft').invalid && form.get('draft').dirty }"
-                  />
-                  <label class="form-check-label" for="draft">Draft</label>
-                  <fbm-error-message [form-control]="form.get('draft')" name="Draft"></fbm-error-message>
-                </div>
-              </div>
-            </div>
-
-            <div fxFlex="49">
+            <div class="col-sm-6">
               <div class="mb-3">
                 <label for="contract" class="control-label">Costo</label>
                 <input type="number" class="form-control" id="contract" name="contract" formControlName="contract" min="0" max="200" />
@@ -183,7 +166,7 @@
               </div>
             </div>
 
-            <div fxFlex="49">
+            <div class="col-sm-6">
               <div class="mb-3">
                 <label for="yearContract" class="control-label">Anno di contratto</label>
                 <input
@@ -200,7 +183,7 @@
             </div>
           </div>
 
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
             <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
               <fa-icon icon="save" class="icon-padding"></fa-icon>Conferma
             </button>

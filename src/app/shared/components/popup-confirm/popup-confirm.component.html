@@ -7,14 +7,14 @@
   role="dialog"
   aria-hidden="true"
 >
-  <div class="modal-dialog modal-md">
+  <div class="modal-dialog modal-md modal-fullscreen-sm-down">
     <div class="modal-content">
       <div class="modal-body">
         <h4 class="titolo text-center">{{ title }}</h4>
         <div class="fs-6 text-start px-3">
           <ng-content></ng-content>
         </div>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
           <button class="btn btn-success" (click)="confirm.emit()">
             <fa-icon icon="save" class="icon-padding"></fa-icon>{{ btnConfirm }}
           </button>

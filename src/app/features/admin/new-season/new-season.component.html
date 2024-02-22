@@ -1,8 +1,8 @@
 <form [formGroup]="form" (ngSubmit)="step2()" class="needs-validation" novalidate>
   <fieldset class="fieldset">
     <legend class="legend"><fa-icon icon="info-circle" class="icon-padding"></fa-icon>Nuova stagione</legend>
-    <div fxLayout="row wrap" fxLayoutAlign="space-between">
-      <div fxFlex="49" fxFlex.xs="100">
+    <div class="row">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="name" class="control-label">Nome *</label>
           <input
@@ -17,7 +17,7 @@
         </div>
       </div>
 
-      <div fxFlex="49" fxFlex.xs="100">
+      <div class="col-sm-6">
         <div class="mb-3">
           <label for="realGames" class="control-label">Partite reali *</label>
           <input
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div fxFlex="69" fxFlex.xs="49">
+      <div class="col-sm-8">
         <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('regularSeasonFormat').invalid && form.get('regularSeasonFormat').dirty }">
           <label for="regularSeasonFormat" class="control-label">Stagione regolare *</label>
           <ng-select
@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <div fxFlex="29" fxFlex.xs="49">
+      <div class="col-sm-4">
         <div class="mb-3">
           <label for="roundRobinFirstRealFixture" class="control-label">Prima giornata reale *</label>
           <input
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-      <div fxFlex="69" fxFlex.xs="49">
+      <div class="col-sm-8">
         <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('playoffFormat').invalid && form.get('playoffFormat').dirty }">
           <label for="playoffFormat" class="control-label">Playoff *</label>
           <ng-select
@@ -83,7 +83,7 @@
         </div>
       </div>
 
-      <div fxFlex="29" fxFlex.xs="49">
+      <div class="col-sm-4">
         <div class="mb-3">
           <label for="playoffFirstRealFixture" class="control-label">Prima giornata reale *</label>
           <input
@@ -100,7 +100,7 @@
         </div>
       </div>
 
-      <div fxFlex="69" fxFlex.xs="49">
+      <div class="col-sm-8">
         <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('playoutFormat').invalid && form.get('playoutFormat').dirty }">
           <label for="playoutFormat" class="control-label">Playout *</label>
           <ng-select
@@ -116,7 +116,7 @@
         </div>
       </div>
 
-      <div fxFlex="29" fxFlex.xs="49">
+      <div class="col-sm-4">
         <div class="mb-3">
           <label for="playoutFirstRealFixture" class="control-label">Prima giornata reale *</label>
           <input
@@ -133,7 +133,7 @@
         </div>
       </div>
 
-      <div fxFlex="69" fxFlex.xs="49">
+      <div class="col-sm-8">
         <div class="mb-3" [ngClass]="{ 'is-invalid': form.get('cupFormat').invalid && form.get('cupFormat').dirty }">
           <label for="cupFormat" class="control-label">Coppa di lega *</label>
           <ng-select
@@ -149,7 +149,7 @@
         </div>
       </div>
 
-      <div fxFlex="29" fxFlex.xs="49">
+      <div class="col-sm-4">
         <div class="mb-3">
           <label for="cupFirstRealFixture" class="control-label">Prima giornata reale *</label>
           <input
@@ -168,7 +168,7 @@
     </div>
   </fieldset>
 
-  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 pb-3">
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
     <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
       <fa-icon icon="caret-right" class="icon-padding"></fa-icon>Avanti
     </button>
