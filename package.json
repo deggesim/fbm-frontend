@@ -12,8 +12,8 @@
   },
   "homepage": "https://github.com/deggesim/fbm-frontend#readme",
   "engines": {
-    "node": "18.x",
-    "npm": "9.x"
+    "node": "20.x",
+    "npm": "10.x"
   },
   "scripts": {
     "ng": "ng",
@@ -26,7 +26,8 @@
     "format:fix": "pretty-quick --staged",
     "precommit": "run-s format:fix lint",
     "format:check": "prettier --config ./.prettierrc --list-different \"src/{app,environments,assets}/**/*{.json,.css,.scss,.html}\"",
-    "prettier": "prettier --config ./.prettierrc \"src/{app,environments,assets,styles}/**/*{.json,.css,.scss,.html,.ts}\" --write"
+    "prettier": "prettier --config ./.prettierrc \"src/{app,environments,assets,styles}/**/*{.json,.css,.scss,.html,.ts}\" --write",
+    "package": "npm i --package-lock-only"
   },
   "private": true,
   "dependencies": {
