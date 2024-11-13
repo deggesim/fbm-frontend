@@ -70,7 +70,7 @@ export const lineUpValid = (fullLineup: Lineup[], league: League): boolean => {
         let jollyValid = false;
         // the exception is valid if the role is adjacent to a legitimate role
         for (const leagueRoleSpot of leagueRole.spots) {
-          if ((leagueRoleSpot <= AppConfig.LastBenchPlayerIndex + 1 && leagueRoleSpot === spot - 1) || leagueRoleSpot === spot + 1) {
+          if (leagueRoleSpot <= AppConfig.LastBenchPlayerIndex + 1 && (leagueRoleSpot === spot - 1 || leagueRoleSpot === spot + 1)) {
             jollyValid = true;
             break;
           }
