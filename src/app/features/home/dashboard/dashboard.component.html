@@ -38,7 +38,8 @@
     <div class="col-lg-6">
       <fieldset class="fieldset">
         <legend class="legend">
-          <fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata ({{ dashBoardItem.lastFixture.name }})
+          <fa-icon icon="list-ul" class="icon-padding"></fa-icon>Risultati ultima giornata
+          {{ dashBoardItem.lastFixture?.name && '(' + dashBoardItem.lastFixture.name + ')' }}
         </legend>
         <div *ngIf="dashBoardItem.atLeastOneFixtureCompleted; else fixtureNotDefined">
           <div class="table-responsive">
