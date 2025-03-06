@@ -11,7 +11,7 @@ const routes: Routes = [
     data: { title: 'Home', breadcrumb: 'Home' },
   },
   {
-    path: 'dash-board',
+    path: 'dashboard',
     component: DashboardComponent,
     data: { title: 'Dashboard', breadcrumb: 'Dashboard' },
     canActivate: [AuthGuard],
