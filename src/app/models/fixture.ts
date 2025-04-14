@@ -11,3 +11,7 @@ export interface Fixture extends FbmModel {
   round: Round;
   realFixture?: RealFixture;
 }
+
+export interface FixtureWithDetails extends Fixture {
+  fullName: string;
+}

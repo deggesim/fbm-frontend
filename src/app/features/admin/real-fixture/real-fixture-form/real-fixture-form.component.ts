@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Fixture } from '@app/models/fixture';
+import { Fixture, FixtureWithDetails } from '@app/models/fixture';
 import { RealFixture } from '@app/models/real-fixture';
 import { Team } from '@app/models/team';
 import { FixtureService } from '@app/shared/services/fixture.service';
@@ -18,11 +18,11 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
   form = this.fb.group({
     name: [null as string, Validators.required],
     prepared: [null as boolean, [Validators.requiredTrue]],
-    fixtures: [null as Fixture[]],
+    fixtures: [null as FixtureWithDetails[]],
     teamsWithNoGame: [null as Team[]],
   });
 
-  fixtures: Fixture[];
+  fixtures: FixtureWithDetails[];
   fixturesLoading = false;
   teamsWithNoGame: Team[];
   teamsWithNoGameLoading = false;
@@ -31,14 +31,17 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.form.get('prepared').disable();
-    this.form.get('fixtures').disable();
+    // this.form.get('fixtures').disable();
     this.fixturesLoading = this.teamsWithNoGameLoading = true;
     this.teamService.read().subscribe((teamsWithNoGame: Team[]) => {
       this.teamsWithNoGame = teamsWithNoGame;
       this.teamsWithNoGameLoading = false;
     });
     this.fixtureService.read().subscribe((fixtures: Fixture[]) => {
-      this.fixtures = fixtures;
+      this.fixtures = fixtures.map((fixture) => ({
+        ...fixture,
+        fullName: `${fixture.round.competition.name} - ${fixture.round.name} - ${fixture.name}`,
+      }));
       this.fixturesLoading = false;
     });
   }
@@ -50,7 +53,10 @@ export class RealFixtureFormComponent implements OnInit, OnChanges {
       this.form.patchValue({
         name,
         prepared,
-        fixtures,
+        fixtures: fixtures.map((fixture) => ({
+          ...fixture,
+          fullName: `${fixture.round?.competition?.name} - ${fixture.round?.name} - ${fixture.name}`,
+        })),
         teamsWithNoGame,
       });
     }

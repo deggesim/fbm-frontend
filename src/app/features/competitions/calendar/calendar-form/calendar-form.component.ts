@@ -32,10 +32,10 @@ export class CalendarFormComponent implements OnChanges {
           overtime: [match.overtime],
           completed: [match.completed],
         });
-        if (fbGroup.get('completed').value) {
-          fbGroup.get('homeScore').setValidators(Validators.required);
-          fbGroup.get('awayScore').setValidators(Validators.required);
-        }
+        // if (fbGroup.get('completed').value) {
+        //   fbGroup.get('homeScore').setValidators(Validators.required);
+        //   fbGroup.get('awayScore').setValidators(Validators.required);
+        // }
         this.matchArray.push(fbGroup);
       }
     }
@@ -56,10 +56,10 @@ export class CalendarFormComponent implements OnChanges {
   manageCompleted(index: number) {
     this.getFormControl(index, 'homeScore').clearValidators();
     this.getFormControl(index, 'awayScore').clearValidators();
-    if (this.getFormControl(index, 'completed').value) {
-      this.getFormControl(index, 'homeScore').setValidators(Validators.required);
-      this.getFormControl(index, 'awayScore').setValidators(Validators.required);
-    }
+    // if (this.getFormControl(index, 'completed').value) {
+    //   this.getFormControl(index, 'homeScore').setValidators(Validators.required);
+    //   this.getFormControl(index, 'awayScore').setValidators(Validators.required);
+    // }
     this.getFormControl(index, 'homeScore').updateValueAndValidity();
     this.getFormControl(index, 'awayScore').updateValueAndValidity();
   }

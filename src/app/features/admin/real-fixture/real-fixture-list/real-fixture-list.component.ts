@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Fixture } from '@app/models/fixture';
 import { RealFixture } from '@app/models/real-fixture';
 import { RealFixtureService } from '@app/shared/services/real-fixture.service';
 import { ToastService } from '@app/shared/services/toast.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'fbm-real-fixture-list',
@@ -38,8 +39,19 @@ export class RealFixtureListComponent implements OnInit {
           tap(() => {
             this.hideModal();
           }),
-          switchMap(() => this.realFixtureService.read())
+          switchMap(() => this.realFixtureService.read()),
+          map((realFixtures: RealFixture[]) => {
+            realFixtures = realFixtures.map((realFixture: RealFixture) => {
+              realFixture.fixtures = realFixture.fixtures.map((fixture: Fixture) => ({
+                ...fixture,
+                fullName: `${fixture.round.competition.name} - ${fixture.round.name} - ${fixture.name}`,
+              }));
+              return realFixture;
+            });
+            return [...realFixtures].sort((a: RealFixture, b: RealFixture) => a.order - b.order);
+          })
         )
+
         .subscribe((realFixtures: RealFixture[]) => {
           this.realFixtures = realFixtures;
           this.toastService.success('Modifica giornata', `La giornata ${realFixture.name} è stata modificata correttamente`);

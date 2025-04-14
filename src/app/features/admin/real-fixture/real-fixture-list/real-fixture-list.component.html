@@ -17,7 +17,7 @@
           <td>
             <fa-icon icon="check" *ngIf="realFixture.prepared"></fa-icon>
           </td>
-          <td><span [innerHtml]="realFixture.fixtures | toString : 'name'"></span></td>
+          <td><span [innerHtml]="realFixture.fixtures | toString : 'fullName'"></span></td>
           <td><span [innerHtml]="realFixture.teamsWithNoGame | toString : 'fullName'"></span></td>
         </tr>
       </tbody>
