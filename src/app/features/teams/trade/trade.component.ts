@@ -26,7 +26,7 @@ export class TradeComponent implements OnInit {
     {
       fantasyTeam1: [null as FantasyTeam, [Validators.required]],
       fantasyTeam2: [null as FantasyTeam, [Validators.required]],
-      outPlayers: [[] as FantasyRoster[], [Validators.required]],
+      outPlayers: [[] as FantasyRoster[]],
       inPlayers: [[] as FantasyRoster[], [Validators.required]],
       buyout: [null as number],
     },
@@ -46,12 +46,12 @@ export class TradeComponent implements OnInit {
   showModalTradeBlock: boolean;
 
   constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private toastService: ToastService,
-    private fantasyRosterService: FantasyRosterService,
-    private fantasyTeamService: FantasyTeamService,
-    private store: Store<AppState>
+    private readonly fb: FormBuilder,
+    private readonly route: ActivatedRoute,
+    private readonly toastService: ToastService,
+    private readonly fantasyRosterService: FantasyRosterService,
+    private readonly fantasyTeamService: FantasyTeamService,
+    private readonly store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -114,7 +114,7 @@ export class TradeComponent implements OnInit {
   }
 
   enableRecap() {
-    return this.fantasyRosters1Selected.length > 0;
+    return this.fantasyRosters2Selected.length > 0;
   }
 
   recap() {
@@ -134,15 +134,8 @@ export class TradeComponent implements OnInit {
     this.fantasyTeam2Selected.outgo -= buyout;
     this.fantasyTeam1Selected.playersInRoster += this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length;
     this.fantasyTeam2Selected.playersInRoster += this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length;
-    this.fantasyTeam1Selected.totalContracts +=
-      this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length > 0
-        ? this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length
-        : 0;
-
-    this.fantasyTeam2Selected.totalContracts +=
-      this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length > 0
-        ? this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length
-        : 0;
+    this.fantasyTeam1Selected.totalContracts += Math.max(this.fantasyRosters2Selected.length - this.fantasyRosters1Selected.length, 0);
+    this.fantasyTeam2Selected.totalContracts += Math.max(this.fantasyRosters1Selected.length - this.fantasyRosters2Selected.length, 0);
 
     const allTradedPlayers = this.fantasyRosters1Selected.concat(this.fantasyRosters2Selected);
     const allTradedPlayers$ = allTradedPlayers.map((fr: FantasyRoster) => this.fantasyRosterService.switch(fr));

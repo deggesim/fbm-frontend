@@ -34,13 +34,13 @@
           <table class="table table-hover" aria-label="Fantasquadra #1">
             <thead class="table-dark">
               <tr>
-                <th id="name">Nome</th>
-                <th id="status">Status</th>
-                <th id="contract">Contratto</th>
-                <th id="yearContract">Anno di contratto</th>
-                <th class="d-none d-sm-table-cell" id="role">Ruolo</th>
-                <th class="d-table-cell d-sm-none" id="role">R.</th>
-                <th id="team">Squadra</th>
+                <th id="name-1">Nome</th>
+                <th id="status-1">Status</th>
+                <th id="contract-1">Contratto</th>
+                <th id="yearContract-1">Anno di contratto</th>
+                <th class="d-none d-sm-table-cell" id="role-1">Ruolo</th>
+                <th class="d-table-cell d-sm-none" id="role-short-1">R.</th>
+                <th id="team-1">Squadra</th>
               </tr>
             </thead>
 
@@ -95,13 +95,13 @@
           <table class="table table-hover" aria-label="Fantasquadra #2">
             <thead class="table-dark">
               <tr>
-                <th id="name">Nome</th>
-                <th id="status">Status</th>
-                <th id="contract">Contratto</th>
-                <th id="yearContract">Anno di contratto</th>
-                <th class="d-none d-md-table-cell" id="role">Ruolo</th>
-                <th class="d-table-cell d-md-none" id="role">R.</th>
-                <th id="team">Squadra</th>
+                <th id="name-2">Nome</th>
+                <th id="status-2">Status</th>
+                <th id="contract-2">Contratto</th>
+                <th id="yearContract-2">Anno di contratto</th>
+                <th class="d-none d-md-table-cell" id="role-2">Ruolo</th>
+                <th class="d-table-cell d-md-none" id="role-short-2">R.</th>
+                <th id="team-2">Squadra</th>
               </tr>
             </thead>
 
@@ -157,19 +157,21 @@
           <ul>
             <li *ngFor="let fr of form.value.inPlayers">{{ fr.roster.player.name }}</li>
           </ul>
-          <p>e cede alla squadra {{ fantasyTeam2Selected.name }} i seguenti giocatori</p>
-          <ul>
-            <li *ngFor="let fr of form.value.outPlayers">{{ fr.roster.player.name }}</li>
-          </ul>
+          <span *ngIf="form.value.outPlayers.length > 0">
+            <p>e cede alla squadra {{ fantasyTeam2Selected.name }} i seguenti giocatori</p>
+            <ul>
+              <li *ngFor="let fr of form.value.outPlayers">{{ fr.roster.player.name }}</li>
+            </ul>
+          </span>
           <div class="row row-cols-auto g-3 align-items-start">
             <div class="col-auto">
-              <label class="col-form-label">La squadra {{ fantasyTeam1Selected.name }} inoltre riconosce un conguaglio pari a</label>
+              <p class="col-form-label">La squadra {{ fantasyTeam1Selected.name }} inoltre riconosce un conguaglio pari a</p>
             </div>
-            <div class="col-1">
+            <div class="col-2">
               <input type="number" class="form-control" id="buyout" name="buyout" min="0" formControlName="buyout" />
             </div>
             <div class="col-auto">
-              <label class="col-form-label">crediti</label>
+              <p class="col-form-label">crediti</p>
             </div>
           </div>
           <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-3 mx-3 pb-3">
